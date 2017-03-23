@@ -1,10 +1,12 @@
 import ROOT, os
 from ROOT import TFile, TH1, TString
 
+outTxt = open(os.getenv('FIT_WORKDIR')+'/distribsFromDiffXsFwk.txt','w')
 
-outTxt = open(os.getenv('FIT_WORKDIR')+'/utils/distribsFromDiffXsFwk.txt','w')
+with open(os.getenv('FIT_WORKDIR')+'/configs/diffXsFwk/diffXsDirPath.txt','r') as f:
+    l = f.readline().splitlines()
 
-diffFwkDir = '/nfs/dust/cms/user/defrancm/TopDiffXS_2015/CMSSW_7_2_2_patch2/src/TopAnalysis/Configuration/analysis/diLeptonic'
+diffFwkDir = l[0]
 
 aFile = ROOT.TFile(diffFwkDir+'/selectionRoot/Nominal/emu/emu_run2015D.root')
 
@@ -18,4 +20,4 @@ for key in aFile.GetListOfKeys():
     inFile = ROOT.TFile(diffFwkDir+'/Plots/Nominal/emu/'+str(keyName)+'_source.root')
     if not inFile.IsZombie(): outTxt.write(str(keyName)+'\n')
 
-
+outTxt.close()

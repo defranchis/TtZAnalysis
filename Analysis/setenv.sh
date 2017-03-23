@@ -1,3 +1,3 @@
 
 cmsenv
-export FIT_WORKDIR=$PWD
+export FIT_WORKDIR=$CMSSW_BASE/src/TtZAnalysis/Analysis

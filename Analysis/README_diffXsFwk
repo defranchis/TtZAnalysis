@@ -1,0 +1,16 @@
+
+INSTRUCTIONS on how to convert histograms starting from output distributions obtained with the differential cross section framework. 
+
+The *_source*.root files must be stored in a *SOMEPATH*/Plots directory
+
+- set environment variables with setenv.sh every time a clean shell is used
+
+- to convert histograms from the differential cross section framework you need to
+  1. set the link to the diLepton directory (or other path where the Plot directory is located) in configs/diffXsFwk/diffXsDirPath.txt
+  2. run the script scripts/findHistosInDiffXsFwk.py and move the output file (distribsFromDiffXsFwk.txt) to configs/diffXsFwk/
+  3. create a list of variations you are interested in, in configs/diffXsFwk/listOfSystFromDiffXsFwk.txt
+     ls -1 diffXsPlots | grep -v Nominal | grep -v FinalResults > configs/diffXsFwk/listOfSystFromDiffXsFwk.txt
+
+IMPORTANT: point 3. don't forget to remove possible variations you're not interested in and be aware that for all systematics, except MCATNLO and POWHEG, both an _UP and a _DOWN variations are needed. The Nominal directory is also mandatory. If you need something different you should consider editing bin/convertFromDiffXsFwk.cc.
+
+You are now ready to run convertFromDiffXsFwk, which will create a histo1D containing all systematic variations for each distribution and for each process. The output are stores in .ztop format in the ztopFiles/rawHistos directory and its sub-directories
