@@ -8,7 +8,7 @@ with open(os.getenv('FIT_WORKDIR')+'/configs/diffXsFwk/diffXsDirPath.txt','r') a
 
 diffFwkDir = l[0]
 
-aFile = ROOT.TFile(diffFwkDir+'/selectionRoot/Nominal/emu/emu_run2015D.root')
+aFile = ROOT.TFile(diffFwkDir+'/selectionRoot/Nominal/emu/emu_ttbarsignalplustau.root')
 
 for key in aFile.GetListOfKeys():
     keyName = TString(key.GetName())
@@ -17,7 +17,7 @@ for key in aFile.GetListOfKeys():
     if not keyName.Contains('Hyp'): continue
     if keyName.Contains('XSec'): continue
 
-    inFile = ROOT.TFile(diffFwkDir+'/Plots/Nominal/emu/'+str(keyName)+'_source.root')
+    inFile = ROOT.TFile(diffFwkDir+'/Plots/Nominal/emu/'+str(keyName)+'_topmass.root')
     if not inFile.IsZombie(): outTxt.write(str(keyName)+'\n')
 
 outTxt.close()
