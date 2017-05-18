@@ -4,7 +4,6 @@ HypjetMulti_noBTag
 HypBjetMulti
 HypBjetMulti_noBTag
 HypTTBarRapidity
-HypTTBarRapidityAbs
 HypTTBarpT
 HypTTBarMass
 HypLLBarMass
@@ -13,7 +12,6 @@ HypToppTTTRestFrame
 HypToppT
 HypTopMass
 HypTopRapidity
-HypTopRapidityAbs
 HypLeptonpT
 HypLeptonEta
 HypBJetpT
@@ -36,4 +34,17 @@ HypBJetpTLead
 HypBJetpTNLead
 HypBJetEtaLead
 HypBJetEtaNLead
-HypTopPartonFraction
+HypExtraJetpT
+HypExtraJetEta
+HypExtraJetpT2
+HypExtraJetEta2
+HypExtraJetpT3
+HypExtraJetEta3
+HypJetMultpt30
+HypJetMultpt60
+HypJetMultpt100
+HypDeltaRExtraJet12
+HypDeltaPhiExtraJet12
+HypPhiExtraJet12
+HypTTBar1stJetMass
+HypTTBar0Mass
