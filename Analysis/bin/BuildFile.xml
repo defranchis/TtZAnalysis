@@ -32,6 +32,7 @@
 
 <!-- <bin name="compareContributions" file="compareContributions.cc" /> -->
 <bin name="convertFromDiffXsFwk" file="convertFromDiffXsFwk.cc" />
+<bin name="makeControlPlotsFromDiffXsFwk" file="makeControlPlotsFromDiffXsFwk.cc" />
 
 <bin name="extractMtFromInclXsec" file="extractMtFromInclXsec.cc" />
 <Flags CXXFLAGS="-lXMLParser -lunfold -fopenmp"/>
