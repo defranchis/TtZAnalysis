@@ -274,16 +274,18 @@ double variateHisto1D::toBeMinimizedInFit(const double * variations)const{
     }
 
 
-    simpleFitter variateHisto1D::fitToConstHisto(const histo1D& h, const bool usepriors){
+    simpleFitter variateHisto1D::fitToConstHisto(const histo1D& h, const bool usepriors, const bool fitToMC){
 	if(h.getBins() != bins_){
 		throw std::runtime_error("variateHisto1D::fitToConstHisto: bins have to be the same");
 	}
 	//check if properly normalized
-	for(size_t i=1;i<=h.getNBins();i++){
+        if  (!fitToMC){
+            for(size_t i=1;i<=h.getNBins();i++){
 		if(h.getBinContent(i)<0 || fabs(h.getBinContent(i) - h.getBinStat(i)*h.getBinStat(i))/fabs(h.getBinContent(i)) > 0.0001){
-			throw std::runtime_error("variateHisto1D::fitToConstHisto: histo to fit to must have normalization with stat=sqrt(N)");
+                    throw std::runtime_error("variateHisto1D::fitToConstHisto: histo to fit to must have normalization with stat=sqrt(N)");
 		}
-	}
+            }
+        }
 
         if (usepriors){
             if ( variations_.size() != priors_.size())
