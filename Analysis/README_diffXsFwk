@@ -1,7 +1,7 @@
 
 INSTRUCTIONS on how to convert histograms starting from output distributions obtained with the differential cross section framework. 
 
-The *_source*.root files must be stored in a *SOMEPATH*/Plots directory
+The *_topmass.root files must be stored in a *SOMEPATH*/Plots directory
 
 - set environment variables with setenv.sh every time a clean shell is used
 
