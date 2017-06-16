@@ -117,7 +117,7 @@ void ttbarControlPlots::makeControlPlotsPriv(){
 
 	///LEPTONS
 
-	SETBINS << -2.4 << -2.1 << -1.47 << -0.8 << 0.8 << 1.47 << 2.1 << 2.4;
+	SETBINSRANGE(20,-2.4,2.4);
 	addPlot("electron eta", "#eta_{l}","N_{e}");
 	FILLFOREACH(isoelectrons,eta());
 
@@ -145,7 +145,7 @@ void ttbarControlPlots::makeControlPlotsPriv(){
 
 	SETBINSRANGE(50,0,1);
 	addPlot("electron isolation", "Iso", "N_{e}");
-	FILLFOREACH(idelectrons,rhoIso());
+	FILLFOREACH(idelectrons,getMember(0));
 
 	SETBINS << 0 << 10 << 20 << 25 << 30 << 35 << 40 << 45 << 50 << 60 << 70 << 100 << 200;
 	addPlot("electron pt", "p_{T} [GeV]", "N_{e}");
@@ -224,7 +224,7 @@ void ttbarControlPlots::makeControlPlotsPriv(){
 
 
 
-	SETBINS << -2.4 << -2.1 << -1.47 << -0.8 << 0.8 << 1.47 << 2.1 << 2.4;
+        SETBINSRANGE(20,-2.4,2.4);
 	addPlot("muon eta", "#eta_{l}","N_{#mu}");
 	FILLFOREACH(isomuons,eta());
 

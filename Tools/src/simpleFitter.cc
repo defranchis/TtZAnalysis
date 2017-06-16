@@ -750,6 +750,9 @@ double simpleFitter::nuisanceGaus(const double & in){
 	return in*in;
 }
 
+double simpleFitter::nuisanceGausBroad(const double & in){
+        return in*in * 1.35;
+}
 
 
 double simpleFitter::nuisanceBox(const double & in){

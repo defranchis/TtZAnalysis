@@ -19,9 +19,9 @@ void NTBTagSF::changeNTJetTags( std::vector<ztop::NTJet *> *jets)const{
 	if(!isMC_ || mode_!=randomtagging_mode || makesEff()) return;
 	for(size_t i=0;i<jets->size();i++){
 		ztop::NTJet * jet=jets->at(i);
-		if(std::abs(jet->genPartonFlavour()) == 0) continue;
+		//if(std::abs(jet->genPartonFlavour()) == 0) continue;
 		bool shouldbetagged=false;
-		shouldbetagged= jetIsTagged(jet->pt(),jet->eta(),jet->genPartonFlavour(),jet->btag(),
+		shouldbetagged= jetIsTagged(jet->pt(),jet->eta(),jet->getMember(1),jet->btag(),
 				std::abs<int>(1.e6 * sin(jet->phi())));
 
 		// throw std::logic_error(" NTBTagSF::changeNTJetTags wrong type (undefined");

@@ -94,7 +94,11 @@ inline double scalefactors::getScalefactor(double xval,double yval)const{
 			std::cout << "scalefactors::getScalefactor: scale factor very small ~0. warning\nmaybe ut of range? input was: " << xval<< ","<< yval<< std::endl;
 			throw std::runtime_error("scalefactors::getScalefactor: scale factor very small ~0. maybe ut of range");
 		}
-		if(content<0.001){
+	       if(content<0.001){
+                        if (xval < h->GetXaxis()->GetXmin()) this->getScalefactor(h->GetXaxis()->GetXmin()*1.000000001,yval);
+                        else if (xval > h->GetXaxis()->GetXmax()) this->getScalefactor(h->GetXaxis()->GetXmin()*0.9999999999,yval);
+                        else if (yval < h->GetYaxis()->GetXmin()) this->getScalefactor(xval,h->GetYaxis()->GetXmin()*1.000000001);
+                        else if (yval > h->GetYaxis()->GetXmax()) this->getScalefactor(xval,h->GetYaxis()->GetXmin()*0.9999999999);
 			return 1;
 		}
 		return content;

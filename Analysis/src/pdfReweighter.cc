@@ -9,6 +9,7 @@
 #include "../interface/pdfReweighter.h"
 #include "TtZAnalysis/DataFormats/interface/NTEvent.h"
 #include <stdexcept>
+#include <iostream>
 
 namespace ztop{
 
@@ -25,6 +26,7 @@ void pdfReweighter::reWeight( float &oldweight){
     }
     else{
         if(ntevent_->PDFWeightsSize()<=pdfidx_){
+            std::cout<<ntevent_->PDFWeightsSize()<<"   "<<ntevent_->eventNo()<<std::endl;
             throw std::out_of_range("pdfReweighter::reWeight: pdf index out of range");
         }
         float newweight = ntevent_->PDFWeight(pdfidx_);

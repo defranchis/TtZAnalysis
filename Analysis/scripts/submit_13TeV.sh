@@ -1,9 +1,9 @@
 #!/bin/sh
 
 
-channels=( #"ee"
+channels=( "ee"
     "emu"
-#    "mumu"
+    "mumu"
 );
 ## scale and match variations will be ignored for other top masses then 172.5.. (hardcoded below)
 topmasses=( "172.5"
@@ -11,14 +11,14 @@ topmasses=( "172.5"
      # "171.5"
      # "173.5"
 #agrohsje 
-#    "175.5"
+#   "175.5"
 #    "169.5"
 
      # "178.5"
      # "166.5"
 );
 #agrohsje 
-pdfeigenvectors=26 # POWHEG:NNPDF:50; POWHEG:CT10:26; MG5_aMC@NLO:NNPDF:51   # if set to 0, no variation
+pdfeigenvectors=28 # POWHEG:NNPDF:50; POWHEG:CT10:26; MG5_aMC@NLO:NNPDF:51   # if set to 0, no variation
 #pdfeigenvectors=0 # POWHEG:NNPDF:50; POWHEG:CT10:26; MG5_aMC@NLO:NNPDF:51   # if set to 0, no variation
 
 systs=("nominal"
@@ -38,12 +38,12 @@ systs=("nominal"
 #   "TT_GENPOWPY_down"
 
 # use later for powheg herwigpp, file ending should be powhpp
-     "TT_GENPOWHERW_up"
-     "TT_GENPOWHERW_down"
+#     "TT_GENPOWHERW_up"
+#     "TT_GENPOWHERW_down"
 
 #agrohsje 
-     "TT_GENMCATNLO_up"
-     "TT_GENMCATNLO_down"
+#     "TT_GENMCATNLO_up"
+#     "TT_GENMCATNLO_down"
 
 #    "TT_BJESNUDEC_down"
 #    "TT_BJESNUDEC_up"
@@ -165,13 +165,20 @@ systs=("nominal"
    # "BTAGPUR_down"
 
 
-#     "TOPPT_up"
-#     "TOPPT_down"
+     "TOPPT_up"
+     "TOPPT_down"
 
-#    "TT_MATCH_down"
-#    "TT_MATCH_up"
-    "TT_SCALE_down"
-    "TT_SCALE_up"
+    "TT_MATCH_down"
+    "TT_MATCH_up"
+    "TT_ISRSCALE_down"
+    "TT_ISRSCALE_up"
+    "TT_FSRSCALE_down"
+    "TT_FSRSCALE_up"
+    "TT_MESCALE_down"
+    "TT_MESCALE_up"
+    "TT_TTTUNE_down"
+    "TT_TTTUNE_up"
+
 
 
    #"Z_MATCH_down"

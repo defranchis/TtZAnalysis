@@ -6,17 +6,17 @@
 #$ -l distro=sld6
 #
 #(the cpu time for this job)
-#$ -l h_rt=02:55:00
+#$ -l h_rt=20:00:00
 #
 #(the maximum memory usage of this job)
-#$ -l h_vmem=2047M
+#$ -l h_vmem=7047M
 #
 #(stderr and stdout are merged together to stdout)
 #$ -j y
 #$ -m a
 #$ -cwd -V
-#( -l h_stack=1536M) #try with small stack
-#$ -pe local 6 -R y
+#( -l h_stack=4536M) #try with small stack
+#$ -pe make 6 -R y
 #$ -P af-cms
 
 #don't overthread the wn

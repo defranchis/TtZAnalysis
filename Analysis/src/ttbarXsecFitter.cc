@@ -142,6 +142,8 @@ void ttbarXsecFitter::readInput(const std::string & configfilename){
 		if(!nopriors_ || sysname=="TOPMASS"){
 			if(priorstr=="box")
 				setPrior(sysname, prior_box);
+                        else if(priorstr=="fsrbox")
+                                setPrior(sysname, prior_narrowboxfsr);
 			else if(priorstr=="boxright")
 				setPrior(sysname, prior_narrowboxright);
 			else if(priorstr=="boxleft")
@@ -150,6 +152,8 @@ void ttbarXsecFitter::readInput(const std::string & configfilename){
 				setPrior(sysname, prior_float);
 			else if(priorstr=="gauss")
 				setPrior(sysname, prior_gauss);
+                        else if(priorstr=="gaussbroad")
+                                setPrior(sysname, prior_gaussbroad);
 			else if(priorstr=="fixed")
 				setPrior(sysname, prior_parameterfixed);
 			else{
@@ -607,6 +611,10 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 			fitter_.setParameterLowerLimit(i,-1);
 			fitter_.setParameterUpperLimit(i,1);
 		}
+                else if(priors_.at(i) == prior_narrowboxfsr){
+                        fitter_.setParameterLowerLimit(i,-1.414);
+                        fitter_.setParameterUpperLimit(i,1.414);
+                }
 		else if(priors_.at(i) == prior_narrowboxleft){
 			fitter_.setParameterLowerLimit(i,-1);
 			fitter_.setParameterUpperLimit(i,0);
@@ -881,7 +889,7 @@ void ttbarXsecFitter::dataset::cutAndCountSelfCheck(const std::vector<std::pair<
 	}
 
 
-	visps/=(float)totalvisgencontsread_;
+	visps*= (3 /(float)totalvisgencontsread_);
 	float xsecnom = (data-background)/(signal/generated * lumi_);
 	//float xsecvisnom= (data-background)/(signal/visps);
 	std::cout << "nominal cross section C&C "<<getName()<<" " << xsecnom <<std::endl;
@@ -889,7 +897,7 @@ void ttbarXsecFitter::dataset::cutAndCountSelfCheck(const std::vector<std::pair<
 	std::cout << "vis cross section C&C "<<getName()<<" " << xsecvis <<std::endl;
 
 
-	vispsh*= (1/(float)totalvisgencontsread_);
+	vispsh*= (3/(float)totalvisgencontsread_);
 	//ignore MC stat
 	bghist.removeStatFromAll(true);
 	signh.removeStatFromAll(true);
@@ -1706,11 +1714,14 @@ texTabler ttbarXsecFitter::makeSystBreakDownTable(size_t datasetidx,bool detaile
 	formatter fmt;
 	TString cmsswbase=getenv("CMSSW_BASE");
 	fmt.readInNameTranslateFile((cmsswbase+"/src/TtZAnalysis/Analysis/configs/general/SystNames.txt").Data());
-	texTabler table(" l | c | c | c ");
+	texTabler table;
+        if (detailed)table = texTabler(" l | c | c | c ");
+        else table = texTabler(" l |  c ");
 	if(!fitsucc_)
 		return table;
 
-	table << "Name" << "Pull" << "Constr / $\\sigma$" << "Contribution [\\%]";
+        if(detailed) table << "Name" << "Pull" << "Constr / $\\sigma$" << "Contribution [\\%]";
+        else table << "Name"  << "Contribution [\\%]";
 	table << texLine();
 	std::vector<dataset::systematic_unc> * unc=&datasets_.at(datasetidx).postFitSystematicsFull();
 
@@ -1750,12 +1761,13 @@ texTabler ttbarXsecFitter::makeSystBreakDownTable(size_t datasetidx,bool detaile
 			table << sys->name << fmt.round( sys->pull, tableprecision)<<
 			fmt.round( sys->constr, 0.1)	<< errstr;
 		else
-			table << sys->name << " "<< " "	<< errstr;
+			if (detailed) table << sys->name<< ""<<""      << errstr;
+                        else table << sys->name<<  errstr;
 		if(sys->name == "Total vis"){
 			table <<texLine(1);
-			table <<fmt.translateName( getParaName(datasets_.at(datasetidx).xsecIdx()) ) +" vis"<<
-					" " << " "
-					<< fmt.toTString(fmt.round(getVisXsec(datasetidx),tableprecision/10))+" pb";
+			if (detailed) table <<fmt.translateName( getParaName(datasets_.at(datasetidx).xsecIdx()) ) +" vis"                                                                                                                                     << " " << " "<< fmt.toTString(fmt.round(getVisXsec(datasetidx),tableprecision/10))+" pb";
+                        else table <<fmt.translateName( getParaName(datasets_.at(datasetidx).xsecIdx()) ) +" vis"
+                                        << fmt.toTString(fmt.round(getVisXsec(datasetidx),tableprecision/10))+" pb";
 			table <<texLine(1);
 		}
 	}
@@ -1768,14 +1780,20 @@ texTabler ttbarXsecFitter::makeSystBreakDownTable(size_t datasetidx,bool detaile
 	}
 	else{*/
 	if((paraname.Length()>0)){
-		table <<fmt.translateName( getParaName(paraindex ))<<
+		if(detailed) table <<fmt.translateName( getParaName(paraindex ))<<
 				" " << " "
 				<< fmt.toTString(fmt.round(xsec,tableprecision))+" ";
+                else table <<fmt.translateName( getParaName(paraindex ))
+                                << fmt.toTString(fmt.round(xsec,tableprecision))+" ";
+
 	}
 	else{
-		table <<fmt.translateName( getParaName(datasets_.at(datasetidx).xsecIdx()) )<<
+		if(detailed)table <<fmt.translateName( getParaName(datasets_.at(datasetidx).xsecIdx()) )<<
 				" " << " "
 				<< fmt.toTString(fmt.round(xsec,tableprecision*10))+" pb";
+                else table <<fmt.translateName( getParaName(datasets_.at(datasetidx).xsecIdx()) )
+                                << fmt.toTString(fmt.round(xsec,tableprecision*10))+" pb";
+
 		//}
 	}
 	table << texLine();
@@ -1988,6 +2006,9 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
 		//put else here if lumi gets treated differently
 		if(priors_[sys] == prior_gauss){
 			out+= simpleFitter::nuisanceGaus(variations[sys]);}
+                if(priors_[sys] == prior_gaussbroad){
+                        out+= simpleFitter::nuisanceGausBroad(variations[sys]);}
+
 		//else if(priors_[sys] == prior_box){
 		//	out+= simpleFitter::nuisanceBox(variations[sys]);
 		//}
@@ -2185,7 +2206,7 @@ variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::ve
 		tmp=tmp.getIntegralBin(includeUFOF);
 		visgenint+=tmp;
 	}
-	visgenint *= (1 /((double)totalvisgencontsread_));
+	visgenint *= (3 /((double)totalvisgencontsread_));
 	//this also scales with lumi due to technical reasons. remove this dependence
 	visgenint.setErrorZeroContaining("Lumi");
 
@@ -2490,7 +2511,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	stack->mergeLegends(dymerges,"DY",432,false);
 
 	std::vector<TString> excludefromglobal;
-	excludefromglobal.push_back("t#bar{t}V");
+	//excludefromglobal.push_back("t#bar{t}V");
 	excludefromglobal.push_back("DY");
 
 	if(parent_->topontop_){
@@ -2499,7 +2520,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 		stack->setLegendOrder("DY",88);
 		stack->setLegendOrder("VV",87);
 		stack->setLegendOrder("QCD/Wjets",86);
-		stack->setLegendOrder("t#bar{t}V",85);
+		//stack->setLegendOrder("t#bar{t}V",85);
 		stack->setLegendOrder("t#bar{t}bg",84);
 	}
 
@@ -2521,12 +2542,11 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 
 	if(getName().Contains("7TeV"))
 		stack->addRelErrorToContribution(0.6,"t#bar{t}V","BG_",true);
-	else
+	else if(getName().Contains("8TeV"))
 		stack->addRelErrorToContribution(0.3,"t#bar{t}V","BG_",true);
 
 	if(debug)
 		std::cout << "ttbarXsecFitter::addUncertainties: added t#bar{t}V var" <<std::endl;
-
 
 	float dy0bjetserr=0,dy1bjetserr=0,dy2bjetserr=0;
 	if(nbjets==0)
@@ -2559,6 +2579,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 
 	float addlumiunc=0;
 	addlumiunc=unclumi_/100;
+	//if(!getName().Contains("13TeV"))stack->addGlobalRelMCError("Lumi" ,addlumiunc);
 	stack->addGlobalRelMCError("Lumi" ,addlumiunc);
 
 

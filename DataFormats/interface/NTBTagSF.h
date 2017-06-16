@@ -10,7 +10,7 @@ namespace ztop{
 
 class NTBTagSF : public bTagSFBase{
 public:
-    NTBTagSF():bTagSFBase(),isMC_(true),mode_(randomtagging_mode){}
+    NTBTagSF():bTagSFBase(true),isMC_(true),mode_(randomtagging_mode){}
     ~NTBTagSF(){}
 
     enum modes{randomtagging_mode,shapereweighting_mode};
@@ -20,7 +20,7 @@ public:
 
 
     void fillEff(ztop::NTJet * jet,const float& puweight){ //!overload: jet, puweight
-        bTagSFBase::fillEff(jet->pt(), jet->eta(), jet->genPartonFlavour(), jet->btag(), puweight);
+        bTagSFBase::fillEff(jet->pt(), jet->eta(), jet->getMember(1), jet->btag(), puweight);
     }
 
     bool makesEff()const{return bTagSFBase::getMakeEff();}
@@ -38,7 +38,7 @@ public:
 
 
 private:
-    NTBTagSF(const ztop::NTBTagSF&rhs):bTagSFBase(),isMC_(true),mode_(randomtagging_mode){}
+    NTBTagSF(const ztop::NTBTagSF&rhs):bTagSFBase(true),isMC_(true),mode_(randomtagging_mode){}
     NTBTagSF& operator=(const ztop::NTBTagSF&rhs){return *this;}
 
     bool isMC_;

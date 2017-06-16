@@ -27,7 +27,7 @@ public:
 	enum likelihoodmodes{lhm_chi2datastat,lhm_chi2datamcstat,lhm_poissondatastat};
 
 	enum priors{prior_gauss,prior_box,prior_float,prior_narrowboxleft,prior_narrowboxright,
-		prior_parameterfixed};
+		prior_parameterfixed,prior_gaussbroad,prior_narrowboxfsr};
 
 	/**
 	 * Lumi uncertainties in %, lumi in pb
