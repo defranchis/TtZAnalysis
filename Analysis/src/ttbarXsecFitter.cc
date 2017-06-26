@@ -2579,8 +2579,8 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 
 	float addlumiunc=0;
 	addlumiunc=unclumi_/100;
-	//if(!getName().Contains("13TeV"))stack->addGlobalRelMCError("Lumi" ,addlumiunc);
-	stack->addGlobalRelMCError("Lumi" ,addlumiunc);
+	if(!getName().Contains("13TeV"))stack->addGlobalRelMCError("Lumi" ,addlumiunc);
+	//stack->addGlobalRelMCError("Lumi" ,addlumiunc);
 
 
 	if(debug)
