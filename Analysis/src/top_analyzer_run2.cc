@@ -935,8 +935,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
                         lepweight*=getElecTrackingSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
                         lepweight*=getElecTrackingSF()->getScalefactor(leppair->first[1]->suClu().eta(),seclep->pt());
                         //tarndt 2016
-			//lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
-			lepweight *= getTriggerSF()->getScalefactor(firstlep->pt(),seclep->pt());
+			lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+			//lepweight *= getTriggerSF()->getScalefactor(firstlep->pt(),seclep->pt());
 			//if(isMC) lepweight*=0.98;
 		}
 		else if(b_mumu_){
@@ -951,8 +951,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			//lepweight*=getTrackingSF()->getScalefactor(firstlep->eta());
 			//lepweight*=getTrackingSF()->getScalefactor(seclep->eta());
 			//tarndt 2016
-                        //lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
-                        lepweight *= getTriggerSF()->getScalefactor(firstlep->pt(),seclep->pt());
+                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        //lepweight *= getTriggerSF()->getScalefactor(firstlep->pt(),seclep->pt());
                         //if(isMC) lepweight*=0.97;
 		}
 		else if(b_emu_){
@@ -968,8 +968,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			//agrohsje not used for time being
 			//lepweight*=getTrackingSF()->getScalefactor(seclep->eta());
 			// tarndt 2016
-                        //lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
-                        lepweight *= getTriggerSF()->getScalefactor(firstlep->pt(),seclep->pt());
+                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        //lepweight *= getTriggerSF()->getScalefactor(firstlep->pt(),seclep->pt());
                         //if(isMC) lepweight*=0.98;
 		}
 

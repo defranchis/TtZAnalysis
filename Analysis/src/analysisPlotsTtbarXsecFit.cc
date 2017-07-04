@@ -36,7 +36,7 @@ void analysisPlotsTtbarXsecFit::bookPlots(){
 	total_plots.at(cat_2bjet3jet) = addPlot(bins,bins,"total 2,3 b-jets","","Events");
 
 	bins.clear();
-        bins << 30 << 35  << 40 << 50 << 60 << 70 << 80 << 90 << 100 << 120 << 140  << 200;
+        bins << 30 << 35  << 40<<45 << 50<<55 << 60 << 70 << 80 << 90 << 100 << 120 << 140  << 200;
         leadjetpt_plots.at(cat_0bjet0jet) = addPlot(bins,bins,"lead jet pt 0,0 b-jets","p_{T} [GeV]","Events/GeV");
         leadjetpt_plots.at(cat_0bjet1jet) = addPlot(bins,bins,"lead jet pt 0,1 b-jets","p_{T} [GeV]","Events/GeV");
         leadjetpt_plots.at(cat_0bjet2jet) = addPlot(bins,bins,"lead jet pt 0,2 b-jets","p_{T} [GeV]","Events/GeV");
@@ -124,7 +124,7 @@ void analysisPlotsTtbarXsecFit::bookPlots(){
 	htalljets_plots.at(cat_2bjet) = addPlot(bins,bins,"ht all jets 2x b-jets","h_{T} [GeV]","Events/GeV");
 
         bins.clear();
-        bins<<50<<70<<90<<110;
+        bins<<40<<50<<60<<70<<90<<100<<110;
         mll_plots.at(cat_0bjet0jet) = addPlot(bins,bins,"mll zero jets zero bjets","m_{ll} [GeV]","Events/GeV");
         mll_plots.at(cat_0bjet1jet) = addPlot(bins,bins,"mll one jets zero bjets","m_{ll} [GeV]","Events/GeV");
         mll_plots.at(cat_0bjet2jet) = addPlot(bins,bins,"mll two jets zero bjets","m_{ll} [GeV]","Events/GeV");
@@ -140,7 +140,7 @@ void analysisPlotsTtbarXsecFit::bookPlots(){
 
 
         bins.clear();
-        bins<<-150<<-60<<100;
+        bins<<-200<<-150<<-125<<-100<<-90<<-80<<-70<<-60<<-50<<-40<<-30<<-20<<-10<<0<<100;
         dxi_plots.at(cat_0bjet0jet) = addPlot(bins,bins,"DXi zero jets zero bjets","D_{#xi}","Events/bw");
         dxi_plots.at(cat_0bjet1jet) = addPlot(bins,bins,"DXi one jets zero bjets","D_{#xi}","Events/bw");
         dxi_plots.at(cat_0bjet2jet) = addPlot(bins,bins,"DXi two jets zero bjets","D_{#xi}","Events/bw");

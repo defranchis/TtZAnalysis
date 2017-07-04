@@ -129,7 +129,7 @@ invokeApplication(){
 
 
 	//TString trigsfhisto="scalefactor_eta2d_with_syst";
-        TString trigsfhisto="scalefactor_pt2d_with_syst";
+        TString trigsfhisto="scalefactor_eta2d_with_syst";
         //TString trigsfhisto="lepton_eta2dfine_sf";
 
 	std::cout << "inputfile read" << std::endl;
@@ -524,8 +524,8 @@ invokeApplication(){
 		        ana->setFilePostfixReplace("ttbarviatau_dil.root","ttbarviatau_dil_ttmup.root");
                 }
                 else if(energy=="13TeV"){
-                        ana->setFilePostfixReplace("ttbar.root","ttbar_hdampup_merge.root");
-                        ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_hdampup_merge.root");
+                        ana->setFilePostfixReplace("ttbar.root","ttbar_hdampup.root");
+                        ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_hdampup.root");
                 }
 	}
 	else if(Syst=="TT_MATCH_down"){
@@ -536,8 +536,8 @@ invokeApplication(){
 		        ana->setFilePostfixReplace("ttbarviatau_dil.root","ttbarviatau_dil_ttmdown.root");
                 }
                 else if(energy=="13TeV"){
-                        ana->setFilePostfixReplace("ttbar.root","ttbar_hdampdown_merge.root");
-                        ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_hdampdown_merge.root");
+                        ana->setFilePostfixReplace("ttbar.root","ttbar_hdampdown.root");
+                        ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_hdampdown.root");
                 }
 
 	}
@@ -578,16 +578,16 @@ invokeApplication(){
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttisrup.root"); 
         }
         else if(Syst=="TT_ISRSCALE_down"){
-                ana->setFilePostfixReplace("ttbar.root","ttbar_ttisrdown_merge.root");
-                ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttisrdown_merge.root");
+                ana->setFilePostfixReplace("ttbar.root","ttbar_ttisrdown.root");
+                ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttisrdown.root");
         }
         else if(Syst=="TT_FSRSCALE_up"){
-                ana->setFilePostfixReplace("ttbar.root","ttbar_ttfsrup_merge.root");
-                ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttfsrup_merge.root");
+                ana->setFilePostfixReplace("ttbar.root","ttbar_ttfsrup.root");
+                ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttfsrup.root");
         }
         else if(Syst=="TT_FSRSCALE_down"){
-                ana->setFilePostfixReplace("ttbar.root","ttbar_ttfsrdown_merge.root");
-                ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttfsrdown_merge.root");
+                ana->setFilePostfixReplace("ttbar.root","ttbar_ttfsrdown.root");
+                ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttfsrdown.root");
         }
         else if(Syst=="TT_MESCALE_up"){
                 ana->addWeightBranch("NTWeight_scaleUp");
@@ -596,12 +596,12 @@ invokeApplication(){
                 ana->addWeightBranch("NTWeight_scaleDown");
         }
         else if(Syst=="TT_TTTUNE_up"){
-                ana->setFilePostfixReplace("ttbar.root","ttbar_tttuneup_merge.root");
-                ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_tttuneup_merge.root");
+                ana->setFilePostfixReplace("ttbar.root","ttbar_tttuneup.root");
+                ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_tttuneup.root");
         }
         else if(Syst=="TT_TTTUNE_down"){
-                ana->setFilePostfixReplace("ttbar.root","ttbar_tttunedown_merge.root");
-                ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_tttunedown_merge.root");
+                ana->setFilePostfixReplace("ttbar.root","ttbar_tttunedown.root");
+                ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_tttunedown.root");
         }   
  
 

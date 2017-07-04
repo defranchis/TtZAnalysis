@@ -154,7 +154,7 @@ void analysisPlotsMlbMt::fillPlotsGen(){
 
 
 	//calculate mlbs based on ME lepton
-	if(requireNumber(2,genvisleptons3)){
+	if(requireNumber(2,genvisleptons3)&& (genvisleptons3.at(0)->pt() > 25 || genvisleptons3.at(1)->pt() > 25  )){
 		// no check needed if from top because only those are stored!
 		if(requireNumber(1,genvisbs) ){
 			//vis ps cuts on b-jets

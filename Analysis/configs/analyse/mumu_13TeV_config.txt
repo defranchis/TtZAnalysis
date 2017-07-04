@@ -94,5 +94,5 @@ btagFile        = btags_74
 $modeOptions = GsfelectronsNotoppt
 $modeOptions = GsfelectronsNotopptNoweights
 $modeOptions = GsfelectronsNozcutNometcutNotopptNobcut
-modeOptions = GsfelectronsZerojetNobcutNotoppt
+modeOptions = GsfelectronsZerojetNometcutNobcutNotoppt
 [parameters-end]
