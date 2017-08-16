@@ -182,7 +182,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
  
         //std::cout<<isSingleMu<<isDilep<<isSingleEle<<std::endl;
-
+        
+        
 	// for pure dileptonic samples 
 	if(isdileptonexcl || inputfile_.Contains("_mgdecays_") || inputfile_.Contains("_tbarWtoLL")|| inputfile_.Contains("_tWtoLL")){
 		normmultiplier=0.1062; //fully leptonic branching fraction for both Ws
@@ -287,7 +288,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		fr.setEndMarker("[parameters-end]");
 		fr.readFile(pathtoconffile_.Data());
 
-		getPUReweighter()->setDataTruePUInput(((std::string)getenv("CMSSW_BASE")+fr.getValue<string>("PUFile") +".root").data());
+		getPUReweighterGH()->setDataTruePUInput(((std::string)getenv("CMSSW_BASE")+fr.getValue<string>("PUFile") +".root").data());
 
 
 		// not needed anymore
@@ -385,16 +386,35 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 	//range check switched off because of different ranges in bins compared to diff Xsec (leps)
 	getTriggerSF()->setRangeCheck(false);
+        getTriggerBGSF()->setRangeCheck(false);
 	getElecSF()->setRangeCheck(false);
-	getMuonSF()->setRangeCheck(false);
+        getMuonSFBtoF()->setRangeCheck(false);
+	getMuonSFGH()->setRangeCheck(false);
 	getTrackingSF()->setRangeCheck(false);
         getElecTrackingSF()->setRangeCheck(false);
 
+        getElecBGSF()->setRangeCheck(false);
+        getMuonBGSF()->setRangeCheck(false);
+        getMuonBGSFBtoF()->setRangeCheck(false);
+        getMuonBGSFGH()->setRangeCheck(false);
+        getTrackingBGSF()->setRangeCheck(false);
+        getElecTrackingBGSF()->setRangeCheck(false);
+
 	getElecSF()->setIsMC(isMC);
-	getMuonSF()->setIsMC(isMC);
+        getMuonSFBtoF()->setIsMC(isMC);
+	getMuonSFGH()->setIsMC(isMC);
 	getTriggerSF()->setIsMC(isMC);
+        getTriggerBGSF()->setIsMC(isMC);
 	getTrackingSF()->setIsMC(isMC);
         getElecTrackingSF()->setIsMC(isMC);
+
+        getElecBGSF()->setIsMC(isMC);
+        getMuonBGSF()->setIsMC(isMC);
+        getMuonBGSFBtoF()->setIsMC(isMC);
+        getMuonBGSFGH()->setIsMC(isMC);
+        getTrackingBGSF()->setIsMC(isMC);
+        getElecTrackingBGSF()->setIsMC(isMC);
+
 
 	//some global checks
 	getElecEnergySF()->setRangeCheck(false);
@@ -596,9 +616,12 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 		//reports current status to parent
 		reportStatus(entry,nEntries);
-
+                double randomNum = random->Uniform();
 		float puweight=1;
-		if (isMC) puweight = getPUReweighter()->getPUweight(b_Event.content()->truePU());
+                if (isMC) { 
+                    if(randomNum<0.548) puweight = getPUReweighterBtoF()->getPUweight(b_Event.content()->truePU());
+                    else puweight = getPUReweighterGH()->getPUweight(b_Event.content()->truePU());
+                }
 		//agrohsje
 		pusum+=puweight;
 		if(apllweightsone) puweight=1;
@@ -675,7 +698,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
                              genleptons1 = tmp_genleptons1;}
                         }
                         else{ genleptons1 = tmp_genleptons1;}
-
+                        
+                        //genleptons1=produceCollection(b_GenLeptons1.content(),&genleptons3);
 			//b-hadrons that stem from a b quark that itself originates in a top are
 			//assoziated to that top by the bhadronmatcher (Nazar)
 			//this logic is used and kept here
@@ -930,14 +954,21 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			mll=dilp4.M();
 			firstlep=leppair->first[0];
 			seclep=leppair->first[1];
+                        if(signal_){
 			lepweight*=getElecSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
 			lepweight*=getElecSF()->getScalefactor(leppair->first[1]->suClu().eta(),seclep->pt());
-                        lepweight*=getElecTrackingSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
-                        lepweight*=getElecTrackingSF()->getScalefactor(leppair->first[1]->suClu().eta(),seclep->pt());
+                        //lepweight*=getElecTrackingSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
+                        //lepweight*=getElecTrackingSF()->getScalefactor(leppair->first[1]->suClu().eta(),seclep->pt());
+                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
+                        else{
+                        lepweight*=getElecBGSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
+                        lepweight*=getElecBGSF()->getScalefactor(leppair->first[1]->suClu().eta(),seclep->pt());
+                        //lepweight*=getElecTrackingBGSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
+                        //lepweight*=getElecTrackingBGSF()->getScalefactor(leppair->first[1]->suClu().eta(),seclep->pt());
+                         lepweight*=getTriggerBGSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
                         //tarndt 2016
-			lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
-			//lepweight *= getTriggerSF()->getScalefactor(firstlep->pt(),seclep->pt());
-			//if(isMC) lepweight*=0.98;
 		}
 		else if(b_mumu_){
 			if(leppair->second.size() < 2) continue;
@@ -945,15 +976,33 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			mll=dilp4.M();
 			firstlep=leppair->second[0];
 			seclep=leppair->second[1];
-			lepweight*=getMuonSF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
-			lepweight*=getMuonSF()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        if(signal_ && randomNum < 0.548){
+                        //if(randomNum < 0.548){
+			lepweight*=getMuonSFBtoF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+			lepweight*=getMuonSFBtoF()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
+                        else if (signal_ && randomNum > 0.548){
+                        //else if ( randomNum > 0.548){
+                        lepweight*=getMuonSFGH()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        lepweight*=getMuonSFGH()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
+                        else if(!signal_ && randomNum < 0.548){
+                        lepweight*=getMuonBGSFBtoF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        lepweight*=getMuonBGSFBtoF()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        lepweight*=getTriggerBGSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
+                        else if(!signal_ && randomNum > 0.548){
+                        lepweight*=getMuonBGSFGH()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        lepweight*=getMuonBGSFGH()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        lepweight*=getTriggerBGSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
+
 			//agrohsje not used for time being
 			//lepweight*=getTrackingSF()->getScalefactor(firstlep->eta());
 			//lepweight*=getTrackingSF()->getScalefactor(seclep->eta());
 			//tarndt 2016
-                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
-                        //lepweight *= getTriggerSF()->getScalefactor(firstlep->pt(),seclep->pt());
-                        //if(isMC) lepweight*=0.97;
 		}
 		else if(b_emu_){
 			if(leppair->first.size() < 1 || leppair->second.size() < 1) continue;
@@ -961,16 +1010,23 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			mll=dilp4.M();
 			firstlep=leppair->first[0];
 			seclep=leppair->second[0];
+                        if(signal_){
 			lepweight*=getElecSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
-			lepweight*=getMuonSF()->getScalefactor(fabs(seclep->eta()),seclep->pt());
-			//lepweight*=(1-((1-getMuonSF()->getScalefactor(seclep->eta(),seclep->pt()))*(1-getElecSF()->getScalefactor((firstlep->eta()),firstlep->pt()))));
-                        lepweight*=getElecTrackingSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
-			//agrohsje not used for time being
+			if(randomNum < 0.548)lepweight*=getMuonSFBtoF()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        else lepweight*=getMuonSFGH()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        //lepweight*=getElecTrackingSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
+                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
+                        else{
+                        lepweight*=getElecBGSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
+                        if (randomNum < 0.548)lepweight*=getMuonBGSFBtoF()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        else lepweight*=getMuonBGSFGH()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        //lepweight*=getElecTrackingBGSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
+                        lepweight*=getTriggerBGSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
+                  	//agrohsje not used for time being
 			//lepweight*=getTrackingSF()->getScalefactor(seclep->eta());
 			// tarndt 2016
-                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
-                        //lepweight *= getTriggerSF()->getScalefactor(firstlep->pt(),seclep->pt());
-                        //if(isMC) lepweight*=0.98;
 		}
 
 		//channel defined
@@ -1455,7 +1511,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			break; //one event survived, sufficient
 		}
 		//agrohsje debug pu 
-		pusum_sel+=getPUReweighter()->getPUweight(b_Event.content()->truePU());
+		if (randomNum < 0.548)pusum_sel+=getPUReweighterBtoF()->getPUweight(b_Event.content()->truePU());
+                else pusum_sel+=getPUReweighterGH()->getPUweight(b_Event.content()->truePU());
 		nEntries_sel++;
 	}
 	//clear input tree and close

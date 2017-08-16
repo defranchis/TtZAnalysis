@@ -102,7 +102,7 @@ int topAnalyzer::start(){
 	clear();
 
 	//add changes due to top mass value
-
+        random = new TRandom3(12354);
 
 	readFileList();
 

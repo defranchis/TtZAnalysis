@@ -96,14 +96,16 @@ invokeApplication(){
 	fr.readFile(inputfile.Data());
 
 
-	TString treedir,jecfile,pufile,muonsffile,muonsfhisto,elecsffile,elecsfhisto,trigsffile,elecensffile,muonensffile,trackingsffile,trackingsfhisto,elecTrackingsffile,elecTrackingsfhisto; //...
+	TString treedir,jecfile,pufileGH,pufileBtoF,muonsffile,muonsffileGH,muonsffileBtoF,muonsfhisto,elecsffile,elecsfhisto,trigsffile,elecensffile,muonensffile,trackingsffile,trackingsfhisto,elecTrackingsffile,elecTrackingsfhisto; //...
 
 
 	if(lumi<0)
 		lumi=fr.getValue<double>("Lumi");
 	treedir=              fr.getValue<TString>("inputFilesDir");
 	jecfile=   cmssw_base+fr.getValue<TString>("JECFile");
-	muonsffile=cmssw_base+fr.getValue<TString>("MuonSFFile");
+        muonsffile=cmssw_base+fr.getValue<TString>("MuonSFFile");
+        muonsffileBtoF=cmssw_base+fr.getValue<TString>("MuonSFFileBtoF");
+	muonsffileGH=cmssw_base+fr.getValue<TString>("MuonSFFileGH");
 	muonsfhisto=          fr.getValue<TString>("MuonSFHisto");
 	trackingsffile=cmssw_base+fr.getValue<TString>("TrackingSFFile");
 	trackingsfhisto=          fr.getValue<TString>("TrackingSFHisto");
@@ -112,7 +114,8 @@ invokeApplication(){
 	elecsffile=cmssw_base+fr.getValue<TString>("ElecSFFile");
 	elecsfhisto=          fr.getValue<TString>("ElecSFHisto");
 	trigsffile=cmssw_base+fr.getValue<TString>("TriggerSFFile");
-	pufile=    cmssw_base+fr.getValue<TString>("PUFile");
+        pufileBtoF=    cmssw_base+fr.getValue<TString>("PUFileBtoF");
+	pufileGH=    cmssw_base+fr.getValue<TString>("PUFileGH");
 	//elecensffile =cmssw_base+fr.getValue<TString>("ElecEnergySFFile");
 	//muonensffile =cmssw_base+fr.getValue<TString>("MuonEnergySFFile");
 
@@ -185,7 +188,8 @@ invokeApplication(){
 	ana->setDataSetDirectory(treedir);
 	ana->setUseDiscriminators(!createLH);
 	ana->setDiscriminatorInputFile(discrfile);
-	ana->getPUReweighter()->setDataTruePUInput(pufile+".root");
+        ana->getPUReweighterBtoF()->setDataTruePUInput(pufileBtoF+".root");
+	ana->getPUReweighterGH()->setDataTruePUInput(pufileGH+".root");
 	ana->setChannel(channel);
 	ana->setEnergy(energy);
 	ana->setSyst(Syst);
@@ -197,14 +201,26 @@ invokeApplication(){
 		ana->getPUReweighter()->setMCDistrSum12();
 	}
 	else if(energy == "13TeV"){
-		ana->getPUReweighter()->setMCDistrMor17("25ns_poisson");
+		ana->getPUReweighterBtoF()->setMCDistrMor17("25ns_poisson");
+                ana->getPUReweighterGH()->setMCDistrMor17("25ns_poisson");
 	}	   
 
 	ana->getElecSF()->setInput(elecsffile,elecsfhisto);
-	ana->getMuonSF()->setInput(muonsffile,muonsfhisto);
+        ana->getMuonSF()->setInput(muonsffile,muonsfhisto);
+	ana->getMuonSFGH()->setInput(muonsffileGH,muonsfhisto);
+        ana->getMuonSFBtoF()->setInput(muonsffileBtoF,muonsfhisto);
 	ana->getTrackingSF()->setInput(trackingsffile,trackingsfhisto);
         ana->getElecTrackingSF()->setInput(elecTrackingsffile, elecTrackingsfhisto);
+
+        ana->getElecBGSF()->setInput(elecsffile,elecsfhisto);
+        ana->getMuonBGSF()->setInput(muonsffile,muonsfhisto);
+        ana->getMuonBGSFBtoF()->setInput(muonsffileBtoF,muonsfhisto);
+        ana->getMuonBGSFGH()->setInput(muonsffileGH,muonsfhisto);
+        ana->getTrackingBGSF()->setInput(trackingsffile,trackingsfhisto);
+        ana->getElecTrackingBGSF()->setInput(elecTrackingsffile, elecTrackingsfhisto);
+
 	ana->getTriggerSF()->setInput(trigsffile,trigsfhisto);
+        ana->getTriggerBGSF()->setInput(trigsffile,trigsfhisto);
         ana->getJERAdjuster()->setSystematics("def_2016");
 
 	if(elecEnsffile.EndsWith("DEFFILEWILDCARDDONTREMOVE")){
@@ -252,7 +268,10 @@ invokeApplication(){
 		globalbsf=true;
 
 	//agrohsje 
-	if(energy == "13TeV") ana->getJECUncertainties()->setIs2012(false);
+	if(energy == "13TeV") {
+                ana->getJECUncertainties()->setIs2012(false);
+                ana->getJECUncertainties()->setIs2016(true);
+        }
 	ana->getJECUncertainties()->setFile((jecfile).Data());
 	ana->getJECUncertainties()->setSystematics("no");
 
@@ -336,20 +355,42 @@ invokeApplication(){
 	}
 	else if(Syst=="ELECSF_up"){
 		ana->getElecSF()->setSystematics("up");
-                ana->getElecTrackingSF()->setSystematics("up");
 	}
 	else if(Syst=="ELECSF_down"){
 		ana->getElecSF()->setSystematics("down");
-                ana->getElecTrackingSF()->setSystematics("down");
 	}
+        else if(Syst=="ELECTRACKSF_up"){
+                ana->getElecTrackingSF()->setSystematics("up");
+        }
+        else if(Syst=="ELECTRACKSF_down"){
+                ana->getElecTrackingSF()->setSystematics("down");
+        }
 	else if(Syst=="MUONSF_up"){
-		ana->getMuonSF()->setSystematics("up");
-                ana->getTrackingSF()->setSystematics("up");
+                ana->getMuonSFBtoF()->setSystematics("up");
+		ana->getMuonSFGH()->setSystematics("up");
 	}
 	else if(Syst=="MUONSF_down"){
-		ana->getMuonSF()->setSystematics("down");
-                ana->getTrackingSF()->setSystematics("down");
+                ana->getMuonSFBtoF()->setSystematics("down");
+		ana->getMuonSFGH()->setSystematics("down");
 	}
+        else if(Syst=="ELECBGSF_up"){
+                ana->getElecBGSF()->setSystematics("up");
+             //   ana->getElecTrackingBGSF()->setSystematics("up");
+        }
+        else if(Syst=="ELECBGSF_down"){
+                ana->getElecBGSF()->setSystematics("down");
+               // ana->getElecTrackingBGSF()->setSystematics("down");
+        }
+        else if(Syst=="MUONBGSF_up"){
+                //ana->getMuonBGSF()->setSystematics("up");
+                ana->getMuonBGSFBtoF()->setSystematics("up");
+                ana->getMuonBGSFGH()->setSystematics("up");
+        }
+        else if(Syst=="MUONBGSF_down"){
+                //ana->getMuonBGSF()->setSystematics("down");
+                ana->getMuonBGSFBtoF()->setSystematics("down");
+                ana->getMuonBGSFGH()->setSystematics("down");
+        }
 	else if(Syst=="MUONES_up"){
 		ana->getMuonEnergySF()->setSystematics("up");
 	}
@@ -441,7 +482,8 @@ invokeApplication(){
 
 
 	else if(Syst=="PU_up"){
-		ana->getPUReweighter()->setDataTruePUInput(pufile+"_up.root");
+                ana->getPUReweighterBtoF()->setDataTruePUInput(pufileBtoF+"_up.root");
+		ana->getPUReweighterGH()->setDataTruePUInput(pufileGH+"_up.root");
 		if(energy=="7TeV" || energy=="8TeV"){
 			if(!dobtag&&!globalbsf){
 				ana->getBTagSF()->loadBCSF(btagSFFile, btagop,"csv","mujets","up_PileUp","down_PileUp");
@@ -449,7 +491,8 @@ invokeApplication(){
 		}
 	}
 	else if(Syst=="PU_down"){
-		ana->getPUReweighter()->setDataTruePUInput(pufile+"_down.root");
+                ana->getPUReweighterBtoF()->setDataTruePUInput(pufileBtoF+"_down.root");
+		ana->getPUReweighterGH()->setDataTruePUInput(pufileGH+"_down.root");
 		if(energy=="7TeV" || energy=="8TeV"){
 			if(!dobtag&&!globalbsf){
 				ana->getBTagSF()->loadBCSF(btagSFFile, btagop,"csv","mujets","up_PileUp","down_PileUp");
@@ -575,25 +618,55 @@ invokeApplication(){
         ///////////////////13 TeV uncertainties
         else if(Syst=="TT_ISRSCALE_up"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_ttisrup.root");
-                ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttisrup.root"); 
+                ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttisrup.root");
+                ana->setFilePostfixReplace("tW.root","tW_twisrup.root");
+                ana->setFilePostfixReplace("tbarW.root","tbarW_twisrup.root");
+                ana->setFileXsecReplace("tW_twisrup.root",19.3);
+                ana->setFileXsecReplace("tbarW_twisrup.root",19.3);
         }
         else if(Syst=="TT_ISRSCALE_down"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_ttisrdown.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttisrdown.root");
+                ana->setFilePostfixReplace("tW.root","tW_twisrdown.root");
+                ana->setFilePostfixReplace("tbarW.root","tbarW_twisrdown.root");
+                ana->setFileXsecReplace("tW_twisrdown.root",19.3);
+                ana->setFileXsecReplace("tbarW_twisrdown.root",19.3);
+
         }
         else if(Syst=="TT_FSRSCALE_up"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_ttfsrup.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttfsrup.root");
+                ana->setFilePostfixReplace("tW.root","tW_twfsrup.root");
+                ana->setFilePostfixReplace("tbarW.root","tbarW_twfsrup.root");
+                ana->setFileXsecReplace("tW_twfsrup.root",19.3);
+                ana->setFileXsecReplace("tbarW_twfsrup.root",19.3);
+
         }
         else if(Syst=="TT_FSRSCALE_down"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_ttfsrdown.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttfsrdown.root");
+                ana->setFilePostfixReplace("tW.root","tW_twfsrdown.root");
+                ana->setFilePostfixReplace("tbarW.root","tbarW_twfsrdown.root");
+                ana->setFileXsecReplace("tW_twfsrdown.root",19.3);
+                ana->setFileXsecReplace("tbarW_twfsrdown.root",19.3);
         }
         else if(Syst=="TT_MESCALE_up"){
                 ana->addWeightBranch("NTWeight_scaleUp");
         }
         else if(Syst=="TT_MESCALE_down"){
                 ana->addWeightBranch("NTWeight_scaleDown");
+        }
+        else if(Syst=="TT_FRAG_up"){
+                ana->addWeightBranch("NTWeight_FragUp");
+        }
+        else if(Syst=="TT_FRAG_down"){
+                ana->addWeightBranch("NTWeight_FragDown");
+        }
+        else if(Syst=="TT_BRANCH_up"){
+                ana->addWeightBranch("NTWeight_BranchUp");
+        }
+        else if(Syst=="TT_BRANCH_down"){
+                ana->addWeightBranch("NTWeight_BranchDown");
         }
         else if(Syst=="TT_TTTUNE_up"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_tttuneup.root");
@@ -602,7 +675,47 @@ invokeApplication(){
         else if(Syst=="TT_TTTUNE_down"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_tttunedown.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_tttunedown.root");
-        }   
+        }
+        else if(Syst=="TT_CRERD_up"){
+                ana->setFilePostfixReplace("ttbar.root","ttbar_tterdon.root");
+                ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_tterdon.root");
+        }
+        else if(Syst=="TT_CRERD_down"){
+               // Dummy uncertainty
+        }     
+        else if(Syst=="TT_CRQCD_up"){
+                ana->setFilePostfixReplace("ttbar.root","ttbar_ttqcdcr.root");
+                ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttqcdcr.root");
+        }
+        else if(Syst=="TT_CRQCD_down"){
+               // Dummy uncertainty
+        } 
+        else if(Syst=="TT_CRGLUON_up"){
+                ana->setFilePostfixReplace("ttbar.root","ttbar_ttgluoncr.root");
+                ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttgluoncr.root");
+        }
+        else if(Syst=="TT_CRGLUON_down"){
+               // Dummy uncertainty
+        }         
+        else if(Syst=="DY_GEN_up"){
+                ana->setFilePostfixReplace("dy1050.root","dy1050_lo.root");
+                ana->setFilePostfixReplace("dy50inf.root","dy50inf_lo.root");
+        }
+        else if(Syst=="DY_GEN_down"){
+               // Dummy uncertainty
+        }
+        else if(Syst=="ST_MESCALE_up"){
+                ana->setFilePostfixReplace("tW.root","tW_twmescaleup.root");
+                ana->setFilePostfixReplace("tbarW.root","tbarW_twmescaleup.root");
+                ana->setFileXsecReplace("tW_tWmescaleup.root",19.3);
+                ana->setFileXsecReplace("tbarW_twmescaleup.root",19.3);
+        }
+        else if(Syst=="ST_MESCALE_down"){
+                ana->setFilePostfixReplace("tW.root","tW_twmescaledown.root");
+                ana->setFilePostfixReplace("tbarW.root","tbarW_twmescaledown.root");
+                ana->setFileXsecReplace("tW_twmescaledown.root",19.3);
+                ana->setFileXsecReplace("tbarW_twmescaledown.root",19.3);
+        }
  
 
 	////////////
@@ -697,12 +810,20 @@ invokeApplication(){
 			ana->setFilePostfixReplace("ttbarviatau_dil.root","ttbarviatau_dil_mt"+topmass+ ".root");
 		}
 		else if (energy == "13TeV"){
-			ana->setFilePostfixReplace("ttbar.root","ttbar_mt"+topmass+"_merge.root");
-			ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_mt"+topmass+"_merge.root");
+			ana->setFilePostfixReplace("ttbar.root","ttbar_mt"+topmass+".root");
+			ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_mt"+topmass+".root");
                        // ana->setFilePostfixReplace("tW.root","tW_mt"+topmass+".root" );
                        // ana->setFilePostfixReplace("tbarW.root","tbarW_mt"+topmass+".root" );
+                       if(topmass == "175.5" || topmass == "169.5"){
+                               ana->setFilePostfixReplace("tW.root","tW_mt"+topmass+".root" );
+                               ana->setFilePostfixReplace("tbarW.root","tbarW_mt"+topmass+".root" );
+                               ana->setFileXsecReplace("tW_mt"+topmass+".root",19.3);
+                               ana->setFileXsecReplace("tbarW_mt"+topmass+".root",19.3);
+    
+                       }
+                       
 		}
-		if(topmass == "178.5" || topmass == "166.5"){
+		if((energy=="7TeV" || energy=="8TeV")&&(topmass == "178.5" || topmass == "166.5")){
 				ana->setFilePostfixReplace("_tWtoLL.root","_tWtoLL_mt"+topmass+ ".root");
 				ana->setFilePostfixReplace("_tbarWtoLL.root","_tbarWtoLL_mt"+topmass+ ".root");
 		}

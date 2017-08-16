@@ -3,7 +3,7 @@
 [plotterControlPlot]
 
     divideat = 0.3
-    invertplots = false
+    invertplots = true
     PSMigThreshold =  0.001   $this is not %!
 
 [end - plotterControlPlot]

@@ -93,6 +93,8 @@ void basicAnalyzer::readFileList(const std::string& inputfile){
 		//if(legentries_.at(i) == dataname_)
 		//	continue;
 		infiles_.at(i) =   replaceExtension(infiles_.at(i));
+                int temp = replaceXsec(infiles_.at(i));
+                if (temp) norms_.at(i)=xsectorepl_.at(temp);
 		///load pdf files
 		newinfiles.push_back(infiles_.at(i).Data());
 
@@ -112,6 +114,17 @@ TString basicAnalyzer::replaceExtension(TString filename){
 	}
 	return filename;
 }
+
+int basicAnalyzer::replaceXsec(TString filename){
+        for(size_t i=0;i<ftoreplxsec_.size();i++){
+                if(filename.Contains(ftoreplxsec_.at(i))){
+                        return i;
+                }
+        }
+    return 0;
+}
+
+
 
 fileForker::fileforker_status basicAnalyzer::runParallels(int interval){
 	prepareSpawn();
@@ -248,6 +261,11 @@ void basicAnalyzer::setFilePostfixReplace(const TString& file,const TString& pf,
 	if(clear){ fwithfix_.clear();ftorepl_.clear();}
 	ftorepl_.push_back(file); fwithfix_.push_back(pf);
 }
+
+void basicAnalyzer::setFileXsecReplace(const TString& file,double xsec){
+        ftoreplxsec_.push_back(file); xsectorepl_.push_back(xsec);
+}
+
 void basicAnalyzer::setFilePostfixReplace(const std::vector<TString>& files,const std::vector<TString>& pf){
 	if(files.size() != pf.size()){
 		std::string errstr= "setFilePostfixReplace: vectors have to be same size!";

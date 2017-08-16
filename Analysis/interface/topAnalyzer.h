@@ -60,6 +60,7 @@
 #include "TopAnalysis/ZTopUtils/interface/miscUtils.h"
 #include "TTree.h"
 #include "TFile.h"
+#include "TRandom3.h"
 #include <fstream>
 #include "TtZAnalysis/Analysis/interface/AnalysisUtils.h"
 #include <algorithm>
@@ -103,18 +104,32 @@ public:
 	//TString getSyst(){return syst_;}
 	TString Energy(){return energy_;}
 
+        TRandom3 * random;
 	void setDiscriminatorInputFile(const std::string filename){discrInput_=filename;}
 	void setUseDiscriminators(bool use){usediscr_=use;}
-
-	ztop::PUReweighter * getPUReweighter(){return & puweighter_;}
+        
+        ztop::PUReweighter * getPUReweighter(){return & puweighter_;}
+        ztop::PUReweighter * getPUReweighterBtoF(){return & puweighterBtoF_;}
+	ztop::PUReweighter * getPUReweighterGH(){return & puweighterGH_;}
 	ztop::NTJERAdjuster * getJERAdjuster(){return & jeradjuster_;}
 	ztop::NTJECUncertainties * getJECUncertainties(){return & jecuncertainties_;}
 	ztop::NTBTagSF * getBTagSF(){return &btagsf_;}
-	ztop::scalefactors * getMuonSF(){return &muonsf_;}
+        ztop::scalefactors * getMuonSFBtoF(){return &muonsfBtoF_;}
+	ztop::scalefactors * getMuonSFGH(){return &muonsfGH_;}
+        ztop::scalefactors * getMuonSF(){return &muonsf_;}
 	ztop::scalefactors * getElecSF(){return &elecsf_;}
 	ztop::scalefactors * getTriggerSF(){return &triggersf_;}
+        ztop::scalefactors * getTriggerBGSF(){return &triggerbgsf_;}
 	ztop::scalefactors * getTrackingSF(){return &trackingsf_;}
         ztop::scalefactors * getElecTrackingSF(){return &elecTrackingsf_;}
+
+        ztop::scalefactors * getMuonBGSF(){return &muonbgsf_;}
+        ztop::scalefactors * getMuonBGSFBtoF(){return &muonbgsfBtoF_;}
+        ztop::scalefactors * getMuonBGSFGH(){return &muonbgsfGH_;}
+        ztop::scalefactors * getElecBGSF(){return &elecbgsf_;}
+        ztop::scalefactors * getTrackingBGSF(){return &trackingbgsf_;}
+        ztop::scalefactors * getElecTrackingBGSF(){return &elecTrackingbgsf_;}
+
 
 	ztop::scalefactors * getElecEnergySF(){return &elecenergysf_;}
 	ztop::scalefactors * getMuonEnergySF(){return &muonenergysf_;}
@@ -210,7 +225,7 @@ protected:
 
 	TString filelist_;
 
-	ztop::PUReweighter  puweighter_;
+	ztop::PUReweighter  puweighter_,puweighterBtoF_,puweighterGH_;
 	ztop::NTJERAdjuster  jeradjuster_;
 	ztop::NTJECUncertainties  jecuncertainties_;
 	ztop::NTBTagSF  btagsf_;
@@ -224,7 +239,7 @@ protected:
 	TString btagefffile_;
 
 	//for scalefactors provided in THXX format:
-	ztop::scalefactors elecsf_,muonsf_,triggersf_,elecenergysf_,muonenergysf_,trackingsf_, elecTrackingsf_;
+	ztop::scalefactors elecsf_,muonsf_,muonsfBtoF_,muonsfGH_,triggerbgsf_,triggersf_,elecenergysf_,muonenergysf_,trackingsf_, elecTrackingsf_,elecbgsf_,muonbgsf_,muonbgsfBtoF_,muonbgsfGH_,trackingbgsf_, elecTrackingbgsf_;
 	ztop::reweightfunctions topptReweighter_;
 
 	//for parallel stuff

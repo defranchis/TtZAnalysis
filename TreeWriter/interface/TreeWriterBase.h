@@ -211,6 +211,7 @@ public:
     ULong64_t runno_,lumiblock_,eventno_;
 #ifndef CMSSW_LEQ_5
     ULong64_t skim_;
+    ULong64_t metFilter_;
 #endif
 
     ztop::NTTrigger nttrigger;
