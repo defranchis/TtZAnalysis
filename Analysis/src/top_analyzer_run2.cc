@@ -690,14 +690,14 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			genleptons3=produceCollection(b_GenLeptons3.content(),&genws);
 			tmp_genleptons1=produceCollection(b_GenLeptons1.content(),&genleptons3);
                         if (tmp_genleptons1.size() > 1){
-                       if(b_ee_ && std::abs(tmp_genleptons1.at(0)->pdgId())==11 && std::abs(tmp_genleptons1.at(1)->pdgId())==11){
+                       if(b_ee_ && std::abs(tmp_genleptons1.at(0)->pdgId())==11 && std::abs(tmp_genleptons1.at(1)->pdgId())==11&&((tmp_genleptons1.at(0)->p4()+tmp_genleptons1.at(0)->p4()).M()<76 ||(tmp_genleptons1.at(0)->p4()+tmp_genleptons1.at(0)->p4()).M()>106)){
                              genleptons1 = tmp_genleptons1;}
-                        if(b_mumu_ && std::abs(tmp_genleptons1.at(0)->pdgId())==13 && std::abs(tmp_genleptons1.at(1)->pdgId())==13){
+                        if(b_mumu_ && std::abs(tmp_genleptons1.at(0)->pdgId())==13 && std::abs(tmp_genleptons1.at(1)->pdgId())==13 &&((tmp_genleptons1.at(0)->p4()+tmp_genleptons1.at(0)->p4()).M()<76 ||(tmp_genleptons1.at(0)->p4()+tmp_genleptons1.at(0)->p4()).M()>106) ){
                              genleptons1 = tmp_genleptons1;}
                         if(b_emu_ &&( (std::abs(tmp_genleptons1.at(0)->pdgId())==11 && std::abs(tmp_genleptons1.at(1)->pdgId())==13) || (std::abs(tmp_genleptons1.at(0)->pdgId())==13 && std::abs(tmp_genleptons1.at(1)->pdgId())==11))){
                              genleptons1 = tmp_genleptons1;}
                         }
-                        else{ genleptons1 = tmp_genleptons1;}
+                        //else{ genleptons1 = tmp_genleptons1;}
                         
                         //genleptons1=produceCollection(b_GenLeptons1.content(),&genleptons3);
 			//b-hadrons that stem from a b quark that itself originates in a top are

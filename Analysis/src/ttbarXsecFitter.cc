@@ -268,22 +268,76 @@ void ttbarXsecFitter::dataset::createContinuousDependencies(){
 	signalshape_nbjet_.clear();
 	data_nbjet_.clear();
 	background_nbjet_.clear();
+
+        signalshape_nbjet_emu_.clear();
+        data_nbjet_emu_.clear();
+        background_nbjet_emu_.clear();
+
+        signalshape_nbjet_ee_.clear();
+        data_nbjet_ee_.clear();
+        background_nbjet_ee_.clear();
+
+        signalshape_nbjet_mumu_.clear();
+        data_nbjet_mumu_.clear();
+        background_nbjet_mumu_.clear();
+
+
+
 	bool useMConly=parent_->useMConly_;
 	for(size_t it=0;it<signalconts_nbjets_.size();it++){
 
-		signalshape_nbjet_.push_back(createLeptonJetAcceptance(signalconts_nbjets_,signalpsmigconts_nbjets_,signalvisgenconts_nbjets_, bjetcount));
-		histo1D temp=dataconts_nbjets_.at(it);
+		signalshape_nbjet_.push_back(createLeptonJetAcceptance(signalconts_nbjets_,signalpsmigconts_nbjets_,signalvisgenconts_nbjets_,signalconts_nbjets_emu_,signalpsmigconts_nbjets_emu_,signalvisgenconts_nbjets_emu_,signalconts_nbjets_ee_,signalpsmigconts_nbjets_ee_,signalvisgenconts_nbjets_ee_,signalconts_nbjets_mumu_,signalpsmigconts_nbjets_mumu_,signalvisgenconts_nbjets_mumu_, bjetcount));
+		signalshape_nbjet_emu_.push_back(createSignalPerFlav(signalconts_nbjets_emu_,signalpsmigconts_nbjets_emu_,signalvisgenconts_nbjets_emu_,bjetcount));
+                signalshape_nbjet_mumu_.push_back(createSignalPerFlav(signalconts_nbjets_mumu_,signalpsmigconts_nbjets_mumu_,signalvisgenconts_nbjets_mumu_,bjetcount));
+                signalshape_nbjet_ee_.push_back(createSignalPerFlav(signalconts_nbjets_ee_,signalpsmigconts_nbjets_ee_,signalvisgenconts_nbjets_ee_,bjetcount));
+
+                histo1D temp=dataconts_nbjets_.at(it);
+                histo1D temp_emu=dataconts_nbjets_emu_.at(it);
+                histo1D temp_ee=dataconts_nbjets_ee_.at(it);
+                histo1D temp_mumu=dataconts_nbjets_mumu_.at(it);
 		if(useMConly){
 			temp=signalconts_nbjets_.at(it) + backgroundconts_nbjets_.at(it);
 			temp.setAllErrorsZero(false);
+                        temp_emu=signalconts_nbjets_emu_.at(it) + backgroundconts_nbjets_emu_.at(it);
+                        temp_emu.setAllErrorsZero(false);
+                        temp_ee=signalconts_nbjets_emu_.at(it) + backgroundconts_nbjets_emu_.at(it);
+                        temp_ee.setAllErrorsZero(false);
+                        temp_mumu=signalconts_nbjets_mumu_.at(it) + backgroundconts_nbjets_mumu_.at(it);
+                        temp_mumu.setAllErrorsZero(false);
+
 		}
 
 		variateHisto1D tmpvarc;
 		tmpvarc.import(temp);
 		data_nbjet_.push_back(tmpvarc);
 
+                variateHisto1D tmpvarc_emu;
+                tmpvarc_emu.import(temp_emu);
+                data_nbjet_emu_.push_back(tmpvarc_emu);
+
+                variateHisto1D tmpvarc_ee;
+                tmpvarc_ee.import(temp_ee);
+                data_nbjet_ee_.push_back(tmpvarc_ee);
+
+                variateHisto1D tmpvarc_mumu;
+                tmpvarc_mumu.import(temp_mumu);
+                data_nbjet_mumu_.push_back(tmpvarc_mumu);
+
+
 		tmpvarc.import(backgroundconts_nbjets_.at(it));
 		background_nbjet_.push_back(tmpvarc);
+
+                tmpvarc_emu.import(backgroundconts_nbjets_emu_.at(it));
+                background_nbjet_emu_.push_back(tmpvarc_emu);
+
+                tmpvarc_ee.import(backgroundconts_nbjets_ee_.at(it));
+                background_nbjet_ee_.push_back(tmpvarc_ee);
+
+                tmpvarc_mumu.import(backgroundconts_nbjets_mumu_.at(it));
+                background_nbjet_mumu_.push_back(tmpvarc_mumu);
+
+
+
 
 		bjetcount++;
 	}
@@ -889,7 +943,7 @@ void ttbarXsecFitter::dataset::cutAndCountSelfCheck(const std::vector<std::pair<
 	}
 
 
-	visps*= (3 /(float)totalvisgencontsread_);
+	visps*= (3. /(float)totalvisgencontsread_);
 	float xsecnom = (data-background)/(signal/generated * lumi_);
 	//float xsecvisnom= (data-background)/(signal/visps);
 	std::cout << "nominal cross section C&C "<<getName()<<" " << xsecnom <<std::endl;
@@ -897,7 +951,7 @@ void ttbarXsecFitter::dataset::cutAndCountSelfCheck(const std::vector<std::pair<
 	std::cout << "vis cross section C&C "<<getName()<<" " << xsecvis <<std::endl;
 
 
-	vispsh*= (3/(float)totalvisgencontsread_);
+	vispsh*= (3./(float)totalvisgencontsread_);
 	//ignore MC stat
 	bghist.removeStatFromAll(true);
 	signh.removeStatFromAll(true);
@@ -1930,14 +1984,30 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
 			//make sure its normalized
 			//the influence usually is <0.001%, but still more correct that way
 			double shapeintegral=set->signalshape(nbjet).getIntegral(variations);  //includes UFOF
+
+                        double shapeintegral_emu=set->signalshape_emu(nbjet).getIntegral(variations);
+                        double shapeintegral_ee=set->signalshape_ee(nbjet).getIntegral(variations);
+                        double shapeintegral_mumu=set->signalshape_mumu(nbjet).getIntegral(variations);
+
 			double omega_b= set->omega_b(nbjet).getValue(variations);
 			double acceptance= set->acceptance().getValue(variations);
 			double eps_emu=set->eps_emu().getValue(variations);
 
-			for(size_t bin=0;bin<set->signalshape(nbjet).getNBins();bin++){
+                        double eps_emu_emu=set->eps_emu_emu().getValue(variations);
+                        double eps_emu_ee=set->eps_emu_ee().getValue(variations);
+                        double eps_emu_mumu=set->eps_emu_mumu().getValue(variations);
+
+                        double acceptance_emu= set->acceptance_emu().getValue(variations);
+                        double acceptance_ee= set->acceptance_ee().getValue(variations);
+                        double acceptance_mumu= set->acceptance_mumu().getValue(variations);
+               
+                        //std::cout<<eps_emu_emu<<"  "<<eps_emu_ee<<"  "<<eps_emu_mumu<<"  "<<eps_emu<<std::endl;
+                        //std::cout<<shapeintegral_emu<<"  "<<shapeintegral_ee<<"   "<<shapeintegral_mumu<<std::endl;
+
+			/*for(size_t bin=0;bin<set->signalshape(nbjet).getNBins();bin++){
 				//std::cout << bin << "/"<< signalshape_nbjet_.at(nbjet).getNBins()<<" " << nbjet << " " << std::endl;
 				double lumi_xsec    = set->lumi() * (variations[set->xsecIdx()] +set->xsecOffset()) ;
-				double signal=lumi_xsec* acceptance * eps_emu* omega_b * set->signalshape(nbjet).getBin(bin)->getValue(variations) / shapeintegral;
+				double signal=lumi_xsec* acceptance * ((eps_emu_emu+eps_emu_emu+eps_emu_ee+eps_emu_mumu)/4.)* omega_b * set->signalshape(nbjet).getBin(bin)->getValue(variations) / shapeintegral;
 
 				double nbackground = set->background(nbjet).getBin(bin)->getValue(variations);
 
@@ -1985,7 +2055,146 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
 					for(size_t i=0;i<parameternames_.size();i++)
 						std::cout << parameternames_.at(i) << ":\t"<<variations[i]<<std::endl;
 				}
-			}
+			}*/
+                        
+                        for(size_t bin=0;bin<set->signalshape_emu(nbjet).getNBins();bin++){
+                                double lumi_xsec    = set->lumi() * (variations[set->xsecIdx()] +set->xsecOffset()) ;
+                                //double lumi_xsec    = set->lumi() * set->xsecOffset() ;
+                                double signal=lumi_xsec* (acceptance /2.) * eps_emu_emu* omega_b * set->signalshape_emu(nbjet).getBin(bin)->getValue(variations) / shapeintegral_emu;
+                                double nbackground = set->background_emu(nbjet).getBin(bin)->getValue(variations);
+                                double backgroundstat=set->background_emu(nbjet).getBinErr(bin);
+
+                                double data = set->data_emu(nbjet).getBin(bin)->getValue(variations);
+
+                                double datastat = set->data_emu(nbjet).getBinErr(bin);
+                                if(signal<0)     signal=0;
+                                if(nbackground<0)nbackground=0;
+                                double predicted = signal+nbackground;
+                                if(lhmode_ == lhm_poissondatastat)   {
+                                        if(data<0)data=0; //safety
+                                        if(predicted>0)
+                                                out+=-2*logPoisson(data, predicted); //unstable...
+                                        else if(data>0)
+                                                out+=100;
+                                }
+                                else if(lhmode_ ==lhm_chi2datastat)   {
+                                        if(datastat<=0) continue;
+                                        out+= (data-predicted)*(data-predicted) / (datastat*datastat); //chi2 approach
+                                }
+                                else if(lhmode_ ==lhm_chi2datamcstat)   {
+                                        if((datastat*datastat + backgroundstat*backgroundstat)<=0) continue;
+                                        out+= (data-predicted)*(data-predicted) / (datastat*datastat + backgroundstat*backgroundstat); //chi2 approach with bg errors
+                                }
+
+                                if(out != out){
+                                        std::cout << "nan produced..." <<std::endl;
+                                        ZTOP_COUTVAR(bin);
+                                        ZTOP_COUTVAR(nbjet);
+                                        ZTOP_COUTVAR(omega_b);
+                                        ZTOP_COUTVAR(data);
+                                        ZTOP_COUTVAR(datastat);
+                                        ZTOP_COUTVAR(nbackground);
+                                        ZTOP_COUTVAR(backgroundstat);
+                                        ZTOP_COUTVAR(signal);
+                                        ZTOP_COUTVAR(predicted);
+                                        ZTOP_COUTVAR(out);
+                                        for(size_t i=0;i<parameternames_.size();i++)
+                                                std::cout << parameternames_.at(i) << ":\t"<<variations[i]<<std::endl;
+                                }
+                        }
+                        for(size_t bin=0;bin<set->signalshape_ee(nbjet).getNBins();bin++){
+                                double lumi_xsec    = set->lumi() * (variations[set->xsecIdx()] +set->xsecOffset()) ;
+                                //double lumi_xsec    = set->lumi() * set->xsecOffset() ;
+                                double signal=lumi_xsec* (acceptance/4.) * eps_emu_ee* omega_b * set->signalshape_ee(nbjet).getBin(bin)->getValue(variations) / shapeintegral_ee;
+                                double nbackground = set->background_ee(nbjet).getBin(bin)->getValue(variations);
+                                double backgroundstat=set->background_ee(nbjet).getBinErr(bin);
+
+                                double data = set->data_ee(nbjet).getBin(bin)->getValue(variations);
+
+                                double datastat = set->data_ee(nbjet).getBinErr(bin);
+                                if(signal<0)     signal=0;
+                                if(nbackground<0)nbackground=0;
+                                double predicted = signal+nbackground;
+                                if(lhmode_ == lhm_poissondatastat)   {
+                                        if(data<0)data=0; //safety
+                                        if(predicted>0)
+                                                out+=-2*logPoisson(data, predicted); //unstable...
+                                        else if(data>0)
+                                                out+=100;
+                                }
+                                else if(lhmode_ ==lhm_chi2datastat)   {
+                                        if(datastat<=0) continue;
+                                        out+= (data-predicted)*(data-predicted) / (datastat*datastat); //chi2 approach
+                                }
+                                else if(lhmode_ ==lhm_chi2datamcstat)   {
+                                        if((datastat*datastat + backgroundstat*backgroundstat)<=0) continue;
+                                        out+= (data-predicted)*(data-predicted) / (datastat*datastat + backgroundstat*backgroundstat); //chi2 approach with bg errors
+                                }
+
+                                if(out != out){
+                                        std::cout << "nan produced..." <<std::endl;
+                                        ZTOP_COUTVAR(bin);
+                                        ZTOP_COUTVAR(nbjet);
+                                        ZTOP_COUTVAR(omega_b);
+                                        ZTOP_COUTVAR(data);
+                                        ZTOP_COUTVAR(datastat);
+                                        ZTOP_COUTVAR(nbackground);
+                                        ZTOP_COUTVAR(backgroundstat);
+                                        ZTOP_COUTVAR(signal);
+                                        ZTOP_COUTVAR(predicted);
+                                        ZTOP_COUTVAR(out);
+                                        for(size_t i=0;i<parameternames_.size();i++)
+                                                std::cout << parameternames_.at(i) << ":\t"<<variations[i]<<std::endl;
+                                }
+                        }
+                        for(size_t bin=0;bin<set->signalshape_mumu(nbjet).getNBins();bin++){
+                                double lumi_xsec    = set->lumi() * (variations[set->xsecIdx()] +set->xsecOffset()) ;
+                                //double lumi_xsec    = set->lumi() * set->xsecOffset() ;
+                                double signal=lumi_xsec* (acceptance/4.) * eps_emu_mumu* omega_b * set->signalshape_mumu(nbjet).getBin(bin)->getValue(variations) / shapeintegral_mumu;
+                                double nbackground = set->background_mumu(nbjet).getBin(bin)->getValue(variations);
+                                double backgroundstat=set->background_mumu(nbjet).getBinErr(bin);
+                
+                                double data = set->data_mumu(nbjet).getBin(bin)->getValue(variations);
+        
+                                double datastat = set->data_mumu(nbjet).getBinErr(bin);
+                                if(signal<0)     signal=0;
+                                if(nbackground<0)nbackground=0;
+                                double predicted = signal+nbackground;
+                                if(lhmode_ == lhm_poissondatastat)   {
+                                        if(data<0)data=0; //safety
+                                        if(predicted>0)
+                                                out+=-2*logPoisson(data, predicted); //unstable...
+                                        else if(data>0)
+                                                out+=100;
+                                }
+                                else if(lhmode_ ==lhm_chi2datastat)   {
+                                        if(datastat<=0) continue;
+                                        out+= (data-predicted)*(data-predicted) / (datastat*datastat); //chi2 approach
+                                }
+                                else if(lhmode_ ==lhm_chi2datamcstat)   {
+                                        if((datastat*datastat + backgroundstat*backgroundstat)<=0) continue;
+                                        out+= (data-predicted)*(data-predicted) / (datastat*datastat + backgroundstat*backgroundstat); //chi2 approach with bg errors
+                                }
+
+                                if(out != out){
+                                        std::cout << "nan produced..." <<std::endl;
+                                        ZTOP_COUTVAR(bin);
+                                        ZTOP_COUTVAR(nbjet);
+                                        ZTOP_COUTVAR(omega_b);
+                                        ZTOP_COUTVAR(data);
+                                        ZTOP_COUTVAR(datastat);
+                                        ZTOP_COUTVAR(nbackground);
+                                        ZTOP_COUTVAR(backgroundstat);
+                                        ZTOP_COUTVAR(signal);
+                                        ZTOP_COUTVAR(predicted);
+                                        ZTOP_COUTVAR(out);
+                                        for(size_t i=0;i<parameternames_.size();i++)
+                                                std::cout << parameternames_.at(i) << ":\t"<<variations[i]<<std::endl;
+                                }
+                        }
+
+
+
 		}
 	}
 	if(out==std::numeric_limits<double>::infinity()){
@@ -2101,6 +2310,93 @@ void ttbarXsecFitter::dataset::checkSizes()const{
 	if(debug)
 		std::cout << "ttbarXsecFitter::dataset::checkSizes: "<<name_ << " done" <<std::endl;
 
+
+
+        if(debug)
+                std::cout << "ttbarXsecFitter::dataset::checkSizes:emu "<<name_ <<std::endl;
+        if(signalshape_nbjet_emu_.size() < 1){
+                throw std::logic_error("ttbarXsecFitter::checkSizes: no input");
+        }
+        if(signalshape_nbjet_emu_.size() != background_nbjet_emu_.size())
+                throw std::logic_error("ttbarXsecFitter::checkSizes: leptonacceptance_nbjet_emu_.size() != background_nbjet_emu_.size()");
+        if(signalshape_nbjet_emu_.size() != data_nbjet_emu_.size())
+                throw std::logic_error("ttbarXsecFitter::checkSizes: leptonacceptance_nbjet_emu_.size() != data_nbjet_emu.size()");
+
+        for(size_t i=0;i<signalshape_nbjet_emu_.size() ;i++){
+                if(signalshape_nbjet_emu_.at(i).getBins() != background_nbjet_emu_.at(i).getBins())
+                        throw std::logic_error("leptonacceptance_nbjet_emu_.at(i).getBins() != background_nbjet_emu_.at(i).getBins()");
+                if(signalshape_nbjet_emu_.at(i).getBins() != data_nbjet_emu_.at(i).getBins())
+                        throw std::logic_error("leptonacceptance_nbjet_emu_.at(i).getBins() != data_nbjet_emu_.at(i).getBins()");
+        }
+        if(signalshape_nbjet_emu_.at(0).getNDependencies() != background_nbjet_emu_.at(0).getNDependencies())
+                throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
+        if(signalshape_nbjet_emu_.at(0).getNDependencies() != data_nbjet_emu_.at(0).getNDependencies())
+                throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
+        if(signalshape_nbjet_emu_.at(0).getNDependencies() != omega_nbjet_.at(0).getNDependencies())
+                throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
+        if(debug)
+                std::cout << "ttbarXsecFitter::dataset::checkSizes:emu "<<name_ << " done" <<std::endl;
+
+
+        if(debug)
+                std::cout << "ttbarXsecFitter::dataset::checkSizes:ee "<<name_ <<std::endl;
+        if(signalshape_nbjet_ee_.size() < 1){
+                throw std::logic_error("ttbarXsecFitter::checkSizes: no input");
+        }
+        if(signalshape_nbjet_ee_.size() != background_nbjet_ee_.size())
+                throw std::logic_error("ttbarXsecFitter::checkSizes: leptonacceptance_nbjet_ee_.size() != background_nbjet_ee_.size()");
+        if(signalshape_nbjet_ee_.size() != data_nbjet_ee_.size())
+                throw std::logic_error("ttbarXsecFitter::checkSizes: leptonacceptance_nbjet_ee_.size() != data_nbjet_ee.size()");
+
+
+        for(size_t i=0;i<signalshape_nbjet_ee_.size() ;i++){
+                if(signalshape_nbjet_ee_.at(i).getBins() != background_nbjet_ee_.at(i).getBins())
+                        throw std::logic_error("leptonacceptance_nbjet_ee_.at(i).getBins() != background_nbjet_ee_.at(i).getBins()");
+                if(signalshape_nbjet_ee_.at(i).getBins() != data_nbjet_ee_.at(i).getBins())
+                        throw std::logic_error("leptonacceptance_nbjet_ee_.at(i).getBins() != data_nbjet_ee_.at(i).getBins()");
+        }
+        if(signalshape_nbjet_ee_.at(0).getNDependencies() != background_nbjet_ee_.at(0).getNDependencies())
+                throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
+        if(signalshape_nbjet_ee_.at(0).getNDependencies() != data_nbjet_ee_.at(0).getNDependencies())
+                throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
+        if(signalshape_nbjet_ee_.at(0).getNDependencies() != omega_nbjet_.at(0).getNDependencies())
+                throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
+
+        if(debug)
+                std::cout << "ttbarXsecFitter::dataset::checkSizes:ee "<<name_ << " done" <<std::endl;
+
+
+
+        if(debug)
+                std::cout << "ttbarXsecFitter::dataset::checkSizes:mumu "<<name_ <<std::endl;
+        if(signalshape_nbjet_mumu_.size() < 1){
+                throw std::logic_error("ttbarXsecFitter::checkSizes: no input");
+        }
+        if(signalshape_nbjet_mumu_.size() != background_nbjet_mumu_.size())
+                throw std::logic_error("ttbarXsecFitter::checkSizes: leptonacceptance_nbjet_mumu_.size() != background_nbjet_mumu_.size()");
+        if(signalshape_nbjet_mumu_.size() != data_nbjet_mumu_.size())
+                throw std::logic_error("ttbarXsecFitter::checkSizes: leptonacceptance_nbjet_mumu_.size() != data_nbjet_mumu.size()");
+
+
+        for(size_t i=0;i<signalshape_nbjet_mumu_.size() ;i++){
+                if(signalshape_nbjet_mumu_.at(i).getBins() != background_nbjet_mumu_.at(i).getBins())
+                        throw std::logic_error("leptonacceptance_nbjet_mumu_.at(i).getBins() != background_nbjet_mumu_.at(i).getBins()");
+                if(signalshape_nbjet_mumu_.at(i).getBins() != data_nbjet_mumu_.at(i).getBins())
+                        throw std::logic_error("leptonacceptance_nbjet_mumu_.at(i).getBins() != data_nbjet_mumu_.at(i).getBins()");
+        }
+        if(signalshape_nbjet_mumu_.at(0).getNDependencies() != background_nbjet_mumu_.at(0).getNDependencies())
+                throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
+        if(signalshape_nbjet_mumu_.at(0).getNDependencies() != data_nbjet_mumu_.at(0).getNDependencies())
+                throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
+        if(signalshape_nbjet_mumu_.at(0).getNDependencies() != omega_nbjet_.at(0).getNDependencies())
+                throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
+
+        if(debug)
+                std::cout << "ttbarXsecFitter::dataset::checkSizes:mumu "<<name_ << " done" <<std::endl;
+
+
+
+
 }//ttbarXsecFitter::checkSizes()
 
 
@@ -2152,9 +2448,40 @@ double ttbarXsecFitter::getExtrapolationError( size_t datasetidx, size_t paraidx
 
 }
 
+variateHisto1D ttbarXsecFitter::dataset::createSignalPerFlav(const std::vector<histo1D>& signals,
+                const std::vector<histo1D>& signalpsmig,
+                const std::vector<histo1D>& signalvisPSgen,
+                size_t bjetcategory)
+{
+        if(debug)
+                std::cout << "ttbarXsecFitter::dataset::createLeptonJetAcceptance: "<< bjetcategory <<", "<< name_<<std::endl;
+
+        if(signals.size()<1)
+                throw std::logic_error("ttbarXsecFitter::createLeptonJetAcceptance  stack vector empty.");
+
+        size_t bjetbin=bjetcategory;
+        variateHisto1D out;
+        histo1D normedsignal = signals.at(bjetbin);
+        normedsignal.normalize(true,true);
+        out.import(normedsignal);
+        if(debug)
+                std::cout << "ttbarXsecFitter::dataset::createLeptonJetAcceptance: done " << std::endl;
+        return out;
+}
+
+
 variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::vector<histo1D>& signals,
 		const std::vector<histo1D>& signalpsmig,
 		const std::vector<histo1D>& signalvisPSgen,
+                const std::vector<histo1D>& signals_emu,
+                const std::vector<histo1D>& signalpsmig_emu,
+                const std::vector<histo1D>& signalvisPSgen_emu,
+                const std::vector<histo1D>& signals_ee,
+                const std::vector<histo1D>& signalpsmig_ee,
+                const std::vector<histo1D>& signalvisPSgen_ee,
+                const std::vector<histo1D>& signals_mumu,
+                const std::vector<histo1D>& signalpsmig_mumu,
+                const std::vector<histo1D>& signalvisPSgen_mumu,
 		size_t bjetcategory)
 {
 	// this one can use histo1D operators!
@@ -2178,15 +2505,44 @@ variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::ve
 
 	histo1D signal=signals.at(bjetbin);//.getSignalContainer();
 	//if(norm_nbjet_global)
-	signal=signal.getIntegralBin(includeUFOF);
+	signal=signal.getIntegralBin(includeUFOF);     
 	histo1D signalintegral=signals.at(minbjetbin); //stack->at(minbjetbin).getSignalContainer();
 	//if(norm_nbjet_global)
 	signalintegral=signalintegral.getIntegralBin(includeUFOF);
+
+        histo1D signal_emu=signals_emu.at(bjetbin);
+        signal_emu=signal_emu.getIntegralBin(includeUFOF);
+        histo1D signalintegral_emu=signals_emu.at(minbjetbin);
+        signalintegral_emu=signalintegral_emu.getIntegralBin(includeUFOF);
+
+        histo1D signal_ee=signals_ee.at(bjetbin);
+        signal_ee=signal_ee.getIntegralBin(includeUFOF);
+        histo1D signalintegral_ee=signals_ee.at(minbjetbin);
+        signalintegral_ee=signalintegral_ee.getIntegralBin(includeUFOF);
+
+        histo1D signal_mumu=signals_mumu.at(bjetbin);
+        signal_mumu=signal_mumu.getIntegralBin(includeUFOF);
+        histo1D signalintegral_mumu=signals_mumu.at(minbjetbin);
+        signalintegral_mumu=signalintegral_mumu.getIntegralBin(includeUFOF);
+
+
 	for(size_t i=minbjetbin+1;i<maxbjetbin;i++){
 		histo1D tmpsig=signals.at(i); //stack->at(i).getSignalContainer();
 		//if(norm_nbjet_global)
 		tmpsig=tmpsig.getIntegralBin(includeUFOF);
 		signalintegral += tmpsig;
+             
+                tmpsig=signals_emu.at(i);
+                tmpsig=tmpsig.getIntegralBin(includeUFOF);
+                signalintegral_emu += tmpsig;
+
+                tmpsig=signals_ee.at(i);
+                tmpsig=tmpsig.getIntegralBin(includeUFOF);
+                signalintegral_ee += tmpsig;
+
+                tmpsig=signals_mumu.at(i);
+                tmpsig=tmpsig.getIntegralBin(includeUFOF);
+                signalintegral_mumu += tmpsig;
 	}
 
 
@@ -2200,15 +2556,36 @@ variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::ve
 		tmp=tmp.getIntegralBin(includeUFOF);
 		psmigint+=tmp;
 	}
-	histo1D visgenint;
+	histo1D visgenint,visgenint_emu,visgenint_ee,visgenint_mumu;
 	for(size_t i=minbjetbin;i<maxbjetbin;i++){
 		histo1D tmp=signalvisPSgen.at(i);
 		tmp=tmp.getIntegralBin(includeUFOF);
 		visgenint+=tmp;
+
+                tmp=signalvisPSgen_emu.at(i);
+                tmp=tmp.getIntegralBin(includeUFOF);
+                visgenint_emu+=tmp;
+
+                tmp=signalvisPSgen_ee.at(i);
+                tmp=tmp.getIntegralBin(includeUFOF);
+                visgenint_ee+=tmp;
+
+                tmp=signalvisPSgen_mumu.at(i);
+                tmp=tmp.getIntegralBin(includeUFOF);
+                visgenint_mumu+=tmp;
 	}
-	visgenint *= (3 /((double)totalvisgencontsread_));
+	visgenint *= (3. /((double)totalvisgencontsread_));
 	//this also scales with lumi due to technical reasons. remove this dependence
 	visgenint.setErrorZeroContaining("Lumi");
+
+         visgenint_emu *= (1./12.);
+         visgenint_emu.setErrorZeroContaining("Lumi"); 
+
+         visgenint_ee *= (1./12.);
+         visgenint_ee.setErrorZeroContaining("Lumi");
+
+         visgenint_mumu *= (1./12.);
+         visgenint_mumu.setErrorZeroContaining("Lumi");
 
 	//need signal integral per bin -> same distributions for fixed add jet multi...
 	bool tmpmultiplyStatCorrelated = histoContent::multiplyStatCorrelated;
@@ -2220,10 +2597,16 @@ variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::ve
 
 
 	histo1D one=signal.createOne();
-	histo1D acceptance,leptonreco;
+	histo1D acceptance,leptonreco,leptonreco_emu,leptonreco_mumu,leptonreco_ee,acceptance_emu,acceptance_ee,acceptance_mumu;
 	if(visgenint.integral(true)>0){
 		acceptance =visgenint*gennorm;
+                acceptance_emu =visgenint_emu*gennorm;
+                acceptance_ee =visgenint_ee*gennorm;
+                acceptance_mumu =visgenint_mumu*gennorm;
 		leptonreco =signalintegral/visgenint;
+                leptonreco_emu=signalintegral_emu/visgenint_emu;
+                leptonreco_ee=signalintegral_ee/visgenint_ee;
+                leptonreco_mumu=signalintegral_mumu/visgenint_mumu;
 	}
 	else{
 		std::cout << "Warning no visible phase space defined. Will merge acceptance and dilepton efficiencies -> ok for control plots" <<std::endl;
@@ -2240,17 +2623,34 @@ variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::ve
 	}
 	tmp.import(acceptance);
 	acceptance_=*tmp.getBin(1);
+
+        tmp.import(acceptance_emu);
+        acceptance_emu_=*tmp.getBin(1);
+
+        tmp.import(acceptance_ee);
+        acceptance_ee_=*tmp.getBin(1);
+
+        tmp.import(acceptance_mumu);
+        acceptance_mumu_=*tmp.getBin(1);
+
 	tmp.import(leptonreco);
 	eps_emu_=*tmp.getBin(1);
 
+        tmp.import(leptonreco_emu);
+        eps_emu_emu_=*tmp.getBin(1);
+
+        tmp.import(leptonreco_ee);
+        eps_emu_ee_=*tmp.getBin(1);
+
+        tmp.import(leptonreco_mumu);
+        eps_emu_mumu_=*tmp.getBin(1);
 
 	histo1D onebjetsignal = signals.at(bjet1bin);
 	onebjetsignal=onebjetsignal.getIntegralBin(includeUFOF);
 	histo1D twobjetsignal = signals.at(bjet2bin);
 	twobjetsignal=twobjetsignal.getIntegralBin(includeUFOF);
 
-	histo1D correction_b =  ((signalintegral * twobjetsignal) * 4.)
-																																																																						                																																																																																																																																																																																																																																																																																																																																																																																																																																								/ ( (onebjetsignal + (twobjetsignal * 2.)) * (onebjetsignal + (twobjetsignal * 2.)));
+	histo1D correction_b =  ((signalintegral * twobjetsignal) * 4.)/ ( (onebjetsignal + (twobjetsignal * 2.)) * (onebjetsignal + (twobjetsignal * 2.)));
 
 	correction_b.removeStatFromAll();
 
@@ -2307,6 +2707,31 @@ const size_t & ttbarXsecFitter::dataset::xsecIdx()const{
 	}
 	return xsecidx_;
 }
+
+/*const size_t & ttbarXsecFitter::dataset::xsecIdx_emu()const{
+        if(xsecidx_emu_==9999){
+                throw std::logic_error("ttbarXsecFitter::datasets::xsecIdx: first create index");
+        }
+        return xsecidx_emu_;
+}
+
+const size_t & ttbarXsecFitter::dataset::xsecIdx_ee()const{
+        if(xsecidx_ee_==9999){
+                throw std::logic_error("ttbarXsecFitter::datasets::xsecIdx: first create index");
+        }
+        return xsecidx_ee_;
+}
+
+const size_t & ttbarXsecFitter::dataset::xsecIdx_mumu()const{
+        if(xsecidx_mumu_==9999){
+                throw std::logic_error("ttbarXsecFitter::datasets::xsecIdx: first create index");
+        }
+        return xsecidx_mumu_;
+}
+*/
+
+
+
 void ttbarXsecFitter::dataset::createXsecIdx(){
 	//search for it
 	if(signalconts_nbjets_.size()<1){
@@ -2317,6 +2742,10 @@ void ttbarXsecFitter::dataset::createXsecIdx(){
 	if(idx == sysnames.size())
 		throw std::logic_error("ttbarXsecFitter::datasets::createXsecIdx: index not found");
 	xsecidx_=idx;
+       /* xsecidx_emu_=std::find(sysnames.begin(),sysnames.end(),"Xsec_emu_"+name_)-sysnames.begin();
+        xsecidx_ee_=std::find(sysnames.begin(),sysnames.end(),"Xsec_ee_"+name_)-sysnames.begin();
+        xsecidx_mumu_=std::find(sysnames.begin(),sysnames.end(),"Xsec_emu_"+name_)-sysnames.begin();
+        */
 }
 
 void  ttbarXsecFitter::dataset::readStacks(const std::string configfilename,const std::pair<TString,
@@ -2372,6 +2801,7 @@ void  ttbarXsecFitter::dataset::readStacks(const std::string configfilename,cons
 
 			//csv.listStacks();
 			histoStack tmpstack;
+                        std::cout<<filename<<"   "<<plotname<<std::endl;
 			try{
 				tmpstack=csv.getStack(plotname);
 			}
@@ -2400,6 +2830,11 @@ void  ttbarXsecFitter::dataset::readStacks(const std::string configfilename,cons
 					tmpstack.equalizeSystematicsIdxs(out.at(i));
 				}
 			 */
+                        TString tmpname = tmpstack.getName();
+                        if (filename.Contains("emu")) tmpname.Prepend("emu:");
+                        else if (filename.Contains("ee")) tmpname.Prepend("ee:");
+                        else if (filename.Contains("mumu")) tmpname.Prepend("mumu:");
+                        tmpstack.setName(tmpname);
 			tmpstacks.push_back(tmpstack);
 			//stack=stack.append(tmpstack);
 			//	std::cout << "ttbarXsecFitter::readStacks: added "
@@ -2440,15 +2875,65 @@ void ttbarXsecFitter::dataset::readStackVec(const std::vector<histoStack> & in,s
 	signalconts_nbjets_.resize(maxnbjetcat);
 	signalvisgenconts_nbjets_.resize(maxnbjetcat);
 	signalpsmigconts_nbjets_.resize(maxnbjetcat);
+
+        signalconts_nbjets_emu_.resize(maxnbjetcat);
+        signalvisgenconts_nbjets_emu_.resize(maxnbjetcat);
+        signalpsmigconts_nbjets_emu_.resize(maxnbjetcat);
+
+        signalconts_nbjets_ee_.resize(maxnbjetcat);
+        signalvisgenconts_nbjets_ee_.resize(maxnbjetcat);
+        signalpsmigconts_nbjets_ee_.resize(maxnbjetcat);
+
+        signalconts_nbjets_mumu_.resize(maxnbjetcat);
+        signalvisgenconts_nbjets_mumu_.resize(maxnbjetcat);
+        signalpsmigconts_nbjets_mumu_.resize(maxnbjetcat);
+
 	backgroundconts_nbjets_.resize(maxnbjetcat);
 	dataconts_nbjets_.resize(maxnbjetcat);
-	histo1D sign,signvisps,signpsmig,backgr,data;
+
+        backgroundconts_nbjets_emu_.resize(maxnbjetcat);
+        dataconts_nbjets_emu_.resize(maxnbjetcat);
+
+        backgroundconts_nbjets_ee_.resize(maxnbjetcat);
+        dataconts_nbjets_ee_.resize(maxnbjetcat);
+
+        backgroundconts_nbjets_mumu_.resize(maxnbjetcat);
+        dataconts_nbjets_mumu_.resize(maxnbjetcat);
+
+
+	histo1D sign,signvisps,signpsmig,backgr,data,sign_emu,sign_ee,sign_mumu,signvisps_emu,signvisps_ee,signvisps_mumu,signpsmig_emu,signpsmig_ee,signpsmig_mumu,backgr_emu,data_emu,backgr_ee,data_ee,backgr_mumu,data_mumu;
 	for(size_t j=0;j<in.size();j++){
 		if(in.at(j).is1DUnfold()){
 			sign          =sign.append(in.at(j).getSignalContainer1DUnfold().getRecoContainer());
 			signvisps     =signvisps.append(in.at(j).getSignalContainer1DUnfold().getGenContainer());
 			totalvisgencontsread_++;
 			signpsmig=signpsmig.append(in.at(j).getSignalContainer1DUnfold().getBackground());
+                        //std::cout<<in.at(j).getName()<<std::endl;
+                        if (in.at(j).getName().Contains("emu")) {
+                                sign_emu          =sign_emu.append(in.at(j).getSignalContainer1DUnfold().getRecoContainer());
+                                signvisps_emu     =signvisps_emu.append(in.at(j).getSignalContainer1DUnfold().getGenContainer());
+                                signpsmig_emu=signpsmig_emu.append(in.at(j).getSignalContainer1DUnfold().getBackground());
+                                backgr_emu      =backgr_emu.append(in.at(j).getBackgroundContainer());
+                                data_emu          =data_emu.append(in.at(j).getDataContainer());
+
+                        }
+                        else if (in.at(j).getName().Contains("ee")) {
+                                sign_ee          =sign_ee.append(in.at(j).getSignalContainer1DUnfold().getRecoContainer());
+                                signvisps_ee     =signvisps_ee.append(in.at(j).getSignalContainer1DUnfold().getGenContainer());
+                                signpsmig_ee=signpsmig_ee.append(in.at(j).getSignalContainer1DUnfold().getBackground());
+                                backgr_ee      =backgr_ee.append(in.at(j).getBackgroundContainer());
+                                data_ee          =data_ee.append(in.at(j).getDataContainer());
+
+                        }
+                        else if (in.at(j).getName().Contains("mumu")) {
+                                sign_mumu          =sign_mumu.append(in.at(j).getSignalContainer1DUnfold().getRecoContainer());
+                                signvisps_mumu     =signvisps_mumu.append(in.at(j).getSignalContainer1DUnfold().getGenContainer());
+                                signpsmig_mumu=signpsmig_mumu.append(in.at(j).getSignalContainer1DUnfold().getBackground());
+                                backgr_mumu      =backgr_mumu.append(in.at(j).getBackgroundContainer());
+                                data_mumu          =data_mumu.append(in.at(j).getDataContainer());
+
+                        }
+
 		}
 		else if(in.at(j).is1D()){
 			sign          =sign.append(in.at(j).getSignalContainer());
@@ -2464,8 +2949,30 @@ void ttbarXsecFitter::dataset::readStackVec(const std::vector<histoStack> & in,s
 	signalconts_nbjets_.at(nbjet) = sign;
 	signalvisgenconts_nbjets_.at(nbjet)=signvisps;
 	signalpsmigconts_nbjets_.at(nbjet)=signpsmig;
+
+        signalconts_nbjets_emu_.at(nbjet) = sign_emu;
+        signalvisgenconts_nbjets_emu_.at(nbjet)=signvisps_emu;
+        signalpsmigconts_nbjets_emu_.at(nbjet)=signpsmig_emu;
+
+        signalconts_nbjets_ee_.at(nbjet) = sign_ee;
+        signalvisgenconts_nbjets_ee_.at(nbjet)=signvisps_ee;
+        signalpsmigconts_nbjets_ee_.at(nbjet)=signpsmig_ee;
+
+        signalconts_nbjets_mumu_.at(nbjet) = sign_mumu;
+        signalvisgenconts_nbjets_mumu_.at(nbjet)=signvisps_mumu;
+        signalpsmigconts_nbjets_mumu_.at(nbjet)=signpsmig_mumu;
+
 	backgroundconts_nbjets_.at(nbjet) = backgr;
 	dataconts_nbjets_.at(nbjet)=data;
+
+        backgroundconts_nbjets_emu_.at(nbjet) = backgr_emu;
+        dataconts_nbjets_emu_.at(nbjet)=data_emu;
+
+        backgroundconts_nbjets_ee_.at(nbjet) = backgr_ee;
+        dataconts_nbjets_ee_.at(nbjet)=data_ee;
+
+        backgroundconts_nbjets_mumu_.at(nbjet) = backgr_mumu;
+        dataconts_nbjets_mumu_.at(nbjet)=data_mumu;
 
 }
 
@@ -2619,6 +3126,9 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 
 	//fake uncertainty
 	stack->addGlobalRelMCError("Xsec_"+name_,0);
+        //stack->addGlobalRelMCError("Xsec_emu_"+name_,0);
+        //stack->addGlobalRelMCError("Xsec_ee_"+name_,0);
+        //stack->addGlobalRelMCError("Xsec_mumu_"+name_,0);
 	if(debug)
 		std::cout << "ttbarXsecFitter::addUncertainties: done" <<std::endl;
 

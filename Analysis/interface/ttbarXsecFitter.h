@@ -227,15 +227,28 @@ private:
 
 		dataset(double lumi,double lumiunc, double xsecin, TString name, ttbarXsecFitter* par):
 			lumi_(lumi),xsecoff_(xsecin),unclumi_(lumiunc),
-			lumiidx_(9999),xsecidx_(9999),name_(name),totalvisgencontsread_(0),firstpseudoexp_(true),parent_(par)
+			lumiidx_(9999),xsecidx_(9999),xsecidx_emu_(9999),xsecidx_ee_(9999),xsecidx_mumu_(9999),name_(name),totalvisgencontsread_(0),firstpseudoexp_(true),parent_(par)
 		{}
 
 		extendedVariable& eps_emu(){return eps_emu_;}
+                extendedVariable& eps_emu_emu(){return eps_emu_emu_;}
+                extendedVariable& eps_emu_ee(){return eps_emu_ee_;}
+                extendedVariable& eps_emu_mumu(){return eps_emu_mumu_;}
 		extendedVariable& acceptance_extr(){return acceptance_extr_;}
 		extendedVariable& acceptance(){return acceptance_;}
+                extendedVariable& acceptance_emu(){return acceptance_emu_;}
+                extendedVariable& acceptance_ee(){return acceptance_ee_;}
+                extendedVariable& acceptance_mumu(){return acceptance_mumu_;}
+
 		const extendedVariable& eps_emu()const {return eps_emu_;}
+                const extendedVariable& eps_emu_emu()const {return eps_emu_emu_;}
+                const extendedVariable& eps_emu_ee()const {return eps_emu_ee_;}
+                const extendedVariable& eps_emu_mumu()const {return eps_emu_mumu_;}
 		const extendedVariable& acceptance_extr()const{return acceptance_extr_;}
 		const extendedVariable& acceptance()const{return acceptance_;}
+                const extendedVariable& acceptance_emu()const{return acceptance_emu_;}
+                const extendedVariable& acceptance_ee()const{return acceptance_ee_;}
+                const extendedVariable& acceptance_mumu()const{return acceptance_mumu_;}
 
 		extendedVariable& omega_b(size_t nbjet){return omega_nbjet_.at(nbjet);}
 		const extendedVariable& omega_b(size_t nbjet)const {return omega_nbjet_.at(nbjet);}
@@ -246,6 +259,28 @@ private:
 		const variateHisto1D& background(size_t nbjet)const {return background_nbjet_.at(nbjet);}
 		variateHisto1D& data(size_t nbjet){return data_nbjet_.at(nbjet);}
 		const variateHisto1D& data(size_t nbjet)const {return data_nbjet_.at(nbjet);}
+
+
+                variateHisto1D& signalshape_emu(size_t nbjet){return signalshape_nbjet_emu_.at(nbjet);}
+                const variateHisto1D& signalshape_emu(size_t nbjet)const {return signalshape_nbjet_emu_.at(nbjet);}
+                variateHisto1D& background_emu(size_t nbjet){return background_nbjet_emu_.at(nbjet);}
+                const variateHisto1D& background_emu(size_t nbjet)const {return background_nbjet_emu_.at(nbjet);}
+                variateHisto1D& data_emu(size_t nbjet){return data_nbjet_emu_.at(nbjet);}
+                const variateHisto1D& data_emu(size_t nbjet)const {return data_nbjet_emu_.at(nbjet);}
+
+                variateHisto1D& signalshape_ee(size_t nbjet){return signalshape_nbjet_ee_.at(nbjet);}
+                const variateHisto1D& signalshape_ee(size_t nbjet)const {return signalshape_nbjet_ee_.at(nbjet);}
+                variateHisto1D& background_ee(size_t nbjet){return background_nbjet_ee_.at(nbjet);}
+                const variateHisto1D& background_ee(size_t nbjet)const {return background_nbjet_ee_.at(nbjet);}
+                variateHisto1D& data_ee(size_t nbjet){return data_nbjet_ee_.at(nbjet);}
+                const variateHisto1D& data_ee(size_t nbjet)const {return data_nbjet_ee_.at(nbjet);}
+
+                variateHisto1D& signalshape_mumu(size_t nbjet){return signalshape_nbjet_mumu_.at(nbjet);}
+                const variateHisto1D& signalshape_mumu(size_t nbjet)const {return signalshape_nbjet_mumu_.at(nbjet);}
+                variateHisto1D& background_mumu(size_t nbjet){return background_nbjet_mumu_.at(nbjet);}
+                const variateHisto1D& background_mumu(size_t nbjet)const {return background_nbjet_mumu_.at(nbjet);}
+                variateHisto1D& data_mumu(size_t nbjet){return data_nbjet_mumu_.at(nbjet);}
+                const variateHisto1D& data_mumu(size_t nbjet)const {return data_nbjet_mumu_.at(nbjet);}
 
 
 
@@ -259,6 +294,9 @@ private:
 		const double & lumi()const{return lumi_;}
 		const double & xsecOffset()const{return xsecoff_;}
 		const size_t & xsecIdx()const;
+                const size_t & xsecIdx_emu()const;
+                const size_t & xsecIdx_ee()const;
+                const size_t & xsecIdx_mumu()const;
 		void createXsecIdx();
 
 		void readStack(const histoStack& stack, size_t nbjet);
@@ -310,19 +348,34 @@ private:
 		variateHisto1D createLeptonJetAcceptance(const std::vector<histo1D>& signals,
 				const std::vector<histo1D>& signalpsmig,
 				const std::vector<histo1D>& signalvisPSgen,
+                                const std::vector<histo1D>& signals_emu,
+                                const std::vector<histo1D>& signalpsmig_emu,
+                                const std::vector<histo1D>& signalvisPSgen_emu,
+                                const std::vector<histo1D>& signals_ee,
+                                const std::vector<histo1D>& signalpsmig_ee,
+                                const std::vector<histo1D>& signalvisPSgen_ee,
+                                const std::vector<histo1D>& signals_mumu,
+                                const std::vector<histo1D>& signalpsmig_mumu,
+                                const std::vector<histo1D>& signalvisPSgen_mumu,
 				size_t bjetcategory);
+                variateHisto1D createSignalPerFlav(const std::vector<histo1D>& signals,
+                                const std::vector<histo1D>& signalpsmig,
+                                const std::vector<histo1D>& signalvisPSgen,
+                                size_t bjetcategory);
+
+
 
 		dataset():totalvisgencontsread_(0),firstpseudoexp_(true){}
 
 		double lumi_,xsecoff_;
 		double unclumi_;
-		size_t lumiidx_,xsecidx_;
+		size_t lumiidx_,xsecidx_,xsecidx_emu_,xsecidx_ee_,xsecidx_mumu_;
 		TString name_;
 
 		//global per dataset dependence on extrapolation unc are set to 0 here
-		extendedVariable eps_emu_;
+		extendedVariable eps_emu_,eps_emu_emu_,eps_emu_ee_,eps_emu_mumu_;
 		//global per dataset dependence on extrapolation unc (and all others) are implemented here
-		extendedVariable acceptance_,acceptance_extr_;
+		extendedVariable acceptance_,acceptance_extr_,acceptance_emu_,acceptance_ee_,acceptance_mumu_;
 
 		//per bjet_cat
 		std::vector<extendedVariable> omega_nbjet_;
@@ -330,6 +383,19 @@ private:
 		std::vector<variateHisto1D>  signalshape_nbjet_;
 		std::vector<variateHisto1D>  background_nbjet_;
 		std::vector<variateHisto1D>  data_nbjet_;
+
+                std::vector<variateHisto1D>  signalshape_nbjet_emu_;
+                std::vector<variateHisto1D>  background_nbjet_emu_;
+                std::vector<variateHisto1D>  data_nbjet_emu_;
+
+                std::vector<variateHisto1D>  signalshape_nbjet_ee_;
+                std::vector<variateHisto1D>  background_nbjet_ee_;
+                std::vector<variateHisto1D>  data_nbjet_ee_;
+
+                std::vector<variateHisto1D>  signalshape_nbjet_mumu_;
+                std::vector<variateHisto1D>  background_nbjet_mumu_;
+                std::vector<variateHisto1D>  data_nbjet_mumu_;
+
 
 		//for later use. BEFORE fit!
 		std::vector<double> signalintegral_;
@@ -344,18 +410,47 @@ private:
 		std::vector<histo1D> signalconts_nbjets_;
 		std::vector<histo1D> signalcontsorig_nbjets_;
 
+                std::vector<histo1D> signalconts_nbjets_emu_;
+                std::vector<histo1D> signalconts_nbjets_ee_;
+                std::vector<histo1D> signalconts_nbjets_mumu_;
+
 		std::vector<histo1D> signalvisgenconts_nbjets_;
 		std::vector<histo1D> signalvisgencontsorig_nbjets_;
+
+                std::vector<histo1D> signalvisgenconts_nbjets_emu_;
+                std::vector<histo1D> signalvisgenconts_nbjets_ee_;
+                std::vector<histo1D> signalvisgenconts_nbjets_mumu_;
 
 		size_t totalvisgencontsread_; //this is NOT signalvisgenconts_nbjets_.size() since some could be merged!
 
 		std::vector<histo1D> signalpsmigconts_nbjets_;
 		std::vector<histo1D> signalpsmigcontsorig_nbjets_;
 
+                std::vector<histo1D> signalpsmigconts_nbjets_emu_;
+                std::vector<histo1D> signalpsmigconts_nbjets_ee_;
+                std::vector<histo1D> signalpsmigconts_nbjets_mumu_;
+
 		std::vector<histo1D> dataconts_nbjets_;
 		std::vector<histo1D> datacontsorig_nbjets_;
 		std::vector<histo1D> backgroundconts_nbjets_;
 		std::vector<histo1D> backgroundcontsorig_nbjets_;
+
+                std::vector<histo1D> dataconts_nbjets_emu_;
+                std::vector<histo1D> datacontsorig_nbjets_emu_;
+                std::vector<histo1D> backgroundconts_nbjets_emu_;
+                std::vector<histo1D> backgroundcontsorig_nbjets_emu_;
+
+                std::vector<histo1D> dataconts_nbjets_ee_;
+                std::vector<histo1D> datacontsorig_nbjets_ee_;
+                std::vector<histo1D> backgroundconts_nbjets_ee_;
+                std::vector<histo1D> backgroundcontsorig_nbjets_ee_;
+
+                std::vector<histo1D> dataconts_nbjets_mumu_;
+                std::vector<histo1D> datacontsorig_nbjets_mumu_;
+                std::vector<histo1D> backgroundconts_nbjets_mumu_;
+                std::vector<histo1D> backgroundcontsorig_nbjets_mumu_;
+
+
 
 		std::vector<systematic_unc> post_fit_systematics_,post_fit_systematics_simple_;
 
