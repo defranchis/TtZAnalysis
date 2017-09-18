@@ -18,6 +18,7 @@ void topAnalyzer::setChannel(const TString& chan){
 	if(chan.Contains("mumu")) b_mumu_=true;
 	else if(chan.Contains("emu")) b_emu_=true;
 	else if(chan.Contains("ee")) b_ee_=true;
+        else if(chan.Contains("smu"))b_smu_=true;
 	else{
 		std::cout << "channel wrongly set! exit" << std::endl;
 		std::exit(EXIT_FAILURE);
@@ -50,6 +51,7 @@ topAnalyzer::topAnalyzer():basicAnalyzer(){
 	b_ee_=false;
 	b_mumu_=false;
 	b_emu_=false;
+        b_smu_=false;
 	is7TeV_=false;
 	showstatus_=false;
 	onlySummary_=false;

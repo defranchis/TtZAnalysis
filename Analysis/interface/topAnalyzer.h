@@ -213,7 +213,7 @@ protected:
 	bool showstatus_,onlySummary_,tickoncemode_,singlefile_;
 
 	TString name_,channel_,energy_;
-	bool b_ee_,b_emu_,b_mumu_,is7TeV_;
+	bool b_ee_,b_emu_,b_mumu_,b_smu_,is7TeV_;
 
 	/**
 	 * default: NTEvent, can be changed e.g. to use weights of different pdfs

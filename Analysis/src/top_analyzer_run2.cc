@@ -325,12 +325,16 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 	analysisPlotsMlbMt mlbmtplots_step8(8);
 	analysisPlotsTtbarXsecFit xsecfitplots_step8(8);
+        analysisPlotsTtbarXsecFitSingleLep singlelepplots_step8(8);
 
 	xsecfitplots_step8.enable();
 	mlbmtplots_step8.enable();
 	mlbmtplots_step8.bookPlots();
 	xsecfitplots_step8.enable();
 	xsecfitplots_step8.bookPlots();
+ 
+        singlelepplots_step8.enable();
+        singlelepplots_step8.bookPlots();
 
 	//global settings for analysis plots
 	histo1DUnfold::setAllListedMC(isMC && !fakedata);
@@ -355,6 +359,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	zplots.initSteps(8);
 	mlbmtplots_step8.setEvent(evt);
 	xsecfitplots_step8.setEvent(evt);
+        singlelepplots_step8.setEvent(evt);
 
 	if(!fileExists((datasetdirectory_+inputfile_).Data())){
 		std::cout << datasetdirectory_+inputfile_ << " not found!!" << std::endl;
@@ -689,14 +694,17 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 			genleptons3=produceCollection(b_GenLeptons3.content(),&genws);
 			tmp_genleptons1=produceCollection(b_GenLeptons1.content(),&genleptons3);
+                        
                         if (tmp_genleptons1.size() > 1){
-                       if(b_ee_ && std::abs(tmp_genleptons1.at(0)->pdgId())==11 && std::abs(tmp_genleptons1.at(1)->pdgId())==11&&((tmp_genleptons1.at(0)->p4()+tmp_genleptons1.at(0)->p4()).M()<76 ||(tmp_genleptons1.at(0)->p4()+tmp_genleptons1.at(0)->p4()).M()>106)){
+                       if(b_ee_ && std::abs(tmp_genleptons1.at(0)->pdgId())==11 && std::abs(tmp_genleptons1.at(1)->pdgId())==11){
                              genleptons1 = tmp_genleptons1;}
-                        if(b_mumu_ && std::abs(tmp_genleptons1.at(0)->pdgId())==13 && std::abs(tmp_genleptons1.at(1)->pdgId())==13 &&((tmp_genleptons1.at(0)->p4()+tmp_genleptons1.at(0)->p4()).M()<76 ||(tmp_genleptons1.at(0)->p4()+tmp_genleptons1.at(0)->p4()).M()>106) ){
+                        if(b_mumu_ && std::abs(tmp_genleptons1.at(0)->pdgId())==13 && std::abs(tmp_genleptons1.at(1)->pdgId())==13 ){
                              genleptons1 = tmp_genleptons1;}
                         if(b_emu_ &&( (std::abs(tmp_genleptons1.at(0)->pdgId())==11 && std::abs(tmp_genleptons1.at(1)->pdgId())==13) || (std::abs(tmp_genleptons1.at(0)->pdgId())==13 && std::abs(tmp_genleptons1.at(1)->pdgId())==11))){
                              genleptons1 = tmp_genleptons1;}
                         }
+                        if(b_smu_ && tmp_genleptons1.size() ==1 && std::abs(tmp_genleptons1.at(0)->pdgId())==13 ) genleptons1 = tmp_genleptons1;
+                        
                         //else{ genleptons1 = tmp_genleptons1;}
                         
                         //genleptons1=produceCollection(b_GenLeptons1.content(),&genleptons3);
@@ -712,6 +720,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 				/*
 				 * fill gen info here
 				 */
+                                if (b_smu_)singlelepplots_step8.fillPlotsGen();
 				mlbmtplots_step8.fillPlotsGen();
 				xsecfitplots_step8.fillPlotsGen();
                                 
@@ -736,9 +745,12 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		if(testmode_ && entry==0)
 			std::cout << "testmode("<< anaid << "): got trigger boolians" << std::endl;
 
-//if (*b_EventNumber.content() ==469068425 || *b_EventNumber.content() ==534499225||*b_EventNumber.content() == 534499225 || *b_EventNumber.content() ==537207983 || *b_EventNumber.content() ==566932237 || *b_EventNumber.content() ==594947162 || *b_EventNumber.content() == 548435340 || *b_EventNumber.content() == 548206024 ) std::cout<<b_TriggerBools.content()->at(32)<<"  "<<b_TriggerBools.content()->at(33)<<"  "<<b_TriggerBools.content()->at(43)<<"  "<<b_TriggerBools.content()->at(44)<<"  "<<b_TriggerBools.content()->at(36)<<std::endl;
+//if (true) std::cout<<b_TriggerBools.content()->at(32)<<"  "<<b_TriggerBools.content()->at(33)<<"  "<<b_TriggerBools.content()->at(43)<<"  "<<b_TriggerBools.content()->at(44)<<"  "<<b_TriggerBools.content()->at(36)<<std::endl;
 
 		if(!checkTrigger(b_TriggerBools.content(),b_Event.content(), isMC,anaid)) continue;
+
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): After Trigger Cut " << std::endl;
 
 		/*
 		 * Muons
@@ -876,11 +888,14 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		if(b_ee_ && idelectrons.size() < 2) continue;
 		if(b_mumu_ && (idmuons.size() < 2 )) continue;
 		if(b_emu_ && (idmuons.size() + idelectrons.size() < 2 )) continue;
+                if(b_smu_ && (idmuons.size() != 1 || idelectrons.size() > 0))continue;
 
 		sel_step[1]+=puweight;
 		plots.makeControlPlots(step);
 		zplots.makeControlPlots(step);
 
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP 1" << std::endl;
 
 
 		//////// require two iso leptons  STEP 2  //////////////////////////
@@ -914,6 +929,10 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			channelmuons << isomuons.at(0);
 			channelelectrons << isoelectrons.at(0);
 		}
+                if(b_smu_){
+                        if(isomuons.size() !=1) continue;
+                        else channelmuons << isomuons.at(0);
+                }
 
 		//make pair
 		pair<vector<NTElectron*>, vector<NTMuon*> > oppopair,sspair;
@@ -923,6 +942,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		oppopair = ztop::getOppoQHighestPtPair(channelelectrons, channelmuons);
 		sspair = ztop::getOppoQHighestPtPair(channelelectrons, channelmuons,-1);
 
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): Made Dilepton pairs" << std::endl;
 
 
 		pair<vector<NTElectron*>, vector<NTMuon*> > *leppair=&oppopair;
@@ -977,13 +998,11 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			firstlep=leppair->second[0];
 			seclep=leppair->second[1];
                         if(signal_ && randomNum < 0.548){
-                        //if(randomNum < 0.548){
 			lepweight*=getMuonSFBtoF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
 			lepweight*=getMuonSFBtoF()->getScalefactor(fabs(seclep->eta()),seclep->pt());
                         lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
                         }
                         else if (signal_ && randomNum > 0.548){
-                        //else if ( randomNum > 0.548){
                         lepweight*=getMuonSFGH()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
                         lepweight*=getMuonSFGH()->getScalefactor(fabs(seclep->eta()),seclep->pt());
                         lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
@@ -1028,9 +1047,31 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			//lepweight*=getTrackingSF()->getScalefactor(seclep->eta());
 			// tarndt 2016
 		}
+                else if (b_smu_){
+                        mll=30;
+                        firstlep=channelmuons.at(0);
+                        seclep=channelmuons.at(0);
+                        dilp4=leppair->first[0]->p4();
+                        if(signal_ && randomNum < 0.548){
+                        lepweight*=getMuonSFBtoF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        }
+                        else if (signal_ && randomNum > 0.548){
+                        lepweight*=getMuonSFGH()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        }
+                        else if(!signal_ && randomNum < 0.548){
+                        lepweight*=getMuonBGSFBtoF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        lepweight*=getTriggerBGSF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        }
+                        else if(!signal_ && randomNum > 0.548){
+                        lepweight*=getMuonBGSFGH()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        lepweight*=getTriggerBGSF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        }               
+                }
 
 		//channel defined
-		if(firstlep->pt() > seclep->pt()){
+		if(firstlep->pt() > seclep->pt() || b_smu_){
 			leadingptlep=firstlep;
 			secleadingptlep=seclep;
 		}
@@ -1063,11 +1104,18 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		sel_step[2]+=puweight;
 		plots.makeControlPlots(step);
 		zplots.makeControlPlots(step);
+                 
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP2 " << std::endl;
+
 
 		///////// cut on invariant mll mass /// STEP 3 ///////////////////////////////////////
 		step++;
 		if(mll < mllcut)
 			continue;
+
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP3 " << std::endl;
 
 		//now agrohsje added for debugging
 	        //std::cout<<*b_EventNumber.content()<</*" "<<leadingptlep->pt()<<" "<<leadingptlep->eta()<<" "<<secleadingptlep->pt()<<" "<<secleadingptlep->eta()<<*/std::endl;
@@ -1144,6 +1192,10 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		double nmpy=b_Met.content()->p4().Py() + dpy;
 		if(!usemvamet)
 			adjustedmet.setP4(D_LorentzVector(nmpx,nmpy,0,sqrt(nmpx*nmpx+nmpy*nmpy))); //COMMENTED FOR MVA MET
+
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): Got jets+MET " << std::endl;
+
 
 		///////////////combined variables////////////
 
@@ -1384,6 +1436,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			zplots.makeControlPlots(step);
 
 		}
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP4 " << std::endl;
+
 
 
 		///////////////////// at least one jet cut STEP 5 ////////////
@@ -1414,6 +1469,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		if(isZrange){
 			zplots.makeControlPlots(step);
 		}
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP5 " << std::endl;
+
 		//agrohsje debug jet 
 		
 		/*if(*b_EventNumber.content()== 64270328){
@@ -1444,6 +1502,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			zplots.makeControlPlots(step);
 		}
 
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP6 " << std::endl;
+
 
 		//////////////////// MET cut STEP 7//////////////////////////////////
 		step++;
@@ -1468,6 +1529,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		for(size_t i=0;i<selectedjets->size();i++){
 			getBTagSF()->fillEff(selectedjets->at(i),puweight);
 		}
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP7 " << std::endl;
+
 
 		///////////////////// btag cut STEP 8 //////////////////////////
 		step++;
@@ -1476,6 +1540,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		// if(usetopdiscr && topdiscr3<0.9) continue;
 		if(usetopdiscr && lh_toplh<0.3) continue;
 
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): BTagCuts " << std::endl;
+
 		//agrohsje print run and event numbers 
 		//std::cout<< *b_EventNumber.content()<<std::endl;// "  "<< *b_RunNumber.content() <<std::endl;
 
@@ -1483,6 +1550,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 		float mlbmin=0;
 		evt.mlbmin=&mlbmin;
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP8 " << std::endl;
+
 
 		if(analysisMllRange){
 
@@ -1492,11 +1562,18 @@ void  top_analyzer_run2::analyze(size_t anaid){
 				float tmp=(secleadingptlep->p4()+selectedbjets.at(0)->p4()).m();
 				if(mlbmin>tmp)mlbmin=tmp;
 			}
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): before Control Plots " << std::endl;
+
 
 			xsecplots.makeControlPlots(step);
 
 			plots.makeControlPlots(step);
 			sel_step[8]+=puweight;
+
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): after Control Plots " << std::endl;
+
 
 			mlbmtplots_step8.fillPlotsReco();
 			xsecfitplots_step8.fillPlotsReco();
@@ -1625,7 +1702,10 @@ bool top_analyzer_run2::checkTrigger(std::vector<bool> * p_TriggerBools,ztop::NT
 		if(isDilep && p_TriggerBools->at(31) ) return true;
                 if(isSingleEle && ! p_TriggerBools->at(31) && p_TriggerBools->at(36)) return true;
 	}
-	return false;
+        else if (b_smu_){
+                if(p_TriggerBools->at(34)|| p_TriggerBools->at(35)) return true;
+	}
+        return false;
 }
 
 

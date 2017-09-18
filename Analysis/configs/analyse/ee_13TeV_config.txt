@@ -48,13 +48,13 @@ $Sync.root,           t#bar{t},           633,      831.76,         0,      true
    tree_13TeV_tbarW.root,	           tW/#bar{t}W,	   	616,	  35.6,	          4
 
    tree_13TeV_dy1050.root,            DY,                  852,      22635.1,        5  
-   tree_13TeV_dy50inf.root,           DY,                  852,      6025.2,         5 
+   tree_13TeV_dy50inf.root,           DY,                  852,      5765.4,         5 
 
    tree_13TeV_wjets.root,		   Wjets,		413,	  61526,	  2
 
    tree_13TeV_ww.root,		   VV,			390,      118.7,   	  3
-   tree_13TeV_wz.root,		   VV,			390,	  44.9,   	  3
-   tree_13TeV_zz.root,		   VV,			390,	  15.4,	          3  
+   tree_13TeV_wz.root,		   VV,			390,	  47.1,   	  3
+   tree_13TeV_zz.root,		   VV,			390,	  16.5,	          3  
 
 [inputfiles-end]
 
