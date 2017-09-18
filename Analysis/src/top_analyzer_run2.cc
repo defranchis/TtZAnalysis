@@ -704,7 +704,6 @@ void  top_analyzer_run2::analyze(size_t anaid){
                              genleptons1 = tmp_genleptons1;}
                         }
                         if(b_smu_ && tmp_genleptons1.size() ==1 && std::abs(tmp_genleptons1.at(0)->pdgId())==13 ) genleptons1 = tmp_genleptons1;
-                        
                         //else{ genleptons1 = tmp_genleptons1;}
                         
                         //genleptons1=produceCollection(b_GenLeptons1.content(),&genleptons3);
