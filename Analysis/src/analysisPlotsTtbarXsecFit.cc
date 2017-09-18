@@ -175,6 +175,7 @@ void analysisPlotsTtbarXsecFit::fillPlotsGen(){
 	//only fill one bin in some visible part of the histogram to get the total
 	// n_gen and a nice display of PS migrations
 	if(genvisleptons1.size()>1 && (genvisleptons1.at(0)->pt() > 25 || genvisleptons1.at(1)->pt() > 25  )){
+        if(std::abs(genvisleptons1.at(0)->pdgId())==std::abs(genvisleptons1.at(0)->pdgId()) &&(genvisleptons1.at(0)->p4()+genvisleptons1.at(1)->p4()).M() > 76 && (genvisleptons1.at(0)->p4()+genvisleptons1.at(1)->p4()).M()<106 ) return; 
 	        for(size_t i=0;i<total_plots.size();i++){
 			total_plots.at(i)->fillGen(0.5,puweight());
 			//agrohsje changed from 20.5 to 30.5 checked with Jan 
