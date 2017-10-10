@@ -119,6 +119,8 @@ invokeApplication(){
 		else{
 			outname+=".pdf";
 			cv.Print(outname);
+                        outname.ReplaceAll(".pdf",".png"); 
+			cv.Print(outname);
 		}
 
 	}

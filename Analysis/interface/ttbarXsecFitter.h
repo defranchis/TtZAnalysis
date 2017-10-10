@@ -24,7 +24,7 @@ class histoStack;
 class ttbarXsecFitter {
 public:
 	friend class dataset;
-	enum likelihoodmodes{lhm_chi2datastat,lhm_chi2datamcstat,lhm_poissondatastat};
+	enum likelihoodmodes{lhm_chi2datastat,lhm_chi2datamcstat,lhm_poissondatastat,lhm_chi2datafullmcstat};
 
 	enum priors{prior_gauss,prior_box,prior_float,prior_narrowboxleft,prior_narrowboxright,
 		prior_parameterfixed,prior_gaussbroad,prior_narrowboxfsr};
@@ -63,6 +63,7 @@ public:
 
 
 	void setUseMCOnly(bool set){useMConly_=set;}
+	void setFitToVariation(TString var){variationToFit_=var;}
 
 	void setNoMinos(bool nomin){nominos_=nomin;}
 
@@ -420,6 +421,7 @@ private:
 	formatter format_;
 
 	bool useMConly_,removesyst_,nominos_;
+        TString variationToFit_;
 
 	static TRandom3 * random_;
 	bool parameterwriteback_;

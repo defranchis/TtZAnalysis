@@ -40,6 +40,21 @@ void NTBTagSF::changeNTJetTags( std::vector<ztop::NTJet *> &jets)const{
 }
 
 
+float NTBTagSF::getEventWeightSimple( std::vector<ztop::NTJet *> *jets){
+    if(!isMC_ || mode_!=simplereweighting_mode || makesEff()) return 1.;
+    for(size_t i=0;i<jets->size();i++){
+        ztop::NTJet * jet=jets->at(i);
+        countJet(jet->pt(),jet->eta(),jet->getMember(1),jet->btag());
+    }
+    
+    return greaterEqualOneTagSF();
+}
+
+float NTBTagSF::getEventWeightSimple( std::vector<ztop::NTJet *> &jets){
+    return NTBTagSF::getEventWeightSimple(&jets);
+}
+
+
 
 
 

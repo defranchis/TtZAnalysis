@@ -274,8 +274,27 @@ void ttbarXsecFitter::dataset::createContinuousDependencies(){
 		signalshape_nbjet_.push_back(createLeptonJetAcceptance(signalconts_nbjets_,signalpsmigconts_nbjets_,signalvisgenconts_nbjets_, bjetcount));
 		histo1D temp=dataconts_nbjets_.at(it);
 		if(useMConly){
-			temp=signalconts_nbjets_.at(it) + backgroundconts_nbjets_.at(it);
-			temp.setAllErrorsZero(false);
+                //     if (parent_->variationToFit_!=""){
+                //         size_t var_index = (signalconts_nbjets_.at(it) + backgroundconts_nbjets_.at(it)).getSystErrorIndex(parent_->variationToFit_);
+                //         // temp = signalconts_nbjets_.at(it).getSystContainer(var_index) + backgroundconts_nbjets_.at(it).getSystContainer(var_index);
+                //         temp = (signalconts_nbjets_.at(it) + backgroundconts_nbjets_.at(it)).getSystContainer(var_index);
+                //         std::cout<<std::endl;
+                //         std::cout<<"*****************"<<std::endl;
+                //         std::cout<<var_index<<"\t"<<parent_->variationToFit_<<std::endl;
+                //         std::cout<<"*****************"<<std::endl;
+                //         std::cout<<std::endl;
+
+                //     }
+                //     else temp=signalconts_nbjets_.at(it) + backgroundconts_nbjets_.at(it);
+
+                    temp=signalconts_nbjets_.at(it) + backgroundconts_nbjets_.at(it);
+                    if (parent_->variationToFit_!=""){
+                        size_t var_index = temp.getSystErrorIndex(parent_->variationToFit_);
+                        temp = temp.getSystContainer(var_index);
+                        temp.createStatFromContent();
+                        temp.mergeLayers(dataconts_nbjets_.at(it));
+                    }
+                    else temp.setAllErrorsZero(false);
 		}
 
 		variateHisto1D tmpvarc;
@@ -540,8 +559,8 @@ void ttbarXsecFitter::printVariations(size_t bjetcat,size_t datasetidx,const std
 				else
 					tmp=stacks.at(i).getFullMCContainer().produceVariations(sysname,
 							"m_{t}^{MC}=172.5 GeV",
-							"m_{t}^{MC}=178.5 GeV",
-							"m_{t}^{MC}=166.5 GeV");
+							"m_{t}^{MC}=175.5 GeV",
+							"m_{t}^{MC}=169.5 GeV");
 				nominals.push_back(tmp.at(0));
 				ups.push_back(tmp.at(1));
 				downs.push_back(tmp.at(2));
@@ -1704,7 +1723,7 @@ texTabler ttbarXsecFitter::makeSystBreakDownTable(size_t datasetidx,bool detaile
 		xsec=fitter_.getParameter(paraindex);
 	float tableprecision=0.1;
 	if(paraname=="TOPMASS"){
-		xsec*=6;
+		xsec*=3;
 		xsec+=172.5;
 		tableprecision=0.01;
 	}
@@ -1759,7 +1778,7 @@ texTabler ttbarXsecFitter::makeSystBreakDownTable(size_t datasetidx,bool detaile
 			table <<texLine(1);
 		if(sys->pull < 900)
 			table << sys->name << fmt.round( sys->pull, tableprecision)<<
-			fmt.round( sys->constr, 0.1)	<< errstr;
+			fmt.round( sys->constr, 0.01)	<< errstr;
 		else
 			if (detailed) table << sys->name<< ""<<""      << errstr;
                         else table << sys->name<<  errstr;
@@ -1943,6 +1962,8 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
 
 				double backgroundstat=set->background(nbjet).getBinErr(bin);
 
+				double signalstat=set->signalshape(nbjet).getBinErr(bin);
+
 				double data = set->data(nbjet).getBin(bin)->getValue(variations);
 
 				double datastat = set->data(nbjet).getBinErr(bin);
@@ -1967,7 +1988,11 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
 				}
 				else if(lhmode_ ==lhm_chi2datamcstat)	{
 					if((datastat*datastat + backgroundstat*backgroundstat)<=0) continue;
-					out+= (data-predicted)*(data-predicted) / (datastat*datastat + backgroundstat*backgroundstat); //chi2 approach with bg errors
+					out+= (data-predicted)*(data-predicted) / (datastat*datastat + backgroundstat*backgroundstat ); //chi2 approach with bg errors
+				}
+				else if(lhmode_ ==lhm_chi2datafullmcstat)	{
+					if((datastat*datastat + backgroundstat*backgroundstat)<=0) continue;
+					out+= (data-predicted)*(data-predicted) / (datastat*datastat + backgroundstat*backgroundstat + signalstat*signalstat); //chi2 approach with bg errors
 				}
 
 				if(out != out){
@@ -2580,7 +2605,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	float addlumiunc=0;
 	addlumiunc=unclumi_/100;
 	if(!getName().Contains("13TeV"))stack->addGlobalRelMCError("Lumi" ,addlumiunc);
-	//stack->addGlobalRelMCError("Lumi" ,addlumiunc);
+	stack->addGlobalRelMCError("Lumi" ,addlumiunc);
 
 
 	if(debug)

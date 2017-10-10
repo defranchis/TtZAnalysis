@@ -1,17 +1,18 @@
 #!/bin/sh
 
 
-channels=( "ee"
-    "emu"
+channels=( "emu"
+    "ee"
     "mumu"
-#     "smu"
+     # "smu"
+
 );
 ## scale and match variations will be ignored for other top masses then 172.5.. (hardcoded below)
 topmasses=( "172.5"
 
 #      "171.5"
 #      "173.5"
-#agrohsje 
+# #agrohsje 
 #   "175.5"
 #    "169.5"
 
@@ -19,7 +20,8 @@ topmasses=( "172.5"
 #      "166.5"
 );
 #agrohsje 
-#pdfeigenvectors=28 # POWHEG:NNPDF:50; POWHEG:CT10:26; MG5_aMC@NLO:NNPDF:51   # if set to 0, no variation
+
+# pdfeigenvectors=28 # POWHEG:NNPDF:50; POWHEG:CT10:26; MG5_aMC@NLO:NNPDF:51   # if set to 0, no variation
 pdfeigenvectors=0 # POWHEG:NNPDF:50; POWHEG:CT10:26; MG5_aMC@NLO:NNPDF:51   # if set to 0, no variation
 
 systs=(#"nominal"
@@ -324,7 +326,8 @@ for (( i=0;i<${#channels[@]};i++)); do
 		energy=${energies[${k}]}
 
 ##dont run on scale,top pt and matching syst with other top mass
-		if [[ "${syst}" == *"SCALE"* ]] ||  [[ "${syst}" == *"MATCH"* ]] || [[ "${syst}" == *"TOPPT"* ]] ||  [[ "${syst}" == *"_sysnominal"* ]] ||  [[ "${syst}" == *"TT_GEN"* ]]  ||  [[ "${syst}" == *"BJESNUDEC"* ]]  ||  [[ "${syst}" == *"BJESRETUNE"*  ]]
+		# if [[ "${syst}" == *"SCALE"* ]] ||  [[ "${syst}" == *"MATCH"* ]] || [[ "${syst}" == *"TOPPT"* ]] ||  [[ "${syst}" == *"_sysnominal"* ]] ||  [[ "${syst}" == *"TT_GEN"* ]]  ||  [[ "${syst}" == *"BJESNUDEC"* ]]  ||  [[ "${syst}" == *"BJESRETUNE"*  ]]
+                if [[ "${syst}" != "nominal" ]]
 		then
 		    if [[ "${topmass}" != "172.5" ]] 
 		    then
