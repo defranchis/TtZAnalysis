@@ -172,6 +172,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
         isRunEtoF = false;
         isRunFtoG = false;
         isRunH = false;
+        bool isTtbarLike = false;
             
         if(!isMC){
                  if(inputfile_.Contains("RunB") || inputfile_.Contains("RunC") || inputfile_.Contains("RunD")) isRunBtoD=true;
@@ -179,7 +180,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
                  else if(inputfile_.Contains("RunF_v2") || inputfile_.Contains("RunG")) isRunFtoG=true;
                  else if(inputfile_.Contains("RunH") ) isRunH=true;
         }
-
+        else {
+                if(inputfile_.Contains("ttbar")||inputfile_.Contains("tbarW")||inputfile_.Contains("tW")) isTtbarLike=true;
+        }
  
         //std::cout<<isSingleMu<<isDilep<<isSingleEle<<std::endl;
         
@@ -975,7 +978,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			mll=dilp4.M();
 			firstlep=leppair->first[0];
 			seclep=leppair->first[1];
-                        if(signal_){
+                        if(isTtbarLike){
 			lepweight*=getElecSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
 			lepweight*=getElecSF()->getScalefactor(leppair->first[1]->suClu().eta(),seclep->pt());
                         //lepweight*=getElecTrackingSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
@@ -997,22 +1000,22 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			mll=dilp4.M();
 			firstlep=leppair->second[0];
 			seclep=leppair->second[1];
-                        if(signal_ && randomNum < 0.548){
+                        if(isTtbarLike && randomNum < 0.548){
 			lepweight*=getMuonSFBtoF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
 			lepweight*=getMuonSFBtoF()->getScalefactor(fabs(seclep->eta()),seclep->pt());
                         lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
                         }
-                        else if (signal_ && randomNum > 0.548){
+                        else if (isTtbarLike && randomNum > 0.548){
                         lepweight*=getMuonSFGH()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
                         lepweight*=getMuonSFGH()->getScalefactor(fabs(seclep->eta()),seclep->pt());
                         lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
                         }
-                        else if(!signal_ && randomNum < 0.548){
+                        else if(!isTtbarLike && randomNum < 0.548){
                         lepweight*=getMuonBGSFBtoF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
                         lepweight*=getMuonBGSFBtoF()->getScalefactor(fabs(seclep->eta()),seclep->pt());
                         lepweight*=getTriggerBGSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
                         }
-                        else if(!signal_ && randomNum > 0.548){
+                        else if(!isTtbarLike && randomNum > 0.548){
                         lepweight*=getMuonBGSFGH()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
                         lepweight*=getMuonBGSFGH()->getScalefactor(fabs(seclep->eta()),seclep->pt());
                         lepweight*=getTriggerBGSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
@@ -1029,7 +1032,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			mll=dilp4.M();
 			firstlep=leppair->first[0];
 			seclep=leppair->second[0];
-                        if(signal_){
+                        if(isTtbarLike){
 			lepweight*=getElecSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
 			if(randomNum < 0.548)lepweight*=getMuonSFBtoF()->getScalefactor(fabs(seclep->eta()),seclep->pt());
                         else lepweight*=getMuonSFGH()->getScalefactor(fabs(seclep->eta()),seclep->pt());
