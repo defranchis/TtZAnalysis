@@ -688,6 +688,12 @@ invokeApplication(){
         else if(Syst=="TT_BRANCH_down"){
                 ana->addWeightBranch("NTWeight_BranchDown");
         }
+        else if(Syst=="DYSCALE_up"){
+                ana->addWeightBranch("NTWeight_scaleUpDY");
+        }
+        else if(Syst=="DYSCALE_down"){
+                ana->addWeightBranch("NTWeight_scaleDownDY");
+        }
         else if(Syst=="TT_TTTUNE_up"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_tttuneup.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_tttuneup.root");
