@@ -164,6 +164,7 @@ invokeApplication(){
 	else if(energy=="13TeV"){
 		ana= new top_analyzer_run2();
 		ana->addWeightBranch("NTWeight_nominal");
+		ana->addWeightBranch("NTWeight_FragCentral");
 	}
 	else
 		throw std::runtime_error("Undefined Energy! Exit!");
