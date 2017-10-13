@@ -10,10 +10,10 @@ namespace ztop{
 
 class NTBTagSF : public bTagSFBase{
 public:
-    NTBTagSF():bTagSFBase(true),isMC_(true),mode_(randomtagging_mode){}
+    NTBTagSF():bTagSFBase(true),isMC_(true),mode_(simplereweighting_mode){}
     ~NTBTagSF(){}
 
-    enum modes{randomtagging_mode,shapereweighting_mode};
+    enum modes{randomtagging_mode,shapereweighting_mode,simplereweighting_mode};
     void setMode(modes mode){mode_=mode;}
     modes getMode()const{return mode_;}
 
@@ -32,13 +32,15 @@ public:
     void changeNTJetTags( std::vector<ztop::NTJet *> &)const;
     void changeNTJetTags( std::vector<ztop::NTJet *> *)const;
 
+    float getEventWeightSimple ( std::vector<ztop::NTJet *> &);
+    float getEventWeightSimple ( std::vector<ztop::NTJet *> *);
 
     void writeToFile(const std::string&); //! creates and writes histograms
     void readFromFile(const std::string&);  //! reads histograms
 
 
 private:
-    NTBTagSF(const ztop::NTBTagSF&rhs):bTagSFBase(true),isMC_(true),mode_(randomtagging_mode){}
+    NTBTagSF(const ztop::NTBTagSF&rhs):bTagSFBase(true),isMC_(true),mode_(simplereweighting_mode){}
     NTBTagSF& operator=(const ztop::NTBTagSF&rhs){return *this;}
 
     bool isMC_;

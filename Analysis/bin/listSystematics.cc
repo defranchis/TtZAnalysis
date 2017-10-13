@@ -45,17 +45,22 @@ invokeApplication(){
 
 	for(size_t i=0;i<csv.size();i++){
 
-		if(csv.getStack(i).is1D()){
-			std::cout << "nsyst 1D: "   << csv.getStack(i).getSystSize() <<std::endl;
-		}
-		if(csv.getStack(i).is2D()){
-			std::cout << "nsyst 2D: "   << csv.getStack(i).getSystSize() <<std::endl;
+            if (i==0){
+                std::vector<TString> systlist = csv.getStack(i).getSystNameList();
+                for (auto syst : systlist) std::cout<<syst<<std::endl;
+            }
 
-		}
-		if(csv.getStack(i).is1DUnfold()){
-			std::cout << "nsyst 1DUnf: " << csv.getStack(i).getSystSize() <<std::endl;
+		// if(csv.getStack(i).is1D()){
+		// 	std::cout << "nsyst 1D: "   << csv.getStack(i).getSystSize() <<std::endl;
+		// }
+		// if(csv.getStack(i).is2D()){
+		// 	std::cout << "nsyst 2D: "   << csv.getStack(i).getSystSize() <<std::endl;
 
-		}
+		// }
+		// if(csv.getStack(i).is1DUnfold()){
+		// 	std::cout << "nsyst 1DUnf: " << csv.getStack(i).getSystSize() <<std::endl;
+
+		// }
 	}
 	return 0;
 }

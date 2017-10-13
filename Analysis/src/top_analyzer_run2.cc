@@ -707,7 +707,6 @@ void  top_analyzer_run2::analyze(size_t anaid){
                              genleptons1 = tmp_genleptons1;}
                         }
                         if(b_smu_ && tmp_genleptons1.size() ==1 && std::abs(tmp_genleptons1.at(0)->pdgId())==13 ) genleptons1 = tmp_genleptons1;
-                        
                         //else{ genleptons1 = tmp_genleptons1;}
                         
                         //genleptons1=produceCollection(b_GenLeptons1.content(),&genleptons3);
@@ -1284,8 +1283,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		evt.selectedbjets=&selectedbjets;
 		evt.selectednonbjets=&selectednonbjets;
 
+		if(getBTagSF()->getMode() == NTBTagSF::randomtagging_mode) 
+                    getBTagSF()->changeNTJetTags(selectedjets);
 
-		getBTagSF()->changeNTJetTags(selectedjets);
 		for(size_t i=0;i<hardjets.size();i++){
 			if(selectedjets->at(i)->btag() < getBTagSF()->getWPDiscrValue()){
 				//std::cout<<"agrohsje btagging in event " << *b_EventNumber.content() <<" "<<selectedjets->at(i)->pt()<<"  "<<selectedjets->at(i)->btag() <<std::endl;
@@ -1452,6 +1452,12 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		if(getBTagSF()->getMode() == NTBTagSF::shapereweighting_mode){
 			throw std::runtime_error("NTBTagSF::shapereweighting_mode: not impl");
 		}
+		else if(getBTagSF()->getMode() == NTBTagSF::simplereweighting_mode){
+                    puweight *= getBTagSF()->getEventWeightSimple(selectedjets);
+		}
+
+
+
 		if(apllweightsone) puweight=1;
 		//ht+=adjustedmet.met();
 		//double mllj=0;

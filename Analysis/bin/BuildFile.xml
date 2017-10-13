@@ -24,6 +24,9 @@
 <bin name="makeCombination" file="makeCombination.cc" />
 <bin name="displayStatusBar" file="displayStatusBar.cc" />
 
+<bin name="addVariation" file="addVariation.cc" />
+<!-- <bin name="printVariations" file="printVariations.cc" /> -->
+
 <bin name="predicttest" file="predicttest.cc" />
 <bin name="movecontribution" file="movecontribution.cc" />
 

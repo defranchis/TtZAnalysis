@@ -15,6 +15,7 @@
 
 BTAGH,	 	B-tag
 BTAGL,   	Mistag
+BTAG_TOT,       b-tagging
 ELECES, 	Electron energy scale
 ELECSF,		Electron ID, isolation
 JER,		Jet energy resolution
@@ -28,6 +29,17 @@ BG,			Backgrounds
 TT_MATCH,	ME/PS matching
 TT_SCALE,	$Q^{2}$ scale
 LUMI,		Luminosity
+Lumi,		Luminosity
+TT_CR_ALL,  Color reconnection
+ST_MESCALE, tW ME scale
+TT_MESCALE, $t\bar{t}$ ME scale
+TT_TTTUNE, $t\bar{t}$ tune
+TT_BRANCH, $t\bar{t}$ BR
+TT_FRAG, $t\bar{t}$ fragmentation
+TT_FSRSCALE, $t\bar{t}$ FSR scale
+TT_ISRSCALE, $t\bar{t}$ ISR scale
+
+
 
 LEPIDISO,   Lepton ID/isolation
 LES,        Lepton energy scale
@@ -77,7 +89,7 @@ TT_GENPOWPY,    MG+PY $\rightarrow$ PH+PY
 TT_GENMCATNLO,  NLO generator 
 
 BG_tW/#bar{t}W#rightarrowll, Single top background
-BG_tW/bartW, Single top background
+BG_tW/bartW, tW background
 BG_VV, Diboson background
 BG_t#bar{t}bg, $t\bar{t}$ background
 BG_Wjets,  W+jets background

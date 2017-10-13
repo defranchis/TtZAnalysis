@@ -26,10 +26,11 @@ invokeApplication(){
 
 	parser->bepicky=true;
 	const TString lhmode = parser->getOpt<TString>("m","poissondata",
-			"modes for the likelihood assumption in the fit.  possible: chi2data, chi2datamc, poissondata default: poissondata");
+			"modes for the likelihood assumption in the fit.  possible: chi2data, chi2datamc, chi2datafullmc, poissondata default: poissondata");
 	const TString inputconfig = parser->getOpt<TString>("i","ttbarXsecFitter_mll.txt","input config (located in TtZAnalysis/Analysis/configs");
 	const bool onlyMC=parser->getOpt<bool>("-onlyMC",false,"use plain MC, no data. Compare sum(MC) to MC. useful to check if a fit could work theoretically");
-	if(lhmode!="chi2datamc" && lhmode!="chi2data" && lhmode!="poissondata"){
+	const TString fitToVariation=parser->getOpt<TString>("-fitToVariation","","fit to MC variation");
+	if(lhmode!="chi2datamc" && lhmode!="chi2data" && lhmode!="poissondata" && lhmode!="chi2datafullmc"){
 		parser->coutHelp();
 		exit(-1);
 	}
@@ -83,16 +84,22 @@ invokeApplication(){
 		mainfitter.setLikelihoodMode(ttbarXsecFitter::lhm_chi2datastat);
 	if(lhmode=="poissondata")
 		mainfitter.setLikelihoodMode(ttbarXsecFitter::lhm_poissondatastat);
+	if(lhmode=="chi2datafullmc")
+		mainfitter.setLikelihoodMode(ttbarXsecFitter::lhm_chi2datafullmcstat);
 
 	if(topmass)
 		mainfitter.setReplaceTopMass(topmass);
 
 	mainfitter.setExcludeZeroBjetBin(exclude0bjetbin);
 	mainfitter.setUseMCOnly(onlyMC);
-	mainfitter.setNoMinos(nominos);
+        mainfitter.setFitToVariation(fitToVariation);	
+        mainfitter.setNoMinos(nominos);
 	mainfitter.setNoSystBreakdown((onlytotalerror));
 	mainfitter.setIgnorePriors(!fitsystematics);
 	mainfitter.setRemoveSyst(!fitsystematics);
+
+	
+        
 
 	//extendedVariable::debug=true;
 	ttbarXsecFitter::debug=debug;

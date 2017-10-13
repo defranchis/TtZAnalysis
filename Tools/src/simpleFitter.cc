@@ -398,7 +398,10 @@ texTabler simpleFitter::makeCorrTable() const{
 		for(size_t i=0;i<corr.getBinsX().size()-1;i++){
 			//names
 			if(i && !j)
-				tab << "";//Formatter.translateName(parameternames_.at(i-1));
+                            // tab << "";//Formatter.translateName(parameternames_.at(i-1));
+                            if(paranames_.size()>i-1)
+                                tab << paranames_.at(i-1);
+                            else tab << "";
 			else if(j && !i)
 				if(paranames_.size()>j-1)
 					tab << paranames_.at(j-1);
@@ -406,15 +409,16 @@ texTabler simpleFitter::makeCorrTable() const{
 					tab<< "";
 			else if (!j && !i)
 				tab << "";
-			else if(i<=j){
+			// else if(i<=j){
+			else{
 				float content=corr.getBinContent(i,j);
 				if(fabs(content)<0.3)
 					tab << Formatter.toFixedCommaTString(corr.getBinContent(i,j),0.01);
 				else
 					tab <<  "\\textbf{" +Formatter.toFixedCommaTString(corr.getBinContent(i,j),0.01) +"}";
 			}
-			else
-				tab << "";
+			// else
+			// 	tab << "";
 		}
 		tab<<texLine(); //row done
 	}
