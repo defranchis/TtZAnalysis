@@ -15,6 +15,7 @@
 #include <stdexcept>
 #include "TFile.h"
 
+#include "TtZAnalysis/DataFormats/interface/NTElectron.h"
 
 namespace ztop{
 
@@ -23,7 +24,7 @@ public:
 
 	enum systematics{sys_up,sys_down,sys_nominal};
 
-	scalefactors(): h(0), isth2d_(false), isMC_(false), syst_(sys_nominal), rangecheck_(true),isglobal_(false),glsf_(0),glsfup_(0),glsfd_(0),switchedoff_(false){}
+scalefactors(): h(0), isth2d_(false), isMC_(false), syst_(sys_nominal), rangecheck_(true),isglobal_(false),glsf_(0),glsfup_(0),glsfd_(0),switchedoff_(false){}
 	scalefactors(const scalefactors&);
 	scalefactors& operator = (const scalefactors& );
 	~scalefactors(){}
@@ -41,6 +42,9 @@ public:
 	bool isSystematicsDown(){return ( syst_ == sys_down);}
 
 	double getScalefactor(double xval,double yval=0)const;
+
+        float getElectronESFactor( NTElectron* ele ) const;
+        float getElectronERFactor( NTElectron* ele ) const;
 
 private:
 	TH1D th1d_,th1derrup_,th1derrdown_;

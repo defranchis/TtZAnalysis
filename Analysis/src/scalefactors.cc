@@ -243,5 +243,19 @@ void scalefactors::copyFrom(const scalefactors& rhs){
 	setHistPointer();
 }
 
+float scalefactors::getElectronESFactor( NTElectron* ele )const{
+    if(switchedoff_ || !isMC_ || syst_==sys_nominal ) return 1.;
+    else if (syst_==sys_up) return ele->getMember(1);
+    else if (syst_==sys_down) return ele->getMember(2);
+    else return -99999.;
+}
+
+float scalefactors::getElectronERFactor( NTElectron* ele )const{
+    if(switchedoff_ || !isMC_ || syst_==sys_nominal ) return 1.;
+    else if (syst_==sys_up) return ele->getMember(3);
+    else if (syst_==sys_down) return ele->getMember(4);
+    else return -99999.;
+}
+
 }
 
