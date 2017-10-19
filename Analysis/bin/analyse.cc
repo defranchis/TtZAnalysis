@@ -227,8 +227,9 @@ invokeApplication(){
 	if(elecEnsffile.EndsWith("DEFFILEWILDCARDDONTREMOVE")){
 		if(energy == "7TeV" || energy == "8TeV")
 			ana->getElecEnergySF()->setGlobal(1,0.15,0.15);
-		else if(energy == "13TeV")
-			ana->getElecEnergySF()->setGlobal(1,1.0,1.0);
+		// else if(energy == "13TeV")
+		// 	ana->getElecEnergySF()->setGlobal(1,1.0,1.0);
+
 	}
 	else{
 		ana->getElecEnergySF()->setInput(elecEnsffile,elecEnsfhisto);
@@ -422,6 +423,12 @@ invokeApplication(){
 	}
 	else if(Syst=="ELECES_down"){
 		ana->getElecEnergySF()->setSystematics("down");
+	}
+	else if(Syst=="ELECER_up"){
+		ana->getElecEnergyResolutionSF()->setSystematics("up");
+	}
+	else if(Syst=="ELECER_down"){
+		ana->getElecEnergyResolutionSF()->setSystematics("down");
 	}
 	else if(Syst=="JES_up"){
 		ana->getJECUncertainties()->setSystematics("up");

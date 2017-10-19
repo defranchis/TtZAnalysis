@@ -268,6 +268,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		getTriggerSF()->setSystematics("nom");
 
 		getElecEnergySF()->setSystematics("nom");
+		getElecEnergyResolutionSF()->setSystematics("nom");
 		getElecSF()->setSystematics("nom");
 		getMuonEnergySF()->setSystematics("nom");
 		getMuonSF()->setSystematics("nom");
@@ -426,8 +427,10 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 	//some global checks
 	getElecEnergySF()->setRangeCheck(false);
+	getElecEnergyResolutionSF()->setRangeCheck(false);
 	getMuonEnergySF()->setRangeCheck(false);
 	getElecEnergySF()->setIsMC(isMC);
+	getElecEnergyResolutionSF()->setIsMC(isMC);
 	getMuonEnergySF()->setIsMC(isMC);
 
 	//REMOVE AGAIN OR DO PROPERLY !!! 
@@ -830,9 +833,13 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		for(size_t i=0;i<b_Electrons.content()->size();i++){
 			NTElectron * elec=&(b_Electrons.content()->at(i));
 			float ensf=1;
-			if(isMC)
-				ensf=getElecEnergySF()->getScalefactor(elec->eta());
-
+			if(isMC){
+                            // ensf=getElecEnergySF()->getScalefactor(elec->eta());
+                            ensf=getElecEnergySF()->getElectronESFactor(elec);
+                            ensf*=getElecEnergyResolutionSF()->getElectronERFactor(elec);
+                            // std::cout<<"Ele ES SF = "<<getElecEnergySF()->getElectronESFactor(elec)<<std::endl;
+                            // std::cout<<"Ele ER SF = "<<getElecEnergyResolutionSF()->getElectronERFactor(elec)<<std::endl;
+                        }
 			//elec->setECalP4(elec->ECalP4() * ensf);
 			elec->setP4(elec->p4() * ensf); //both the same now!!
 		      	/*if (*b_EventNumber.content() ==19458568 ) {
