@@ -19,15 +19,15 @@ topmasses=( "172.5"
 #      "166.5"
 );
 #agrohsje 
-pdfeigenvectors=28 # POWHEG:NNPDF:50; POWHEG:CT10:26; MG5_aMC@NLO:NNPDF:51   # if set to 0, no variation
-# pdfeigenvectors=0 # POWHEG:NNPDF:50; POWHEG:CT10:26; MG5_aMC@NLO:NNPDF:51   # if set to 0, no variation
+# pdfeigenvectors=28 # POWHEG:NNPDF:50; POWHEG:CT10:26; MG5_aMC@NLO:NNPDF:51   # if set to 0, no variation
+pdfeigenvectors=0 # POWHEG:NNPDF:50; POWHEG:CT10:26; MG5_aMC@NLO:NNPDF:51   # if set to 0, no variation
 
 systs=(
 
 "nominal"
 
-agrohsje 
-	for testing	
+# agrohsje 
+# 	for testing	
 
 
     "TRIGGER_up"
@@ -49,6 +49,9 @@ agrohsje
 
     "ELECES_up"
     "ELECES_down"
+    "ELECER_up"
+    "ELECER_down"
+
     "MUONES_up"
     "MUONES_down"
 
