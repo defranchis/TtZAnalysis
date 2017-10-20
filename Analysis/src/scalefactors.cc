@@ -257,5 +257,34 @@ float scalefactors::getElectronERFactor( NTElectron* ele )const{
     else return -99999.;
 }
 
+float scalefactors::getElectronESERFactorFromEnvelope( NTElectron* ele )const{
+    if(switchedoff_ || !isMC_ || syst_==sys_nominal ) return 1.;
+    else if (syst_==sys_up){
+        float temp_sf = 1.;
+        if (ele->getMember(1) > temp_sf) temp_sf = ele->getMember(1);
+        if (ele->getMember(2) > temp_sf) temp_sf = ele->getMember(2);
+        if (ele->getMember(3) > temp_sf) temp_sf = ele->getMember(3);
+        if (ele->getMember(4) > temp_sf) temp_sf = ele->getMember(4);
+        if (ele->getMember(1)*ele->getMember(3) > temp_sf) temp_sf = ele->getMember(1)*ele->getMember(3);
+        if (ele->getMember(1)*ele->getMember(4) > temp_sf) temp_sf = ele->getMember(1)*ele->getMember(4);
+        if (ele->getMember(2)*ele->getMember(3) > temp_sf) temp_sf = ele->getMember(2)*ele->getMember(3);
+        if (ele->getMember(2)*ele->getMember(4) > temp_sf) temp_sf = ele->getMember(2)*ele->getMember(4);
+        return temp_sf;
+    }
+    else if (syst_==sys_down){
+        float temp_sf = 1.;
+        if (ele->getMember(1) < temp_sf) temp_sf = ele->getMember(1);
+        if (ele->getMember(2) < temp_sf) temp_sf = ele->getMember(2);
+        if (ele->getMember(3) < temp_sf) temp_sf = ele->getMember(3);
+        if (ele->getMember(4) < temp_sf) temp_sf = ele->getMember(4);
+        if (ele->getMember(1)*ele->getMember(3) < temp_sf) temp_sf = ele->getMember(1)*ele->getMember(3);
+        if (ele->getMember(1)*ele->getMember(4) < temp_sf) temp_sf = ele->getMember(1)*ele->getMember(4);
+        if (ele->getMember(2)*ele->getMember(3) < temp_sf) temp_sf = ele->getMember(2)*ele->getMember(3);
+        if (ele->getMember(2)*ele->getMember(4) < temp_sf) temp_sf = ele->getMember(2)*ele->getMember(4);
+        return temp_sf;
+    }
+    else return -99999.;
+}
+
 }
 
