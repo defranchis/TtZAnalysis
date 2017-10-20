@@ -239,8 +239,8 @@ invokeApplication(){
 		//https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonReferenceResolution
 		//this is for muons without the corrections so it should be even better with
 		ana->getMuonEnergySF()->setGlobal(1,0.3,0.3); //new from muon POG twiki
-	else if(energy == "13TeV")
-		ana->getMuonEnergySF()->setGlobal(1,0.5,0.5);
+	// else if(energy == "13TeV")
+	// 	ana->getMuonEnergySF()->setGlobal(1,0.5,0.5);
 
 	ana->getTopPtReweighter()->setFunction(reweightfunctions::toppt_2016);
 	ana->getTopPtReweighter()->setSystematics(reweightfunctions::nominal);

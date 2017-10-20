@@ -773,8 +773,11 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		evt.isomuons=&isomuons;
 		for(size_t i=0;i<b_Muons.content()->size();i++){
 			NTMuon* muon = & b_Muons.content()->at(i);
-			if(isMC)
-				muon->setP4(muon->p4() * getMuonEnergySF()->getScalefactor(muon->eta()));
+			if(isMC){
+				// muon->setP4(muon->p4() * getMuonEnergySF()->getScalefactor(muon->eta()));
+				muon->setP4(muon->p4() * getMuonEnergySF()->getMuonRochesterFactorFromEnvelope(muon) );
+                        }
+                        // std::cout<<"muon Rochester SF from envelope = "<<getMuonEnergySF()->getMuonRochesterFactorFromEnvelope(muon)<<std::endl;
 			allleps << muon;
 			/*if (*b_EventNumber.content() ==19458568){
 			  std::cout<<*b_EventNumber.content() 
