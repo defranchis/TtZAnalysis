@@ -49,8 +49,8 @@ systs=(
 
     "ELECES_up"
     "ELECES_down"
-    "ELECER_up"
-    "ELECER_down"
+   # "ELECER_up"
+   # "ELECER_down"
 
     "MUONES_up"
     "MUONES_down"
