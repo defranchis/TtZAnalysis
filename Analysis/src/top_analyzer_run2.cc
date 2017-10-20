@@ -835,11 +835,15 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			float ensf=1;
 			if(isMC){
                             // ensf=getElecEnergySF()->getScalefactor(elec->eta());
-                            ensf=getElecEnergySF()->getElectronESFactor(elec);
-                            ensf*=getElecEnergyResolutionSF()->getElectronERFactor(elec);
+                            // ensf=getElecEnergySF()->getElectronESFactor(elec);
+                            // ensf*=getElecEnergyResolutionSF()->getElectronERFactor(elec);
                             // std::cout<<"Ele ES SF = "<<getElecEnergySF()->getElectronESFactor(elec)<<std::endl;
                             // std::cout<<"Ele ER SF = "<<getElecEnergyResolutionSF()->getElectronERFactor(elec)<<std::endl;
+                            ensf=getElecEnergySF()->getElectronESERFactorFromEnvelope(elec);
+                            // std::cout<<"Elec ESER SF envelope = "<<getElecEnergySF()->getElectronESFactor(elec)<<std::endl;
+
                         }
+                            // std::cout<<"Elec ESER SF envelope = "<<getElecEnergySF()->getElectronESERFactorFromEnvelope(elec)<<std::endl;
 			//elec->setECalP4(elec->ECalP4() * ensf);
 			elec->setP4(elec->p4() * ensf); //both the same now!!
 		      	/*if (*b_EventNumber.content() ==19458568 ) {
