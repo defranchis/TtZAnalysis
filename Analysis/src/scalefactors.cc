@@ -286,5 +286,28 @@ float scalefactors::getElectronESERFactorFromEnvelope( NTElectron* ele )const{
     else return -99999.;
 }
 
+float scalefactors::getMuonRochesterFactorFromEnvelope( NTMuon* muon ) const{
+    if(switchedoff_ || !isMC_ || syst_==sys_nominal ) return 1.;
+    else if (syst_==sys_up){
+        float temp_sf = 1.;
+        for (int iVar = 2; iVar < 7; ++iVar){
+            if ( muon->getMember(iVar) > temp_sf ) temp_sf = muon->getMember(iVar);
+        }
+        temp_sf = sqrt( (1-temp_sf)*(1-temp_sf) + (1-muon->getMember(0))*(1-muon->getMember(0)) );
+        temp_sf += 1.;
+        return temp_sf;
+    }
+    else if (syst_==sys_down){
+        float temp_sf = 1.;
+        for (int iVar = 2; iVar < 7; ++iVar){
+            if ( muon->getMember(iVar) < temp_sf ) temp_sf = muon->getMember(iVar);
+        }
+        temp_sf = sqrt( (1-temp_sf)*(1-temp_sf) + (1-muon->getMember(1))*(1-muon->getMember(1)) );
+        temp_sf = 1-temp_sf;
+        return temp_sf;
+    }
+    else return -99999.;
+}
+
 }
 

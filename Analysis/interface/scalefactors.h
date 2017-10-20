@@ -16,6 +16,7 @@
 #include "TFile.h"
 
 #include "TtZAnalysis/DataFormats/interface/NTElectron.h"
+#include "TtZAnalysis/DataFormats/interface/NTMuon.h"
 
 namespace ztop{
 
@@ -46,6 +47,8 @@ scalefactors(): h(0), isth2d_(false), isMC_(false), syst_(sys_nominal), rangeche
         float getElectronESFactor( NTElectron* ele ) const;
         float getElectronERFactor( NTElectron* ele ) const;
         float getElectronESERFactorFromEnvelope( NTElectron* ele ) const;
+
+        float getMuonRochesterFactorFromEnvelope( NTMuon* muon ) const;
 
 
 private:
