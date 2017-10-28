@@ -1439,8 +1439,9 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		xsec=fitter_.getParameter(paraindex);
 	float parfullvarmulti=1;
 	if(paraname=="TOPMASS"){
+                xsec*=3;
 		xsec+=172.5;
-		parfullvarmulti=6;
+		parfullvarmulti=3;
 	}
 	//read in merge stuff
 	fileReader fr;
@@ -2606,6 +2607,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	addlumiunc=unclumi_/100;
 	if(!getName().Contains("13TeV"))stack->addGlobalRelMCError("Lumi" ,addlumiunc);
 	stack->addGlobalRelMCError("Lumi" ,addlumiunc);
+	// stack->addGlobalRelBGError("Lumi_BG" ,addlumiunc);
 
 
 	if(debug)
