@@ -675,11 +675,9 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 	if(!nominos_){
 		for(size_t i=0;i<datasets_.size();i++)
 			fitter_.setAsMinosParameter(datasets_.at(i).xsecIdx());
-		if((TString)getenv("USER")=="kiesej"){
-			if(masspos < parameternames_.size() && priors_.at(masspos)!=prior_parameterfixed ){
-				fitter_.setAsMinosParameter(masspos);
-			}
-		}
+                if(masspos < parameternames_.size() && priors_.at(masspos)!=prior_parameterfixed ){
+                    fitter_.setAsMinosParameter(masspos);
+                }
 		else{
 			masspos=parameternames_.size();
 		}
