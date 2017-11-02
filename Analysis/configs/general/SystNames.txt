@@ -18,13 +18,16 @@ BTAGL,   	Mistag
 BTAG_TOT,       b-tagging
 ELECES, 	Electron energy scale
 ELECSF,		Electron ID, isolation
+ELECSF_ALL,	Electron ID, isolation
 JER,		Jet energy resolution
 JES,		Jet energy scale
 MUONES,		Muon energy scale
 MUONSF,		Muon ID, isolation
+MUONSF_ALL,	Muon ID, isolation
 PU,			Pile-up
 TOPPT,		Top $p_{T}$
 TRIGGER,	Trigger
+TRIGGERSF,	Trigger
 BG,			Backgrounds
 TT_MATCH,	ME/PS matching
 TT_SCALE,	$Q^{2}$ scale
@@ -33,11 +36,12 @@ Lumi,		Luminosity
 TT_CR_ALL,  Color reconnection
 ST_MESCALE, tW ME scale
 TT_MESCALE, $t\bar{t}$ ME scale
+DYSCALE, DY ME scale
 TT_TTTUNE, $t\bar{t}$ tune
-TT_BRANCH, $t\bar{t}$ BR
-TT_FRAG, $t\bar{t}$ fragmentation
-TT_FSRSCALE, $t\bar{t}$ FSR scale
-TT_ISRSCALE, $t\bar{t}$ ISR scale
+TT_BRANCH, B-hadron BR
+TT_FRAG,  fragmentation
+TT_FSRSCALE, $t\bar{t}$/tW FSR scale
+TT_ISRSCALE, $t\bar{t}$/tW ISR scale
 
 
 
@@ -49,7 +53,7 @@ JEC_residuals,          JES: Residual corrections
 JES_AbsoluteMPFBias,			JES: MPF
 JES_RelativeFSR, 	    JES: Intercalibration
 JES_CorrelationGroupbJES,				JES: b-JES
-JES_Flavor,				JES: Flavor
+JES_Flavor,				JES: Flavor response
 JES_Uncorrelated,		JES: Uncorrelated
 JES_PileupPt,           JES: Pileup
 
@@ -73,8 +77,10 @@ JES_RelativeStatHF , JES: Relative Stat HF
 JES_SinglePionECAL , JES: Single pion ECAL
 JES_SinglePionHCAL , JES: Single pion HCAL
 JES_Time , JES: Time
-  JES_FlavorPureBottom, JES: Flavor ($b$)
-  JES_FlavorPureQuark,  JES: Flavor (light)
+JES_FlavorPureBottom, JES: Flavor ($b$)
+JES_FlavorPureQuark,  JES: Flavor ($uds$)
+JES_FlavorPureGluon,  JES: Flavor ($g$)
+JES_FlavorPureCharm,  JES: Flavor ($c$)
 
 JES, Jet energy scale
 
