@@ -40,6 +40,7 @@ invokeApplication(){
 	const TString pseudoOpts = parser->getOpt<TString>("-pdopts","",
 			"additional options for pseudodata: Gaus: use Gaussian random distribution ");
 	const bool fitsystematics =! parser->getOpt<bool>("-nosyst",false,"removes systematics");
+	const bool onlyemu = parser->getOpt<bool>("-emu",false,"fit only emu channel");
 	const bool onlytotalerror = parser->getOpt<bool>("-onlytotal",false,"no syst breakdown");
 	const bool onlycontrolplots = parser->getOpt<bool>("-onlycontrol",false,"only control plots");
 	const bool nominos = parser->getOpt<bool>("-nominos",false,"switches off systematics breakdown");
@@ -266,7 +267,7 @@ invokeApplication(){
 				std::cout << "creating pseudo experiments...\n" <<std::endl;
 			bool succ=true;
 			try{
-				mainfitter.fit(xsecs,errup,errdown);
+                               mainfitter.fit(xsecs,errup,errdown);
 			}catch(...){
 				failcount++;
 				succ=false;
@@ -296,7 +297,7 @@ invokeApplication(){
 
 			const std::vector<float> & par=mainfitter.tempdata;
 			for(size_t i=0;i<par.size();i++){
-				abspull.fill(par.at(i)*6); //HARDCODED
+				abspull.fill(par.at(i)*3); //HARDCODED
 				double stat=(std::max(fabs(par.at(i+1)),fabs(par.at(i+2))));
 				double pull = par.at(i) / stat;
 				if(!i){
@@ -340,7 +341,8 @@ invokeApplication(){
 
 			TCanvas * cv=new TCanvas();
 			plotterMultiplePlots plm;
-			plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/multiplePlots_pulls.txt");
+                        if (tmpcheck) plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/multiplePlots_pulls_mass.txt");
+                        else plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/multiplePlots_pulls.txt");
 			plm.usePad(cv);
 			plm.addPlot(c);
 			plm.setLastNoLegend();
@@ -509,7 +511,8 @@ invokeApplication(){
 		for(size_t ndts=0;ndts<mainfitter.nDatasets();ndts++){
 			std::string infile="emu_";
 			infile+=mainfitter.datasetName(ndts).Data();
-			infile+="_172.5_nominal_syst.ztop";
+			if (tmpcheck && onlyemu) infile+="_172.5_nominal_syst_mtop.ztop";
+			else infile+="_172.5_nominal_syst.ztop";
 			std::string dir=outfile.Data();
 			dir+="_emu_";
 			dir+=mainfitter.datasetName(ndts).Data();
@@ -517,7 +520,8 @@ invokeApplication(){
 			dir+="/";
 			mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots.txt",dir);
 		}
-                for(size_t ndts=0;ndts<mainfitter.nDatasets();ndts++){
+                if (!onlyemu){
+                    for(size_t ndts=0;ndts<mainfitter.nDatasets();ndts++){
                         std::string infile="mumu_";
                         infile+=mainfitter.datasetName(ndts).Data();
                         infile+="_172.5_nominal_syst.ztop";
@@ -527,8 +531,8 @@ invokeApplication(){
                         system(("mkdir -p "+dir).data());
                         dir+="/";
                         mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots.txt",dir);
-                }
-                for(size_t ndts=0;ndts<mainfitter.nDatasets();ndts++){
+                    }
+                    for(size_t ndts=0;ndts<mainfitter.nDatasets();ndts++){
                         std::string infile="ee_";
                         infile+=mainfitter.datasetName(ndts).Data();
                         infile+="_172.5_nominal_syst.ztop";
@@ -538,8 +542,8 @@ invokeApplication(){
                         system(("mkdir -p "+dir).data());
                         dir+="/";
                         mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots.txt",dir);
+                    }
                 }
-            
 	}
 	std::cout << "fitTtBarXsec done" << std::endl;
 	return 0;
