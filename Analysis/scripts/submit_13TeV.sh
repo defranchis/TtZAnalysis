@@ -19,8 +19,8 @@ topmasses=( "172.5"
 #      "166.5"
 );
 #agrohsje 
-# pdfeigenvectors=28 # POWHEG:NNPDF:50; POWHEG:CT10:26; MG5_aMC@NLO:NNPDF:51   # if set to 0, no variation
-pdfeigenvectors=0 # POWHEG:NNPDF:50; POWHEG:CT10:26; MG5_aMC@NLO:NNPDF:51   # if set to 0, no variation
+pdfeigenvectors=28 # POWHEG:NNPDF:50; POWHEG:CT10:26; MG5_aMC@NLO:NNPDF:51   # if set to 0, no variation
+# pdfeigenvectors=0 # POWHEG:NNPDF:50; POWHEG:CT10:26; MG5_aMC@NLO:NNPDF:51   # if set to 0, no variation
 
 systs=(
 
@@ -46,11 +46,14 @@ systs=(
     "TRIGGERBGSF_up"
     "TRIGGERBGSF_down"
 
-
     "ELECES_up"
     "ELECES_down"
-   # "ELECER_up"
-   # "ELECER_down"
+
+    "ELECER_up"
+    "ELECER_down"
+
+    "DYSCALE_up"
+    "DYSCALE_down"
 
     "MUONES_up"
     "MUONES_down"
@@ -61,11 +64,17 @@ systs=(
     "JER_up"
     "JER_down"
 
-# #######JES groups according to toplhcwg use INSTEAD of global JES_up/down
+# # #######JES groups according to toplhcwg use INSTEAD of global JES_up/down
+
+    "JES_FlavorPureGluon_up"
+    "JES_FlavorPureQuark_up"
+    "JES_FlavorPureCharm_up"
+    "JES_FlavorPureBottom_up"
+
 
     "JES_AbsoluteMPFBias_up"   
 
-    "JES_FlavorQCD_up"
+    # "JES_FlavorQCD_up"
 
     "JES_RelativeFSR_up"
     "JES_RelativeStatFSR_up"
@@ -95,11 +104,16 @@ systs=(
 ##    "JES_PileUpPtHF_up"
 
 
-# ##down
+# # ##down
+
+    "JES_FlavorPureGluon_down"
+    "JES_FlavorPureQuark_down"
+    "JES_FlavorPureCharm_down"
+    "JES_FlavorPureBottom_down"
 
     "JES_AbsoluteMPFBias_down"	
 
-    "JES_FlavorQCD_down"
+    # "JES_FlavorQCD_down"
 
     "JES_RelativeFSR_down"
     "JES_RelativeStatFSR_down"
@@ -130,8 +144,7 @@ systs=(
 
 
 
-# ########
-
+# # ########
 
     "BTAGH_up"
     "BTAGH_down"
@@ -160,6 +173,10 @@ systs=(
     "TT_FRAG_up"
     "TT_BRANCH_down"
     "TT_BRANCH_up"
+
+    "TT_FRAG_PETERSON_down"
+    "TT_FRAG_PETERSON_up"
+
 
     "TT_CRGLUON_up"
     "TT_CRGLUON_down"
