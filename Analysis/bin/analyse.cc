@@ -164,7 +164,6 @@ invokeApplication(){
 	else if(energy=="13TeV"){
 		ana= new top_analyzer_run2();
 		ana->addWeightBranch("NTWeight_nominal");
-		ana->addWeightBranch("NTWeight_FragCentral");
 	}
 	else
 		throw std::runtime_error("Undefined Energy! Exit!");
@@ -289,8 +288,22 @@ invokeApplication(){
 		ana->setBTagMCEffFile(outdir+"/btag_dummy");
 	}
 
+        if(Syst=="TT_FRAG_up"){
+                ana->addWeightBranch("NTWeight_FragUp");
+        }
+        else if(Syst=="TT_FRAG_down"){
+                ana->addWeightBranch("NTWeight_FragDown");
+        }
+        else if(Syst=="TT_FRAG_PETERSON_up"){
+                ana->addWeightBranch("NTWeight_FragPeterson");
+        }
+        else {
+		ana->addWeightBranch("NTWeight_FragCentral");
+        }
+
+
 	if(Syst=="nominal"){
-		//all already defined
+            // do nothing
 	}
 	///sys nominals...
 	else if(Syst=="P11_sysnominal"){
@@ -684,10 +697,16 @@ invokeApplication(){
                 ana->addWeightBranch("NTWeight_scaleDown");
         }
         else if(Syst=="TT_FRAG_up"){
-                ana->addWeightBranch("NTWeight_FragUp");
+            // already done
         }
         else if(Syst=="TT_FRAG_down"){
-                ana->addWeightBranch("NTWeight_FragDown");
+            // already done
+        }
+        else if(Syst=="TT_FRAG_PETERSON_up"){
+            // already done
+        }
+        else if(Syst=="TT_FRAG_PETERSON_down"){
+            // already done
         }
         else if(Syst=="TT_BRANCH_up"){
                 ana->addWeightBranch("NTWeight_BranchUp");
