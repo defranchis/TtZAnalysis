@@ -245,15 +245,45 @@ void scalefactors::copyFrom(const scalefactors& rhs){
 
 float scalefactors::getElectronESFactor( NTElectron* ele )const{
     if(switchedoff_ || !isMC_ || syst_==sys_nominal ) return 1.;
-    else if (syst_==sys_up) return ele->getMember(1);
-    else if (syst_==sys_down) return ele->getMember(2);
+    else if (syst_==sys_up){
+        if (ele->getMember(3) < ele->getMember(4)) return 1./ele->getMember(3);
+        else return 1./ele->getMember(4);
+    }
+    else if (syst_==sys_down){
+        if (ele->getMember(3) > ele->getMember(4)) return 1./ele->getMember(3);
+        else return 1./ele->getMember(4);
+    }
     else return -99999.;
 }
 
+float scalefactors::getElectronESFactorUp( NTElectron* ele )const{
+    if (ele->getMember(3) < ele->getMember(4)) return 1./ele->getMember(3);
+    else return 1./ele->getMember(4);
+}
+float scalefactors::getElectronESFactorDown( NTElectron* ele )const{
+    if (ele->getMember(3) > ele->getMember(4)) return 1./ele->getMember(3);
+    else return 1./ele->getMember(4);
+}
+
+
 float scalefactors::getElectronERFactor( NTElectron* ele )const{
     if(switchedoff_ || !isMC_ || syst_==sys_nominal ) return 1.;
-    else if (syst_==sys_up) return ele->getMember(3);
-    else if (syst_==sys_down) return ele->getMember(4);
+    else if (syst_==sys_up){
+        float temp_sf = 1.;
+        if (ele->getMember(1) < temp_sf) temp_sf = ele->getMember(1);
+        if (ele->getMember(2) < temp_sf) temp_sf = ele->getMember(2);
+        if (ele->getMember(5) < temp_sf) temp_sf = ele->getMember(5);
+        if (ele->getMember(6) < temp_sf) temp_sf = ele->getMember(6);
+        return 1./temp_sf;
+    }
+    else if (syst_==sys_down){
+        float temp_sf = 1.;
+        if (ele->getMember(1) > temp_sf) temp_sf = ele->getMember(1);
+        if (ele->getMember(2) > temp_sf) temp_sf = ele->getMember(2);
+        if (ele->getMember(5) > temp_sf) temp_sf = ele->getMember(5);
+        if (ele->getMember(6) > temp_sf) temp_sf = ele->getMember(6);
+        return 1./temp_sf;
+    }
     else return -99999.;
 }
 

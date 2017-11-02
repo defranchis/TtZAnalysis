@@ -50,6 +50,8 @@ scalefactors(): h(0), isth2d_(false), isMC_(false), syst_(sys_nominal), rangeche
 
         float getMuonRochesterFactorFromEnvelope( NTMuon* muon ) const;
 
+        float getElectronESFactorUp( NTElectron* ele ) const;
+        float getElectronESFactorDown( NTElectron* ele ) const;
 
 private:
 	TH1D th1d_,th1derrup_,th1derrdown_;
