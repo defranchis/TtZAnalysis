@@ -40,6 +40,7 @@ DYSCALE, DY ME scale
 TT_TTTUNE, UE tune
 TT_BRANCH, B-hadron BR
 TT_FRAG,  fragmentation
+TT_FRAG_PETERSON,  fragm. Peterson
 TT_FSRSCALE, $t\bar{t}$/tW FSR scale
 TT_ISRSCALE, $t\bar{t}$/tW ISR scale
 
