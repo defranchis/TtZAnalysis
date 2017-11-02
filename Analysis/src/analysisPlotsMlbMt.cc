@@ -91,14 +91,17 @@ void analysisPlotsMlbMt::bookPlots(){
 				if(nbjet<2 && nadd < 3){
 					extraplots_.at(jetcategory)=addPlot(semicoarsebins,semicoarsebins,"m_lb min "+toTString(nbjet)+","+toTString(nadd)+ " b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
 					extraplots2_.at(jetcategory)=addPlot(finebins,finebins,"m_lb min fine "+toTString(nbjet)+","+toTString(nadd)+ " b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
+					extraplots3_.at(jetcategory)=addPlot(verycoarsebins,verycoarsebins,"m_lb min coarse "+toTString(nbjet)+","+toTString(nadd)+ " b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
 				}
 				else if(nadd < 2){
 					extraplots_.at(jetcategory)=addPlot(coarsebins,coarsebins,"m_lb min "+toTString(nbjet)+","+toTString(nadd)+ " b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
 					extraplots2_.at(jetcategory)=addPlot(semicoarsebins,semicoarsebins,"m_lb min fine "+toTString(nbjet)+","+toTString(nadd)+ " b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
+					extraplots3_.at(jetcategory)=addPlot(verycoarsebins,verycoarsebins,"m_lb min coarse "+toTString(nbjet)+","+toTString(nadd)+ " b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
 				}
 				else{
 					extraplots_.at(jetcategory)=addPlot(verycoarsebins,verycoarsebins,"m_lb min "+toTString(nbjet)+","+toTString(nadd)+ " b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
 					extraplots2_.at(jetcategory)=addPlot(semicoarsebins,semicoarsebins,"m_lb min fine "+toTString(nbjet)+","+toTString(nadd)+ " b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
+					extraplots3_.at(jetcategory)=addPlot(verycoarsebins,verycoarsebins,"m_lb min coarse "+toTString(nbjet)+","+toTString(nadd)+ " b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
 				}
 			}
 		}
@@ -247,6 +250,7 @@ void analysisPlotsMlbMt::fillPlotsGen(){
 			if(extraplots_.at(i)){
 				extraplots_.at(i)->fillGen(20.5,puweight()); //same as for incl xsec
 				extraplots2_.at(i)->fillGen(20.5,puweight());
+				extraplots3_.at(i)->fillGen(20.5,puweight());
 			}
 		}
 		mll0b->fillGen(20.5,puweight());
@@ -299,6 +303,7 @@ void analysisPlotsMlbMt::fillPlotsReco(){
 			if(extraplots_.at(jetcategory)){
 				extraplots_.at(jetcategory)->fillReco(fmlbmin,puweight());
 				extraplots2_.at(jetcategory)->fillReco(fmlbmin,puweight());
+				extraplots3_.at(jetcategory)->fillReco(fmlbmin,puweight());
 			}
 		}
 	}
