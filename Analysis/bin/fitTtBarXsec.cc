@@ -107,7 +107,7 @@ invokeApplication(){
 
 
 
-	if(npseudoexp>0){
+	if(npseudoexp>1){
 		mainfitter.setRemoveSyst(true);
 		mainfitter.setSilent(true);
 		mainfitter.setIgnorePriors(true);
@@ -221,7 +221,7 @@ invokeApplication(){
 			system(("rm -f "+fracfile).data());
 		}
 
-		return 0;
+                if(npseudoexp>1) return 0;
 	} //onlycontrolplots
 
 
@@ -370,7 +370,7 @@ invokeApplication(){
 		}
 		std::cout << "Pseudodata run done. " << failcount << " failed out of " << npseudoexp << std::endl;
 
-		return 0;
+                if(npseudoexp>1) return 0;
 	}
 	else{
 		//ttbarXsecFitter::debug=false;
