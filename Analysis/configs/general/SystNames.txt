@@ -37,7 +37,7 @@ TT_CR_ALL,  Color reconnection
 ST_MESCALE, tW ME scale
 TT_MESCALE, $t\bar{t}$ ME scale
 DYSCALE, DY ME scale
-TT_TTTUNE, $t\bar{t}$ tune
+TT_TTTUNE, UE tune
 TT_BRANCH, B-hadron BR
 TT_FRAG,  fragmentation
 TT_FSRSCALE, $t\bar{t}$/tW FSR scale
