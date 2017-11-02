@@ -314,10 +314,14 @@ invokeApplication(){
 		//fit
 		for(size_t i=0;i<pulls.size()+1;i++){ //both pulls
 			histo1D * c=0;
+                        TH1D * h=0;
 			if(i<pulls.size())
 				c=&pulls.at(i);
 			else
 				c=&abspull;
+
+                        h = c->getTH1D();
+                        h->SetName("pull");
 			graph tofit; tofit.import(c,true);
 			graphFitter fitter;
 			fitter.readGraph(&tofit);
@@ -353,6 +357,7 @@ invokeApplication(){
 			if(i<pulls.size()){
 				TFile f(outfile+"_pull_" + mainfitter.datasetName(i)+ ".root","RECREATE");
 				cv->Write();
+                                h->Write();
 				f.Close();
 				cv->Print(outfile+"_pull_" + mainfitter.datasetName(i)+ ".pdf");
 				outfilefull=toString(outfile+"_pull_" + mainfitter.datasetName(i)+".ztop");
@@ -360,6 +365,7 @@ invokeApplication(){
 			else{
 				TFile f(outfile+"_pull_abs.root","RECREATE");
 				cv->Write();
+                                h->Write();
 				f.Close();
 				cv->Print(outfile+"_pull_abs.pdf");
 				outfilefull=toString(outfile+"_pull_abs.ztop");
