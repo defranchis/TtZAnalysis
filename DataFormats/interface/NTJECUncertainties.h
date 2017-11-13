@@ -55,7 +55,8 @@ public:
 		float recophi=jet->phi();
 		float recom=jet->p4().M();
                  
-		if(is2012_) JecBase_.applyJECUncertainties(recopt,recoeta,recophi,recom,jet->genPartonFlavour());
+		/* if(is2012_) JecBase_.applyJECUncertainties(recopt,recoeta,recophi,recom,jet->genPartonFlavour()); */
+		if(true) JecBase_.applyJECUncertainties(recopt,recoeta,recophi,recom,jet->genPartonFlavour()); // always on
                 else JecBase_.applyJECUncertainties(recopt,recoeta,recophi,recom,jet->getMember(1));
 		jet->setP4(ztop::NTLorentzVector<float>(recopt,recoeta,recophi,recom));
 	}

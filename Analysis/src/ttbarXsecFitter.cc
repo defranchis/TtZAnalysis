@@ -579,7 +579,7 @@ void ttbarXsecFitter::printVariations(size_t bjetcat,size_t datasetidx,const std
 		TString outsysname=textFormatter::makeCompatibleFileName(sysname.Data());
 		if(postfitconstraints)
 			outsysname+="_postfit";
-		pl.printToPdf(add.Data() + (std::string)"_"+ outsysname.Data());
+		// pl.printToPdf(add.Data() + (std::string)"_"+ outsysname.Data());
 		pl.saveToTFile(add+"_"+ outsysname+".root");
 	}
 	std::cout << std::endl;
@@ -631,8 +631,8 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 			fitter_.setParameterUpperLimit(i,1);
 		}
                 else if(priors_.at(i) == prior_narrowboxfsr){
-                        fitter_.setParameterLowerLimit(i,-1.414);
-                        fitter_.setParameterUpperLimit(i,1.414);
+                        fitter_.setParameterLowerLimit(i,-1./1.414);
+                        fitter_.setParameterUpperLimit(i,1./1.414);
                 }
 		else if(priors_.at(i) == prior_narrowboxleft){
 			fitter_.setParameterLowerLimit(i,-1);
@@ -675,11 +675,9 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 	if(!nominos_){
 		for(size_t i=0;i<datasets_.size();i++)
 			fitter_.setAsMinosParameter(datasets_.at(i).xsecIdx());
-		if((TString)getenv("USER")=="kiesej"){
-			if(masspos < parameternames_.size() && priors_.at(masspos)!=prior_parameterfixed ){
-				fitter_.setAsMinosParameter(masspos);
-			}
-		}
+                if(masspos < parameternames_.size() && priors_.at(masspos)!=prior_parameterfixed ){
+                    fitter_.setAsMinosParameter(masspos);
+                }
 		else{
 			masspos=parameternames_.size();
 		}
@@ -1431,6 +1429,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 			throw std::runtime_error(((std::string)"ttbarXsecFitter::createSystematicsBreakdown: for para "+paraname.Data()+" failed. parameter not found."  ));
 	}
 
+
 	datasets_.at(datasetidx).postFitSystematicsFull().clear();
 	datasets_.at(datasetidx).postFitSystematicsFullSimple().clear();
 
@@ -1439,8 +1438,9 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		xsec=fitter_.getParameter(paraindex);
 	float parfullvarmulti=1;
 	if(paraname=="TOPMASS"){
+                xsec*=3;
 		xsec+=172.5;
-		parfullvarmulti=6;
+		parfullvarmulti=3;
 	}
 	//read in merge stuff
 	fileReader fr;
@@ -1453,15 +1453,19 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 	std::vector<std::pair< TString , std::vector<size_t> > > mergeasso;
 	//std::vector<size_t> allcrosscorr;
 
+
 	//first merge dataset dependend contributions
 	std::vector< std::pair <TString , std::vector<TString> > > plannedmerges;
 	for(size_t i=0;i<fr.nLines();i++){
 		TString merged=fr.getData<TString>(i,0);
 		textFormatter fmt2;
 		fmt2.setDelimiter("+");
-		std::vector<TString> asso=fmt2.getFormatted<TString>(fr.getData<std::string>(i,1));
-		plannedmerges.push_back(std::pair <TString , std::vector<TString> > (merged ,asso));
+                if (!removesyst_){
+                    std::vector<TString> asso=fmt2.getFormatted<TString>(fr.getData<std::string>(i,1));
+                    plannedmerges.push_back(std::pair <TString , std::vector<TString> > (merged ,asso));
+                }
 	}
+
 	//create dataset dependent parts
 	std::vector< std::pair <TString , std::vector<size_t> > > datasetdepmerges;
 	for(size_t i=0;i<parameternames_.size();i++){
@@ -1485,6 +1489,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 			datasetdepmerges.push_back(std::pair<TString , std::vector<size_t> >(paraname ,merges) );
 		}
 	}
+
 
 	//create index equivalents
 	std::vector< std::pair <TString , std::vector<size_t> > > plannedmergesindx;
@@ -1520,6 +1525,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		plannedmergesindx.push_back(std::pair<TString , std::vector<size_t> > (mergedname, indicies ));
 	}
 
+
 	//for consistency, add remaining ones
 	plannedmergesindx<<datasetdepmerges;
 	std::vector<size_t> alltobemerged;
@@ -1544,6 +1550,8 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		}
 	}
 	std::cout << "creating simplified breakdown table for " << datasets_.at(datasetidx).getName()<<" "<< paraname<<std::endl;
+
+
 
 	for(size_t i=0;i<plannedmergesindx.size();i++){
 		if(!debug)
@@ -1574,6 +1582,8 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		datasets_.at(datasetidx).postFitSystematicsFullSimple().push_back(tmpunc);
 	}
 
+
+
 	//make fast individual contributions table
 
 	for(size_t i=0;i<getNParameters();i++){
@@ -1593,6 +1603,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		tmpunc.pull= fittedparas_.at(i);//fitter_.getParameters()->at(i);
 		datasets_.at(datasetidx).postFitSystematicsFull().push_back(tmpunc);
 	}
+
 
 	dataset::systematic_unc tmpunc;
 
@@ -1633,6 +1644,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 
 
 	std::vector<double> fulladdtoerrup2,fulladdtoerrdown2;
+
 
 	if(paraname.Length()<1){
 
@@ -1679,6 +1691,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 
 	}
 
+
 	for(size_t i=0;i<fulladdtoerrup2.size();i++)
 		fullrelxsecerrup=sqrt(fullrelxsecerrup*fullrelxsecerrup+fulladdtoerrup2.at(i));
 	for(size_t i=0;i<fulladdtoerrdown2.size();i++)
@@ -1690,7 +1703,6 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 
 	datasets_.at(datasetidx).postFitSystematicsFull().push_back(tmpunc);
 	datasets_.at(datasetidx).postFitSystematicsFullSimple().push_back(tmpunc);
-
 
 }
 
@@ -2412,9 +2424,6 @@ void  ttbarXsecFitter::dataset::readStacks(const std::string configfilename,cons
 			if(tmpstack.getSignalIdxs().size() <1)
 				throw std::runtime_error("ttbarXsecFitter::readStacks: No signal defined!");
 
-
-
-
 			inputstacks_.at(bjetcount).push_back(tmpstack); //BEFORE ADDIND UNC!
 
 			addUncertainties(&tmpstack,bjetcount,removesyst,priorcorr);
@@ -2606,6 +2615,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	addlumiunc=unclumi_/100;
 	if(!getName().Contains("13TeV"))stack->addGlobalRelMCError("Lumi" ,addlumiunc);
 	stack->addGlobalRelMCError("Lumi" ,addlumiunc);
+	// stack->addGlobalRelBGError("Lumi_BG" ,addlumiunc);
 
 
 	if(debug)

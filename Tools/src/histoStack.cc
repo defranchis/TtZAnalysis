@@ -591,6 +591,23 @@ void histoStack::addGlobalRelMCError(TString sysname,double error){
 		else containers1DUnfold_[i].addGlobalRelError(sysname,0);
 	}
 }
+
+void histoStack::addGlobalRelBGError(TString sysname,double error){
+    std::vector<size_t> exclude = getSignalIdxs();
+    for(unsigned int i=0;i<containers_.size();i++){
+        if(legends_[i]!=dataleg_ && (std::find(exclude.begin(),exclude.end(),i)==exclude.end())) containers_[i].addGlobalRelError(sysname,error);
+        else containers_[i].addGlobalRelError(sysname,0);
+    }
+    for(unsigned int i=0;i<containers2D_.size();i++){
+        if(legends_[i]!=dataleg_ && (std::find(exclude.begin(),exclude.end(),i)==exclude.end())) containers2D_[i].addGlobalRelError(sysname,error);
+        else containers2D_[i].addGlobalRelError(sysname,0);
+    }
+    for(unsigned int i=0;i<containers1DUnfold_.size();i++){
+        if(legends_[i]!=dataleg_ && (std::find(exclude.begin(),exclude.end(),i)==exclude.end())) containers1DUnfold_[i].addGlobalRelError(sysname,error);
+        else containers1DUnfold_[i].addGlobalRelError(sysname,0);
+    }
+}
+
 void histoStack::addRelErrorToContribution(double err, const TString& contributionname, TString nameprefix, bool lognormal){
 	if(debug)
 		std::cout << "containerStack::addRelErrorToContribution: " << contributionname <<std::endl;

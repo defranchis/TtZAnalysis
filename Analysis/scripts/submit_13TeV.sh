@@ -26,8 +26,8 @@ systs=(
 
 "nominal"
 
-agrohsje 
-	for testing	
+# agrohsje 
+# 	for testing	
 
 
     "TRIGGER_up"
@@ -46,9 +46,15 @@ agrohsje
     "TRIGGERBGSF_up"
     "TRIGGERBGSF_down"
 
-
     "ELECES_up"
     "ELECES_down"
+
+    "ELECER_up"
+    "ELECER_down"
+
+    "DYSCALE_up"
+    "DYSCALE_down"
+
     "MUONES_up"
     "MUONES_down"
 
@@ -58,11 +64,17 @@ agrohsje
     "JER_up"
     "JER_down"
 
-# #######JES groups according to toplhcwg use INSTEAD of global JES_up/down
+# # #######JES groups according to toplhcwg use INSTEAD of global JES_up/down
+
+    "JES_FlavorPureGluon_up"
+    "JES_FlavorPureQuark_up"
+    "JES_FlavorPureCharm_up"
+    "JES_FlavorPureBottom_up"
+
 
     "JES_AbsoluteMPFBias_up"   
 
-    "JES_FlavorQCD_up"
+    # "JES_FlavorQCD_up"
 
     "JES_RelativeFSR_up"
     "JES_RelativeStatFSR_up"
@@ -92,11 +104,16 @@ agrohsje
 ##    "JES_PileUpPtHF_up"
 
 
-# ##down
+# # ##down
+
+    "JES_FlavorPureGluon_down"
+    "JES_FlavorPureQuark_down"
+    "JES_FlavorPureCharm_down"
+    "JES_FlavorPureBottom_down"
 
     "JES_AbsoluteMPFBias_down"	
 
-    "JES_FlavorQCD_down"
+    # "JES_FlavorQCD_down"
 
     "JES_RelativeFSR_down"
     "JES_RelativeStatFSR_down"
@@ -127,8 +144,7 @@ agrohsje
 
 
 
-# ########
-
+# # ########
 
     "BTAGH_up"
     "BTAGH_down"
@@ -157,6 +173,10 @@ agrohsje
     "TT_FRAG_up"
     "TT_BRANCH_down"
     "TT_BRANCH_up"
+
+    "TT_FRAG_PETERSON_down"
+    "TT_FRAG_PETERSON_up"
+
 
     "TT_CRGLUON_up"
     "TT_CRGLUON_down"

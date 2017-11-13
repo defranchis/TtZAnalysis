@@ -164,7 +164,6 @@ invokeApplication(){
 	else if(energy=="13TeV"){
 		ana= new top_analyzer_run2();
 		ana->addWeightBranch("NTWeight_nominal");
-		ana->addWeightBranch("NTWeight_FragCentral");
 	}
 	else
 		throw std::runtime_error("Undefined Energy! Exit!");
@@ -227,8 +226,9 @@ invokeApplication(){
 	if(elecEnsffile.EndsWith("DEFFILEWILDCARDDONTREMOVE")){
 		if(energy == "7TeV" || energy == "8TeV")
 			ana->getElecEnergySF()->setGlobal(1,0.15,0.15);
-		else if(energy == "13TeV")
-			ana->getElecEnergySF()->setGlobal(1,1.0,1.0);
+		// else if(energy == "13TeV")
+		// 	ana->getElecEnergySF()->setGlobal(1,1.0,1.0);
+
 	}
 	else{
 		ana->getElecEnergySF()->setInput(elecEnsffile,elecEnsfhisto);
@@ -238,8 +238,8 @@ invokeApplication(){
 		//https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonReferenceResolution
 		//this is for muons without the corrections so it should be even better with
 		ana->getMuonEnergySF()->setGlobal(1,0.3,0.3); //new from muon POG twiki
-	else if(energy == "13TeV")
-		ana->getMuonEnergySF()->setGlobal(1,0.5,0.5);
+	// else if(energy == "13TeV")
+	// 	ana->getMuonEnergySF()->setGlobal(1,0.5,0.5);
 
 	ana->getTopPtReweighter()->setFunction(reweightfunctions::toppt_2016);
 	ana->getTopPtReweighter()->setSystematics(reweightfunctions::nominal);
@@ -288,8 +288,22 @@ invokeApplication(){
 		ana->setBTagMCEffFile(outdir+"/btag_dummy");
 	}
 
+        if(Syst=="TT_FRAG_up"){
+                ana->addWeightBranch("NTWeight_FragUp");
+        }
+        else if(Syst=="TT_FRAG_down"){
+                ana->addWeightBranch("NTWeight_FragDown");
+        }
+        else if(Syst=="TT_FRAG_PETERSON_up"){
+                ana->addWeightBranch("NTWeight_FragPeterson");
+        }
+        else {
+		ana->addWeightBranch("NTWeight_FragCentral");
+        }
+
+
 	if(Syst=="nominal"){
-		//all already defined
+            // do nothing
 	}
 	///sys nominals...
 	else if(Syst=="P11_sysnominal"){
@@ -422,6 +436,12 @@ invokeApplication(){
 	}
 	else if(Syst=="ELECES_down"){
 		ana->getElecEnergySF()->setSystematics("down");
+	}
+	else if(Syst=="ELECER_up"){
+		ana->getElecEnergyResolutionSF()->setSystematics("up");
+	}
+	else if(Syst=="ELECER_down"){
+		ana->getElecEnergyResolutionSF()->setSystematics("down");
 	}
 	else if(Syst=="JES_up"){
 		ana->getJECUncertainties()->setSystematics("up");
@@ -677,10 +697,16 @@ invokeApplication(){
                 ana->addWeightBranch("NTWeight_scaleDown");
         }
         else if(Syst=="TT_FRAG_up"){
-                ana->addWeightBranch("NTWeight_FragUp");
+            // already done
         }
         else if(Syst=="TT_FRAG_down"){
-                ana->addWeightBranch("NTWeight_FragDown");
+            // already done
+        }
+        else if(Syst=="TT_FRAG_PETERSON_up"){
+            // already done
+        }
+        else if(Syst=="TT_FRAG_PETERSON_down"){
+            // already done
         }
         else if(Syst=="TT_BRANCH_up"){
                 ana->addWeightBranch("NTWeight_BranchUp");

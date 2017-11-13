@@ -6,7 +6,7 @@ from ROOT import *
 
 gStyle.SetOptStat(0000)
 
-f1 = open('xsecFit_tab13TeV.tex','r')
+f1 = open('xsecFit_tab_TOPMASS.tex','r')
 l1 = f1.read().splitlines()
 
 for i in range(0,3): del l1[0]
@@ -37,6 +37,7 @@ pull_mod = []
 constrain_mod = []
 contribution_mod = []
 
+max_contrib = 0
 
 for line in l1_short:
     name, pull, constrain, contribution = line.split('&')
@@ -48,7 +49,8 @@ for line in l1_short:
     contribution = str( TString(contribution).ReplaceAll('$','') )
     contribution = str( TString(contribution).ReplaceAll('{','') )
     contribution = str( TString(contribution).ReplaceAll('}','') )
-    if 'TOPMASS' in name or 'Lumi' in name or 'DY GEN' in name: continue
+    if 'TOPMASS' in name: continue
+    if abs(float(contribution)) > max_contrib : max_contrib = abs(float(contribution))
     if 'PDF' in name:
         name_pdf.append(name)
         pull_pdf.append(float(pull))
@@ -86,32 +88,32 @@ for i in range(0,len(name_all)):
     histo_all.Fill(i,pull_all[i])
     histo_all.GetXaxis().SetBinLabel(i+1,name_all[i])
     histo_all.SetBinError(i+1,constrain_all[i])
-    contrib_all.Fill(i,contribution_all[i])
+    contrib_all.Fill(i,abs(contribution_all[i]))
     contrib_all.GetXaxis().SetBinLabel(i+1,name_all[i])
 
 for i in range(0,len(name_pdf)):
     histo_pdf.Fill(i,pull_pdf[i])
     histo_pdf.GetXaxis().SetBinLabel(i+1,name_pdf[i])
     histo_pdf.SetBinError(i+1,constrain_pdf[i])
-    contrib_pdf.Fill(i,contribution_pdf[i])
+    contrib_pdf.Fill(i,abs(contribution_pdf[i]))
     contrib_pdf.GetXaxis().SetBinLabel(i+1,name_pdf[i])
 
 for i in range(0,len(name_jes)):
     histo_jes.Fill(i,pull_jes[i])
     histo_jes.GetXaxis().SetBinLabel(i+1,name_jes[i])
     histo_jes.SetBinError(i+1,constrain_jes[i])
-    contrib_jes.Fill(i,contribution_jes[i])
+    contrib_jes.Fill(i,abs(contribution_jes[i]))
     contrib_jes.GetXaxis().SetBinLabel(i+1,name_jes[i])
 
 for i in range(0,len(name_mod)):
     histo_mod.Fill(i,pull_mod[i])
     histo_mod.GetXaxis().SetBinLabel(i+1,name_mod[i])
     histo_mod.SetBinError(i+1,constrain_mod[i])
-    contrib_mod.Fill(i,contribution_mod[i])
+    contrib_mod.Fill(i,abs(contribution_mod[i]))
     contrib_mod.GetXaxis().SetBinLabel(i+1,name_mod[i])
 
-if not os.path.exists('summaryPlots'):
-    os.makedirs('summaryPlots')
+if not os.path.exists('massPlots'):
+    os.makedirs('massPlots')
 
 c1 = ROOT.TCanvas('c1','c1')
 c1.SetGrid()
@@ -156,8 +158,8 @@ line_up_all.Draw('same')
 line_down_all.Draw('same')
 histo_all.Draw('psame')
 
-c1.SaveAs('summaryPlots/all_fitSummary.pdf','pdf')
-c1.SaveAs('summaryPlots/all_fitSummary.png','png')
+# c1.SaveAs('summaryPlots/all_fitSummary.pdf','pdf')
+# c1.SaveAs('summaryPlots/all_fitSummary.png','png')
 c1.Clear()
 
 ###
@@ -174,8 +176,8 @@ line_down_pdf.Draw('same')
 histo_pdf.Draw('psame')
 
 
-c1.SaveAs('summaryPlots/pdf_fitSummary.pdf','pdf')
-c1.SaveAs('summaryPlots/pdf_fitSummary.png','png')
+# c1.SaveAs('massPlots/pdf_fitSummary.pdf','pdf')
+# c1.SaveAs('massPlots/pdf_fitSummary.png','png')
 c1.Clear()
 
 ###
@@ -192,8 +194,8 @@ line_down_jes.Draw('same')
 histo_jes.Draw('psame')
 
 
-c1.SaveAs('summaryPlots/jes_fitSummary.pdf','pdf')
-c1.SaveAs('summaryPlots/jes_fitSummary.png','png')
+# c1.SaveAs('massPlots/jes_fitSummary.pdf','pdf')
+# c1.SaveAs('massPlots/jes_fitSummary.png','png')
 c1.Clear()
 
 ###
@@ -210,51 +212,63 @@ line_down_mod.Draw('same')
 histo_mod.Draw('psame')
 
 
-c1.SaveAs('summaryPlots/mod_fitSummary.pdf','pdf')
-c1.SaveAs('summaryPlots/mod_fitSummary.png','png')
+# c1.SaveAs('massPlots/jes_fitSummary.pdf','pdf')
+# c1.SaveAs('massPlots/jes_fitSummary.png','png')
 c1.Clear()
 
 
 ###################################
 
-contrib_all.SetTitle('contribution - EXP')
+contrib_all.SetTitle('contribution mass - EXP')
 contrib_all.SetFillColor(kYellow)
 contrib_all.SetLineColor(kRed)
+contrib_all.SetMinimum(0.)
+contrib_all.SetMaximum(max_contrib * 1.1)
+contrib_all.GetYaxis().SetTitle('[%]')
 contrib_all.Draw('hist')
 
-c1.SaveAs('summaryPlots/all_contribution.pdf','pdf')
-c1.SaveAs('summaryPlots/all_contribution.png','png')
+c1.SaveAs('massPlots/all_contribution.pdf','pdf')
+c1.SaveAs('massPlots/all_contribution.png','png')
 c1.Clear()
 
 ###
 
-contrib_pdf.SetTitle('contribution - PDFs')
+contrib_pdf.SetTitle('contribution mass - PDFs')
 contrib_pdf.SetFillColor(kYellow)
 contrib_pdf.SetLineColor(kRed)
+contrib_pdf.SetMinimum(0.)
+contrib_pdf.SetMaximum(max_contrib * 1.1)
+contrib_pdf.GetYaxis().SetTitle('[%]')
 contrib_pdf.Draw('hist')
 
-c1.SaveAs('summaryPlots/pdf_contribution.pdf','pdf')
-c1.SaveAs('summaryPlots/pdf_contribution.png','png')
+c1.SaveAs('massPlots/pdf_contribution.pdf','pdf')
+c1.SaveAs('massPlots/pdf_contribution.png','png')
 c1.Clear()
 
 ###
 
-contrib_jes.SetTitle('contribution - JES')
+contrib_jes.SetTitle('contribution mass - JES')
 contrib_jes.SetFillColor(kYellow)
 contrib_jes.SetLineColor(kRed)
+contrib_jes.SetMinimum(0.)
+contrib_jes.SetMaximum(max_contrib * 1.1)
+contrib_jes.GetYaxis().SetTitle('[%]')
 contrib_jes.Draw('hist')
 
-c1.SaveAs('summaryPlots/jes_contribution.pdf','pdf')
-c1.SaveAs('summaryPlots/jes_contribution.png','png')
+c1.SaveAs('massPlots/jes_contribution.pdf','pdf')
+c1.SaveAs('massPlots/jes_contribution.png','png')
 c1.Clear()
 
 ###
 
-contrib_mod.SetTitle('contribution - MOD')
+contrib_mod.SetTitle('contribution mass - MOD')
 contrib_mod.SetFillColor(kYellow)
 contrib_mod.SetLineColor(kRed)
+contrib_mod.SetMinimum(0.)
+contrib_mod.SetMaximum(max_contrib * 1.1)
+contrib_mod.GetYaxis().SetTitle('[%]')
 contrib_mod.Draw('hist')
 
-c1.SaveAs('summaryPlots/mod_contribution.pdf','pdf')
-c1.SaveAs('summaryPlots/mod_contribution.png','png')
+c1.SaveAs('massPlots/mod_contribution.pdf','pdf')
+c1.SaveAs('massPlots/mod_contribution.png','png')
 c1.Clear()

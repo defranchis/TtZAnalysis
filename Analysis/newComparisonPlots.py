@@ -6,7 +6,7 @@ from ROOT import *
 
 gStyle.SetOptStat(0000)
 
-if len(sys.argv) != 3:
+if len(sys.argv) < 2:
     print
     print 'ERROR: please provide input directories!'
     print 'example: python makeComparisonPlots.py dir1 dir2'
