@@ -1150,7 +1150,7 @@ histoStack ttbarXsecFitter::applyParametersToStack(const histoStack& stack, size
 
 	histoStack out=stack;
 	std::vector<TString> sysnames=stack.getDataContainer().getSystNameList();
-	if(std::find(sysnames.begin(),sysnames.end(),("BG_0_bjets_DY")) == sysnames.end())
+	if(std::find(sysnames.begin(),sysnames.end(),("BG_0_bjets_emu_DY")) == sysnames.end()&& std::find(sysnames.begin(),sysnames.end(),("BG_0_bjets_ee_DY")) == sysnames.end()&& std::find(sysnames.begin(),sysnames.end(),("BG_0_bjets_mumu_DY")) == sysnames.end())
 		datasets_.at(datasetidx).addUncertainties(&out,bjetcat,removesyst_,priorcorrcoeff_);
 	//otherwise uncertaintes are already added
 
@@ -2426,7 +2426,12 @@ void  ttbarXsecFitter::dataset::readStacks(const std::string configfilename,cons
 
 			inputstacks_.at(bjetcount).push_back(tmpstack); //BEFORE ADDIND UNC!
 
-			addUncertainties(&tmpstack,bjetcount,removesyst,priorcorr);
+                        int tmpbjetcount=0;
+                        if (filename.Contains("emu")) tmpbjetcount = bjetcount + 10;
+                        else if (filename.Contains("ee")) tmpbjetcount = bjetcount + 20;
+                        else if (filename.Contains("mumu")) tmpbjetcount = bjetcount + 30;
+
+			addUncertainties(&tmpstack,tmpbjetcount,removesyst,priorcorr);
 
 
 			/*	if(newcsv) //not necessary if same csv where everything is ordered in the same manner
@@ -2582,13 +2587,33 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	if(debug)
 		std::cout << "ttbarXsecFitter::addUncertainties: added t#bar{t}V var" <<std::endl;
 
-	float dy0bjetserr=0,dy1bjetserr=0,dy2bjetserr=0;
+	float dy0bjetserr=0,dy1bjetserr=0,dy2bjetserr=0,dy0bjetserremu=0,dy1bjetserremu=0,dy2bjetserremu=0,dy0bjetserree=0,dy1bjetserree=0,dy2bjetserree=0,dy0bjetserrmumu=0,dy1bjetserrmumu=0,dy2bjetserrmumu=0;
 	if(nbjets==0)
 		dy0bjetserr=0.3;
 	else if(nbjets==1)
 		dy1bjetserr=0.3;
 	else if(nbjets==2)
 		dy2bjetserr=0.3;
+        if(nbjets==10)
+                dy0bjetserremu=0.3;
+        else if(nbjets==11)
+                dy1bjetserremu=0.3;
+        else if(nbjets==12)
+                dy2bjetserremu=0.3;
+
+        if(nbjets==20)
+                dy0bjetserree=0.3;
+        else if(nbjets==21)
+                dy1bjetserree=0.3;
+        else if(nbjets==22)
+                dy2bjetserree=0.3;
+
+        if(nbjets==30)
+                dy0bjetserrmumu=0.3;
+        else if(nbjets==31)
+                dy1bjetserrmumu=0.3;
+        else if(nbjets==32)
+                dy2bjetserrmumu=0.3;
 
 
 	//hardcoded scaling of QCD/Wjets....
@@ -2605,6 +2630,19 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	stack->addRelErrorToContribution(dy0bjetserr,"DY","BG_0_bjets_");
 	stack->addRelErrorToContribution(dy1bjetserr,"DY","BG_1_bjets_");
 	stack->addRelErrorToContribution(dy2bjetserr,"DY","BG_2_bjets_");
+
+        stack->addRelErrorToContribution(dy0bjetserremu,"DY","BG_0_bjets_emu_");
+        stack->addRelErrorToContribution(dy1bjetserremu,"DY","BG_1_bjets_emu_");
+        stack->addRelErrorToContribution(dy2bjetserremu,"DY","BG_2_bjets_emu_");
+
+        stack->addRelErrorToContribution(dy0bjetserree,"DY","BG_0_bjets_ee_");
+        stack->addRelErrorToContribution(dy1bjetserree,"DY","BG_1_bjets_ee_");
+        stack->addRelErrorToContribution(dy2bjetserree,"DY","BG_2_bjets_ee_");
+ 
+        stack->addRelErrorToContribution(dy0bjetserrmumu,"DY","BG_0_bjets_mumu_");
+        stack->addRelErrorToContribution(dy1bjetserrmumu,"DY","BG_1_bjets_mumu_");
+        stack->addRelErrorToContribution(dy2bjetserrmumu,"DY","BG_2_bjets_mumu_");
+
 
 	if(debug)
 		std::cout << "ttbarXsecFitter::addUncertainties: added DY var" <<std::endl;
