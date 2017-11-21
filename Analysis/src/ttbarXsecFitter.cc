@@ -480,6 +480,8 @@ void ttbarXsecFitter::printVariations(size_t bjetcat,size_t datasetidx,const std
 	else
 		add=("var_")+toTString(bjetcat) +"bjets_"+  datasets_.at(datasetidx).getName()+add;
 
+        add.ReplaceAll("_vars/var_","_vars_var_");
+
 	/*
     if(! postfitconstraints)
 	  for(size_t i=0;i<stacks.size();i++){
@@ -579,7 +581,7 @@ void ttbarXsecFitter::printVariations(size_t bjetcat,size_t datasetidx,const std
 		TString outsysname=textFormatter::makeCompatibleFileName(sysname.Data());
 		if(postfitconstraints)
 			outsysname+="_postfit";
-		// pl.printToPdf(add.Data() + (std::string)"_"+ outsysname.Data());
+		pl.printToPdf(add.Data() + (std::string)"_"+ outsysname.Data());
 		pl.saveToTFile(add+"_"+ outsysname+".root");
 	}
 	std::cout << std::endl;
@@ -2243,7 +2245,8 @@ variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::ve
 		tmp=tmp.getIntegralBin(includeUFOF);
 		visgenint+=tmp;
 	}
-	visgenint *= (3 /((double)totalvisgencontsread_));
+        if (parent_->emuOnly_) visgenint *= (1. /((double)totalvisgencontsread_));
+        else visgenint *= (3 /((double)totalvisgencontsread_));
 	//this also scales with lumi due to technical reasons. remove this dependence
 	visgenint.setErrorZeroContaining("Lumi");
 

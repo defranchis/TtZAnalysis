@@ -93,6 +93,7 @@ invokeApplication(){
 
 	mainfitter.setExcludeZeroBjetBin(exclude0bjetbin);
 	mainfitter.setUseMCOnly(onlyMC);
+	mainfitter.setEmuOnly(onlyemu);
         mainfitter.setFitToVariation(fitToVariation);	
         mainfitter.setNoMinos(nominos);
 	mainfitter.setNoSystBreakdown((onlytotalerror));
