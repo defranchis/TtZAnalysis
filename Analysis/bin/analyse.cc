@@ -364,19 +364,19 @@ invokeApplication(){
 
 	else if(Syst=="TRIGGER_down"){
 		ana->getTriggerSF()->setSystematics("down");
-		ana->getTriggerBGSF()->setSystematics("down");
+		// ana->getTriggerBGSF()->setSystematics("down");
 	}
 	else if(Syst=="TRIGGER_up"){
 		ana->getTriggerSF()->setSystematics("up");
-		ana->getTriggerBGSF()->setSystematics("up");
+		// ana->getTriggerBGSF()->setSystematics("up");
 	}
 	else if(Syst=="ELECSF_up"){
 		ana->getElecSF()->setSystematics("up");
-                ana->getElecBGSF()->setSystematics("up");
+                // ana->getElecBGSF()->setSystematics("up");
 	}
 	else if(Syst=="ELECSF_down"){
 		ana->getElecSF()->setSystematics("down");
-                ana->getElecBGSF()->setSystematics("down");
+                // ana->getElecBGSF()->setSystematics("down");
 	}
         else if(Syst=="ELECTRACKSF_up"){
                 ana->getElecTrackingSF()->setSystematics("up");
@@ -387,14 +387,14 @@ invokeApplication(){
 	else if(Syst=="MUONSF_up"){
                 ana->getMuonSFBtoF()->setSystematics("up");
 		ana->getMuonSFGH()->setSystematics("up");
-                ana->getMuonBGSFBtoF()->setSystematics("up");
-                ana->getMuonBGSFGH()->setSystematics("up");
+                // ana->getMuonBGSFBtoF()->setSystematics("up");
+                // ana->getMuonBGSFGH()->setSystematics("up");
 	}
 	else if(Syst=="MUONSF_down"){
                 ana->getMuonSFBtoF()->setSystematics("down");
 		ana->getMuonSFGH()->setSystematics("down");
-                ana->getMuonBGSFBtoF()->setSystematics("down");
-                ana->getMuonBGSFGH()->setSystematics("down");
+                // ana->getMuonBGSFBtoF()->setSystematics("down");
+                // ana->getMuonBGSFGH()->setSystematics("down");
 	}
 
         else if(Syst=="ELECBGSF_up"){
