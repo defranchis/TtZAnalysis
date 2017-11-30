@@ -26,9 +26,13 @@ print
 print 'making comparison plots for', dir1, 'and', dir2, '...'
 print
 
+if sys.argv[3] == 'mass':
+    f1 = open(dir1+'/xsecFit_tab_TOPMASS.tex','r')
+    f2 = open(dir2+'/xsecFit_tab_TOPMASS.tex','r')
 
-f1 = open(dir1+'/xsecFit_tab13TeV.tex','r')
-f2 = open(dir2+'/xsecFit_tab13TeV.tex','r')
+else:
+    f1 = open(dir1+'/xsecFit_tab13TeV.tex','r')
+    f2 = open(dir2+'/xsecFit_tab13TeV.tex','r')
 
 dir1 = str(TString(dir1).ReplaceAll('/',''))
 dir1 = str(TString(dir1).ReplaceAll('..',''))
@@ -46,12 +50,12 @@ l1_short = []
 l2_short = []
 
 for line in l1:
-    if 'Xsec (13TeV)' in line:
+    if '(13TeV)' in line:
         break
     l1_short.append(line)
 
 for line in l2:
-    if 'Xsec (13TeV)' in line:
+    if '(13TeV)' in line:
         break
     l2_short.append(line)
 
@@ -175,6 +179,7 @@ for i in range(0,len(name1_jes)):
         
  
 outDir = 'comparisonPlots/'+dir1+'_'+dir2
+if sys.argv[3] == 'mass': outDir = outDir+'_mass'
 
 if not os.path.exists(outDir):
     os.makedirs(outDir)
