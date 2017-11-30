@@ -17,13 +17,15 @@ BTAGH,	 	B-tag
 BTAGL,   	Mistag
 BTAG_TOT,       b-tagging
 ELECES, 	Electron energy scale
-ELECSF,		Electron ID, isolation
-ELECSF_ALL,	Electron ID, isolation
+ELECESR, 	Electron energy
+ELECER, 	Electron energy resolution
+ELECSF,		Electron ID / isolation
+ELECSF_ALL,	Electron ID / isolation
 JER,		Jet energy resolution
 JES,		Jet energy scale
 MUONES,		Muon energy scale
-MUONSF,		Muon ID, isolation
-MUONSF_ALL,	Muon ID, isolation
+MUONSF,		Muon ID / isolation
+MUONSF_ALL,	Muon ID / isolation
 PU,			Pile-up
 TOPPT,		Top $p_{T}$
 TRIGGER,	Trigger
@@ -41,10 +43,18 @@ TT_TTTUNE, UE tune
 TT_BRANCH, B-hadron BR
 TT_FRAG,  fragmentation
 TT_FRAG_PETERSON,  fragm. Peterson
+TT_BFRAG, B-Fragmentation
 TT_FSRSCALE, $t\bar{t}$/tW FSR scale
 TT_ISRSCALE, $t\bar{t}$/tW ISR scale
+TOPMASS, $m_{t}^{MC}$
+Xsec, $\sigma_{t\bar{t}}$
 
 
+TT_CRERD, CR ERD on
+TT_CRQCD, CR QCD-inspired
+TT_CRGLUON, CR Gluon move
+
+DY_GEN, DY generator
 
 LEPIDISO,   Lepton ID/isolation
 LES,        Lepton energy scale
@@ -57,6 +67,14 @@ JES_CorrelationGroupbJES,				JES: b-JES
 JES_Flavor,				JES: Flavor response
 JES_Uncorrelated,		JES: Uncorrelated
 JES_PileupPt,           JES: Pileup
+JES_Fragmentation, JES: Fragmentation
+JES_PileUpPtEC1, JES: PileUp $p_T$ EC1
+JES_PileUpPtRef, JES: PileUp $p_T$ Ref
+JES_RelativeBal, JES: Relative Balance
+JES_RelativeStatEC, JES: Relative Stat EC
+JES_RelativeStatFSR, JES: Relative Stat FSR
+JES_TimePtEta, JES: Time $p_T$ $\eta$
+
 
 JES_AbsoluteScale , JES: Absolute Scale
 JES_AbsoluteStat , JES: Absolute Stat
@@ -96,7 +114,7 @@ TT_GENPOWPY,    MG+PY $\rightarrow$ PH+PY
 TT_GENMCATNLO,  NLO generator 
 
 BG_tW/#bar{t}W#rightarrowll, Single top background
-BG_tW/bartW, tW background
+BG_tW/#bar{t}W, tW background
 BG_VV, Diboson background
 BG_t#bar{t}bg, $t\bar{t}$ background
 BG_Wjets,  W+jets background
