@@ -287,6 +287,26 @@ float scalefactors::getElectronERFactor( NTElectron* ele )const{
     else return -99999.;
 }
 
+float scalefactors::getElectronERFactorUp( NTElectron* ele )const{
+    float temp_sf = 1.;
+    if (ele->getMember(1) < temp_sf) temp_sf = ele->getMember(1);
+    if (ele->getMember(2) < temp_sf) temp_sf = ele->getMember(2);
+    if (ele->getMember(5) < temp_sf) temp_sf = ele->getMember(5);
+    if (ele->getMember(6) < temp_sf) temp_sf = ele->getMember(6);
+    return 1./temp_sf;
+}
+
+float scalefactors::getElectronERFactorDown( NTElectron* ele )const{
+    float temp_sf = 1.;
+    if (ele->getMember(1) > temp_sf) temp_sf = ele->getMember(1);
+    if (ele->getMember(2) > temp_sf) temp_sf = ele->getMember(2);
+    if (ele->getMember(5) > temp_sf) temp_sf = ele->getMember(5);
+    if (ele->getMember(6) > temp_sf) temp_sf = ele->getMember(6);
+    return 1./temp_sf;
+}
+
+
+
 float scalefactors::getElectronESERFactorFromEnvelope( NTElectron* ele )const{
     if(switchedoff_ || !isMC_ || syst_==sys_nominal ) return 1.;
     else if (syst_==sys_up){
