@@ -841,6 +841,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
                             ensf=getElecEnergySF()->getElectronESFactor(elec);
                             ensf*=getElecEnergyResolutionSF()->getElectronERFactor(elec);
                         }
+
+                        // std::cout<<"TEST_MD "<<getElecEnergySF()->getElectronESFactorUp(elec)<<" "<<getElecEnergySF()->getElectronESFactorDown(elec)<<" "
+                        //          <<getElecEnergyResolutionSF()->getElectronERFactorUp(elec)<<" "<<getElecEnergyResolutionSF()->getElectronERFactorDown(elec)<<endl;
 			//elec->setECalP4(elec->ECalP4() * ensf);
 			elec->setP4(elec->p4() * ensf); //both the same now!!
 		      	/*if (*b_EventNumber.content() ==19458568 ) {
