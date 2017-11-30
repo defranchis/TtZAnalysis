@@ -108,9 +108,9 @@ invokeApplication(){
 
 
 
-	if(npseudoexp>1){
+	if(npseudoexp){
 		mainfitter.setRemoveSyst(true);
-		mainfitter.setSilent(true);
+		if (npseudoexp>1) mainfitter.setSilent(true);
 		mainfitter.setIgnorePriors(true);
 	}
 	//simpleFitter::printlevel=1;
@@ -300,12 +300,13 @@ invokeApplication(){
 			for(size_t i=0;i<par.size();i++){
 				abspull.fill(par.at(i)*3); //HARDCODED
 				double stat=(std::max(fabs(par.at(i+1)),fabs(par.at(i+2))));
+                                // double stat = fabs(par.at(i+3));
 				double pull = par.at(i) / stat;
 				if(!i){
 					std::cout << "parameter stat error: " << stat << std::endl;
 				}
 
-				++i;++i;
+				++i;++i;// ++i;
 				for(size_t ndts=0;ndts<ndatasets;ndts++){
 					pulls.at(ndts).fill ( pull);
 				}
