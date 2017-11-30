@@ -74,7 +74,8 @@ $Sync.root,           t#bar{t},           633,      831.76,         0,      true
 
 
 [parameters-begin] 
-inputFilesDir   = /nfs/dust/cms/user/tarndt/NTuples/Prod_8026/
+$ inputFilesDir   = /nfs/dust/cms/user/tarndt/NTuples/Prod_8026/
+inputFilesDir   = /nfs/dust/cms/group/topcmsdesy/ntuple13tev/ttZ_framework/
 
 Lumi            = 35922
 
@@ -111,4 +112,5 @@ $modeOptions = GsfelectronsNotoppt
 $modeOptions = GsfelectronsNotopptNoweights
 $modeOptions = GsfelectronsNotopptNoweights
 modeOptions = GsfelectronsZerojetNobcutNotopptNozcutNometcut
+$modeOptions = GsfelectronsZerojetNobcutNotopptNozcutNometcutJetpt25
 [parameters-end]
