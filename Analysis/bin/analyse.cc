@@ -676,6 +676,8 @@ invokeApplication(){
         else if(Syst=="TT_FSRSCALE_up"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_ttfsrup.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttfsrup.root");
+                ana->getAdditionalJEC()->setSystematics("up");
+                ana->getAdditionalJEC()->setVariation(Syst.ReplaceAll("_up",""));
                 // ana->setFilePostfixReplace("tW.root","tW_twfsrup.root");
                 // ana->setFilePostfixReplace("tbarW.root","tbarW_twfsrup.root");
                 // ana->setFileXsecReplace("tW_twfsrup.root",19.3);
@@ -685,6 +687,8 @@ invokeApplication(){
         else if(Syst=="TT_FSRSCALE_down"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_ttfsrdown.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttfsrdown.root");
+                ana->getAdditionalJEC()->setSystematics("down");
+                ana->getAdditionalJEC()->setVariation(Syst.ReplaceAll("_down",""));
                 // ana->setFilePostfixReplace("tW.root","tW_twfsrdown.root");
                 // ana->setFilePostfixReplace("tbarW.root","tbarW_twfsrdown.root");
                 // ana->setFileXsecReplace("tW_twfsrdown.root",19.3);
