@@ -133,6 +133,7 @@ public:
 
 	ztop::scalefactors * getElecEnergySF(){return &elecenergysf_;}
 	ztop::scalefactors * getElecEnergyResolutionSF(){return &elecenergyressf_;}
+	ztop::scalefactors * getAdditionalJEC(){return &additionalJEC_;}
 	ztop::scalefactors * getMuonEnergySF(){return &muonenergysf_;}
 
 	ztop::reweightfunctions * getTopPtReweighter(){return &topptReweighter_;}
@@ -240,7 +241,7 @@ protected:
 	TString btagefffile_;
 
 	//for scalefactors provided in THXX format:
-	ztop::scalefactors elecsf_,muonsf_,muonsfBtoF_,muonsfGH_,triggerbgsf_,triggersf_,elecenergysf_,elecenergyressf_,muonenergysf_,trackingsf_, elecTrackingsf_,elecbgsf_,muonbgsf_,muonbgsfBtoF_,muonbgsfGH_,trackingbgsf_, elecTrackingbgsf_;
+	ztop::scalefactors elecsf_,muonsf_,muonsfBtoF_,muonsfGH_,triggerbgsf_,triggersf_,elecenergysf_,elecenergyressf_,additionalJEC_,muonenergysf_,trackingsf_, elecTrackingsf_,elecbgsf_,muonbgsf_,muonbgsfBtoF_,muonbgsfGH_,trackingbgsf_, elecTrackingbgsf_;
 	ztop::reweightfunctions topptReweighter_;
 
 	//for parallel stuff

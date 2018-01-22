@@ -173,6 +173,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
         isRunFtoG = false;
         isRunH = false;
         bool isTtbarLike = false;
+        bool isTtbar = false;
             
         if(!isMC){
                  if(inputfile_.Contains("RunB") || inputfile_.Contains("RunC") || inputfile_.Contains("RunD")) isRunBtoD=true;
@@ -182,6 +183,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
         }
         else {
                 if(inputfile_.Contains("ttbar")||inputfile_.Contains("tbarW")||inputfile_.Contains("tW")) isTtbarLike=true;
+                if(inputfile_.Contains("ttbar")) isTtbar=true;
         }
  
         //std::cout<<isSingleMu<<isDilep<<isSingleEle<<std::endl;
@@ -269,6 +271,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 		getElecEnergySF()->setSystematics("nom");
 		getElecEnergyResolutionSF()->setSystematics("nom");
+		getAdditionalJEC()->setSystematics("nom");
 		getElecSF()->setSystematics("nom");
 		getMuonEnergySF()->setSystematics("nom");
 		getMuonSF()->setSystematics("nom");
@@ -428,10 +431,15 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	//some global checks
 	getElecEnergySF()->setRangeCheck(false);
 	getElecEnergyResolutionSF()->setRangeCheck(false);
+	getAdditionalJEC()->setRangeCheck(false);
 	getMuonEnergySF()->setRangeCheck(false);
 	getElecEnergySF()->setIsMC(isMC);
 	getElecEnergyResolutionSF()->setIsMC(isMC);
+	getAdditionalJEC()->setIsMC(isMC);
 	getMuonEnergySF()->setIsMC(isMC);
+
+	getAdditionalJEC()->setIsTtbar(isTtbar);
+	getAdditionalJEC()->setIsTtbarLike(isTtbarLike);
 
 	//REMOVE AGAIN OR DO PROPERLY !!! 
 	//agrohsje/tarndt include jes at ana level for testing 
@@ -841,6 +849,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
                             ensf=getElecEnergySF()->getElectronESFactor(elec);
                             ensf*=getElecEnergyResolutionSF()->getElectronERFactor(elec);
                         }
+
+                        // std::cout<<"TEST_MD "<<getElecEnergySF()->getElectronESFactorUp(elec)<<" "<<getElecEnergySF()->getElectronESFactorDown(elec)<<" "
+                        //          <<getElecEnergyResolutionSF()->getElectronERFactorUp(elec)<<" "<<getElecEnergyResolutionSF()->getElectronERFactorDown(elec)<<endl;
 			//elec->setECalP4(elec->ECalP4() * ensf);
 			elec->setP4(elec->p4() * ensf); //both the same now!!
 		      	/*if (*b_EventNumber.content() ==19458568 ) {
@@ -1158,6 +1169,10 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			jescorr.correctJet(treejets.at(i), treejets.at(i)->getMember(0),b_Event.content()->isoRho(0));
 			//std::cout<<"agrohsje jet pt after jes: pt="<<treejets.at(i)->pt()<<" eta="<<treejets.at(i)->eta()<<std::endl;
 			if(isMC){
+                            // if (treejets.at(i)->pt()>30){
+                            //     std::cout<<"CHECK MD JEC: "<<treejets.at(i)->pt()<<" "<<getAdditionalJEC()->getAdditionalJECFactor(treejets.at(i))<<std::endl;
+                            // }
+                                treejets.at(i)->setP4( treejets.at(i)->p4() * getAdditionalJEC()->getAdditionalJECFactor(treejets.at(i)) );
 				//agrohsje global 4% scaling for JESup/JESdown can be added to ZTopUtils/src/JECBase.cc
 				//use NTJES w./ ZTopUtils/src/JESBase.cc for both correction/uncertainties
 				getJECUncertainties()->applyToJet(treejets.at(i));

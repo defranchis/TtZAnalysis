@@ -55,3 +55,9 @@
 
 
 0: sec lep pt step 8 =  sec lep pt 0 b-jets step 8 + sec lep pt 1 b-jets step 8 + sec lep pt 2 b-jets step 8
+
+1: m_lb min 1,1 b-jets step 8 = m_lb min 1,1 b-jets step 8
+1: m_lb min 1,2 b-jets step 8 = m_lb min 1,2 b-jets step 8
+
+2: m_lb min coarse 2,1 b-jets step 8 = m_lb min coarse 2,1 b-jets step 8
+2: m_lb min coarse 2,2 b-jets step 8 = m_lb min coarse 2,2 b-jets step 8

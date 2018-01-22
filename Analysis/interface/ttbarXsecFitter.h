@@ -38,6 +38,7 @@ public:
 		lhmode_(lhm_chi2datamcstat),
 		fitsucc_(false),norm_nbjet_global_(true),
 		useMConly_(false),removesyst_(false),nominos_(false),
+                variationToFit_(""),emuOnly_(false),
 		parameterwriteback_(true),
 		nosystbd_(false),silent_(false),nopriors_(false),topmassrepl_(-100),pseudodatarun_(false),
 		wjetsrescalefactor_(1),
@@ -64,6 +65,7 @@ public:
 
 	void setUseMCOnly(bool set){useMConly_=set;}
 	void setFitToVariation(TString var){variationToFit_=var;}
+	void setEmuOnly(bool emu){emuOnly_=emu;}
 
 	void setNoMinos(bool nomin){nominos_=nomin;}
 
@@ -422,6 +424,7 @@ private:
 
 	bool useMConly_,removesyst_,nominos_;
         TString variationToFit_;
+        bool emuOnly_;
 
 	static TRandom3 * random_;
 	bool parameterwriteback_;

@@ -12,8 +12,8 @@ topmasses=( "172.5"
      "171.5"
      "173.5"
 # #agrohsje 
-  "175.5"
-   "169.5"
+  # "175.5"
+  #  "169.5"
 
 #      "178.5"
 #      "166.5"
@@ -26,8 +26,8 @@ systs=(
 
 "nominal"
 
-# agrohsje 
-# 	for testing	
+# # agrohsje 
+# # 	for testing	
 
 
     "TRIGGER_up"
@@ -39,12 +39,12 @@ systs=(
     "MUONSF_up"
     "MUONSF_down"
 
-    "ELECBGSF_up"
-    "ELECBGSF_down"
-    "MUONBGSF_up"
-    "MUONBGSF_down"
-    "TRIGGERBGSF_up"
-    "TRIGGERBGSF_down"
+#     "ELECBGSF_up"
+#     "ELECBGSF_down"
+#     "MUONBGSF_up"
+#     "MUONBGSF_down"
+#     "TRIGGERBGSF_up"
+#     "TRIGGERBGSF_down"
 
     "ELECES_up"
     "ELECES_down"
@@ -166,8 +166,8 @@ systs=(
     "TT_MESCALE_up"
     "TT_TTTUNE_down"
     "TT_TTTUNE_up"
-    "ST_MESCALE_up"
-    "ST_MESCALE_down"
+    # "ST_MESCALE_up"
+    # "ST_MESCALE_down"
 
     "TT_FRAG_down"
     "TT_FRAG_up"
@@ -184,10 +184,16 @@ systs=(
     "TT_CRQCD_down"
     "TT_CRERD_up"
     "TT_CRERD_down"
-     
 
-    "DY_GEN_down"
-    "DY_GEN_up"
+    "TT_GENMCATNLO_up"     
+    "TT_GENMCATNLO_down"     
+
+    "TOPMASS_up"     
+    "TOPMASS_down"     
+
+
+    # "DY_GEN_down"
+    # "DY_GEN_up"
 
 
 );

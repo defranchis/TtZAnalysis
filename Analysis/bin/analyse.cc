@@ -659,36 +659,40 @@ invokeApplication(){
         else if(Syst=="TT_ISRSCALE_up"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_ttisrup.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttisrup.root");
-                ana->setFilePostfixReplace("tW.root","tW_twisrup.root");
-                ana->setFilePostfixReplace("tbarW.root","tbarW_twisrup.root");
-                ana->setFileXsecReplace("tW_twisrup.root",19.3);
-                ana->setFileXsecReplace("tbarW_twisrup.root",19.3);
+                // ana->setFilePostfixReplace("tW.root","tW_twisrup.root");
+                // ana->setFilePostfixReplace("tbarW.root","tbarW_twisrup.root");
+                // ana->setFileXsecReplace("tW_twisrup.root",19.3);
+                // ana->setFileXsecReplace("tbarW_twisrup.root",19.3);
         }
         else if(Syst=="TT_ISRSCALE_down"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_ttisrdown.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttisrdown.root");
-                ana->setFilePostfixReplace("tW.root","tW_twisrdown.root");
-                ana->setFilePostfixReplace("tbarW.root","tbarW_twisrdown.root");
-                ana->setFileXsecReplace("tW_twisrdown.root",19.3);
-                ana->setFileXsecReplace("tbarW_twisrdown.root",19.3);
+                // ana->setFilePostfixReplace("tW.root","tW_twisrdown.root");
+                // ana->setFilePostfixReplace("tbarW.root","tbarW_twisrdown.root");
+                // ana->setFileXsecReplace("tW_twisrdown.root",19.3);
+                // ana->setFileXsecReplace("tbarW_twisrdown.root",19.3);
 
         }
         else if(Syst=="TT_FSRSCALE_up"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_ttfsrup.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttfsrup.root");
-                ana->setFilePostfixReplace("tW.root","tW_twfsrup.root");
-                ana->setFilePostfixReplace("tbarW.root","tbarW_twfsrup.root");
-                ana->setFileXsecReplace("tW_twfsrup.root",19.3);
-                ana->setFileXsecReplace("tbarW_twfsrup.root",19.3);
+                ana->getAdditionalJEC()->setSystematics("up");
+                ana->getAdditionalJEC()->setVariation(Syst.ReplaceAll("_up",""));
+                // ana->setFilePostfixReplace("tW.root","tW_twfsrup.root");
+                // ana->setFilePostfixReplace("tbarW.root","tbarW_twfsrup.root");
+                // ana->setFileXsecReplace("tW_twfsrup.root",19.3);
+                // ana->setFileXsecReplace("tbarW_twfsrup.root",19.3);
 
         }
         else if(Syst=="TT_FSRSCALE_down"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_ttfsrdown.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttfsrdown.root");
-                ana->setFilePostfixReplace("tW.root","tW_twfsrdown.root");
-                ana->setFilePostfixReplace("tbarW.root","tbarW_twfsrdown.root");
-                ana->setFileXsecReplace("tW_twfsrdown.root",19.3);
-                ana->setFileXsecReplace("tbarW_twfsrdown.root",19.3);
+                ana->getAdditionalJEC()->setSystematics("down");
+                ana->getAdditionalJEC()->setVariation(Syst.ReplaceAll("_down",""));
+                // ana->setFilePostfixReplace("tW.root","tW_twfsrdown.root");
+                // ana->setFilePostfixReplace("tbarW.root","tbarW_twfsrdown.root");
+                // ana->setFileXsecReplace("tW_twfsrdown.root",19.3);
+                // ana->setFileXsecReplace("tbarW_twfsrdown.root",19.3);
         }
         else if(Syst=="TT_MESCALE_up"){
                 ana->addWeightBranch("NTWeight_scaleUp");
@@ -866,13 +870,14 @@ invokeApplication(){
 			ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_mt"+topmass+".root");
                        // ana->setFilePostfixReplace("tW.root","tW_mt"+topmass+".root" );
                        // ana->setFilePostfixReplace("tbarW.root","tbarW_mt"+topmass+".root" );
-                       if(topmass == "175.5" || topmass == "169.5"){
-                               ana->setFilePostfixReplace("tW.root","tW_mt"+topmass+".root" );
-                               ana->setFilePostfixReplace("tbarW.root","tbarW_mt"+topmass+".root" );
-                               ana->setFileXsecReplace("tW_mt"+topmass+".root",19.3);
-                               ana->setFileXsecReplace("tbarW_mt"+topmass+".root",19.3);
+
+                       // if(topmass == "175.5" || topmass == "169.5"){
+                       //         ana->setFilePostfixReplace("tW.root","tW_mt"+topmass+".root" );
+                       //         ana->setFilePostfixReplace("tbarW.root","tbarW_mt"+topmass+".root" );
+                       //         ana->setFileXsecReplace("tW_mt"+topmass+".root",19.3);
+                       //         ana->setFileXsecReplace("tbarW_mt"+topmass+".root",19.3);
     
-                       }
+                       // }
                        
 		}
 		if((energy=="7TeV" || energy=="8TeV")&&(topmass == "178.5" || topmass == "166.5")){

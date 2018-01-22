@@ -8,6 +8,9 @@
 #include <cstdlib>
 #include <stdexcept>
 #include "TGraphAsymmErrors.h"
+#include "TGraphErrors.h"
+#include "TH1F.h"
+#include "TFile.h"
 #include "TopAnalysis/ZTopUtils/interface/miscUtils.h"
 
 namespace ztop {
@@ -287,6 +290,26 @@ float scalefactors::getElectronERFactor( NTElectron* ele )const{
     else return -99999.;
 }
 
+float scalefactors::getElectronERFactorUp( NTElectron* ele )const{
+    float temp_sf = 1.;
+    if (ele->getMember(1) < temp_sf) temp_sf = ele->getMember(1);
+    if (ele->getMember(2) < temp_sf) temp_sf = ele->getMember(2);
+    if (ele->getMember(5) < temp_sf) temp_sf = ele->getMember(5);
+    if (ele->getMember(6) < temp_sf) temp_sf = ele->getMember(6);
+    return 1./temp_sf;
+}
+
+float scalefactors::getElectronERFactorDown( NTElectron* ele )const{
+    float temp_sf = 1.;
+    if (ele->getMember(1) > temp_sf) temp_sf = ele->getMember(1);
+    if (ele->getMember(2) > temp_sf) temp_sf = ele->getMember(2);
+    if (ele->getMember(5) > temp_sf) temp_sf = ele->getMember(5);
+    if (ele->getMember(6) > temp_sf) temp_sf = ele->getMember(6);
+    return 1./temp_sf;
+}
+
+
+
 float scalefactors::getElectronESERFactorFromEnvelope( NTElectron* ele )const{
     if(switchedoff_ || !isMC_ || syst_==sys_nominal ) return 1.;
     else if (syst_==sys_up){
@@ -314,6 +337,48 @@ float scalefactors::getElectronESERFactorFromEnvelope( NTElectron* ele )const{
         return temp_sf;
     }
     else return -99999.;
+}
+
+float scalefactors::getAdditionalJECFactor( NTJet* jet )const{
+    if(switchedoff_ || !isMC_ || !isTtbar_ || syst_==sys_nominal ) return 1.;
+    else return readJECFactorFromFile(jet);
+}
+
+float scalefactors::readJECFactorFromFile( NTJet* jet )const{
+
+    if (jet->pt()<30) return 1.;
+
+    TFile * f = new TFile ("data/analyse/jetrescale.root","READ");
+    if (!f) std::runtime_error("scalefactors::readJECFactorFromFile: file not found");
+    
+    TString graphname ;
+    if (variation_=="TT_FSRSCALE") graphname = "fsr";
+    else {
+        std::cout<<"variation "<<variation_<<" not supported"<<std::endl;
+        std::runtime_error("scalefactors::readJECFactorFromFile: variation not supported");
+    }
+    if (syst_==sys_up) graphname += "up_";
+    else if (syst_==sys_down) graphname += "down_";
+
+    if (abs(jet->getMember(1)) == 5) graphname += "b_"; // jet hadron flav
+    else graphname += "l_";
+
+    if (fabs(jet->eta())<1.5) graphname += "B";
+    else graphname += "E";
+
+    TGraphErrors * ge = (TGraphErrors*) f->GetObjectChecked(graphname,"TGraphErrors");
+    if (!ge) {
+        std::cout<<"graph "<<graphname<<" not found"<<std::endl;
+        std::runtime_error("scalefactors::readJECFactorFromFile: graph  not found");
+    }
+
+    float factor = ge->Eval(jet->pt());
+
+    delete ge;
+    f->Close();
+    delete f;
+
+    return factor;
 }
 
 float scalefactors::getMuonRochesterFactorFromEnvelope( NTMuon* muon ) const{
