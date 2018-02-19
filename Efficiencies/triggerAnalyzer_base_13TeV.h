@@ -67,10 +67,10 @@ class triggerAnalyzer{
 
 public:
 	triggerAnalyzer(){
-		binseta_.push_back(-2.5);binseta_.push_back(-1.5);binseta_.push_back(-0.8);binseta_.push_back(0.8);binseta_.push_back(1.5);binseta_.push_back(2.5); // ee standard
 		//binspt_<<20<<25 << 30 << 35 << 40 << 50 << 60 << 100 << 200<<300;
-		binspt_<<15<<20<<30<<40<<60<<80<<100<<200<<300;
+		binspt_<<15<<20<<30<<40<<60<<80<<100<<200;
 		binseta2dx_ << 0<<0.5 << 0.9 << 1.2 << 2.1 << 2.4; //mu standard
+                binseta_<< -2.4 << -2.1<<-1.5<<-1.8 << -1.2 << -0.9 <<-0.5<<-0.2<<0<<0.2<<0.5<< 0.9 << 1.2<<1.5<<1.8 << 2.1 << 2.4;
 		binseta2dy_=binseta2dx_;
 		whichelectrons_="NTElectrons";
 
@@ -249,7 +249,7 @@ public:
 		binsetafine << -2.4 << -2.1 << -1.7 << -1.2 << -0.9 << -0.6 << -0.3 << -0.1 << 0.1 << 0.3 << 0.6 << 0.9 << 1.2 << 1.7 << 2.1 << 2.4;
 
 		vector<float> binseta2dfineX,binseta2dfineY;
-		binseta2dfineX << 0 << 0.3 << 0.6 << 1.2 << 1.7 << 2.4;
+		binseta2dfineX << 0 << 0.6 << 1.4 << 2.4;
 		binseta2dfineY=binseta2dfineX;
 
 		vector<float> binseta2jetmultiX,binseta2jetmultiY;
@@ -275,8 +275,8 @@ public:
                 vector<float> binsmet,binspt2d,binspt2d_lead,binspt2d_selead,binsetaele_;
                 binsmet<< 0<<20<<40<<60<<80<<100<<125<<150<<175<<200;
                 binspt2d<<15<<20<<30<<40<<60<<80<<100;
-                binspt2d_lead<<15<<20<<25<<30<<40<<60<<80<<100;
-                binspt2d_selead<<15<<20<<25<<30<<40<<60<<80<<100;
+                binspt2d_lead<<15<<20<<25<<30<<40<<60<<200;
+                binspt2d_selead<<15<<20<<25<<30<<40<<200;
                 binsetaele_<< -2.5<< -2.1<< -1.56<< -1.44<< -1.0<< -0.6<< -0.3<< -0.1<< 0.1<< 0.3<< 0.6<< 1.0<< 1.44<< 1.56<< 2.1<< 2.5;
 		//pt
 		//eta
@@ -802,8 +802,8 @@ public:
 			if(mode_<-0.1){ //ee
 				eta1=selectedElecs_[0]->eta();
 				eta2=selectedElecs_[1]->eta();
-				pt1=selectedElecs_[0]->ECalP4().Pt();
-				pt2=selectedElecs_[1]->ECalP4().Pt();
+				pt1=selectedElecs_[0]->pt();
+				pt2=selectedElecs_[1]->pt();
 				dphi=selectedElecs_[0]->phi() - pMet->phi();
 				dRll=dR(selectedElecs_[0],selectedElecs_[1]);
 				lepmulti=selectedElecs_.size();
@@ -837,7 +837,7 @@ public:
 			else{ //emu
 				eta1=selectedElecs_[0]->eta();
 				eta2=selectedMuons_[0]->eta();
-				pt1=selectedElecs_[0]->ECalP4().Pt();
+				pt1=selectedElecs_[0]->pt();
 				pt2=selectedMuons_[0]->pt();
 				dphi=selectedElecs_[0]->phi() - pMet->phi();
 				dRll=dR(selectedElecs_[0],selectedMuons_[0]);
@@ -1330,7 +1330,7 @@ public:
                 mettriggers.push_back("HLT_MET200_v");
                // mettriggers.push_back("HLT_DiCentralPFJet55_PFMET110_v");
                 mettriggers.push_back("HLT_PFMET300_v");
-                mettriggers.push_back("HLT_PFMET110_PFMHT110_IDTight_v");
+                mettriggers.push_back("HLT_PFMET120_PFMHT120_IDTight_v");
                 mettriggers.push_back("HLT_PFMET170_HBHECleaned_v");        
                 //just for testing
 		// mettriggers.clear();
