@@ -161,7 +161,7 @@ public:
 
 	void setOutFileAdd(TString o){outfileadd_=o;}
 
-	float createNormalizationInfo(TFile *f,bool isMC,size_t anaid);
+	float createNormalizationInfo(TFile *f,bool isMC,size_t anaid, bool isSignal=false);
 
 
 
@@ -171,6 +171,8 @@ public:
 	void setShowStatus(bool show){showstatus_=show;}
 	void setOnlySummary(bool show){onlySummary_=show;}
 	void setTickOnceMode(bool test){tickoncemode_=test;}
+
+	void setIsSignalMerged(bool isMerged){isSignalMerged_=isMerged;}
 
 
 
@@ -248,7 +250,7 @@ protected:
 
 	int usepdfw_;
 
-
+        bool isSignalMerged_;
 
 	TString topmass_;
 

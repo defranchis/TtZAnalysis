@@ -376,7 +376,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	TFile *intfile;
 	intfile=TFile::Open(datasetdirectory_+inputfile_);
 	//get normalization - switch on or off pdf weighter before!!!
-	norm_=createNormalizationInfo(intfile,isMC,anaid);
+        norm_=createNormalizationInfo(intfile,isMC,anaid,signal_);
 	intfile->Close();
 	delete intfile;
 
@@ -784,6 +784,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			if(isMC){
 				// muon->setP4(muon->p4() * getMuonEnergySF()->getScalefactor(muon->eta()));
 				muon->setP4(muon->p4() * getMuonEnergySF()->getMuonRochesterFactorFromEnvelope(muon) );
+                                // std::cout<<"TEST_MD\t"<<getMuonEnergySF()->getMuonRochesterFactorFromEnvelope_up(muon)<<"\t"<<getMuonEnergySF()->getMuonRochesterFactorFromEnvelope_down(muon)<<"\t1\t1"<<std::endl;
                         }
                         // std::cout<<"muon Rochester SF from envelope = "<<getMuonEnergySF()->getMuonRochesterFactorFromEnvelope(muon)<<std::endl;
 			allleps << muon;

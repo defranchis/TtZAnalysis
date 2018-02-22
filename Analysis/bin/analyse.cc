@@ -609,6 +609,7 @@ invokeApplication(){
                 else if(energy=="13TeV"){
                         ana->setFilePostfixReplace("ttbar.root","ttbar_hdampup.root");
                         ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_hdampup.root");
+                        ana->setIsSignalMerged(true);
                 }
 	}
 	else if(Syst=="TT_MATCH_down"){
@@ -621,6 +622,7 @@ invokeApplication(){
                 else if(energy=="13TeV"){
                         ana->setFilePostfixReplace("ttbar.root","ttbar_hdampdown.root");
                         ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_hdampdown.root");
+                        ana->setIsSignalMerged(true);
                 }
 
 	}
@@ -727,10 +729,12 @@ invokeApplication(){
         else if(Syst=="TT_TTTUNE_up"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_tttuneup.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_tttuneup.root");
+                if(energy=="13TeV") ana->setIsSignalMerged(true);
         }
         else if(Syst=="TT_TTTUNE_down"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_tttunedown.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_tttunedown.root");
+                if(energy=="13TeV") ana->setIsSignalMerged(true);
         }
         else if(Syst=="TT_CRERD_up"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_tterdon.root");
@@ -742,6 +746,7 @@ invokeApplication(){
         else if(Syst=="TT_CRQCD_up"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_ttqcdcr.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttqcdcr.root");
+                if(energy=="13TeV") ana->setIsSignalMerged(true);
         }
         else if(Syst=="TT_CRQCD_down"){
                // Dummy uncertainty
@@ -749,6 +754,7 @@ invokeApplication(){
         else if(Syst=="TT_CRGLUON_up"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_ttgluoncr.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttgluoncr.root");
+                if(energy=="13TeV") ana->setIsSignalMerged(true);
         }
         else if(Syst=="TT_CRGLUON_down"){
                // Dummy uncertainty
@@ -844,12 +850,18 @@ invokeApplication(){
 	else if(Syst=="TOPMASS_up"){ //consider as systematic variation. for testing purp! leaves normalization fixed
 		//default
 		if (energy=="7TeV" || energy=="8TeV") topmass="178.5";
-		else if (energy=="13TeV") topmass = "175.5";
+		else if (energy=="13TeV") {
+                    topmass = "175.5";
+                    ana->setIsSignalMerged(true);
+                }
 	}
 	else if(Syst=="TOPMASS_down"){
 		//default
 		if (energy=="7TeV" || energy=="8TeV") topmass="166.5";
-		else if (energy=="13TeV") topmass = "169.5";
+		else if (energy=="13TeV") {
+                    topmass = "169.5";
+                    ana->setIsSignalMerged(true);
+                }
 	}
 	else{
 		didnothing=true;
