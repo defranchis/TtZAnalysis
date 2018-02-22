@@ -846,9 +846,10 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			NTElectron * elec=&(b_Electrons.content()->at(i));
 			float ensf=1;
 			if(isMC){
-                            // ensf=getElecEnergySF()->getScalefactor(elec->eta());
-                            ensf=getElecEnergySF()->getElectronESFactor(elec);
-                            ensf*=getElecEnergyResolutionSF()->getElectronERFactor(elec);
+                            ensf=getElecEnergySF()->getScalefactor(elec->eta());
+                            // std::cout<<"TESTMD "<<ensf<<std::endl;
+                            // ensf=getElecEnergySF()->getElectronESFactor(elec);
+                            // ensf*=getElecEnergyResolutionSF()->getElectronERFactor(elec);
                         }
 
                         // std::cout<<"TEST_MD "<<getElecEnergySF()->getElectronESFactorUp(elec)<<" "<<getElecEnergySF()->getElectronESFactorDown(elec)<<" "
