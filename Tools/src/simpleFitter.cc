@@ -150,10 +150,11 @@ void simpleFitter::setParameter(size_t idx,double value){
 		throw std::out_of_range("simpleFitter::setParameter: index out of range");
 	paras_.at(idx)=value;
 }
-void simpleFitter::setParameterFixed(size_t idx,bool fixed){
+void simpleFitter::setParameterFixed(size_t idx, bool fixed, double value){
 	if(idx >= paras_.size())
 		throw std::out_of_range("simpleFitter::setParameterFixed: index out of range");
 	parafixed_.at(idx)=fixed;
+        if (value!=0) paras_.at(idx)=value;
 }
 
 void simpleFitter::setParameterLowerLimit(size_t idx,double value){

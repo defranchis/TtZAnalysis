@@ -97,7 +97,7 @@ public:
 	void setParameterNames(const std::vector<TString>& nms){paranames_=nms;}
 
 	void setParameter(size_t idx,double value);
-	void setParameterFixed(size_t idx,bool fixed=true);
+	void setParameterFixed(size_t idx,bool fixed=true,double value=0);
 	void setParameterLowerLimit(size_t idx,double value);
 	void setParameterUpperLimit(size_t idx,double value);
 	void removeParameterLowerLimit(size_t idx);
