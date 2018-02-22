@@ -58,6 +58,8 @@ scalefactors(): h(0), isth2d_(false), isMC_(false), syst_(sys_nominal), variatio
         float readJECFactorFromFile( NTJet* jet ) const;
 
         float getMuonRochesterFactorFromEnvelope( NTMuon* muon ) const;
+        float getMuonRochesterFactorFromEnvelope_up( NTMuon* muon ) const;
+        float getMuonRochesterFactorFromEnvelope_down( NTMuon* muon ) const;
 
         float getElectronESFactorUp( NTElectron* ele ) const;
         float getElectronESFactorDown( NTElectron* ele ) const;

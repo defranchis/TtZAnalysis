@@ -404,5 +404,29 @@ float scalefactors::getMuonRochesterFactorFromEnvelope( NTMuon* muon ) const{
     else return -99999.;
 }
 
+float scalefactors::getMuonRochesterFactorFromEnvelope_up( NTMuon* muon ) const{
+    if(switchedoff_ || !isMC_ ) return 1.;
+    float temp_sf = 1.;
+    for (int iVar = 2; iVar < 7; ++iVar){
+        if ( muon->getMember(iVar) > temp_sf ) temp_sf = muon->getMember(iVar);
+    }
+    temp_sf = sqrt( (1-temp_sf)*(1-temp_sf) + (1-muon->getMember(0))*(1-muon->getMember(0)) );
+    temp_sf += 1.;
+    return temp_sf;
+}
+
+float scalefactors::getMuonRochesterFactorFromEnvelope_down( NTMuon* muon ) const{
+    if(switchedoff_ || !isMC_) return 1.;
+    float temp_sf = 1.;
+    for (int iVar = 2; iVar < 7; ++iVar){
+        if ( muon->getMember(iVar) < temp_sf ) temp_sf = muon->getMember(iVar);
+    }
+    temp_sf = sqrt( (1-temp_sf)*(1-temp_sf) + (1-muon->getMember(1))*(1-muon->getMember(1)) );
+    temp_sf = 1-temp_sf;
+    return temp_sf;
+}
+
+
+
 }
 
