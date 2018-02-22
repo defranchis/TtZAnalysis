@@ -99,15 +99,15 @@ $plots for datasets
 
 [ 13TeV ]third jet pt 0,3 b-jets step 8
 
-   $ emu_13TeV_172.5_nominal_syst_mtop.ztop | total 0,0 b-jets step 8 
-   $ emu_13TeV_172.5_nominal_syst_mtop.ztop | lead jet pt 0,1 b-jets step 8
-   $ emu_13TeV_172.5_nominal_syst_mtop.ztop | second jet pt 0,2 b-jets step 8
-   $ emu_13TeV_172.5_nominal_syst_mtop.ztop | third jet pt 0,3 b-jets step 8
-
    emu_13TeV_172.5_nominal_syst_mtop.ztop | total 0,0 b-jets step 8 
-   emu_13TeV_172.5_nominal_syst_mtop.ztop | total 0,1 b-jets step 8
-   emu_13TeV_172.5_nominal_syst_mtop.ztop | total 0,2 b-jets step 8
-   emu_13TeV_172.5_nominal_syst_mtop.ztop | total 0,3 b-jets step 8
+   emu_13TeV_172.5_nominal_syst_mtop.ztop | lead jet pt 0,1 b-jets step 8
+   emu_13TeV_172.5_nominal_syst_mtop.ztop | second jet pt 0,2 b-jets step 8
+   emu_13TeV_172.5_nominal_syst_mtop.ztop | third jet pt 0,3 b-jets step 8
+
+   $ emu_13TeV_172.5_nominal_syst_mtop.ztop | total 0,0 b-jets step 8 
+   $ emu_13TeV_172.5_nominal_syst_mtop.ztop | total 0,1 b-jets step 8
+   $ emu_13TeV_172.5_nominal_syst_mtop.ztop | total 0,2 b-jets step 8
+   $ emu_13TeV_172.5_nominal_syst_mtop.ztop | total 0,3 b-jets step 8
 
 bjet++
 
