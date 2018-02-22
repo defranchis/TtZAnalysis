@@ -166,8 +166,8 @@ systs=(
     "TT_MESCALE_up"
     "TT_TTTUNE_down"
     "TT_TTTUNE_up"
-    # "ST_MESCALE_up"
-    # "ST_MESCALE_down"
+    "ST_MESCALE_up"
+    "ST_MESCALE_down"
 
     "TT_FRAG_down"
     "TT_FRAG_up"
