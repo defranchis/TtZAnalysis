@@ -767,16 +767,10 @@ invokeApplication(){
                // Dummy uncertainty
         }
         else if(Syst=="ST_MESCALE_up"){
-                ana->setFilePostfixReplace("tW.root","tW_twmescaleup.root");
-                ana->setFilePostfixReplace("tbarW.root","tbarW_twmescaleup.root");
-                ana->setFileXsecReplace("tW_tWmescaleup.root",19.3);
-                ana->setFileXsecReplace("tbarW_twmescaleup.root",19.3);
+            ana->addWeightBranch("NTWeight_scaleUpST");
         }
         else if(Syst=="ST_MESCALE_down"){
-                ana->setFilePostfixReplace("tW.root","tW_twmescaledown.root");
-                ana->setFilePostfixReplace("tbarW.root","tbarW_twmescaledown.root");
-                ana->setFileXsecReplace("tW_twmescaledown.root",19.3);
-                ana->setFileXsecReplace("tbarW_twmescaledown.root",19.3);
+            ana->addWeightBranch("NTWeight_scaleDownST");
         }
  
 
