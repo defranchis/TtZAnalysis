@@ -30,12 +30,12 @@ c_abs.SaveAs('pull_abs.png')
 print
 print
 
-if f_abs.GetParameter(1) > 0 : print 'm_out = m_in +', round(f_abs.GetParameter(1),2), '+\-', round(f_abs.GetParameter(2),2), 'GeV'
-else: print 'm_out = m_in -', abs(round(f_abs.GetParameter(1),2)), '+\-', round(f_abs.GetParameter(2),2), 'GeV'
+if f_abs.GetParameter(1) > 0 : print 'm_out = m_in +', round(f_abs.GetParameter(1),3), '+\-', round(f_abs.GetParameter(2),3), 'GeV'
+else: print 'm_out = m_in -', abs(round(f_abs.GetParameter(1),3)), '+\-', round(f_abs.GetParameter(2),3), 'GeV'
 
 print
 
-print 'correction factor =', round(f_norm.GetParameter(2),2)
+print 'correction factor =', round(f_norm.GetParameter(2),3)
 
 print
 print
