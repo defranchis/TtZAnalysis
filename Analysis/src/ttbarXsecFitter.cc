@@ -123,6 +123,7 @@ void ttbarXsecFitter::readInput(const std::string & configfilename){
 	//now idices are fixed
 	for(size_t i=0;i<datasets_.size();i++){
 		datasets_.at(i).createXsecIdx();
+                datasets_.at(i).createMassIdx();
 
 	}
 	createContinuousDependencies();
@@ -156,6 +157,10 @@ void ttbarXsecFitter::readInput(const std::string & configfilename){
                                 setPrior(sysname, prior_gaussbroad);
 			else if(priorstr=="fixed")
 				setPrior(sysname, prior_parameterfixed);
+			else if(priorstr=="fixed_up")
+				setPrior(sysname, prior_parameterfixed_up);
+			else if(priorstr=="fixed_down")
+				setPrior(sysname, prior_parameterfixed_down);
 			else{
 				std::string errstr=("Did not recognize prior " +priorstr + " for "+ sysname).Data();
 				throw std::runtime_error(errstr);
@@ -192,8 +197,10 @@ void ttbarXsecFitter::readInput(const std::string & configfilename){
 void ttbarXsecFitter::createPseudoDataFromMC(histo1D::pseudodatamodes mode){
 	pseudodatarun_=true;
 	std::vector<size_t> excludefromsyspseudo;
-	for(size_t i=0;i<datasets_.size();i++)
+	for(size_t i=0;i<datasets_.size();i++){
 		excludefromsyspseudo.push_back(datasets_.at(i).xsecIdx());
+                excludefromsyspseudo.push_back(datasets_.at(i).massIdx());
+        }
 	for(size_t i=0;i<datasets_.size();i++)
 		datasets_.at(i).createPseudoDataFromMC(mode,excludefromsyspseudo);
 }
@@ -271,27 +278,17 @@ void ttbarXsecFitter::dataset::createContinuousDependencies(){
 	bool useMConly=parent_->useMConly_;
 	for(size_t it=0;it<signalconts_nbjets_.size();it++){
 
-		signalshape_nbjet_.push_back(createLeptonJetAcceptance(signalconts_nbjets_,signalpsmigconts_nbjets_,signalvisgenconts_nbjets_, bjetcount));
+                signalshape_nbjet_.push_back(createLeptonJetAcceptance(signalconts_nbjets_,signalpsmigconts_nbjets_,signalvisgenconts_nbjets_, bjetcount));
 		histo1D temp=dataconts_nbjets_.at(it);
 		if(useMConly){
-                //     if (parent_->variationToFit_!=""){
-                //         size_t var_index = (signalconts_nbjets_.at(it) + backgroundconts_nbjets_.at(it)).getSystErrorIndex(parent_->variationToFit_);
-                //         // temp = signalconts_nbjets_.at(it).getSystContainer(var_index) + backgroundconts_nbjets_.at(it).getSystContainer(var_index);
-                //         temp = (signalconts_nbjets_.at(it) + backgroundconts_nbjets_.at(it)).getSystContainer(var_index);
-                //         std::cout<<std::endl;
-                //         std::cout<<"*****************"<<std::endl;
-                //         std::cout<<var_index<<"\t"<<parent_->variationToFit_<<std::endl;
-                //         std::cout<<"*****************"<<std::endl;
-                //         std::cout<<std::endl;
-
-                //     }
-                //     else temp=signalconts_nbjets_.at(it) + backgroundconts_nbjets_.at(it);
 
                     temp=signalconts_nbjets_.at(it) + backgroundconts_nbjets_.at(it);
                     if (parent_->variationToFit_!=""){
                         size_t var_index = temp.getSystErrorIndex(parent_->variationToFit_);
                         temp = temp.getSystContainer(var_index);
-                        temp.createStatFromContent();
+                        if (!parent_->variationToFit_.Contains("TOPMASS_1GeV")){
+                            temp.createStatFromContent();
+                        }
                         temp.mergeLayers(dataconts_nbjets_.at(it));
                     }
                     else temp.setAllErrorsZero(false);
@@ -626,6 +623,10 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 	for(size_t i=0;i<priors_.size();i++){
 		if(priors_.at(i) == prior_parameterfixed)
 			fitter_.setParameterFixed(i,true);
+                else if(priors_.at(i) == prior_parameterfixed_up)
+                        fitter_.setParameterFixed(i,true,1);
+                else if(priors_.at(i) == prior_parameterfixed_down)
+                        fitter_.setParameterFixed(i,true,-1);
 		else
 			fitter_.setParameterFixed(i,false);
 		if(priors_.at(i) == prior_box){
@@ -724,9 +725,6 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 		tempdata.push_back(fitter_.getParameters()->at(masspos));
 		tempdata.push_back(fitter_.getParameterErrUp()->at(masspos));
 		tempdata.push_back(fitter_.getParameterErrDown()->at(masspos));
-                // double tmp1, tmp2;
-                // fitter_.getStatErrorContribution(masspos,tmp1,tmp2);
-		// tempdata.push_back(tmp1);
 
 	}
 	if(fitter_.wasSuccess()){
@@ -1351,23 +1349,6 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
 		stack.setName(plotnames.at(i).at(0).data());
 		poststack.setName(stack.getName()+"_postfit");
 		//}
-
-                if (stack.getName() == "m_lb min 1,1 b-jets step 8") stack = stack.rebinXToBinning({20,48,76,104,132,160});
-                else if (stack.getName() == "m_lb min 1,2 b-jets step 8") stack = stack.rebinXToBinning({20,48,76,104,132,160});
-
-                else if (stack.getName() == "lead jet pt 0,1 b-jets step 8") stack = stack.rebinXToBinning({30,35,40,50,70,100,200});
-                else if (stack.getName() == "second jet pt 0,2 b-jets step 8") stack = stack.rebinXToBinning({30,35,40,50,100,200});
-                else if (stack.getName() == "third jet pt 0,3 b-jets step 8") stack = stack.rebinXToBinning({30,40,50,200});
-                else if (stack.getName() == "third jet pt 1,3 b-jets step 8") stack = stack.rebinXToBinning({30,40,50,200});
-
-                if (stack.getName() == "m_lb min 1,1 b-jets step 8") poststack = poststack.rebinXToBinning({20,48,76,104,132,160});
-                else if (stack.getName() == "m_lb min 1,2 b-jets step 8") poststack = poststack.rebinXToBinning({20,48,76,104,132,160});
-
-                else if (stack.getName() == "lead jet pt 0,1 b-jets step 8") poststack = poststack.rebinXToBinning({30,35,40,50,70,100,200});
-                else if (stack.getName() == "second jet pt 0,2 b-jets step 8") poststack = poststack.rebinXToBinning({30,35,40,50,100,200});
-                else if (stack.getName() == "third jet pt 0,3 b-jets step 8") poststack = poststack.rebinXToBinning({30,40,50,200});
-                else if (stack.getName() == "third jet pt 1,3 b-jets step 8") poststack = poststack.rebinXToBinning({30,40,50,200});
-
 
 		TString name=stack.getName();
 		name.ReplaceAll(" ","_");
@@ -2369,6 +2350,12 @@ const size_t & ttbarXsecFitter::dataset::xsecIdx()const{
 	}
 	return xsecidx_;
 }
+const size_t & ttbarXsecFitter::dataset::massIdx()const{
+	if(massidx_==9999){
+		throw std::logic_error("ttbarXsecFitter::datasets::massIdx: first create index");
+	}
+	return massidx_;
+}
 void ttbarXsecFitter::dataset::createXsecIdx(){
 	//search for it
 	if(signalconts_nbjets_.size()<1){
@@ -2379,6 +2366,17 @@ void ttbarXsecFitter::dataset::createXsecIdx(){
 	if(idx == sysnames.size())
 		throw std::logic_error("ttbarXsecFitter::datasets::createXsecIdx: index not found");
 	xsecidx_=idx;
+}
+void ttbarXsecFitter::dataset::createMassIdx(){
+	//search for it
+	if(signalconts_nbjets_.size()<1){
+		throw std::logic_error("ttbarXsecFitter::datasets::createMassIdx: first read-in stacks");
+	}
+	std::vector<TString> sysnames=signalconts_nbjets_.at(0).getSystNameList();
+	size_t idx=std::find(sysnames.begin(),sysnames.end(),"TOPMASS")-sysnames.begin();
+	if(idx == sysnames.size())
+		throw std::logic_error("ttbarXsecFitter::datasets::createMassIdx: index not found");
+	massidx_=idx;
 }
 
 void  ttbarXsecFitter::dataset::readStacks(const std::string configfilename,const std::pair<TString,
@@ -2449,28 +2447,11 @@ void  ttbarXsecFitter::dataset::readStacks(const std::string configfilename,cons
 			if(tmpstack.getSignalIdxs().size() <1)
 				throw std::runtime_error("ttbarXsecFitter::readStacks: No signal defined!");
 
-                        std::cout<<plotname<<std::endl;
+                        // std::cout<<plotname<<std::endl;
                         
-                        if (plotname == "m_lb min 1,1 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({20,48,76,104,132,160});
-                        else if (plotname == "m_lb min 1,2 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({20,48,76,104,132,160});
-
-                        else if (plotname == "lead jet pt 0,1 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,35,40,50,70,100,200});
-                        else if (plotname == "second jet pt 0,2 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,35,40,50,100,200});
-                        else if (plotname == "third jet pt 0,3 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,40,50,200});
-                        else if (plotname == "third jet pt 1,3 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,40,50,200});
-
-                        // freeze
-                        // if (plotname == "m_lb min 1,1 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({20,62,118,160});
-                        // else if (plotname == "m_lb min 1,2 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({20,62,118,160});
-                        // else if (plotname == "m_lb min 2,1 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({20,76,104,160});
-
-                        // else if (plotname == "lead jet pt 0,1 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,50,100,200});
-                        // else if (plotname == "second jet pt 0,2 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,50,100,200});
-                        // else if (plotname == "third jet pt 0,3 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,50,200});
-                        // else if (plotname == "third jet pt 1,3 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,50,200});
-
-
-			inputstacks_.at(bjetcount).push_back(tmpstack); //BEFORE ADDIND UNC!
+                        inputstacks_.at(bjetcount).push_back(tmpstack); //BEFORE ADDIND UNC!
+                        
+                        // rebin here if necessary
 
 			addUncertainties(&tmpstack,bjetcount,removesyst,priorcorr);
 
@@ -2660,7 +2641,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	float addlumiunc=0;
 	addlumiunc=unclumi_/100;
 	if(!getName().Contains("13TeV"))stack->addGlobalRelMCError("Lumi" ,addlumiunc);
-	stack->addGlobalRelMCError("Lumi" ,addlumiunc);
+	// stack->addGlobalRelMCError("Lumi" ,addlumiunc);
 	// stack->addGlobalRelBGError("Lumi_BG" ,addlumiunc);
 
 
@@ -2668,8 +2649,9 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 		std::cout << "ttbarXsecFitter::addUncertainties: added lumi var" <<std::endl;
 
 	if(removesyst){
-		if(std::find(allsys.begin(),allsys.end(),"TOPMASS")!=allsys.end())
+               if(std::find(allsys.begin(),allsys.end(),"TOPMASS")!=allsys.end())
 			stack->removeAllSystematics("TOPMASS");
+
 		else
 			stack->removeAllSystematics();
 		//}catch(...){}
@@ -2739,5 +2721,6 @@ bool ttbarXsecFitter::isXSecIdx(const size_t& idx)const{
 	}
 	return false;
 }
+
 
 }

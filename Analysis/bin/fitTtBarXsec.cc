@@ -94,14 +94,11 @@ invokeApplication(){
 	mainfitter.setExcludeZeroBjetBin(exclude0bjetbin);
 	mainfitter.setUseMCOnly(onlyMC);
 	mainfitter.setEmuOnly(onlyemu);
-        mainfitter.setFitToVariation(fitToVariation);	
+        mainfitter.setFitToVariation(fitToVariation);
         mainfitter.setNoMinos(nominos);
 	mainfitter.setNoSystBreakdown((onlytotalerror));
 	mainfitter.setIgnorePriors(!fitsystematics);
 	mainfitter.setRemoveSyst(!fitsystematics);
-
-	
-        
 
 	//extendedVariable::debug=true;
 	ttbarXsecFitter::debug=debug;
@@ -519,8 +516,7 @@ invokeApplication(){
 		for(size_t ndts=0;ndts<mainfitter.nDatasets();ndts++){
 			std::string infile="emu_";
 			infile+=mainfitter.datasetName(ndts).Data();
-			if (tmpcheck && onlyemu) infile+="_172.5_nominal_syst_mtop.ztop";
-			else infile+="_172.5_nominal_syst.ztop";
+			infile+="_172.5_nominal_syst.ztop";
 			std::string dir=outfile.Data();
 			dir+="_emu_";
 			dir+=mainfitter.datasetName(ndts).Data();
