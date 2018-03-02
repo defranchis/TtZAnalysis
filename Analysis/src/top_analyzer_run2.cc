@@ -270,7 +270,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		getTriggerSF()->setSystematics("nom");
 
 		getElecEnergySF()->setSystematics("nom");
-		getElecEnergyResolutionSF()->setSystematics("nom");
+		getElecEnergyResolutionSF_rho()->setSystematics("nom");
+		getElecEnergyResolutionSF_phi()->setSystematics("nom");
 		getAdditionalJEC()->setSystematics("nom");
 		getElecSF()->setSystematics("nom");
 		getMuonEnergySF()->setSystematics("nom");
@@ -430,11 +431,13 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 	//some global checks
 	getElecEnergySF()->setRangeCheck(false);
-	getElecEnergyResolutionSF()->setRangeCheck(false);
+	getElecEnergyResolutionSF_rho()->setRangeCheck(false);
+	getElecEnergyResolutionSF_phi()->setRangeCheck(false);
 	getAdditionalJEC()->setRangeCheck(false);
 	getMuonEnergySF()->setRangeCheck(false);
 	getElecEnergySF()->setIsMC(isMC);
-	getElecEnergyResolutionSF()->setIsMC(isMC);
+	getElecEnergyResolutionSF_rho()->setIsMC(isMC);
+	getElecEnergyResolutionSF_phi()->setIsMC(isMC);
 	getAdditionalJEC()->setIsMC(isMC);
 	getMuonEnergySF()->setIsMC(isMC);
 
@@ -848,12 +851,14 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			if(isMC){
                             // ensf=getElecEnergySF()->getScalefactor(elec->eta());
                             ensf=getElecEnergySF()->getElectronESFactor(elec);
-                            ensf*=getElecEnergyResolutionSF()->getElectronERFactor(elec);
+                            ensf*=getElecEnergyResolutionSF_rho()->getElectronERFactor_rho(elec);
+                            ensf*=getElecEnergyResolutionSF_phi()->getElectronERFactor_phi(elec);
                         }
 
-                        // std::cout<<"TEST_MD "<<getElecEnergySF()->getElectronESFactorUp(elec)<<" "<<getElecEnergySF()->getElectronESFactorDown(elec)<<" "
+                        // std::cout<<"TEST<_MD "<<getElecEnergySF()->getElectronESFactorUp(elec)<<" "<<getElecEnergySF()->getElectronESFactorDown(elec)<<" "
                         //          <<getElecEnergyResolutionSF()->getElectronERFactorUp(elec)<<" "<<getElecEnergyResolutionSF()->getElectronERFactorDown(elec)<<endl;
 			//elec->setECalP4(elec->ECalP4() * ensf);
+                        // std::cout<<"TESTMD: "<<ensf<<std::endl;
 			elec->setP4(elec->p4() * ensf); //both the same now!!
 		      	/*if (*b_EventNumber.content() ==19458568 ) {
 			    std::cout<<" agrohsje check electrons "

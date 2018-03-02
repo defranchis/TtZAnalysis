@@ -19,6 +19,8 @@ BTAG_TOT,       b-tagging
 ELECES, 	Electron energy scale
 ELECESR, 	Electron energy
 ELECER, 	Electron energy resolution
+ELECER_PHI, 	Electron energy resolution - phi
+ELECER_RHO, 	Electron energy resolution - rho
 ELECSF,		Electron ID / isolation
 ELECSF_ALL,	Electron ID / isolation
 JER,		Jet energy resolution

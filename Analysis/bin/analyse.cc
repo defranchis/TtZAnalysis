@@ -437,11 +437,17 @@ invokeApplication(){
 	else if(Syst=="ELECES_down"){
 		ana->getElecEnergySF()->setSystematics("down");
 	}
-	else if(Syst=="ELECER_up"){
-		ana->getElecEnergyResolutionSF()->setSystematics("up");
+	else if(Syst=="ELECER_PHI_up"){
+		ana->getElecEnergyResolutionSF_phi()->setSystematics("up");
 	}
-	else if(Syst=="ELECER_down"){
-		ana->getElecEnergyResolutionSF()->setSystematics("down");
+	else if(Syst=="ELECER_PHI_down"){
+            // one sided by construction
+	}
+	else if(Syst=="ELECER_RHO_up"){
+		ana->getElecEnergyResolutionSF_rho()->setSystematics("up");
+	}
+	else if(Syst=="ELECER_RHO_down"){
+		ana->getElecEnergyResolutionSF_rho()->setSystematics("down");
 	}
 	else if(Syst=="JES_up"){
 		ana->getJECUncertainties()->setSystematics("up");

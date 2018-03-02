@@ -49,8 +49,10 @@ systs=(
     "ELECES_up"
     "ELECES_down"
 
-    "ELECER_up"
-    "ELECER_down"
+    "ELECER_PHI_up"
+    "ELECER_PHI_down"
+    "ELECER_RHO_up"
+    "ELECER_RHO_down"
 
     "DYSCALE_up"
     "DYSCALE_down"
