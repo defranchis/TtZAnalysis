@@ -2531,6 +2531,16 @@ void  ttbarXsecFitter::dataset::readStacks(const std::string configfilename,cons
 			if(tmpstack.getSignalIdxs().size() <1)
 				throw std::runtime_error("ttbarXsecFitter::readStacks: No signal defined!");
 
+                        // std::cout<<plotname<<std::endl;
+
+                        if (plotname == "m_lb min 1,1 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({20,48,76,104,132,160});
+                        else if (plotname == "m_lb min 1,2 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({20,48,76,104,132,160});
+                        else if (plotname == "lead jet pt 0,1 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,50,100,200}); 
+                        else if (plotname == "second jet pt 0,2 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,40,50,100,200}); 
+                        else if (plotname == "third jet pt 0,3 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,40,50,200});
+                        else if (plotname == "third jet pt 1,3 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,40,50,200});
+                        else if (plotname == "lead jet pt 2,1 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,50,90,160}); 
+                        else if (plotname == "second jet pt 2,2 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,45,100,300}); 
 
                         
                         inputstacks_.at(bjetcount).push_back(tmpstack); //BEFORE ADDIND UNC!
