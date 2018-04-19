@@ -194,6 +194,86 @@ void ttbarXsecFitter::readInput(const std::string & configfilename){
 		std::cout << "ttbarXsecFitter::readInput: done. " <<std::endl;
 	}
 }
+
+void ttbarXsecFitter::createToysFromSyst(histo1D::pseudodatamodes mode){
+	for(size_t i=0;i<datasets_.size();i++)
+		datasets_.at(i).createToysFromSyst(mode);
+}
+
+void ttbarXsecFitter::dataset::createToysFromSyst(histo1D::pseudodatamodes mode){
+    if (firstToy_){
+        if(!random_){
+            if (parent_->seed_==0) random_ = new TRandom3();
+            else random_ = new TRandom3(parent_->seed_);
+            if(debug) std::cout << "invoked new random" <<std::endl;
+
+        }
+        // careful: hard coded!!! always check
+        parent_->var_for_toys_ = {"TT_ISRSCALE_down","TT_ISRSCALE_up","TT_FSRSCALE_down","TT_FSRSCALE_up",
+                                  "TT_MATCH_down","TT_MATCH_up","TT_TTTUNE_down","TT_TTTUNE_up","TT_FRAG_PETERSON_up",
+                                  "TT_CRGLUON_up","TT_CRQCD_up","TT_CRERD_up","TT_GENMCATNLO_up",
+                                  "TOPMASS_up","TOPMASS_down"};
+
+        std::cout<<"variations for toys:"<<std::endl;
+        for(auto var: parent_->var_for_toys_) std::cout<<var<<std::endl;
+        std::cout<<std::endl;
+
+        datacontsorig_nbjets_=dataconts_nbjets_; //safe originals
+        backgroundcontsorig_nbjets_=backgroundconts_nbjets_; //safe originals
+        signalcontsorig_nbjets_=signalconts_nbjets_; //safe originals
+        signalpsmigcontsorig_nbjets_=signalpsmigconts_nbjets_; //safe originals
+        signalvisgencontsorig_nbjets_=signalvisgenconts_nbjets_; //safe originals
+
+        std::cout << "Preparing toy syst experiments mode for dataset " << name_  <<std::endl;
+        if(!debug)simpleFitter::printlevel=-1;
+
+        firstToy_ = false;
+    }
+
+
+    for(size_t i=0;i<dataconts_nbjets_.size();i++){
+        dataconts_nbjets_.at(i) = datacontsorig_nbjets_.at(i);
+        // histo1D tmpmc=backgroundcontsorig_nbjets_.at(i) + signalcontsorig_nbjets_.at(i);
+        // tmpmc.setAllErrorsZero(false); tmpmc.createStatFromContent();
+        // dataconts_nbjets_.at(i) = tmpmc.createPseudoExperiment(random_,0,mode,-1);
+
+
+        // // performing toys on nominal
+        backgroundconts_nbjets_.at(i)=backgroundcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
+        signalconts_nbjets_.at(i)=signalcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
+        signalpsmigconts_nbjets_.at(i)=signalpsmigcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
+        signalvisgenconts_nbjets_.at(i)=signalvisgencontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
+
+        // // getting relative variations from originals
+        backgroundconts_nbjets_.at(i).getRelSystematicsFrom(backgroundcontsorig_nbjets_.at(i));
+        signalconts_nbjets_.at(i).getRelSystematicsFrom(signalcontsorig_nbjets_.at(i));
+        signalpsmigconts_nbjets_.at(i).getRelSystematicsFrom(signalpsmigcontsorig_nbjets_.at(i));
+        signalvisgenconts_nbjets_.at(i).getRelSystematicsFrom(signalvisgencontsorig_nbjets_.at(i));
+
+
+        for (auto var : parent_->var_for_toys_){
+            size_t index = signalcontsorig_nbjets_.at(i).getSystErrorIndex(var);
+            histo1D toy  = signalcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,index);
+            
+            signalconts_nbjets_.at(i).removeError(var);
+            signalconts_nbjets_.at(i).addErrorContainer(var,toy);
+
+        }
+
+        signalconts_nbjets_.at(i).equalizeSystematicsIdxs(signalcontsorig_nbjets_.at(i));
+
+    }
+    signalshape_nbjet_.clear();
+    data_nbjet_.clear();
+    background_nbjet_.clear();
+
+    if(debug)
+        std::cout << "ttbarXsecFitter::dataset::createToysFromSyst: new toy created" <<std::endl;
+
+
+}
+
+
 void ttbarXsecFitter::createPseudoDataFromMC(histo1D::pseudodatamodes mode){
 	pseudodatarun_=true;
 	std::vector<size_t> excludefromsyspseudo;
@@ -2048,7 +2128,7 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
 		//put else here if lumi gets treated differently
 		if(priors_[sys] == prior_gauss){
 			out+= simpleFitter::nuisanceGaus(variations[sys]);}
-                if(priors_[sys] == prior_gaussbroad){
+                else if(priors_[sys] == prior_gaussbroad){
                         out+= simpleFitter::nuisanceGausBroad(variations[sys]);}
 
 		//else if(priors_[sys] == prior_box){
@@ -2447,12 +2527,10 @@ void  ttbarXsecFitter::dataset::readStacks(const std::string configfilename,cons
 			if(tmpstack.getSignalIdxs().size() <1)
 				throw std::runtime_error("ttbarXsecFitter::readStacks: No signal defined!");
 
-                        // std::cout<<plotname<<std::endl;
+
                         
                         inputstacks_.at(bjetcount).push_back(tmpstack); //BEFORE ADDIND UNC!
                         
-                        // rebin here if necessary
-
 			addUncertainties(&tmpstack,bjetcount,removesyst,priorcorr);
 
 
