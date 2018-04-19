@@ -155,6 +155,8 @@ void ttbarXsecFitter::readInput(const std::string & configfilename){
 				setPrior(sysname, prior_gauss);
                         else if(priorstr=="gaussbroad")
                                 setPrior(sysname, prior_gaussbroad);
+                        else if(priorstr=="gaussmass")
+                                setPrior(sysname, prior_gaussmass);
 			else if(priorstr=="fixed")
 				setPrior(sysname, prior_parameterfixed);
 			else if(priorstr=="fixed_up")
@@ -2130,6 +2132,8 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
 			out+= simpleFitter::nuisanceGaus(variations[sys]);}
                 else if(priors_[sys] == prior_gaussbroad){
                         out+= simpleFitter::nuisanceGausBroad(variations[sys]);}
+                else if(priors_[sys] == prior_gaussmass){
+                        out+= simpleFitter::nuisanceGausMass(variations[sys]);}
 
 		//else if(priors_[sys] == prior_box){
 		//	out+= simpleFitter::nuisanceBox(variations[sys]);

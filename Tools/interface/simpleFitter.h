@@ -199,6 +199,7 @@ public:
 
 	static double nuisanceGaus(const double & in);
         static double nuisanceGausBroad(const double & in);
+        static double nuisanceGausMass(const double & in);
 	static double nuisanceBox(const double & in);
 	//for sure not ok!
 	static double nuisanceLogNormal(const double & in);
