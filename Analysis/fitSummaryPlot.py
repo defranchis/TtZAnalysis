@@ -48,8 +48,8 @@ for line in l1_short:
     contribution = str( TString(contribution).ReplaceAll('$','') )
     contribution = str( TString(contribution).ReplaceAll('{','') )
     contribution = str( TString(contribution).ReplaceAll('}','') )
-    # if 'm_{t}' in name or 'Lumi' in name or 'DY GEN' in name: continue
-    if 'Lumi' in name or 'DY GEN' in name: continue
+    if 'm_{t}' in name or 'Lumi' in name or 'DY GEN' in name: continue
+    # if 'Lumi' in name or 'DY GEN' in name: continue
     if 'PDF' in name:
         name_pdf.append(name)
         pull_pdf.append(float(pull))
