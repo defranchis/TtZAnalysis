@@ -9,8 +9,8 @@ channels=( "emu"
 ## scale and match variations will be ignored for other top masses then 172.5.. (hardcoded below)
 topmasses=( "172.5"
 
-     "171.5"
-     "173.5"
+     # "171.5"
+     # "173.5"
 # #agrohsje 
   # "175.5"
   #  "169.5"
@@ -170,6 +170,10 @@ systs=(
     "TT_TTTUNE_up"
     "ST_MESCALE_up"
     "ST_MESCALE_down"
+    "ST_FSRSCALE_up"
+    "ST_FSRSCALE_down"
+    "ST_ISRSCALE_up"
+    "ST_ISRSCALE_down"
 
     "TT_FRAG_down"
     "TT_FRAG_up"
