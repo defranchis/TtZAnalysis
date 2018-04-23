@@ -702,6 +702,28 @@ invokeApplication(){
                 // ana->setFileXsecReplace("tW_twfsrdown.root",19.3);
                 // ana->setFileXsecReplace("tbarW_twfsrdown.root",19.3);
         }
+        else if(Syst=="ST_FSRSCALE_up"){
+                ana->setFilePostfixReplace("tW_ext.root","tW_ext_fsrup.root" );
+                ana->setFilePostfixReplace("tbarW_ext.root","tbarW_ext_fsrup.root" );
+                // ana->getAdditionalJEC()->setSystematics("up");
+                // ana->getAdditionalJEC()->setVariation(Syst.ReplaceAll("_up",""));
+
+        }
+        else if(Syst=="ST_FSRSCALE_down"){
+                ana->setFilePostfixReplace("tW_ext.root","tW_ext_fsrdown.root" );
+                ana->setFilePostfixReplace("tbarW_ext.root","tbarW_ext_fsrdown.root" );
+                // ana->getAdditionalJEC()->setSystematics("down");
+                // ana->getAdditionalJEC()->setVariation(Syst.ReplaceAll("_down",""));
+        }
+        else if(Syst=="ST_ISRSCALE_up"){
+                ana->setFilePostfixReplace("tW_ext.root","tW_ext_isrup.root" );
+                ana->setFilePostfixReplace("tbarW_ext.root","tbarW_ext_isrup.root" );
+
+        }
+        else if(Syst=="ST_ISRSCALE_down"){
+                ana->setFilePostfixReplace("tW_ext.root","tW_ext_isrdown.root" );
+                ana->setFilePostfixReplace("tbarW_ext.root","tbarW_ext_isrdown.root" );
+        }
         else if(Syst=="TT_MESCALE_up"){
                 ana->addWeightBranch("NTWeight_scaleUp");
         }
@@ -880,8 +902,8 @@ invokeApplication(){
 		else if (energy == "13TeV"){
 			ana->setFilePostfixReplace("ttbar.root","ttbar_mt"+topmass+".root");
 			ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_mt"+topmass+".root");
-                       // ana->setFilePostfixReplace("tW.root","tW_mt"+topmass+".root" );
-                       // ana->setFilePostfixReplace("tbarW.root","tbarW_mt"+topmass+".root" );
+                        ana->setFilePostfixReplace("tW_ext.root","tW_ext_mt"+topmass+".root" );
+                        ana->setFilePostfixReplace("tbarW_ext.root","tbarW_ext_mt"+topmass+".root" );
 
                        // if(topmass == "175.5" || topmass == "169.5"){
                        //         ana->setFilePostfixReplace("tW.root","tW_mt"+topmass+".root" );
