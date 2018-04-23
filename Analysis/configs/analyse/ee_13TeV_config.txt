@@ -44,8 +44,8 @@ $tree_13TeV_emuttbarbg_her.root,        t#bar{t}bg,	   	634,	  831.76,	  1
 $Sync.root,           t#bar{t},           633,      831.76,         0,      true
 
 
-   tree_13TeV_tW_private.root,                tW/#bar{t}W,	   	616,	  19.47,	          4
-   tree_13TeV_tbarW_private.root,	           tW/#bar{t}W,	   	616,	  19.47,	          4
+   tree_13TeV_tW_ext.root,                tW/#bar{t}W,	   	616,	  19.47,	          4
+   tree_13TeV_tbarW_ext.root,	           tW/#bar{t}W,	   	616,	  19.47,	          4
 
    tree_13TeV_dy1050.root,                   DY,                  852,      22635.1,        5  
    tree_13TeV_dy50inf_ee_pow.root,           DY,                  852,      1921.8,         5 
