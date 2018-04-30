@@ -1,3 +1,4 @@
+
 /*
  * scalefactors.h
  *
@@ -51,13 +52,16 @@ scalefactors(): h(0), isth2d_(false), isMC_(false), syst_(sys_nominal), variatio
 	double getScalefactor(double xval,double yval=0)const;
 
         float getElectronESFactor( NTElectron* ele ) const;
-        float getElectronERFactor( NTElectron* ele ) const;
+        float getElectronERFactor_phi( NTElectron* ele ) const;
+        float getElectronERFactor_rho( NTElectron* ele ) const;
         float getElectronESERFactorFromEnvelope( NTElectron* ele ) const;
 
         float getAdditionalJECFactor( NTJet* jet ) const;
         float readJECFactorFromFile( NTJet* jet ) const;
 
         float getMuonRochesterFactorFromEnvelope( NTMuon* muon ) const;
+        float getMuonRochesterFactorFromEnvelope_up( NTMuon* muon ) const;
+        float getMuonRochesterFactorFromEnvelope_down( NTMuon* muon ) const;
 
         float getElectronESFactorUp( NTElectron* ele ) const;
         float getElectronESFactorDown( NTElectron* ele ) const;

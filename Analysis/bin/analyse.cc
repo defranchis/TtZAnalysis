@@ -437,11 +437,17 @@ invokeApplication(){
 	else if(Syst=="ELECES_down"){
 		ana->getElecEnergySF()->setSystematics("down");
 	}
-	else if(Syst=="ELECER_up"){
-		ana->getElecEnergyResolutionSF()->setSystematics("up");
+	else if(Syst=="ELECER_PHI_up"){
+		ana->getElecEnergyResolutionSF_phi()->setSystematics("up");
 	}
-	else if(Syst=="ELECER_down"){
-		ana->getElecEnergyResolutionSF()->setSystematics("down");
+	else if(Syst=="ELECER_PHI_down"){
+            // one sided by construction
+	}
+	else if(Syst=="ELECER_RHO_up"){
+		ana->getElecEnergyResolutionSF_rho()->setSystematics("up");
+	}
+	else if(Syst=="ELECER_RHO_down"){
+		ana->getElecEnergyResolutionSF_rho()->setSystematics("down");
 	}
 	else if(Syst=="JES_up"){
 		ana->getJECUncertainties()->setSystematics("up");
@@ -609,6 +615,7 @@ invokeApplication(){
                 else if(energy=="13TeV"){
                         ana->setFilePostfixReplace("ttbar.root","ttbar_hdampup.root");
                         ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_hdampup.root");
+                        ana->setIsSignalMerged(true);
                 }
 	}
 	else if(Syst=="TT_MATCH_down"){
@@ -621,6 +628,7 @@ invokeApplication(){
                 else if(energy=="13TeV"){
                         ana->setFilePostfixReplace("ttbar.root","ttbar_hdampdown.root");
                         ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_hdampdown.root");
+                        ana->setIsSignalMerged(true);
                 }
 
 	}
@@ -694,6 +702,28 @@ invokeApplication(){
                 // ana->setFileXsecReplace("tW_twfsrdown.root",19.3);
                 // ana->setFileXsecReplace("tbarW_twfsrdown.root",19.3);
         }
+        else if(Syst=="ST_FSRSCALE_up"){
+                ana->setFilePostfixReplace("tW_ext.root","tW_ext_fsrup.root" );
+                ana->setFilePostfixReplace("tbarW_ext.root","tbarW_ext_fsrup.root" );
+                // ana->getAdditionalJEC()->setSystematics("up");
+                // ana->getAdditionalJEC()->setVariation(Syst.ReplaceAll("_up",""));
+
+        }
+        else if(Syst=="ST_FSRSCALE_down"){
+                ana->setFilePostfixReplace("tW_ext.root","tW_ext_fsrdown.root" );
+                ana->setFilePostfixReplace("tbarW_ext.root","tbarW_ext_fsrdown.root" );
+                // ana->getAdditionalJEC()->setSystematics("down");
+                // ana->getAdditionalJEC()->setVariation(Syst.ReplaceAll("_down",""));
+        }
+        else if(Syst=="ST_ISRSCALE_up"){
+                ana->setFilePostfixReplace("tW_ext.root","tW_ext_isrup.root" );
+                ana->setFilePostfixReplace("tbarW_ext.root","tbarW_ext_isrup.root" );
+
+        }
+        else if(Syst=="ST_ISRSCALE_down"){
+                ana->setFilePostfixReplace("tW_ext.root","tW_ext_isrdown.root" );
+                ana->setFilePostfixReplace("tbarW_ext.root","tbarW_ext_isrdown.root" );
+        }
         else if(Syst=="TT_MESCALE_up"){
                 ana->addWeightBranch("NTWeight_scaleUp");
         }
@@ -727,10 +757,12 @@ invokeApplication(){
         else if(Syst=="TT_TTTUNE_up"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_tttuneup.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_tttuneup.root");
+                if(energy=="13TeV") ana->setIsSignalMerged(true);
         }
         else if(Syst=="TT_TTTUNE_down"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_tttunedown.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_tttunedown.root");
+                if(energy=="13TeV") ana->setIsSignalMerged(true);
         }
         else if(Syst=="TT_CRERD_up"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_tterdon.root");
@@ -742,6 +774,7 @@ invokeApplication(){
         else if(Syst=="TT_CRQCD_up"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_ttqcdcr.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttqcdcr.root");
+                if(energy=="13TeV") ana->setIsSignalMerged(true);
         }
         else if(Syst=="TT_CRQCD_down"){
                // Dummy uncertainty
@@ -749,6 +782,7 @@ invokeApplication(){
         else if(Syst=="TT_CRGLUON_up"){
                 ana->setFilePostfixReplace("ttbar.root","ttbar_ttgluoncr.root");
                 ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ttgluoncr.root");
+                if(energy=="13TeV") ana->setIsSignalMerged(true);
         }
         else if(Syst=="TT_CRGLUON_down"){
                // Dummy uncertainty
@@ -761,16 +795,10 @@ invokeApplication(){
                // Dummy uncertainty
         }
         else if(Syst=="ST_MESCALE_up"){
-                ana->setFilePostfixReplace("tW.root","tW_twmescaleup.root");
-                ana->setFilePostfixReplace("tbarW.root","tbarW_twmescaleup.root");
-                ana->setFileXsecReplace("tW_tWmescaleup.root",19.3);
-                ana->setFileXsecReplace("tbarW_twmescaleup.root",19.3);
+            ana->addWeightBranch("NTWeight_scaleUpST");
         }
         else if(Syst=="ST_MESCALE_down"){
-                ana->setFilePostfixReplace("tW.root","tW_twmescaledown.root");
-                ana->setFilePostfixReplace("tbarW.root","tbarW_twmescaledown.root");
-                ana->setFileXsecReplace("tW_twmescaledown.root",19.3);
-                ana->setFileXsecReplace("tbarW_twmescaledown.root",19.3);
+            ana->addWeightBranch("NTWeight_scaleDownST");
         }
  
 
@@ -844,12 +872,18 @@ invokeApplication(){
 	else if(Syst=="TOPMASS_up"){ //consider as systematic variation. for testing purp! leaves normalization fixed
 		//default
 		if (energy=="7TeV" || energy=="8TeV") topmass="178.5";
-		else if (energy=="13TeV") topmass = "175.5";
+		else if (energy=="13TeV") {
+                    topmass = "175.5";
+                    ana->setIsSignalMerged(true);
+                }
 	}
 	else if(Syst=="TOPMASS_down"){
 		//default
 		if (energy=="7TeV" || energy=="8TeV") topmass="166.5";
-		else if (energy=="13TeV") topmass = "169.5";
+		else if (energy=="13TeV") {
+                    topmass = "169.5";
+                    ana->setIsSignalMerged(true);
+                }
 	}
 	else{
 		didnothing=true;
@@ -868,8 +902,8 @@ invokeApplication(){
 		else if (energy == "13TeV"){
 			ana->setFilePostfixReplace("ttbar.root","ttbar_mt"+topmass+".root");
 			ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_mt"+topmass+".root");
-                       // ana->setFilePostfixReplace("tW.root","tW_mt"+topmass+".root" );
-                       // ana->setFilePostfixReplace("tbarW.root","tbarW_mt"+topmass+".root" );
+                        ana->setFilePostfixReplace("tW_ext.root","tW_ext_mt"+topmass+".root" );
+                        ana->setFilePostfixReplace("tbarW_ext.root","tbarW_ext_mt"+topmass+".root" );
 
                        // if(topmass == "175.5" || topmass == "169.5"){
                        //         ana->setFilePostfixReplace("tW.root","tW_mt"+topmass+".root" );

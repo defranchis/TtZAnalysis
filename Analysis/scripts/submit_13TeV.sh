@@ -9,8 +9,8 @@ channels=( "emu"
 ## scale and match variations will be ignored for other top masses then 172.5.. (hardcoded below)
 topmasses=( "172.5"
 
-     "171.5"
-     "173.5"
+     # "171.5"
+     # "173.5"
 # #agrohsje 
   # "175.5"
   #  "169.5"
@@ -49,8 +49,10 @@ systs=(
     "ELECES_up"
     "ELECES_down"
 
-    "ELECER_up"
-    "ELECER_down"
+    "ELECER_PHI_up"
+    "ELECER_PHI_down"
+    "ELECER_RHO_up"
+    "ELECER_RHO_down"
 
     "DYSCALE_up"
     "DYSCALE_down"
@@ -166,8 +168,12 @@ systs=(
     "TT_MESCALE_up"
     "TT_TTTUNE_down"
     "TT_TTTUNE_up"
-    # "ST_MESCALE_up"
-    # "ST_MESCALE_down"
+    "ST_MESCALE_up"
+    "ST_MESCALE_down"
+    "ST_FSRSCALE_up"
+    "ST_FSRSCALE_down"
+    "ST_ISRSCALE_up"
+    "ST_ISRSCALE_down"
 
     "TT_FRAG_down"
     "TT_FRAG_up"

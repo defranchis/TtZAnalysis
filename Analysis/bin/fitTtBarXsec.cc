@@ -36,6 +36,8 @@ invokeApplication(){
 	}
 	const bool exclude0bjetbin  = parser->getOpt<bool>("-exclude0bjet",false,"Excludes 0,3+ bjet bin from the fit");
 	const int npseudoexp = parser->getOpt<int>("p",0,"number of pseudo experiments");
+	const int nToys = parser->getOpt<int>("-nToys",0,"number of toys");
+	const unsigned int seed = parser->getOpt<int>("-seed",0,"RNG seed for toys");
 	const bool debug = parser->getOpt<bool>("d",false,"switches on debug output");
 	const TString pseudoOpts = parser->getOpt<TString>("-pdopts","",
 			"additional options for pseudodata: Gaus: use Gaussian random distribution ");
@@ -75,6 +77,10 @@ invokeApplication(){
 		return -1;
 	}
 
+        if (npseudoexp && nToys){
+            throw std::logic_error("fitTtBarXsec: cannot perform pseudo-experiments and systematic toys at the same time");
+        }
+
 	ttbarXsecFitter mainfitter;
 	mainfitter.setTopOnTop(topontop);
 	mainfitter.setDummyFit(dummyrun);
@@ -94,14 +100,11 @@ invokeApplication(){
 	mainfitter.setExcludeZeroBjetBin(exclude0bjetbin);
 	mainfitter.setUseMCOnly(onlyMC);
 	mainfitter.setEmuOnly(onlyemu);
-        mainfitter.setFitToVariation(fitToVariation);	
+        mainfitter.setFitToVariation(fitToVariation);
         mainfitter.setNoMinos(nominos);
 	mainfitter.setNoSystBreakdown((onlytotalerror));
 	mainfitter.setIgnorePriors(!fitsystematics);
 	mainfitter.setRemoveSyst(!fitsystematics);
-
-	
-        
 
 	//extendedVariable::debug=true;
 	ttbarXsecFitter::debug=debug;
@@ -113,6 +116,10 @@ invokeApplication(){
 		if (npseudoexp>1) mainfitter.setSilent(true);
 		mainfitter.setIgnorePriors(true);
 	}
+        if (nToys){
+            mainfitter.setSeed(seed);
+            mainfitter.setSilent(true);
+        }
 	//simpleFitter::printlevel=1;
 
 	mainfitter.readInput((fullcfgpath+inputconfig).Data());
@@ -222,7 +229,7 @@ invokeApplication(){
 			system(("rm -f "+fracfile).data());
 		}
 
-                if(npseudoexp>1) return 0;
+                if(npseudoexp>1 || nToys > 1) return 0;
 	} //onlycontrolplots
 
 
@@ -240,7 +247,7 @@ invokeApplication(){
 	bool fitsucc=true;
 	//ttbarXsecFitter::debug=true;
 
-	if(npseudoexp){
+	if(npseudoexp || nToys){
 		size_t failcount=0;
 		gErrorIgnoreLevel = 3000;
 		size_t ndatasets=mainfitter.nDatasets();
@@ -258,14 +265,19 @@ invokeApplication(){
 		if(pseudoOpts.Contains("Gaus"))
 			pdmode=histo1D::pseudodata_gaus;
 		std::cout << std::endl;
-		for(int i=0;i<npseudoexp;i++){
+                int n_iterations = npseudoexp;
+                if (nToys) n_iterations = nToys;
+		for(int i=0;i<n_iterations;i++){
 			if(i>0)
-				displayStatusBar(i,npseudoexp);
+				displayStatusBar(i,n_iterations);
 			std::vector<float> xsecs,errup,errdown;
-			mainfitter.createPseudoDataFromMC(pdmode);
+                        if (npseudoexp)	mainfitter.createPseudoDataFromMC(pdmode);
+                        else mainfitter.createToysFromSyst(pdmode);
 			mainfitter.createContinuousDependencies();
-			if(!i)
-				std::cout << "creating pseudo experiments...\n" <<std::endl;
+			if(!i){
+                            if (npseudoexp) std::cout << "creating pseudo experiments...\n" <<std::endl;
+                            else std::cout << "creating toy experiments...\n" <<std::endl;
+                        }
 			bool succ=true;
 			try{
                                mainfitter.fit(xsecs,errup,errdown);
@@ -273,6 +285,11 @@ invokeApplication(){
 				failcount++;
 				succ=false;
 			}
+                        if(nToys>0 && succ){
+                            mainfitter.createSystematicsBreakdown(0,"TOPMASS");
+                            texTabler tab=mainfitter.makeSystBreakDownTable(0,true,"TOPMASS");
+                            tab.writeToFile(outfile+"_tab_TOPMASS_"+std::to_string(seed)+"_"+std::to_string(i+1)+".tex");
+                        }
 			if(succ && ! tmpcheck){
 				for(size_t ndts=0;ndts<ndatasets;ndts++){
 					double pull=xsecs.at(ndts)-mainfitter.getXsecOffset(ndts);
@@ -315,6 +332,7 @@ invokeApplication(){
 
 		//fit
 		for(size_t i=0;i<pulls.size()+1;i++){ //both pulls
+                    if (nToys > 0) break;
 			histo1D * c=0;
                         TH1D * h=0;
 			if(i<pulls.size())
@@ -376,9 +394,10 @@ invokeApplication(){
 			c->writeToFile(outfilefull); //for post-fits
 
 		}
-		std::cout << "Pseudodata run done. " << failcount << " failed out of " << npseudoexp << std::endl;
+		if (npseudoexp) std::cout << "Pseudodata run done. " << failcount << " failed out of " << npseudoexp << std::endl;
+                else std::cout << "Syst toys run done. " << failcount << " failed out of " << nToys << std::endl;
 
-                if(npseudoexp>1) return 0;
+                if(n_iterations>1) return 0;
 	}
 	else{
 		//ttbarXsecFitter::debug=false;
@@ -519,8 +538,7 @@ invokeApplication(){
 		for(size_t ndts=0;ndts<mainfitter.nDatasets();ndts++){
 			std::string infile="emu_";
 			infile+=mainfitter.datasetName(ndts).Data();
-			if (tmpcheck && onlyemu) infile+="_172.5_nominal_syst_mtop.ztop";
-			else infile+="_172.5_nominal_syst.ztop";
+			infile+="_172.5_nominal_syst.ztop";
 			std::string dir=outfile.Data();
 			dir+="_emu_";
 			dir+=mainfitter.datasetName(ndts).Data();

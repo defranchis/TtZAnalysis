@@ -132,7 +132,8 @@ public:
 
 
 	ztop::scalefactors * getElecEnergySF(){return &elecenergysf_;}
-	ztop::scalefactors * getElecEnergyResolutionSF(){return &elecenergyressf_;}
+	ztop::scalefactors * getElecEnergyResolutionSF_phi(){return &elecenergyressf_phi_;}
+	ztop::scalefactors * getElecEnergyResolutionSF_rho(){return &elecenergyressf_rho_;}
 	ztop::scalefactors * getAdditionalJEC(){return &additionalJEC_;}
 	ztop::scalefactors * getMuonEnergySF(){return &muonenergysf_;}
 
@@ -161,7 +162,7 @@ public:
 
 	void setOutFileAdd(TString o){outfileadd_=o;}
 
-	float createNormalizationInfo(TFile *f,bool isMC,size_t anaid);
+	float createNormalizationInfo(TFile *f,bool isMC,size_t anaid, bool isSignal=false);
 
 
 
@@ -171,6 +172,8 @@ public:
 	void setShowStatus(bool show){showstatus_=show;}
 	void setOnlySummary(bool show){onlySummary_=show;}
 	void setTickOnceMode(bool test){tickoncemode_=test;}
+
+	void setIsSignalMerged(bool isMerged){isSignalMerged_=isMerged;}
 
 
 
@@ -241,14 +244,14 @@ protected:
 	TString btagefffile_;
 
 	//for scalefactors provided in THXX format:
-	ztop::scalefactors elecsf_,muonsf_,muonsfBtoF_,muonsfGH_,triggerbgsf_,triggersf_,elecenergysf_,elecenergyressf_,additionalJEC_,muonenergysf_,trackingsf_, elecTrackingsf_,elecbgsf_,muonbgsf_,muonbgsfBtoF_,muonbgsfGH_,trackingbgsf_, elecTrackingbgsf_;
+	ztop::scalefactors elecsf_,muonsf_,muonsfBtoF_,muonsfGH_,triggerbgsf_,triggersf_,elecenergysf_,elecenergyressf_phi_,elecenergyressf_rho_,additionalJEC_,muonenergysf_,trackingsf_, elecTrackingsf_,elecbgsf_,muonbgsf_,muonbgsfBtoF_,muonbgsfGH_,trackingbgsf_, elecTrackingbgsf_;
 	ztop::reweightfunctions topptReweighter_;
 
 	//for parallel stuff
 
 	int usepdfw_;
 
-
+        bool isSignalMerged_;
 
 	TString topmass_;
 

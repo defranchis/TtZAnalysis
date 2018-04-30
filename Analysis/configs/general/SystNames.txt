@@ -19,6 +19,8 @@ BTAG_TOT,       b-tagging
 ELECES, 	Electron energy scale
 ELECESR, 	Electron energy
 ELECER, 	Electron energy resolution
+ELECER_PHI, 	Electron energy resolution - phi
+ELECER_RHO, 	Electron energy resolution - rho
 ELECSF,		Electron ID / isolation
 ELECSF_ALL,	Electron ID / isolation
 JER,		Jet energy resolution
@@ -44,8 +46,10 @@ TT_BRANCH, B-hadron BR
 TT_FRAG,  fragmentation
 TT_FRAG_PETERSON,  fragm. Peterson
 TT_BFRAG, B-Fragmentation
-TT_FSRSCALE, $t\bar{t}$/tW FSR scale
-TT_ISRSCALE, $t\bar{t}$/tW ISR scale
+TT_FSRSCALE, $t\bar{t}$ FSR scale
+TT_ISRSCALE, $t\bar{t}$ ISR scale
+ST_FSRSCALE, tW FSR scale
+ST_ISRSCALE, tW ISR scale
 TOPMASS, $m_{t}^{MC}$
 Xsec, $\sigma_{t\bar{t}}$
 

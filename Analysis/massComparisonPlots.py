@@ -22,14 +22,13 @@ if sys.argv[1] == sys.argv[2]:
 dir1 = sys.argv[1]
 dir2 = sys.argv[2]
 
-
 print
 print 'making comparison plots for', dir1, 'and', dir2, '...'
 print
 
 
-f1 = open(dir1+'/xsecFit_tab13TeV.tex','r')
-f2 = open(dir2+'/xsecFit_tab13TeV.tex','r')
+f1 = open(dir1+'/xsecFit_tab_TOPMASS.tex','r')
+f2 = open(dir2+'/xsecFit_tab_TOPMASS.tex','r')
 
 dir1 = str(TString(dir1).ReplaceAll('/',''))
 dir1 = str(TString(dir1).ReplaceAll('..',''))
