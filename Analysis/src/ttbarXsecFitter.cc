@@ -2666,6 +2666,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	std::vector<TString> excludefromglobal;
 	//excludefromglobal.push_back("t#bar{t}V");
 	excludefromglobal.push_back("DY");
+        excludefromglobal.push_back("Wjets");
 
 	if(parent_->topontop_){
 		stack->setLegendOrder("t#bar{t}",90);
@@ -2700,6 +2701,8 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 
 	if(debug)
 		std::cout << "ttbarXsecFitter::addUncertainties: added t#bar{t}V var" <<std::endl;
+
+        stack->addRelErrorToContribution(0.3,"Wjets","BG_");
 
 	float dy0bjetserr=0,dy1bjetserr=0,dy2bjetserr=0;
 	if(nbjets==0)
