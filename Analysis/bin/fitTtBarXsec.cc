@@ -119,6 +119,7 @@ invokeApplication(){
         if (nToys){
             mainfitter.setSeed(seed);
             mainfitter.setSilent(true);
+            mainfitter.setDoToys(true);
         }
 	//simpleFitter::printlevel=1;
 

@@ -212,6 +212,7 @@ void ttbarXsecFitter::dataset::createToysFromSyst(histo1D::pseudodatamodes mode)
         }
         // careful: hard coded!!! always check
         parent_->var_for_toys_ = {"TT_ISRSCALE_down","TT_ISRSCALE_up","TT_FSRSCALE_down","TT_FSRSCALE_up",
+                                  "ST_ISRSCALE_down","ST_ISRSCALE_up","ST_FSRSCALE_down","ST_FSRSCALE_up",
                                   "TT_MATCH_down","TT_MATCH_up","TT_TTTUNE_down","TT_TTTUNE_up","TT_FRAG_PETERSON_up",
                                   "TT_CRGLUON_up","TT_CRQCD_up","TT_CRERD_up","TT_GENMCATNLO_up",
                                   "TOPMASS_up","TOPMASS_down"};
@@ -241,28 +242,67 @@ void ttbarXsecFitter::dataset::createToysFromSyst(histo1D::pseudodatamodes mode)
 
 
         // // performing toys on nominal
-        backgroundconts_nbjets_.at(i)=backgroundcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
         signalconts_nbjets_.at(i)=signalcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
         signalpsmigconts_nbjets_.at(i)=signalpsmigcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
         signalvisgenconts_nbjets_.at(i)=signalvisgencontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
+        // backgroundconts_nbjets_.at(i)=backgroundcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
+
+        std::vector<histo1D> bgs = backgroundconts_split_nbjets_.at(i);
+
+        for (size_t t=0; t<bgs.size(); ++t){
+            bgs.at(t)=backgroundconts_split_nbjets_.at(i).at(t).createPseudoExperiment(random_,0,mode,-1);
+            bgs.at(t).getRelSystematicsFrom(backgroundconts_split_nbjets_.at(i).at(t));
+        }
 
         // // getting relative variations from originals
-        backgroundconts_nbjets_.at(i).getRelSystematicsFrom(backgroundcontsorig_nbjets_.at(i));
         signalconts_nbjets_.at(i).getRelSystematicsFrom(signalcontsorig_nbjets_.at(i));
         signalpsmigconts_nbjets_.at(i).getRelSystematicsFrom(signalpsmigcontsorig_nbjets_.at(i));
         signalvisgenconts_nbjets_.at(i).getRelSystematicsFrom(signalvisgencontsorig_nbjets_.at(i));
-
+        // backgroundconts_nbjets_.at(i).getRelSystematicsFrom(backgroundcontsorig_nbjets_.at(i));
 
         for (auto var : parent_->var_for_toys_){
-            size_t index = signalcontsorig_nbjets_.at(i).getSystErrorIndex(var);
-            histo1D toy  = signalcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,index);
-            
-            signalconts_nbjets_.at(i).removeError(var);
-            signalconts_nbjets_.at(i).addErrorContainer(var,toy);
+            if (var.BeginsWith("TT_") || var.Contains("TOPMASS")){
 
+                size_t index = signalcontsorig_nbjets_.at(i).getSystErrorIndex(var);
+                histo1D toy  = signalcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,index);
+                
+                signalconts_nbjets_.at(i).removeError(var);
+                signalconts_nbjets_.at(i).addErrorContainer(var,toy);
+
+                for (size_t t=0; t<bgs.size(); ++t){
+                    if (!backgroundlegends_.at(t).Contains("bg")) continue;
+
+                    size_t index = backgroundconts_split_nbjets_.at(i).at(t).getSystErrorIndex(var);
+                    histo1D toy  = backgroundconts_split_nbjets_.at(i).at(t).createPseudoExperiment(random_,0,mode,index);
+                    
+                    bgs.at(t).removeError(var);
+                    bgs.at(t).addErrorContainer(var,toy);
+                    bgs.at(t).equalizeSystematicsIdxs(backgroundconts_split_nbjets_.at(i).at(t));
+                }
+            }
+
+            if (var.BeginsWith("ST_") || var.Contains("TOPMASS")){
+                for (size_t t=0; t<bgs.size(); ++t){
+                    if (!backgroundlegends_.at(t).Contains("tW")) continue;
+
+                    size_t index = backgroundconts_split_nbjets_.at(i).at(t).getSystErrorIndex(var);
+                    histo1D toy  = backgroundconts_split_nbjets_.at(i).at(t).createPseudoExperiment(random_,0,mode,index);
+                    
+                    bgs.at(t).removeError(var);
+                    bgs.at(t).addErrorContainer(var,toy);
+                    bgs.at(t).equalizeSystematicsIdxs(backgroundconts_split_nbjets_.at(i).at(t));
+                }
+            }
+        }
+
+        backgroundconts_nbjets_.at(i) = backgroundcontsorig_nbjets_.at(i);
+        backgroundconts_nbjets_.at(i).clear();
+        for (auto bg : bgs){
+            backgroundconts_nbjets_.at(i) += bg;
         }
 
         signalconts_nbjets_.at(i).equalizeSystematicsIdxs(signalcontsorig_nbjets_.at(i));
+        backgroundconts_nbjets_.at(i).equalizeSystematicsIdxs(backgroundcontsorig_nbjets_.at(i));
 
     }
     signalshape_nbjet_.clear();
@@ -2595,7 +2635,13 @@ void ttbarXsecFitter::dataset::readStackVec(const std::vector<histoStack> & in,s
 	signalpsmigconts_nbjets_.resize(maxnbjetcat);
 	backgroundconts_nbjets_.resize(maxnbjetcat);
 	dataconts_nbjets_.resize(maxnbjetcat);
+
+        if (parent_->doToys_) 
+            backgroundconts_split_nbjets_.resize(maxnbjetcat);
+        
 	histo1D sign,signvisps,signpsmig,backgr,data;
+        std::vector<histo1D> bgs;
+
 	for(size_t j=0;j<in.size();j++){
 		if(in.at(j).is1DUnfold()){
 			sign          =sign.append(in.at(j).getSignalContainer1DUnfold().getRecoContainer());
@@ -2613,12 +2659,29 @@ void ttbarXsecFitter::dataset::readStackVec(const std::vector<histoStack> & in,s
 		}
 		backgr      =backgr.append(in.at(j).getBackgroundContainer());
 		data          =data.append(in.at(j).getDataContainer());
+                
+                if (!parent_->doToys_) continue;
+                
+                if (j==0 && nbjet==1)
+                    backgroundlegends_ = in.at(j).getBackgroundLegends();
+                
+                if (j==0) bgs = in.at(j).getBackgroundContainers();
+                else {
+                    std::vector<histo1D> tmp_bgs = in.at(j).getBackgroundContainers();  
+                    for (size_t t=0; t<bgs.size(); ++t){
+                        bgs.at(t) = bgs.at(t).append(tmp_bgs.at(t));
+                    }
+                }
+
 	}
 	signalconts_nbjets_.at(nbjet) = sign;
 	signalvisgenconts_nbjets_.at(nbjet)=signvisps;
 	signalpsmigconts_nbjets_.at(nbjet)=signpsmig;
 	backgroundconts_nbjets_.at(nbjet) = backgr;
 	dataconts_nbjets_.at(nbjet)=data;
+
+        if (parent_->doToys_)
+            backgroundconts_split_nbjets_.at(nbjet) = bgs;
 
 }
 
