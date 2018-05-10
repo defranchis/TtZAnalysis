@@ -5,7 +5,8 @@ from ROOT import *
 
 # gStyle.SetOptStat(0000)
 
-base_dir = 'toys_workdir/05_gaussMass'
+# base_dir = 'toys_workdir/05_gaussMass'
+base_dir = 'toys_workdir/10_newJER_pt'
 filelist = os.listdir(base_dir)
 
 h_mass = ROOT.TH1F('h_mass','h_mass',700,160.,185.)
@@ -28,7 +29,15 @@ for texfile in filelist:
     f1 = open(base_dir+'/'+texfile,'r')
     l1 = f1.read().splitlines()
 
-    for i in range(0,3): del l1[0]
+    brokenfile = False
+    for i in range(0,3): 
+        try: del l1[0]
+        except IndexError:
+            print texfile, 'is broken'
+            brokenfile = True
+            break
+            
+    if brokenfile: continue
 
     l1_short = []
 
