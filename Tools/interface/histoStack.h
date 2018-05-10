@@ -212,6 +212,8 @@ public:
 	histo1D getBackgroundContainer()const;
 	histo1D getDataContainer()const;
 
+        std::vector<histo1D> getBackgroundContainers()const;
+        std::vector<TString> getBackgroundLegends()const;
 
 	histo2D getSignalContainer2D()const;
 	histo2D getBackgroundContainer2D()const;
