@@ -2383,7 +2383,7 @@ variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::ve
 		visgenint+=tmp;
 	}
         if (parent_->emuOnly_) visgenint *= (1. /((double)totalvisgencontsread_));
-        else visgenint *= (3 /((double)totalvisgencontsread_));
+        else visgenint *= (3 /((double)totalvisgencontsread_ + 2.));
 	//this also scales with lumi due to technical reasons. remove this dependence
 	visgenint.setErrorZeroContaining("Lumi");
 
