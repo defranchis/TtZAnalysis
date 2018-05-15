@@ -512,15 +512,19 @@ void  ttbarXsecFitter::printControlStack(bool fittedvalues,size_t bjetcat,size_t
 		return;
 	}
 	plotterMultiStack plm;
-	plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_standard.txt");
+	if (emuOnly_) plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_emu.txt");
+        else plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_standard.txt");
 	if(!fittedvalues)
 		plm.addStyleForAllPlots(getenv("CMSSW_BASE")
 				+(std::string)"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_mergeleg.txt",
 				"[merge for pre-fit plots]",
 				"[end - merge for pre-fit plots]");
 
-	plm.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_standard.txt",
-			toString(bjetcat)+"btag"+toString( datasets_.at(datasetidx).getName()));
+        if (emuOnly_)
+            plm.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_emu.txt",
+                                     toString(bjetcat)+"btag"+toString( datasets_.at(datasetidx).getName()));
+	else plm.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_standard.txt",
+                                      toString(bjetcat)+"btag"+toString( datasets_.at(datasetidx).getName()));
 
 	std::vector<histoStack> stacks=datasets_.at(datasetidx).getOriginalInputStacks(bjetcat);
 
@@ -688,10 +692,16 @@ void ttbarXsecFitter::printVariations(size_t bjetcat,size_t datasetidx,const std
 			}
 		}
 		plotterMultiCompare pl;
-		pl.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiCompare_standard.txt");
-		pl.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_standard.txt",
-				toString(bjetcat)+"btag"+toString( datasets_.at(datasetidx).getName()));
-
+                if (emuOnly_){
+                    pl.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiCompare_emu.txt");
+                    pl.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_emu.txt",
+                                            toString(bjetcat)+"btag"+toString( datasets_.at(datasetidx).getName()));
+                }
+                else{
+                    pl.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiCompare_standard.txt");
+                    pl.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_standard.txt",
+                                            toString(bjetcat)+"btag"+toString( datasets_.at(datasetidx).getName()));
+                }
 
 		pl.setNominalPlots(&nominals);
 		pl.setComparePlots(&ups,0);
