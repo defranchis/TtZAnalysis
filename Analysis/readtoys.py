@@ -13,9 +13,14 @@ filelist = os.listdir(base_dir)
 h_mass = ROOT.TH1F('h_mass','h_mass',700,160.,185.)
 h_xsec = ROOT.TH1F('h_xsec','h_xsec',500,730,930)
 
+nfile = 0
+
 for texfile in filelist:
     if not texfile.endswith('.tex'): continue
     if not texfile.startswith('xsecFit_tab_TOPMASS_'): continue #redundant
+
+    nfile += 1
+    if nfile%1000 == 0 : print 'processing file n.', nfile
 
     f1 = open(base_dir+'/'+texfile,'r')
     l1 = f1.read().splitlines()
