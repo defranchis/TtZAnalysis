@@ -2720,11 +2720,11 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	if(debug)
 		std::cout << "ttbarXsecFitter::dataset::addUncertainties: " <<name_ << ", "<< nbjets <<std::endl;
 
-	std::vector<TString> dymerges;
-	dymerges.push_back("DY#rightarrow#tau#tau");
-	dymerges.push_back("DY#rightarrowll");
-	//excludefromglobalvar.push_back("Z#rightarrowll");
-	stack->mergeLegends(dymerges,"DY",432,false);
+	// std::vector<TString> dymerges;
+	// dymerges.push_back("DY#rightarrow#tau#tau");
+	// dymerges.push_back("DY#rightarrowll");
+	// //excludefromglobalvar.push_back("Z#rightarrowll");
+	// stack->mergeLegends(dymerges,"DY",432,false);
 
 	std::vector<TString> excludefromglobal;
 	//excludefromglobal.push_back("t#bar{t}V");
