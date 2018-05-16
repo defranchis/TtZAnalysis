@@ -22,7 +22,7 @@ JES_Flavor         linear       JES_FlavorPureGluon   JES_FlavorPureQuark    JES
 
 JES =  JES_AbsoluteMPFBias + JES_RelativeFSR + JES_RelativeStatFSR + JES_AbsoluteStat + JES_AbsoluteScale + JES_Fragmentation + JES_SinglePionECAL + JES_SinglePionHCAL + JES_TimePtEta + JES_RelativeJEREC1 + JES_RelativePtBB + JES_RelativePtEC1 + JES_RelativeStatEC + JES_PileUpDataMC + JES_RelativeBal + JES_PileUpPtBB + JES_PileUpPtRef + JES_PileUpPtEC1  
 
-BG_DY = BG_0_bjets_DY + BG_1_bjets_DY + BG_2_bjets_DY + DY_GEN
+BG_DY = BG_0_bjets_DY + BG_1_bjets_DY + BG_2_bjets_DY 
 %Hadro_JES = JES_Flavor + TT_BJESNUDEC + TT_BJESRETUNE
 
 PDF = PDF1 + PDF2 + PDF3 + PDF4 + PDF5 + PDF6 + PDF7 + PDF8 + PDF9 + PDF10 + PDF11 + PDF12 + PDF13 + PDF14 + PDF15 + PDF16 + PDF17 + PDF18 + PDF19 + PDF20 + PDF21 + PDF22 + PDF23 + PDF24 + PDF25 + PDF26 + PDF27 + PDF28 

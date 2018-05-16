@@ -1890,6 +1890,41 @@ histo1D histoStack::getBackgroundContainer()const{
 	return out;
 
 }
+std::vector<histo1D> histoStack::getBackgroundContainers()const{
+	if(mode != dim1 && mode !=unfolddim1){
+		throw std::logic_error("histoStack::getBackgroundContainers: only defined for 1D stacks");
+	}
+	std::vector<size_t> sidx=getSignalIdxs();
+        std::vector<histo1D> out;
+	for(size_t i=0;i<legends_.size();i++){
+		if(std::find(sidx.begin(),sidx.end(),i) != sidx.end() || getLegend(i) == dataleg_){
+			continue;
+		}
+		if(mode ==unfolddim1)
+                    out.push_back(containers1DUnfold_.at(i).getRecoContainer());
+		else
+                    out.push_back(containers_.at(i));
+	}
+
+	return out;
+
+}
+std::vector<TString> histoStack::getBackgroundLegends()const{
+	if(mode != dim1 && mode !=unfolddim1){
+		throw std::logic_error("histoStack::getBackgroundLegends: only defined for 1D stacks");
+	}
+	std::vector<size_t> sidx=getSignalIdxs();
+        std::vector<TString> out;
+	for(size_t i=0;i<legends_.size();i++){
+		if(std::find(sidx.begin(),sidx.end(),i) != sidx.end() || getLegend(i) == dataleg_){
+			continue;
+		}
+                out.push_back(getLegend(i));
+	}
+
+	return out;
+
+}
 histo1D histoStack::getDataContainer()const{
 	if(mode ==unfolddim1)
 		return getContainer1DUnfold(getDataIdx()).getRecoContainer();

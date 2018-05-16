@@ -221,7 +221,7 @@ invokeApplication(){
 
 	ana->getTriggerSF()->setInput(trigsffile,trigsfhisto);
         ana->getTriggerBGSF()->setInput(trigsffile,trigsfhisto);
-        ana->getJERAdjuster()->setSystematics("def_2016");
+        ana->getJERAdjuster()->setSystematics("def_leg2016");
 
 	if(elecEnsffile.EndsWith("DEFFILEWILDCARDDONTREMOVE")){
 		if(energy == "7TeV" || energy == "8TeV")
@@ -256,7 +256,7 @@ invokeApplication(){
 	if(energy == "13TeV"){
 		//agrohsje
 		//ana->getBTagSF()->loadSF  (btagSFFile, BTagEntry::OP_MEDIUM,"csvv2","mujets","up","down");
-		ana->getBTagSF()->loadSF  (btagSFFile, BTagEntry::OP_TIGHT,"csvv2_2016","mujets","up","down");
+		ana->getBTagSF()->loadSF  (btagSFFile, btagop,"csvv2_2016","mujets","up","down");
 	}else if (energy == "7TeV" || energy == "8TeV"){
 		if(mode.Contains("Btagloosewp"))
 			btagop=BTagEntry::OP_LOOSE;
@@ -554,7 +554,7 @@ invokeApplication(){
 				ana->getBTagSF()->loadBCSF(btagSFFile, btagop,"csv","mujets","up_JER","down_JER");
 				ana->getBTagSF()->setSystematics(bTagSFBase::heavyup);}
 		}
-                else if(energy=="13TeV")ana->getJERAdjuster()->setSystematics("up_2016");
+                else if(energy=="13TeV")ana->getJERAdjuster()->setSystematics("up_leg2016");
 	}
 	else if(Syst=="JER_down"){
 		if(energy=="7TeV" || energy=="8TeV"){
@@ -563,7 +563,7 @@ invokeApplication(){
 				ana->getBTagSF()->loadBCSF(btagSFFile, btagop,"csv","mujets","up_JER","down_JER");
 				ana->getBTagSF()->setSystematics(bTagSFBase::heavydown);}
 		}
-                else if(energy=="13TeV")ana->getJERAdjuster()->setSystematics("down_2016");
+                else if(energy=="13TeV")ana->getJERAdjuster()->setSystematics("down_leg2016");
 	}
 	/////////btag
 	else if(Syst=="BTAGH_up"){

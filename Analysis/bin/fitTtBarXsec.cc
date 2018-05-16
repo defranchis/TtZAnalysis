@@ -119,6 +119,7 @@ invokeApplication(){
         if (nToys){
             mainfitter.setSeed(seed);
             mainfitter.setSilent(true);
+            mainfitter.setDoToys(true);
         }
 	//simpleFitter::printlevel=1;
 
@@ -439,6 +440,7 @@ invokeApplication(){
 			TString dir=outfile+"_vars/";
 			system( ("mkdir -p "+dir).Data());
 			for(size_t nbjet=0;nbjet<3;nbjet++){
+                                if (!onlyemu && nbjet==0) continue;
 
 				mainfitter.printControlStack(false,nbjet,ndts,outfile.Data());
 				mainfitter.printControlStack(true,nbjet,ndts,outfile.Data());
