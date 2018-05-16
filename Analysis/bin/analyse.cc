@@ -249,6 +249,7 @@ invokeApplication(){
 
 	ana->getBTagSF()->setMakeEff(dobtag);
 	ana->setBTagMCEffFile(btagfile);
+	ana->setBTagMCRefEffFile(btagfile.ReplaceAll(Syst,"nominal"));
 
 	//change
 	ana->getBTagSF()->setMode(NTBTagSF::simplereweighting_mode);

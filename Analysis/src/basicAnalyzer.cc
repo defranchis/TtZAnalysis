@@ -32,6 +32,7 @@ basicAnalyzer::basicAnalyzer():fileForker(),
 void basicAnalyzer::process(){
 	size_t anaid=ownChildIndex();
 	inputfile_=infiles_.at(anaid); //modified in some mode options
+	originputfile_=originfiles_.at(anaid); //modified in some mode options
 	legendname_=legentries_.at(anaid);
 	col_=colz_.at(anaid);
 	legorder_=legords_.at(anaid);
@@ -89,6 +90,7 @@ void basicAnalyzer::readFileList(const std::string& inputfile){
 
 	}
 	std::vector<std::string > newinfiles;
+        originfiles_ = infiles_;
 	for(size_t i=0;i<infiles_.size();i++){
 		//if(legentries_.at(i) == dataname_)
 		//	continue;

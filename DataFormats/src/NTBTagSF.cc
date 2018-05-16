@@ -83,4 +83,17 @@ void NTBTagSF::readFromFile(const std::string& filename){
 
 }
 
+void NTBTagSF::readReferenceFromFile(const std::string& filename){
+	if(!fileExists(filename.data())){
+		std::string err="NTBTagSF::readFromTFile: "+filename;
+		err+=" does not exist";
+		throw std::runtime_error(err);
+	}
+	TFile * f = new TFile(filename.data(),"READ");
+	bTagSFBase::prepareReferenceEfficienciesFromTFile(f);
+	f->Close();
+	delete f;
+
+}
+
 }//namespace
