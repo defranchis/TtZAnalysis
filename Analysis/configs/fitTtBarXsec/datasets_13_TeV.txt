@@ -69,8 +69,9 @@ $   TT_FRAG_PETERSON = boxright
 $   TT_GENMCATNLO = fixed $boxright
 $   Lumi = fixed
 
-TOPMASS - fixed
- 
+TOPMASS = fixed
+TT_GENMCATNLO = fixed
+
 [ end - priors ]
 
 [ full extrapolation ]
