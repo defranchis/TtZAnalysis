@@ -351,6 +351,7 @@ float scalefactors::readJECFactorFromFile( NTJet* jet )const{
     
     TString graphname ;
     if (variation_=="TT_FSRSCALE") graphname = "fsr";
+    if (variation_=="TT_FRAG") graphname = "bfrag";
     else {
         std::cout<<"variation "<<variation_<<" not supported"<<std::endl;
         std::runtime_error("scalefactors::readJECFactorFromFile: variation not supported");
@@ -371,6 +372,7 @@ float scalefactors::readJECFactorFromFile( NTJet* jet )const{
     }
 
     float factor = ge->Eval(jet->pt());
+    if (variation_=="TT_FRAG" && abs(jet->getMember(1)) != 5) factor = 1.;
 
     delete ge;
     f->Close();
