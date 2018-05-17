@@ -390,10 +390,12 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		std::cout << "testmode("<< anaid << "): preparing btag SF" << std::endl;
 
 	btagefffile_+="_"+inputfile_;
+	btageffreffile_+="_"+originputfile_;
 	getBTagSF()->setIsMC(isMC);
-	if(!getBTagSF()->getMakeEff())
+	if(!getBTagSF()->getMakeEff()){
 		getBTagSF()->readFromFile(btagefffile_.Data());
-
+                getBTagSF()->readReferenceFromFile(btageffreffile_.Data());
+        }
 	//  if(testmode_)
 	//    std::cout << "testmode(" <<anaid << ") setBtagSmaplename " <<channel_+"_"+btagSysAdd+"_"+toString(inputfile_)).Data() <<std::endl;
 

@@ -249,6 +249,7 @@ invokeApplication(){
 
 	ana->getBTagSF()->setMakeEff(dobtag);
 	ana->setBTagMCEffFile(btagfile);
+	ana->setBTagMCRefEffFile(btagfile.ReplaceAll(Syst,"nominal"));
 
 	//change
 	ana->getBTagSF()->setMode(NTBTagSF::simplereweighting_mode);
@@ -731,10 +732,12 @@ invokeApplication(){
                 ana->addWeightBranch("NTWeight_scaleDown");
         }
         else if(Syst=="TT_FRAG_up"){
-            // already done
+                ana->getAdditionalJEC()->setSystematics("up");
+                ana->getAdditionalJEC()->setVariation(Syst.ReplaceAll("_up",""));
         }
         else if(Syst=="TT_FRAG_down"){
-            // already done
+                ana->getAdditionalJEC()->setSystematics("down");
+                ana->getAdditionalJEC()->setVariation(Syst.ReplaceAll("_down",""));
         }
         else if(Syst=="TT_FRAG_PETERSON_up"){
             // already done
