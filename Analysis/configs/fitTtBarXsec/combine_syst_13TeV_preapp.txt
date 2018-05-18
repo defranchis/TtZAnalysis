@@ -9,7 +9,7 @@
 
 [merge_syst]
 
-% JES_Flavor         linear       JES_FlavorPureGluon   JES_FlavorPureQuark    JES_FlavorPureCharm   JES_FlavorPureBottom
+JES_Flavor         linear       JES_FlavorPureGluon   JES_FlavorPureQuark    JES_FlavorPureCharm   JES_FlavorPureBottom
 
 [end-merge_syst]
 
@@ -22,7 +22,7 @@
 
 % JES =  JES_AbsoluteMPFBias + JES_FlavorQCD + JES_RelativeFSR + JES_RelativeStatFSR + JES_AbsoluteStat + JES_AbsoluteScale + JES_Fragmentation + JES_SinglePionECAL + JES_SinglePionHCAL + JES_TimePtEta + JES_RelativeJEREC1 + JES_RelativePtBB + JES_RelativePtEC1 + JES_RelativeStatEC + JES_PileUpDataMC + JES_RelativeBal + JES_PileUpPtBB + JES_PileUpPtRef + JES_PileUpPtEC1  
 
-JES =  JES_AbsoluteMPFBias + JES_RelativeFSR + JES_RelativeStatFSR + JES_AbsoluteStat + JES_AbsoluteScale + JES_Fragmentation + JES_SinglePionECAL + JES_SinglePionHCAL + JES_TimePtEta + JES_RelativeJEREC1 + JES_RelativePtBB + JES_RelativePtEC1 + JES_RelativeStatEC + JES_PileUpDataMC + JES_RelativeBal + JES_PileUpPtBB + JES_PileUpPtRef + JES_PileUpPtEC1 + JES_FlavorPureGluon + JES_FlavorPureQuark + JES_FlavorPureCharm + JES_FlavorPureBottom
+JES =  JES_AbsoluteMPFBias + JES_RelativeFSR + JES_RelativeStatFSR + JES_AbsoluteStat + JES_AbsoluteScale + JES_Fragmentation + JES_SinglePionECAL + JES_SinglePionHCAL + JES_TimePtEta + JES_RelativeJEREC1 + JES_RelativePtBB + JES_RelativePtEC1 + JES_RelativeStatEC + JES_PileUpDataMC + JES_RelativeBal + JES_PileUpPtBB + JES_PileUpPtRef + JES_PileUpPtEC1 + JES_Flavor
 
 %JES_Flavor = JES_FlavorPureGluon + JES_FlavorPureQuark + JES_FlavorPureCharm + JES_FlavorPureBottom
 
