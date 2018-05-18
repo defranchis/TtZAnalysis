@@ -81,6 +81,12 @@ pull1_pdf = []
 constraint1_pdf = []
 contribution1_pdf = []
 
+name1_mod = []
+pull1_mod = []
+constraint1_mod = []
+contribution1_mod = []
+
+
 ###
 
 name2_all = []
@@ -97,6 +103,11 @@ name2_pdf = []
 pull2_pdf = []
 constraint2_pdf = []
 contribution2_pdf = []
+
+name2_mod = []
+pull2_mod = []
+constraint2_mod = []
+contribution2_mod = []
 
 
 for line in l1_short:
@@ -120,6 +131,11 @@ for line in l1_short:
         pull1_jes.append(float(pull))
         constraint1_jes.append(float(constraint))
         contribution1_jes.append(float(contribution))
+    elif ('scale' in name and not 'Electron' in name and not 'Muon' in name) or 'GEN' in name or 'fragm' in name or 'match' in name or 'BR' in name or 'TT' in name or 'tune' in name or 'pT' in name or 'CR' in name or 'NLO' in name or 'm_{t}' in name :
+        name1_mod.append(name)
+        pull1_mod.append(float(pull))
+        constraint1_mod.append(float(constraint))
+        contribution1_mod.append(float(contribution))
     else:  
         name1_all.append(name)
         pull1_all.append(float(pull))
@@ -147,6 +163,11 @@ for line in l2_short:
         pull2_jes.append(float(pull))
         constraint2_jes.append(float(constraint))
         contribution2_jes.append(float(contribution))
+    elif ('scale' in name and not 'Electron' in name and not 'Muon' in name) or 'GEN' in name or 'fragm' in name or 'match' in name or 'BR' in name or 'TT' in name or 'tune' in name or 'pT' in name or 'CR' in name or 'NLO' in name or 'm_{t}' in name :
+        name2_mod.append(name)
+        pull2_mod.append(float(pull))
+        constraint2_mod.append(float(constraint))
+        contribution2_mod.append(float(contribution))
     else:  
         name2_all.append(name)
         pull2_all.append(float(pull))
@@ -154,7 +175,7 @@ for line in l2_short:
         contribution2_all.append(float(contribution))
 
 
-if len(name1_all) != len(name2_all) or len(name1_pdf) != len(name2_pdf) or len(name1_jes) != len(name2_jes) : 
+if len(name1_all) != len(name2_all) or len(name1_pdf) != len(name2_pdf) or len(name1_jes) != len(name2_jes) or len(name1_mod) != len(name2_mod) : 
     print 'ERROR: input files must contain the same systematics!'
     print
     quit()
@@ -176,6 +197,12 @@ for i in range(0,len(name1_jes)):
         print 'ERROR: input files must contain the same systematics!'
         print
         quit()
+
+for i in range(0,len(name1_mod)):
+    if name1_mod[i] != name2_mod[i]:
+        print 'ERROR: input files must contain the same systematics!'
+        print
+        quit()
         
  
 outDir = 'comparisonPlots/'+dir1+'_'+dir2
@@ -189,6 +216,7 @@ if not os.path.exists(outDir):
 histo1_all = ROOT.TH1F('histo1_all','histo1_all',len(name1_all),-.5,-.5+len(name1_all))
 histo1_jes = ROOT.TH1F('histo1_jes','histo1_jes',len(name1_jes),-.5,-.5+len(name1_jes))
 histo1_pdf = ROOT.TH1F('histo1_pdf','histo1_pdf',len(name1_pdf),-.5,-.5+len(name1_pdf))
+histo1_mod = ROOT.TH1F('histo1_mod','histo1_mod',len(name1_mod),-.5,-.5+len(name1_mod))
 
 for i in range(0,len(name1_all)):
     histo1_all.Fill(i,pull1_all[i])
@@ -205,6 +233,12 @@ for i in range(0,len(name1_pdf)):
     histo1_pdf.GetXaxis().SetBinLabel(i+1,name1_pdf[i])
     histo1_pdf.SetBinError(i+1,constraint1_pdf[i])
 
+for i in range(0,len(name1_mod)):
+    histo1_mod.Fill(i,pull1_mod[i])
+    histo1_mod.GetXaxis().SetBinLabel(i+1,name1_mod[i])
+    histo1_mod.SetBinError(i+1,constraint1_mod[i])
+
+
 histo1_all.SetMarkerStyle(8)
 histo1_all.SetMarkerColor(kRed)
 
@@ -214,11 +248,15 @@ histo1_jes.SetMarkerColor(kRed)
 histo1_pdf.SetMarkerStyle(8)
 histo1_pdf.SetMarkerColor(kRed)
 
+histo1_mod.SetMarkerStyle(8)
+histo1_mod.SetMarkerColor(kRed)
+
 ###
 
 histo2_all = ROOT.TH1F('histo2_all','histo2_all',len(name2_all),-.5,-.5+len(name2_all))
 histo2_jes = ROOT.TH1F('histo2_jes','histo2_jes',len(name2_jes),-.5,-.5+len(name2_jes))
 histo2_pdf = ROOT.TH1F('histo2_pdf','histo2_pdf',len(name2_pdf),-.5,-.5+len(name2_pdf))
+histo2_mod = ROOT.TH1F('histo2_mod','histo2_mod',len(name2_mod),-.5,-.5+len(name2_mod))
 
 for i in range(0,len(name2_all)):
     histo2_all.Fill(i,pull2_all[i])
@@ -235,12 +273,19 @@ for i in range(0,len(name2_pdf)):
     histo2_pdf.GetXaxis().SetBinLabel(i+1,name2_pdf[i])
     histo2_pdf.SetBinError(i+1,constraint2_pdf[i])
 
+for i in range(0,len(name2_mod)):
+    histo2_mod.Fill(i,pull2_mod[i])
+    histo2_mod.GetXaxis().SetBinLabel(i+1,name2_mod[i])
+    histo2_mod.SetBinError(i+1,constraint2_mod[i])
+
 histo2_all.SetMarkerStyle(8)
 histo2_all.SetMarkerColor(kBlue)
 histo2_jes.SetMarkerStyle(8)
 histo2_jes.SetMarkerColor(kBlue)
 histo2_pdf.SetMarkerStyle(8)
 histo2_pdf.SetMarkerColor(kBlue)
+histo2_mod.SetMarkerStyle(8)
+histo2_mod.SetMarkerColor(kBlue)
 
 line_up_all = ROOT.TLine(histo1_all.GetBinLowEdge(1),1.,histo1_all.GetBinLowEdge(histo1_all.GetNbinsX())+histo1_all.GetBinWidth(1),1.)
 line_down_all = ROOT.TLine(histo1_all.GetBinLowEdge(1),-1.,histo1_all.GetBinLowEdge(histo1_all.GetNbinsX())+histo1_all.GetBinWidth(1),-1.)
@@ -262,6 +307,13 @@ line_up_jes.SetLineColor(kGreen+1)
 line_down_jes.SetLineColor(kGreen+1)
 line_up_jes.SetLineWidth(2)
 line_down_jes.SetLineWidth(2)
+
+line_up_mod = ROOT.TLine(histo1_mod.GetBinLowEdge(1),1.,histo1_mod.GetBinLowEdge(histo1_mod.GetNbinsX())+histo1_mod.GetBinWidth(1),1.)
+line_down_mod = ROOT.TLine(histo1_mod.GetBinLowEdge(1),-1.,histo1_mod.GetBinLowEdge(histo1_mod.GetNbinsX())+histo1_mod.GetBinWidth(1),-1.)
+line_up_mod.SetLineColor(kGreen+1)
+line_down_mod.SetLineColor(kGreen+1)
+line_up_mod.SetLineWidth(2)
+line_down_mod.SetLineWidth(2)
 
 
 leg = ROOT.TLegend(.85,.85,1.,1.)
@@ -320,6 +372,23 @@ leg.Draw('same')
 c1.SaveAs(outDir+'/jes_summary.pdf','pdf')
 c1.SaveAs(outDir+'/jes_summary.png','png')
 
+c1.Clear()
+c1.SetGrid()
+histo1_mod.SetTitle('summary - MOD')
+histo1_mod.SetMaximum(1.7)
+histo1_mod.SetMinimum(-1.7)
+# histo1_mod.SetMaximum(max(histo1_mod.GetMaximum(),histo2_mod.GetMaximum())*2)
+# histo1_mod.SetMinimum(min(histo1_mod.GetMinimum(),histo2_mod.GetMinimum())*2)
+histo1_mod.Draw('p')
+histo2_mod.Draw('psame')
+line_up_mod.Draw('same')
+line_down_mod.Draw('same')
+histo1_mod.Draw('psame')
+histo2_mod.Draw('psame')
+leg.Draw('same')
+c1.SaveAs(outDir+'/mod_summary.pdf','pdf')
+c1.SaveAs(outDir+'/mod_summary.png','png')
+
 #constraints
 histo1_all.Reset()
 histo2_all.Reset()
@@ -327,6 +396,8 @@ histo1_pdf.Reset()
 histo2_pdf.Reset()
 histo1_jes.Reset()
 histo2_jes.Reset()
+histo1_mod.Reset()
+histo2_mod.Reset()
 c1.Clear()
 
 leg = ROOT.TLegend(.85,.9,1.,1.)
@@ -446,6 +517,8 @@ histo1_pdf.Reset()
 histo2_pdf.Reset()
 histo1_jes.Reset()
 histo2_jes.Reset()
+histo1_mod.Reset()
+histo2_mod.Reset()
 c1.Clear()
 
 # min_all = min_pdf = min_jes = 1000.
@@ -517,6 +590,12 @@ for i in range(0,len(name1_pdf)):
     histo1_pdf.SetBinError(i+1,0)
     if abs(contribution1_pdf[i]) > max_global: max_global = abs(contribution1_pdf[i])
 
+for i in range(0,len(name1_mod)):
+    histo1_mod.Fill(i,abs(contribution1_mod[i]))
+    histo1_mod.GetXaxis().SetBinLabel(i+1,name1_mod[i])
+    histo1_mod.SetBinError(i+1,0)
+    if abs(contribution1_mod[i]) > max_global: max_global = abs(contribution1_mod[i])
+
 
 ###
 
@@ -537,6 +616,12 @@ for i in range(0,len(name2_pdf)):
     histo2_pdf.GetXaxis().SetBinLabel(i+1,name2_pdf[i])
     histo2_pdf.SetBinError(i+1,0)
     if abs(contribution2_pdf[i]) > max_global: max_global = abs(contribution2_pdf[i])
+
+for i in range(0,len(name2_mod)):
+    histo2_mod.Fill(i,abs(contribution2_mod[i]))
+    histo2_mod.GetXaxis().SetBinLabel(i+1,name2_mod[i])
+    histo2_mod.SetBinError(i+1,0)
+    if abs(contribution2_mod[i]) > max_global: max_global = abs(contribution2_mod[i])
 
 
 c1.SetGrid()
@@ -570,3 +655,14 @@ histo2_jes.Draw('psame')
 leg.Draw('same')
 c1.SaveAs(outDir+'/jes_contributions.pdf','pdf')
 c1.SaveAs(outDir+'/jes_contributions.png','png')
+
+c1.Clear()
+c1.SetGrid()
+histo1_mod.SetTitle('contributions - MOD')
+histo1_mod.SetMaximum(.2)
+histo1_mod.SetMinimum(-.05)
+histo1_mod.Draw('p')
+histo2_mod.Draw('psame')
+leg.Draw('same')
+c1.SaveAs(outDir+'/mod_contributions.pdf','pdf')
+c1.SaveAs(outDir+'/mod_contributions.png','png')
