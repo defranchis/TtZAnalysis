@@ -512,7 +512,7 @@ void  ttbarXsecFitter::printControlStack(bool fittedvalues,size_t bjetcat,size_t
 		return;
 	}
 	plotterMultiStack plm;
-	if (emuOnly_) plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_emu.txt");
+	if (emuOnly_ || bjetcat ==0) plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_emu.txt");
         else plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_standard.txt");
 	if(!fittedvalues)
 		plm.addStyleForAllPlots(getenv("CMSSW_BASE")
@@ -520,7 +520,7 @@ void  ttbarXsecFitter::printControlStack(bool fittedvalues,size_t bjetcat,size_t
 				"[merge for pre-fit plots]",
 				"[end - merge for pre-fit plots]");
 
-        if (emuOnly_)
+        if (emuOnly_ || bjetcat==0)
             plm.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_emu.txt",
                                      toString(bjetcat)+"btag"+toString( datasets_.at(datasetidx).getName()));
 	else plm.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_standard.txt",
@@ -692,7 +692,7 @@ void ttbarXsecFitter::printVariations(size_t bjetcat,size_t datasetidx,const std
 			}
 		}
 		plotterMultiCompare pl;
-                if (emuOnly_){
+                if (emuOnly_ || bjetcat==0){
                     pl.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiCompare_emu.txt");
                     pl.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_emu.txt",
                                             toString(bjetcat)+"btag"+toString( datasets_.at(datasetidx).getName()));
