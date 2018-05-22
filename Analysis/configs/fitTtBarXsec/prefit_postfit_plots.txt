@@ -36,11 +36,17 @@
 0 :DXi zero jets zero bjets step 8 = DXi zero jets zero bjets step 8
 
 1 :total 1,0 b-jets step 8 = total 1,0 b-jets step 8
+1 :total 1,1 b-jets step 8 = total 1,1 b-jets step 8
+1 :total 1,2 b-jets step 8 = total 1,2 b-jets step 8
+1 :total 1,3 b-jets step 8 = total 1,3 b-jets step 8
 1 :lead jet pt 1,1 b-jets step 8 = lead jet pt 1,1 b-jets step 8
 1 :second jet pt 1,2 b-jets step 8 = second jet pt 1,2 b-jets step 8
 1 :third jet pt 1,3 b-jets step 8 = third jet pt 1,3 b-jets step 8
 
 2 :total 2,0 b-jets step 8 = total 2,0 b-jets step 8
+2 :total 2,1 b-jets step 8 = total 2,1 b-jets step 8
+2 :total 2,2 b-jets step 8 = total 2,2 b-jets step 8
+2 :total 2,3 b-jets step 8 = total 2,3 b-jets step 8
 2 :lead jet pt 2,1 b-jets step 8 = lead jet pt 2,1 b-jets step 8
 2 :second jet pt 2,2 b-jets step 8 = second jet pt 2,2 b-jets step 8
 2 :third jet pt 2,3 b-jets step 8 = third jet pt 2,3 b-jets step 8
