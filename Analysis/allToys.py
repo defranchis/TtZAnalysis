@@ -3,10 +3,9 @@ import os
 import ROOT
 from ROOT import *
 
-# gStyle.SetOptStat(0000)
+gStyle.SetOptStat(1110)
 
-# base_dir = 'toys_workdir/05_gaussMass'
-base_dir = 'toys_workdir/10_newJER_pt'
+base_dir = 'toys_workdir'
 filelist = os.listdir(base_dir)
 
 h_mass = ROOT.TH1F('h_mass','h_mass',700,160.,185.)
@@ -96,11 +95,13 @@ print round(h_xsec.GetMean(),1), round(h_xsec.GetRMS(),1), round(h_xsec.GetRMS()
 print
 
 c = ROOT.TCanvas('c','c')
-h_mass.Draw()
+h_mass.SetTitle('effect of MC stats on top MC mass;m_{t}^{MC} [GeV];a.u.')
+h_mass.DrawNormalized()
 c.Print('mass.png','png')
 
 c.Clear()
-h_xsec.Draw()
+h_xsec.SetTitle('effect of MC stats on ttbar cross section;#sigma_{t#bar{t}} [pb];a.u.')
+h_xsec.DrawNormalized()
 c.Print('xsec.png','png')
 
 rootfile = ROOT.TFile('toys.root','recreate')
