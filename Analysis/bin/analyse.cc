@@ -855,6 +855,7 @@ invokeApplication(){
 		else if(energy=="13TeV"){
 			ana->setFilePostfixReplace("ttbar.root","ttbar_amc_mgbr.root");
 			ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_amc_mgbr.root");
+                        ana->setIsSignalMerged(true);
 		}
 	}
 	else if(Syst=="TT_GENMCATNLO_down"){
