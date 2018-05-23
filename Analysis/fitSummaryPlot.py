@@ -43,12 +43,19 @@ for line in l1_short:
     name = str( TString(name).ReplaceAll('\\_',' ') )
     name = str( TString(name).ReplaceAll('$t\\bar{t}$','ttbar') )
     name = str( TString(name).ReplaceAll('$p_{T}$','pT') )
+    name = str( TString(name).ReplaceAll('$p_T$','pT') )
+    name = str( TString(name).ReplaceAll('$\eta$','eta') )
     name = str( TString(name).ReplaceAll('bar{t}','tbar') )
+    name = str( TString(name).ReplaceAll('Electron energy resolution','Electron ER') )
+    name = str( TString(name).ReplaceAll('DY background','DY bg') )
+    name = str( TString(name).ReplaceAll(' response','') )
+    name = str( TString(name).ReplaceAll('PDF','PDF ') )
+    name = str( TString(name).ReplaceAll('$m_{t}^{MC}$','top mass') )
     contribution = str( TString(contribution).ReplaceAll('\\','') )
     contribution = str( TString(contribution).ReplaceAll('$','') )
     contribution = str( TString(contribution).ReplaceAll('{','') )
     contribution = str( TString(contribution).ReplaceAll('}','') )
-    if 'm_{t}' in name or 'DY GEN' in name: continue
+    if 'mass' in name or 'DY GEN' in name: continue
     # if 'm_{t}' in name or 'Lumi' in name or 'DY GEN' in name: continue
     # if 'Lumi' in name or 'DY GEN' in name: continue
     if 'PDF' in name:
