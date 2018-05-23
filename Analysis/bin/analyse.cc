@@ -253,7 +253,7 @@ invokeApplication(){
 
 	//change
 	ana->getBTagSF()->setMode(NTBTagSF::simplereweighting_mode);
-	BTagEntry::OperatingPoint btagop=BTagEntry::OP_MEDIUM;
+	BTagEntry::OperatingPoint btagop=BTagEntry::OP_TIGHT;
 	if(energy == "13TeV"){
 		//agrohsje
 		//ana->getBTagSF()->loadSF  (btagSFFile, BTagEntry::OP_MEDIUM,"csvv2","mujets","up","down");
@@ -855,7 +855,6 @@ invokeApplication(){
 		else if(energy=="13TeV"){
 			ana->setFilePostfixReplace("ttbar.root","ttbar_amc_mgbr.root");
 			ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_amc_mgbr.root");
-                        ana->setIsSignalMerged(true);
 		}
 	}
 	else if(Syst=="TT_GENMCATNLO_down"){
