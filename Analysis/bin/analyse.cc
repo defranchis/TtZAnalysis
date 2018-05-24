@@ -853,8 +853,8 @@ invokeApplication(){
 			ana->setFilePostfixReplace("ttbarviatau.root","ttbarviatau_mcatnlo.root");
 		}
 		else if(energy=="13TeV"){
-			ana->setFilePostfixReplace("ttbar.root","ttbar_amc_mgbr.root");
-			ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_amc_mgbr.root");
+			ana->setFilePostfixReplace("ttbar.root","ttbar_ext_amc_mgbr.root");
+			ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ext_amc_mgbr.root");
                         ana->setIsSignalMerged(true);
 		}
 	}
