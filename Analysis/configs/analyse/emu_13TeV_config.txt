@@ -109,7 +109,8 @@ $PUFile         = /src/TtZAnalysis/Analysis/data/analyse/ngoodvtx_data_2015
 $ flat uncertainties of 5/10 % for b/c jets
 $btagSFFile     = /src/TtZAnalysis/Analysis/data/analyse/CSV_8TeV_5unc.csv
 $ prel. 13 TeV btag SFs
-btagSFFile      = /src/TtZAnalysis/Analysis/data/analyse/CSVv2_Moriond17_B_H.csv
+$ btagSFFile      = /src/TtZAnalysis/Analysis/data/analyse/CSVv2_Moriond17_B_H.csv
+btagSFFile      = /src/TtZAnalysis/Analysis/data/analyse/CSVv2_Run2016_mujets_SystematicBreakdown.csv
 btagFile        = btags_74
 
 $modeOptions = GsfelectronsNotoppt

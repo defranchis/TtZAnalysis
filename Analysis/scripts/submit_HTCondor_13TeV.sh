@@ -186,7 +186,8 @@ systs=(
     "BTAGH_sampledependence_down"
     "BTAGH_ptrel_down"
     "BTAGH_statistic_down"
-     
+
+    
 # #####csv rew section
 
     "TOPPT_up"
@@ -278,7 +279,7 @@ sleep 3
 
 
 
-JOBSONBATCH=$SGE_CELL
+JOBSONBATCH=`command -v condor_submit`
 if [ ${INTERACTIVE_ANALYSIS_JOBS} ]
 then
 JOBSONBATCH=""
@@ -321,6 +322,7 @@ mkdir -p $workdir/lib #not needed anymore
 mkdir -p $workdir/data/analyse
 mkdir -p $workdir/jobscripts
 mkdir -p $workdir/stdout
+mkdir -p $workdir/logs
 mkdir -p $workdir/configs/analyse
 mkdir -p $BATCHDIR
 
@@ -414,13 +416,17 @@ for (( i=0;i<${#channels[@]};i++)); do
 ##here do qsub or dirty &
 		outname=${channel}_${energy}_${topmass}_${syst};
 	   # array=( "${array[@]}" "jack" )
-		outnames=( "${outnames[@]}" "${outname}" ); 
-		sed -e "s/##OUTNAME##/${outname}/" -e "s/##PARAMETERS##/-c ${channel} -s ${syst} -e ${energy} -mt ${topmass} ${addParameters}/" -e "s;##WORKDIR##;${workdir};" < $templatesDir/job.sh > jobscripts/${outname}
-		chmod +x jobscripts/${outname}
+		outnames=( "${outnames[@]}" "${outname}" );
+                cp $templatesDir/job_HTCondor.sh jobscripts
+		sed -e "s;##WORKDIR##;${workdir};" < $templatesDir/job_HTCondor.sh > jobscripts/job_HTCondor.sh
+		chmod u+x jobscripts/job_HTCondor.sh
+		sed -e "s;##WORKDIR##;${workdir};" -e "s/#CHANNEL#/${channel}/" -e "s/#ENERGY#/${energy}/" -e "s/#TOPMASS#/${topmass}/" -e "s/#SYST#/${syst}/" -e "s/#ADDPARAMS#/${addParameters}/" -e "s/#BATCHNAME#/${outname}/" < $templatesDir/HTCondor.submit > jobscripts/${outname}
+                chmod +x jobscripts/${outname}
 		if [[ $JOBSONBATCH ]] ;
 		then
 		    cd $BATCHDIR
-		    qsub $workdir/jobscripts/${outname}
+		    condor_submit $workdir/jobscripts/${outname}
+                    sleep 1
 		    cd $workdir
 		else
 		    all=`ps ax | grep -E 'analyse' | wc -l`

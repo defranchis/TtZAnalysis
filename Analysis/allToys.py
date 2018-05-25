@@ -54,7 +54,14 @@ for texfile in filelist:
         name = str( TString(name).ReplaceAll('\\_',' ') )
         name = str( TString(name).ReplaceAll('$t\\bar{t}$','ttbar') )
         name = str( TString(name).ReplaceAll('$p_{T}$','pT') )
+        name = str( TString(name).ReplaceAll('$p_T$','pT') )
+        name = str( TString(name).ReplaceAll('$\eta$','eta') )
         name = str( TString(name).ReplaceAll('bar{t}','tbar') )
+        name = str( TString(name).ReplaceAll('Electron energy resolution','Electron ER') )
+        name = str( TString(name).ReplaceAll('DY background','DY bg') )
+        name = str( TString(name).ReplaceAll(' response','') )
+        name = str( TString(name).ReplaceAll('PDF','PDF ') )
+        name = str( TString(name).ReplaceAll('$m_{t}^{MC}$','top mass') )
         contribution = str( TString(contribution).ReplaceAll('\\','') )
         contribution = str( TString(contribution).ReplaceAll('$','') )
         contribution = str( TString(contribution).ReplaceAll('{','') )
@@ -65,7 +72,7 @@ for texfile in filelist:
         constrain_all.append(float(constrain))
         contribution_all.append(float(contribution))
 
-        if 'm_{t}' in name:
+        if 'mass' in name:
             mass_pull = 172.5+float(pull)*3.
             h_mass.Fill(mass_pull)
 
