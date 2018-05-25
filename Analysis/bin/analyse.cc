@@ -536,6 +536,11 @@ invokeApplication(){
 				ana->getBTagSF()->loadBCSF(btagSFFile, btagop,"csv","mujets","up_PileUp","down_PileUp");
 				ana->getBTagSF()->setSystematics(bTagSFBase::heavyup);}
 		}
+		else if(energy=="13TeV"){
+			if(!dobtag&&!globalbsf){
+				ana->getBTagSF()->loadBCSF(btagSFFile, btagop,"csvv2_2016","mujets","up_pileup","down_pileup");
+				ana->getBTagSF()->setSystematics(bTagSFBase::heavyup);}
+		}
 	}
 	else if(Syst=="PU_down"){
                 ana->getPUReweighterBtoF()->setDataTruePUInput(pufileBtoF+"_down.root");
@@ -543,6 +548,11 @@ invokeApplication(){
 		if(energy=="7TeV" || energy=="8TeV"){
 			if(!dobtag&&!globalbsf){
 				ana->getBTagSF()->loadBCSF(btagSFFile, btagop,"csv","mujets","up_PileUp","down_PileUp");
+				ana->getBTagSF()->setSystematics(bTagSFBase::heavydown);}
+		}
+		else if(energy=="13TeV"){
+			if(!dobtag&&!globalbsf){
+				ana->getBTagSF()->loadBCSF(btagSFFile, btagop,"csvv2_2016","mujets","up_pileup","down_pileup");
 				ana->getBTagSF()->setSystematics(bTagSFBase::heavydown);}
 		}
 	}
