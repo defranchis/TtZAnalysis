@@ -121,6 +121,8 @@ invokeApplication(){
             mainfitter.setSilent(true);
             mainfitter.setDoToys(true);
         }
+
+        std::cout<<nToys<<" toys with seed "<<seed<<std::endl;
 	//simpleFitter::printlevel=1;
 
 	mainfitter.readInput((fullcfgpath+inputconfig).Data());
