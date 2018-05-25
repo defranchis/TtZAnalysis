@@ -418,7 +418,7 @@ for (( i=0;i<${#channels[@]};i++)); do
 	   # array=( "${array[@]}" "jack" )
 		outnames=( "${outnames[@]}" "${outname}" );
                 cp $templatesDir/job_HTCondor.sh jobscripts
-		sed -e "s/##OUTNAME##/${outname}/" -e "s;##WORKDIR##;${workdir};" < $templatesDir/job_HTCondor.sh > jobscripts/job_HTCondor.sh
+		sed -e "s;##WORKDIR##;${workdir};" < $templatesDir/job_HTCondor.sh > jobscripts/job_HTCondor.sh
 		chmod u+x jobscripts/job_HTCondor.sh
 		sed -e "s;##WORKDIR##;${workdir};" -e "s/#CHANNEL#/${channel}/" -e "s/#ENERGY#/${energy}/" -e "s/#TOPMASS#/${topmass}/" -e "s/#SYST#/${syst}/" -e "s/#ADDPARAMS#/${addParameters}/" -e "s/#BATCHNAME#/${outname}/" < $templatesDir/HTCondor.submit > jobscripts/${outname}
                 chmod +x jobscripts/${outname}
@@ -426,6 +426,7 @@ for (( i=0;i<${#channels[@]};i++)); do
 		then
 		    cd $BATCHDIR
 		    condor_submit $workdir/jobscripts/${outname}
+                    sleep 1
 		    cd $workdir
 		else
 		    all=`ps ax | grep -E 'analyse' | wc -l`

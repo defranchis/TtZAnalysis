@@ -13,7 +13,7 @@ cd -
 
 export ANALYSE_BATCH_BASE=$workdir
 
-exec > "stdout/##OUTNAME##" 2>&1
+exec > "stdout/$1_$3_$4_$2" 2>&1
 
 export LD_LIBRARY_PATH=##WORKDIR##/lib:$LD_LIBRARY_PATH
 
