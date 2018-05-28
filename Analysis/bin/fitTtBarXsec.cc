@@ -289,9 +289,16 @@ invokeApplication(){
 				succ=false;
 			}
                         if(nToys>0 && succ){
-                            mainfitter.createSystematicsBreakdown(0,"TOPMASS");
-                            texTabler tab=mainfitter.makeSystBreakDownTable(0,true,"TOPMASS");
-                            tab.writeToFile(outfile+"_tab_TOPMASS_"+std::to_string(seed)+"_"+std::to_string(i+1)+".tex");
+                            if (tmpcheck){
+                                mainfitter.createSystematicsBreakdown(0,"TOPMASS");
+                                texTabler tab=mainfitter.makeSystBreakDownTable(0,true,"TOPMASS");
+                                tab.writeToFile(outfile+"_tab_TOPMASS_"+std::to_string(seed)+"_"+std::to_string(i+1)+".tex");
+                            }
+                            else{
+                                mainfitter.createSystematicsBreakdown(0);
+                                texTabler tab=mainfitter.makeSystBreakDownTable(0,true);
+                                tab.writeToFile(outfile+"_tab13TeV_"+std::to_string(seed)+"_"+std::to_string(i+1)+".tex");
+                            }
                         }
 			if(succ && ! tmpcheck){
 				for(size_t ndts=0;ndts<ndatasets;ndts++){
