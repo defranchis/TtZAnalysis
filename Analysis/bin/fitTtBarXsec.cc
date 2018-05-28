@@ -47,7 +47,7 @@ invokeApplication(){
 	const bool onlycontrolplots = parser->getOpt<bool>("-onlycontrol",false,"only control plots");
 	const bool nominos = parser->getOpt<bool>("-nominos",false,"switches off systematics breakdown");
 	const float topmass = parser->getOpt<float>("-topmass",0,"Set top mass");
-	const bool tmpcheck = parser->getOpt<bool>("M",false,"Quick temp check");
+	const bool tmpcheck = parser->getOpt<bool>("M",false,"top mass fit");
 	const bool candc = parser->getOpt<bool>("-cutandcount",false,"also produce fast cut and count (2 jets 1 b-tag) result");
 
 	const bool printplots = ! parser->getOpt<bool>("-noplots",false,"switches off all plotting");
@@ -289,9 +289,16 @@ invokeApplication(){
 				succ=false;
 			}
                         if(nToys>0 && succ){
-                            mainfitter.createSystematicsBreakdown(0,"TOPMASS");
-                            texTabler tab=mainfitter.makeSystBreakDownTable(0,true,"TOPMASS");
-                            tab.writeToFile(outfile+"_tab_TOPMASS_"+std::to_string(seed)+"_"+std::to_string(i+1)+".tex");
+                            if (tmpcheck){
+                                mainfitter.createSystematicsBreakdown(0,"TOPMASS");
+                                texTabler tab=mainfitter.makeSystBreakDownTable(0,true,"TOPMASS");
+                                tab.writeToFile(outfile+"_tab_TOPMASS_"+std::to_string(seed)+"_"+std::to_string(i+1)+".tex");
+                            }
+                            else{
+                                mainfitter.createSystematicsBreakdown(0);
+                                texTabler tab=mainfitter.makeSystBreakDownTable(0,true);
+                                tab.writeToFile(outfile+"_tab13TeV_"+std::to_string(seed)+"_"+std::to_string(i+1)+".tex");
+                            }
                         }
 			if(succ && ! tmpcheck){
 				for(size_t ndts=0;ndts<ndatasets;ndts++){

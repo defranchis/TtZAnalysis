@@ -44,6 +44,13 @@ contribution_jes = []
 stat_toys_jes = []
 central_toys_jes = []
 
+name_btag = []
+pull_btag = []
+constraint_btag = []
+contribution_btag = []
+stat_toys_btag = []
+central_toys_btag = []
+
 name_mod = []
 pull_mod = []
 constraint_mod = []
@@ -64,6 +71,21 @@ for line in l1_short:
     name = str( TString(name).ReplaceAll(' response','') )
     name = str( TString(name).ReplaceAll('PDF','PDF ') )
     name = str( TString(name).ReplaceAll('$m_{t}^{MC}$','top mass') )
+    if 'b-tag' in name:
+        name = str( TString(name).ReplaceAll('fragmentation','fragm.') )
+        name = str( TString(name).ReplaceAll('correction','corr.') )
+        name = str( TString(name).ReplaceAll('template','templ.') )
+        name = str( TString(name).ReplaceAll('$D \to \mu X$','D to mu') )
+        name = str( TString(name).ReplaceAll('splitting','split.') )
+        name = str( TString(name).ReplaceAll('production','prod.') )
+        name = str( TString(name).ReplaceAll('light to c','l/c') )
+        name = str( TString(name).ReplaceAll('dependence','dep.') )
+        name = str( TString(name).ReplaceAll('statistical','stat.') )
+        name = str( TString(name).ReplaceAll('$','') )
+        name = str( TString(name).ReplaceAll('\\','#') )
+        name = str( TString(name).ReplaceAll('#to','#rightarrow') )
+        name = str( TString(name).ReplaceAll('K_s^0','Ks^{0}') )
+
     contribution = str( TString(contribution).ReplaceAll('\\','') )
     contribution = str( TString(contribution).ReplaceAll('$','') )
     contribution = str( TString(contribution).ReplaceAll('{','') )
@@ -77,6 +99,13 @@ for line in l1_short:
         contribution_pdf.append(float(contribution))
         stat_toys_pdf.append(h.GetRMS())
         central_toys_pdf.append(h.GetMean())
+    elif 'b-tag' in name or 'mistag' in name:
+        name_btag.append(name)
+        pull_btag.append(float(pull))
+        constraint_btag.append(float(constrain))
+        contribution_btag.append(float(contribution))
+        stat_toys_btag.append(h.GetRMS())
+        central_toys_btag.append(h.GetMean())
     elif 'JES' in name:
         name_jes.append(name)
         pull_jes.append(float(pull))
@@ -102,16 +131,19 @@ for line in l1_short:
 histo_all = ROOT.TH1F('histo_all','histo_all',len(name_all),-.5,-.5+len(name_all))
 histo_pdf = ROOT.TH1F('histo_pdf','histo_pdf',len(name_pdf),-.5,-.5+len(name_pdf))
 histo_jes = ROOT.TH1F('histo_jes','histo_jes',len(name_jes),-.5,-.5+len(name_jes))
+histo_btag = ROOT.TH1F('histo_btag','histo_btag',len(name_btag),-.5,-.5+len(name_btag))
 histo_mod = ROOT.TH1F('histo_mod','histo_mod',len(name_mod),-.5,-.5+len(name_mod))
 
 histo_stat_all = ROOT.TH1F('histo_stat_all','histo_stat_all',len(name_all),-.5,-.5+len(name_all))
 histo_stat_pdf = ROOT.TH1F('histo_stat_pdf','histo_stat_pdf',len(name_pdf),-.5,-.5+len(name_pdf))
 histo_stat_jes = ROOT.TH1F('histo_stat_jes','histo_stat_jes',len(name_jes),-.5,-.5+len(name_jes))
+histo_stat_btag = ROOT.TH1F('histo_stat_btag','histo_stat_btag',len(name_btag),-.5,-.5+len(name_btag))
 histo_stat_mod = ROOT.TH1F('histo_stat_mod','histo_stat_mod',len(name_mod),-.5,-.5+len(name_mod))
 
 histo_central_all = ROOT.TH1F('histo_central_all','histo_central_all',len(name_all),-.5,-.5+len(name_all))
 histo_central_pdf = ROOT.TH1F('histo_central_pdf','histo_central_pdf',len(name_pdf),-.5,-.5+len(name_pdf))
 histo_central_jes = ROOT.TH1F('histo_central_jes','histo_central_jes',len(name_jes),-.5,-.5+len(name_jes))
+histo_central_btag = ROOT.TH1F('histo_central_btag','histo_central_btag',len(name_btag),-.5,-.5+len(name_btag))
 histo_central_mod = ROOT.TH1F('histo_central_mod','histo_central_mod',len(name_mod),-.5,-.5+len(name_mod))
 
 
@@ -157,6 +189,20 @@ for i in range(0,len(name_jes)):
     histo_central_jes.SetBinError(i+1,0.)
 
 
+for i in range(0,len(name_btag)):
+    histo_btag.Fill(i,pull_btag[i])
+    histo_btag.GetXaxis().SetBinLabel(i+1,name_btag[i])
+    histo_btag.SetBinError(i+1,constraint_btag[i])
+
+    histo_stat_btag.Fill(i,pull_btag[i])
+    histo_stat_btag.GetXaxis().SetBinLabel(i+1,name_btag[i])
+    histo_stat_btag.SetBinError(i+1,(constraint_btag[i]**2+stat_toys_btag[i]**2)**.5)
+
+    histo_central_btag.Fill(i,central_toys_btag[i])
+    histo_central_btag.GetXaxis().SetBinLabel(i+1,name_btag[i])
+    histo_central_btag.SetBinError(i+1,0.)
+
+
 for i in range(0,len(name_mod)):
     histo_mod.Fill(i,pull_mod[i])
     histo_mod.GetXaxis().SetBinLabel(i+1,name_mod[i])
@@ -196,6 +242,13 @@ line_up_jes.SetLineColor(kGray)
 line_down_jes.SetLineColor(kGray)
 line_up_jes.SetLineWidth(2)
 line_down_jes.SetLineWidth(2)
+
+line_up_btag = ROOT.TLine(histo_btag.GetBinLowEdge(1),1.,histo_btag.GetBinLowEdge(histo_btag.GetNbinsX())+histo_btag.GetBinWidth(1),1.)
+line_down_btag = ROOT.TLine(histo_btag.GetBinLowEdge(1),-1.,histo_btag.GetBinLowEdge(histo_btag.GetNbinsX())+histo_btag.GetBinWidth(1),-1.)
+line_up_btag.SetLineColor(kGray)
+line_down_btag.SetLineColor(kGray)
+line_up_btag.SetLineWidth(2)
+line_down_btag.SetLineWidth(2)
 
 line_up_mod = ROOT.TLine(histo_mod.GetBinLowEdge(1),1.,histo_mod.GetBinLowEdge(histo_mod.GetNbinsX())+histo_mod.GetBinWidth(1),1.)
 line_down_mod = ROOT.TLine(histo_mod.GetBinLowEdge(1),-1.,histo_mod.GetBinLowEdge(histo_mod.GetNbinsX())+histo_mod.GetBinWidth(1),-1.)
@@ -314,6 +367,44 @@ histo_jes.Draw('psameE1')
 
 c1.SaveAs('summaryPlotsToys/jes_fitSummary.pdf','pdf')
 c1.SaveAs('summaryPlotsToys/jes_fitSummary.png','png')
+c1.Clear()
+
+###
+
+histo_btag.SetTitle('fit summary - BTAG')
+histo_btag.SetMaximum(1.7)
+histo_btag.SetMinimum(-1.7)
+histo_btag.SetMarkerStyle(8)
+histo_btag.SetMarkerColor(kBlue+1)
+histo_btag.SetLineWidth(2)
+histo_btag.SetLineColor(kBlue+1)
+
+histo_stat_btag.SetTitle('fit summary - BTAG')
+histo_stat_btag.SetMaximum(1.7)
+histo_stat_btag.SetMinimum(-1.7)
+histo_stat_btag.SetMarkerStyle(8)
+histo_stat_btag.SetMarkerColor(kBlue+1)
+histo_stat_btag.SetLineWidth(2)
+histo_stat_btag.SetLineColor(kRed)
+
+histo_central_btag.SetTitle('fit summary - BTAG')
+histo_central_btag.SetMaximum(1.7)
+histo_central_btag.SetMinimum(-1.7)
+histo_central_btag.SetMarkerStyle(8)
+histo_central_btag.SetMarkerColor(kGreen+1)
+histo_central_btag.SetLineWidth(2)
+histo_central_btag.SetLineColor(kRed)
+
+histo_central_btag.Draw('p')
+histo_stat_btag.Draw('psameE1')
+histo_btag.Draw('psameE1')
+line_up_btag.Draw('same')
+line_down_btag.Draw('same')
+histo_btag.Draw('psameE1')
+
+
+c1.SaveAs('summaryPlotsToys/btag_fitSummary.pdf','pdf')
+c1.SaveAs('summaryPlotsToys/btag_fitSummary.png','png')
 c1.Clear()
 
 ###

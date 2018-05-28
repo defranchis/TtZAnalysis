@@ -13,8 +13,8 @@
 
 [syst names]
 
-BTAGH,	 	B-tag
-BTAGL,   	Mistag
+BTAGH,	 	b-tag
+BTAGL,   	b-mistag
 BTAG_TOT,       b-tagging
 ELECES, 	Electron energy scale
 ELECESR, 	Electron energy
@@ -52,6 +52,23 @@ ST_FSRSCALE, tW FSR scale
 ST_ISRSCALE, tW ISR scale
 TOPMASS, $m_{t}^{MC}$
 Xsec, $\sigma_{t\bar{t}}$
+
+BTAGH_bfragmentation, b-tag: b fragmentation
+BTAGH_btempcorr, b-tag: b template correction
+BTAGH_cb, b-tag: JP correction
+BTAGH_cfragmentation, b-tag: c fragmentation
+BTAGH_dmux, b-tag: $D \to \mu X$ BR
+BTAGH_gluonsplitting, b-tag: gluon splitting 
+BTAGH_jes, b-tag: JES
+BTAGH_jetaway, b-tag: away jet tag
+BTAGH_ksl, b-tag: $K_s^0$ ($\Lambda$) production
+BTAGH_l2c, b-tag: light to c ratio
+BTAGH_ltothers, b-tag: LT others
+BTAGH_mudr, b-tag: muon $\DeltaR$
+BTAGH_mupt, b-tag: muon $p_T$
+BTAGH_sampledependence, b-tag: sample dependence
+BTAGH_ptrel, b-tag: muon $p_T$ rel
+BTAGH_statistic, b-tag: statistical
 
 
 TT_CRERD, CR ERD on
