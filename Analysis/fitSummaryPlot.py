@@ -32,6 +32,12 @@ pull_jes = []
 constrain_jes = []
 contribution_jes = []
 
+name_btag = []
+pull_btag = []
+constrain_btag = []
+contribution_btag = []
+
+
 name_mod = []
 pull_mod = []
 constrain_mod = []
@@ -51,6 +57,21 @@ for line in l1_short:
     name = str( TString(name).ReplaceAll(' response','') )
     name = str( TString(name).ReplaceAll('PDF','PDF ') )
     name = str( TString(name).ReplaceAll('$m_{t}^{MC}$','top mass') )
+    if 'b-tag' in name:
+        name = str( TString(name).ReplaceAll('fragmentation','fragm.') )
+        name = str( TString(name).ReplaceAll('correction','corr.') )
+        name = str( TString(name).ReplaceAll('template','templ.') )
+        name = str( TString(name).ReplaceAll('$D \to \mu X$','D to mu') )
+        name = str( TString(name).ReplaceAll('splitting','split.') )
+        name = str( TString(name).ReplaceAll('production','prod.') )
+        name = str( TString(name).ReplaceAll('light to c','l/c') )
+        name = str( TString(name).ReplaceAll('dependence','dep.') )
+        name = str( TString(name).ReplaceAll('statistical','stat.') )
+        name = str( TString(name).ReplaceAll('$','') )
+        name = str( TString(name).ReplaceAll('\\','#') )
+        name = str( TString(name).ReplaceAll('#to','#rightarrow') )
+        name = str( TString(name).ReplaceAll('K_s^0','Ks^{0}') )
+        
     contribution = str( TString(contribution).ReplaceAll('\\','') )
     contribution = str( TString(contribution).ReplaceAll('$','') )
     contribution = str( TString(contribution).ReplaceAll('{','') )
@@ -63,6 +84,12 @@ for line in l1_short:
         pull_pdf.append(float(pull))
         constrain_pdf.append(float(constrain))
         contribution_pdf.append(float(contribution))
+    elif 'b-tag' in name or 'mistag' in name:
+        print name
+        name_btag.append(name)
+        pull_btag.append(float(pull))
+        constrain_btag.append(float(constrain))
+        contribution_btag.append(float(contribution))
     elif 'JES' in name:
         name_jes.append(name)
         pull_jes.append(float(pull))
@@ -83,11 +110,13 @@ for line in l1_short:
 histo_all = ROOT.TH1F('histo_all','histo_all',len(name_all),-.5,-.5+len(name_all))
 histo_pdf = ROOT.TH1F('histo_pdf','histo_pdf',len(name_pdf),-.5,-.5+len(name_pdf))
 histo_jes = ROOT.TH1F('histo_jes','histo_jes',len(name_jes),-.5,-.5+len(name_jes))
+histo_btag = ROOT.TH1F('histo_btag','histo_btag',len(name_btag),-.5,-.5+len(name_btag))
 histo_mod = ROOT.TH1F('histo_mod','histo_mod',len(name_mod),-.5,-.5+len(name_mod))
 
 contrib_all = ROOT.TH1F('contrib_all','contrib_all',len(name_all),-.5,-.5+len(name_all))
 contrib_pdf = ROOT.TH1F('contrib_pdf','contrib_pdf',len(name_pdf),-.5,-.5+len(name_pdf))
 contrib_jes = ROOT.TH1F('contrib_jes','contrib_jes',len(name_jes),-.5,-.5+len(name_jes))
+contrib_btag = ROOT.TH1F('contrib_btag','contrib_btag',len(name_btag),-.5,-.5+len(name_btag))
 contrib_mod = ROOT.TH1F('contrib_mod','contrib_mod',len(name_mod),-.5,-.5+len(name_mod))
 
 
@@ -111,6 +140,13 @@ for i in range(0,len(name_jes)):
     histo_jes.SetBinError(i+1,constrain_jes[i])
     contrib_jes.Fill(i,contribution_jes[i])
     contrib_jes.GetXaxis().SetBinLabel(i+1,name_jes[i])
+
+for i in range(0,len(name_btag)):
+    histo_btag.Fill(i,pull_btag[i])
+    histo_btag.GetXaxis().SetBinLabel(i+1,name_btag[i])
+    histo_btag.SetBinError(i+1,constrain_btag[i])
+    contrib_btag.Fill(i,contribution_btag[i])
+    contrib_btag.GetXaxis().SetBinLabel(i+1,name_btag[i])
 
 for i in range(0,len(name_mod)):
     histo_mod.Fill(i,pull_mod[i])
@@ -145,6 +181,13 @@ line_up_jes.SetLineColor(kGreen+1)
 line_down_jes.SetLineColor(kGreen+1)
 line_up_jes.SetLineWidth(2)
 line_down_jes.SetLineWidth(2)
+
+line_up_btag = ROOT.TLine(histo_btag.GetBinLowEdge(1),1.,histo_btag.GetBinLowEdge(histo_btag.GetNbinsX())+histo_btag.GetBinWidth(1),1.)
+line_down_btag = ROOT.TLine(histo_btag.GetBinLowEdge(1),-1.,histo_btag.GetBinLowEdge(histo_btag.GetNbinsX())+histo_btag.GetBinWidth(1),-1.)
+line_up_btag.SetLineColor(kGreen+1)
+line_down_btag.SetLineColor(kGreen+1)
+line_up_btag.SetLineWidth(2)
+line_down_btag.SetLineWidth(2)
 
 line_up_mod = ROOT.TLine(histo_mod.GetBinLowEdge(1),1.,histo_mod.GetBinLowEdge(histo_mod.GetNbinsX())+histo_mod.GetBinWidth(1),1.)
 line_down_mod = ROOT.TLine(histo_mod.GetBinLowEdge(1),-1.,histo_mod.GetBinLowEdge(histo_mod.GetNbinsX())+histo_mod.GetBinWidth(1),-1.)
@@ -207,6 +250,24 @@ c1.Clear()
 
 ###
 
+histo_btag.SetTitle('fit summary - BTAG')
+histo_btag.SetMaximum(1.7)
+histo_btag.SetMinimum(-1.7)
+histo_btag.SetMarkerStyle(8)
+histo_btag.SetMarkerColor(kRed)
+histo_btag.SetLineWidth(2)
+histo_btag.Draw('p')
+line_up_btag.Draw('same')
+line_down_btag.Draw('same')
+histo_btag.Draw('psame')
+
+
+c1.SaveAs('summaryPlots/btag_fitSummary.pdf','pdf')
+c1.SaveAs('summaryPlots/btag_fitSummary.png','png')
+c1.Clear()
+
+###
+
 histo_mod.SetTitle('fit summary - MOD')
 histo_mod.SetMaximum(1.7)
 histo_mod.SetMinimum(-1.7)
@@ -255,6 +316,17 @@ contrib_jes.Draw('hist')
 
 c1.SaveAs('summaryPlots/jes_contribution.pdf','pdf')
 c1.SaveAs('summaryPlots/jes_contribution.png','png')
+c1.Clear()
+
+###
+
+contrib_btag.SetTitle('contribution - BTAG')
+contrib_btag.SetFillColor(kYellow)
+contrib_btag.SetLineColor(kRed)
+contrib_btag.Draw('hist')
+
+c1.SaveAs('summaryPlots/btag_contribution.pdf','pdf')
+c1.SaveAs('summaryPlots/btag_contribution.png','png')
 c1.Clear()
 
 ###
