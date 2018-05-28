@@ -13,7 +13,6 @@ input_dir_pre=/nfs/dust/cms/user/defrancm/MassExtraction2016/Till/CMSSW_8_0_26_p
 input_dir=20180525_btag_breakdown_merge
 
 inputfiles=emu_13TeV_172.5_nominal_syst.ztop #use wildcards if more files needed
-cmssw=$CMSSW_BASE
 
 #########################################
 
