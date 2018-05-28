@@ -43,7 +43,9 @@ LEPIDISO = ELECSF + MUONSF
 ELECESR = ELECES + ELECER_RHO + ELECER_PHI
 TT_BFRAG = TT_FRAG + TT_FRAG_PETERSON
 
-BTAG_TOT = BTAGH + BTAGL
+% BTAG_TOT = BTAGH + BTAGL
+BTAG_TOT = BTAGL + BTAGH_bfragmentation + BTAGH_btempcorr + BTAGH_cb + BTAGH_cfragmentation + BTAGH_dmux + BTAGH_gluonsplitting + BTAGH_jes + BTAGH_jetaway + BTAGH_ksl + BTAGH_l2c + BTAGH_ltothers + BTAGH_mudr + BTAGH_mupt + BTAGH_sampledependence + BTAGH_ptrel + BTAGH_statistic
+
 
 TT_CR_ALL = TT_CRERD + TT_CRGLUON + TT_CRQCD
 
