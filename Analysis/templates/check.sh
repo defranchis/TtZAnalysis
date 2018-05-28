@@ -41,6 +41,10 @@ allj=()
 for file in *; 
 do
 
+    if [ "$file" = "job_HTCondor.sh" ]; then
+        continue
+    fi
+
     fulloutpath=../output/$file
     fullcheckpath=../batch/$file
     jobname=$file
