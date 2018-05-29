@@ -76,7 +76,7 @@ for line in l1_short:
     contribution = str( TString(contribution).ReplaceAll('$','') )
     contribution = str( TString(contribution).ReplaceAll('{','') )
     contribution = str( TString(contribution).ReplaceAll('}','') )
-    if 'mass' in name or 'DY GEN' in name: continue
+    # if 'mass' in name or 'DY GEN' in name: continue
     # if 'm_{t}' in name or 'Lumi' in name or 'DY GEN' in name: continue
     # if 'Lumi' in name or 'DY GEN' in name: continue
     if 'PDF' in name:
@@ -85,7 +85,6 @@ for line in l1_short:
         constrain_pdf.append(float(constrain))
         contribution_pdf.append(float(contribution))
     elif 'b-tag' in name or 'mistag' in name:
-        print name
         name_btag.append(name)
         pull_btag.append(float(pull))
         constrain_btag.append(float(constrain))
@@ -95,7 +94,7 @@ for line in l1_short:
         pull_jes.append(float(pull))
         constrain_jes.append(float(constrain))
         contribution_jes.append(float(contribution))
-    elif ('scale' in name and not 'Electron' in name and not 'Muon' in name) or 'GEN' in name or 'fragm' in name or 'match' in name or 'BR' in name or 'TT' in name or 'tune' in name or 'pT' in name or 'CR' in name or 'NLO' in name or 'm_{t}' in name :
+    elif ('scale' in name and not 'Electron' in name and not 'Muon' in name) or 'GEN' in name or 'fragm' in name or 'match' in name or 'BR' in name or 'TT' in name or 'tune' in name or 'pT' in name or 'CR' in name or 'NLO' in name or 'mass' in name :
         name_mod.append(name)
         pull_mod.append(float(pull))
         constrain_mod.append(float(constrain))
