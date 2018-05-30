@@ -324,7 +324,7 @@ void plotterControlPlot::drawControlPlot(){
 		if(dataentry==0) firstmccount++;
 
 		std::vector<TString> legendentries;
-		bool foundPSmig=false;
+		// bool foundPSmig=false;
 		if(sorted.size() != usestack->size())
 			throw std::out_of_range("plotterControlPlot::drawControlPlot: serious: sorted.size() != usestack->size()");
 
