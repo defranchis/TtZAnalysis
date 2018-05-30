@@ -5,6 +5,8 @@ from ROOT import *
 inFile = 'toys.root'
 outdir = 'plots_toys'
 
+forAN=False
+
 rootFile = ROOT.TFile(inFile,'r')
 
 if not os.path.exists(outdir):
@@ -36,12 +38,32 @@ for histokey in histolist:
         title = outname.ReplaceAll('_pull','')
         title.ReplaceAll('_','-')
         title.ReplaceAll('^','')
+        title.ReplaceAll(':',' ')
         if '13TeV' in str(title): continue
-        print '\\begin{frame}{'+str(title)+'}'
-        print '\includegraphics[width=.5\\textwidth]{'+str(outfilename)+'}'
-        outfilename.ReplaceAll('_pull','_constr')
-        print '\includegraphics[width=.5\\textwidth]{'+str(outfilename)+'} \\\\'
-        outfilename.ReplaceAll('_constr','_contrib')
-        print '\includegraphics[width=.5\\textwidth]{'+str(outfilename)+'}'
-        print '\\end{frame}'
-        print
+
+        if (forAN):
+            print '\\begin{figure}[htbp!]'
+            print '  \\begin{center}'
+            print '    \\resizebox{0.32 \\textwidth}{!}{\\includegraphics{'+str(outfilename)+'}}'
+            outfilename.ReplaceAll('_pull','_constr')
+            print '    \\resizebox{0.32 \\textwidth}{!}{\\includegraphics{'+str(outfilename)+'}}'
+            outfilename.ReplaceAll('_constr','_contrib')
+            print '    \\resizebox{0.32 \\textwidth}{!}{\\includegraphics{'+str(outfilename)+'}}'
+            print '\\caption{Pull (left), constraint (middle) and contribution to total uncertainty on \\mtmc (right) for variation '+str(title)+'.'
+            print '       \\label{fig:toys_'+str(title)+'}}'
+            print '  \\end{center}'
+            print '\\end{figure}'
+            print
+
+        else:
+            print '\\begin{frame}{'+str(title)+'}'
+            print '\includegraphics[width=.5\\textwidth]{'+str(outfilename)+'}'
+            outfilename.ReplaceAll('_pull','_constr')
+            print '\includegraphics[width=.5\\textwidth]{'+str(outfilename)+'} \\\\'
+            outfilename.ReplaceAll('_constr','_contrib')
+            print '\includegraphics[width=.5\\textwidth]{'+str(outfilename)+'}'
+            print '\\end{frame}'
+            print
+
+
+

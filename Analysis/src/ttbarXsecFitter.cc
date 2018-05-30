@@ -1881,10 +1881,12 @@ texTabler ttbarXsecFitter::makeSystBreakDownTable(size_t datasetidx,bool detaile
 	if(paraname.Length()>0)
 		xsec=fitter_.getParameter(paraindex);
 	float tableprecision=0.1;
+        float norm = 1./xsec;
 	if(paraname=="TOPMASS"){
 		xsec*=3;
 		xsec+=172.5;
 		tableprecision=0.01;
+                norm=.01;
 	}
 
 	bool symmetrize=false;
@@ -1898,8 +1900,14 @@ texTabler ttbarXsecFitter::makeSystBreakDownTable(size_t datasetidx,bool detaile
 	if(!fitsucc_)
 		return table;
 
-        if(detailed) table << "Name" << "Pull" << "Constr / $\\sigma$" << "Contribution [\\%]";
-        else table << "Name"  << "Contribution [\\%]";
+        if (paraname=="TOPMASS"){
+            if(detailed) table << "Name" << "Pull" << "Constr / $\\sigma$" << "Contribution [GeV]";
+            else table << "Name"  << "Contribution [GeV]";
+        }
+        else{
+            if(detailed) table << "Name" << "Pull" << "Constr / $\\sigma$" << "Contribution [\\%]";
+            else table << "Name"  << "Contribution [\\%]";
+        }
 	table << texLine();
 	std::vector<dataset::systematic_unc> * unc=&datasets_.at(datasetidx).postFitSystematicsFull();
 
@@ -1925,13 +1933,13 @@ texTabler ttbarXsecFitter::makeSystBreakDownTable(size_t datasetidx,bool detaile
 			errstr= " ";
 		}
 		else if(fabs(sys->errdown) == fabs(sys->errup)){
-			errstr="${"+fmt.toFixedCommaTString(100*sys->errup,tableprecision)+ "}$";
+			errstr="${"+fmt.toFixedCommaTString(100*xsec*norm*sys->errup,tableprecision)+ "}$";
 		}
 		else{
 			if(anticorr)
-				errstr="$\\mp^{"+fmt.toFixedCommaTString(100*fabs(sys->errdown),tableprecision)+"}_{"+fmt.toFixedCommaTString(100*fabs(sys->errup),tableprecision)+ "}$";
+				errstr="$\\mp^{"+fmt.toFixedCommaTString(100*xsec*norm*fabs(sys->errdown),tableprecision)+"}_{"+fmt.toFixedCommaTString(100*xsec*norm*fabs(sys->errup),tableprecision)+ "}$";
 			else
-				errstr="$\\pm^{"+fmt.toFixedCommaTString(100*fabs(sys->errup),tableprecision)+ "}_{"+fmt.toFixedCommaTString(100*fabs(sys->errdown),tableprecision)+"}$";;
+				errstr="$\\pm^{"+fmt.toFixedCommaTString(100*xsec*norm*fabs(sys->errup),tableprecision)+ "}_{"+fmt.toFixedCommaTString(100*xsec*norm*fabs(sys->errdown),tableprecision)+"}$";;
 		}
 		if(sys->name == "Total" || sys->name == "Total fitted")
 			table <<texLine(1);
