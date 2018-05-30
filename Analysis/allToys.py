@@ -18,12 +18,15 @@ h_pull = []
 h_constr = []
 h_contrib = []
 
+maxToys=-1
+
 for texfile in filelist:
     if not texfile.endswith('.tex'): continue
     if not texfile.startswith('xsecFit_tab_TOPMASS_'): continue #redundant
 
     nfile += 1
     if nfile%1000 == 0 : print 'processing file n.', nfile
+    if nfile > maxToys and maxToys > 0: break
 
     f1 = open(base_dir+'/'+texfile,'r')
     l1 = f1.read().splitlines()
@@ -73,9 +76,8 @@ for texfile in filelist:
             name = str( TString(name).ReplaceAll('dependence','dep.') )
             name = str( TString(name).ReplaceAll('statistical','stat.') )
             name = str( TString(name).ReplaceAll('$','') )
-            name = str( TString(name).ReplaceAll('\\','#') )
-            name = str( TString(name).ReplaceAll('#to','#rightarrow') )
-            name = str( TString(name).ReplaceAll('K_s^0','Ks^{0}') )
+            name = str( TString(name).ReplaceAll('\\','') )
+            name = str( TString(name).ReplaceAll('K_s^0','Ks0') )
 
         contribution = str( TString(contribution).ReplaceAll('\\','') )
         contribution = str( TString(contribution).ReplaceAll('$','') )
