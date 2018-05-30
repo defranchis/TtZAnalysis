@@ -5,7 +5,7 @@ from ROOT import *
 inFile = 'toys.root'
 outdir = 'plots_toys'
 
-forAN=True
+forAN=False
 
 rootFile = ROOT.TFile(inFile,'r')
 
@@ -38,6 +38,7 @@ for histokey in histolist:
         title = outname.ReplaceAll('_pull','')
         title.ReplaceAll('_','-')
         title.ReplaceAll('^','')
+        title.ReplaceAll(':',' ')
         if '13TeV' in str(title): continue
 
         if (forAN):

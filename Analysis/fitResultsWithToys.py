@@ -91,7 +91,13 @@ for line in l1_short:
     contribution = str( TString(contribution).ReplaceAll('{','') )
     contribution = str( TString(contribution).ReplaceAll('}','') )
     if 'DY GEN' in name: continue
-    h = inFile.FindObjectAny(name+'_pull')        
+    tmpname = TString(name);
+    tmpname.ReplaceAll('#','')
+    tmpname.ReplaceAll('rightarrow','to')
+    tmpname.ReplaceAll('Ks^{0}','Ks0')
+    tmpname=str(tmpname)
+
+    h = inFile.FindObjectAny(tmpname+'_pull')        
     if 'PDF' in name:
         name_pdf.append(name)
         pull_pdf.append(float(pull))
