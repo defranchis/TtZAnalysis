@@ -1432,7 +1432,7 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
 			}
 			plotnames.push_back(subnames);
 			if(fr.nEntries(line)>2)
-				stylefiles.push_back(fr.getData<std::string>(line,2));
+				stylefiles.push_back(((std::string)getenv("CMSSW_BASE")+fr.getData<std::string>(line,2)));
 			else
 				stylefiles.push_back("");
 
@@ -1442,13 +1442,16 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
 	for(size_t i=0;i<nbjets.size();i++){
 		if(plotnames.at(i).size()<1)continue;
 		plotterControlPlot pl;
+                pl.readStyleFromFileInCMSSW("src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_standard.txt");
+                pl.addStyleFromFile(stylefiles.at(i),"[controlplot - "+ plotnames.at(i).at(0)+ "]","[end - controlplot]");                 
 		if( inputfile.find("8TeV")!=std::string::npos)
 			pl.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/general/noCMS_boxes.txt","CMSSplit03Left");
 		else if(inputfile.find("7TeV")!=std::string::npos)
 			pl.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/general/noCMS_boxes.txt","CMSSplit03Left7TeV");
 
 		if(hasmtvar)
-			pl.setSystLabel("#splitline{MC stat+syst}{+#Deltam_{t}^{MC}}");
+			//pl.setSystLabel("#splitline{Syst}{+#Deltam_{t}^{MC}}");
+			pl.setSystLabel("Syst+#Deltam_{t}^{MC}");
 		histoStack stack,poststack;
 		size_t bjets=nbjets.at(i);
 		if(bjets>2)

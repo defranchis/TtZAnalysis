@@ -10,6 +10,7 @@
 #include "../interface/ttbarXsecFitter.h"
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include "TtZAnalysis/Tools/interface/histoStack.h"
 #include "TtZAnalysis/Tools/interface/plotterControlPlot.h"
 #include "TtZAnalysis/Tools/interface/plotterMultiplePlots.h"
@@ -177,7 +178,7 @@ invokeApplication(){
 		//get files
 
 		for(size_t file=0;file<filestoprocess.size();file++){
-			TString ctrplotsoutir=outfile+"_controlPlots";
+			TString ctrplotsoutir=outfile+"_controlPlots"+file;
 			//ctrplotsoutir+="_"+datasets.at(file);
 			system(((TString)"mkdir -p " +ctrplotsoutir).Data());
 			histoStackVector vec;
@@ -193,6 +194,10 @@ invokeApplication(){
 			//fileReader::debug=false;
 			//get plot names
 			std::vector<std::string> plotnames= specialcplots.getMarkerValues("plot");
+                        std::vector<std::string> formatedplotnames= specialcplots.getMarkerValues("plot");
+                        for(size_t pln=0;pln<formatedplotnames.size();pln++){
+                                std::replace(formatedplotnames.at(pln).begin(),formatedplotnames.at(pln).end(),';',',');
+                        }
 
 			std::string fracfile=specialcplots.dumpFormattedToTmp();
 
@@ -206,7 +211,13 @@ invokeApplication(){
 			}
 
 			for(size_t stackit=0;stackit<plotnames.size();stackit++){
-				histoStack stack=vec.getStack(plotnames.at(stackit).data());
+				histoStack stack=vec.getStack(formatedplotnames.at(stackit).data());
+                                if (stack.getName() == "m_lb min 1,1 b-jets step 8") stack = stack.rebinXToBinning({20,48,76,104,132,160});
+                                else if (stack.getName() == "m_lb min 1,2 b-jets step 8") stack = stack.rebinXToBinning({20,48,76,104,132,160});
+                                else if (stack.getName() == "lead jet pt 0,1 b-jets step 8") stack = stack.rebinXToBinning({30,50,100,200});
+                                else if (stack.getName() == "second jet pt 0,2 b-jets step 8") stack = stack.rebinXToBinning({30,40,50,100,200});
+                                else if (stack.getName() == "third jet pt 0,3 b-jets step 8") stack = stack.rebinXToBinning({30,50,200});
+
 				plotterControlPlot pl;
 				//plotterControlPlot::debug=true;
 				//histoStack::debug=true;
