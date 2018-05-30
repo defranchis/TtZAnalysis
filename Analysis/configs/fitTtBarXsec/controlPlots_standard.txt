@@ -4,13 +4,11 @@
 
     divideat = 0.3
     invertplots = true
-    PSMigThreshold =  0.001   $this is not %!
+    PSMigThreshold =  9999999999999   $this is not %!
 
 [end - plotterControlPlot]
  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  
-[textBoxes - boxes]
 
-[end - textBoxes]
 
  [legendStyle]
 
