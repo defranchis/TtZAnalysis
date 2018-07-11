@@ -104,7 +104,7 @@ for texfile in filelist:
             index = name_all.index(name)
             h_pull.append(ROOT.TH1F(name+'_pull',name+'_pull',700,-5,5))
             h_constr.append(ROOT.TH1F(name+'_constr',name+'_constr',300,0,3))
-            h_contrib.append(ROOT.TH1F(name+'_contrib',name+'_contrib',300,0,1))
+            h_contrib.append(ROOT.TH1F(name+'_contrib',name+'_contrib',300,-1,1))
 
 
     for name in name_all:
