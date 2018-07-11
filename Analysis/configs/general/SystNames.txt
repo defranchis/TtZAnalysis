@@ -148,6 +148,11 @@ BG_1_bjets_DY, DY background (1 b-jets)
 BG_2_bjets_DY, DY background (2 b-jets)
 BG_DY, DY background
 
+BG_0_addjets_DY, DY background (0 add. jets)
+BG_1_addjets_DY, DY background (1 add. jets)
+BG_2_addjets_DY, DY background (2 add. jets)
+BG_3_addjets_DY, DY background (3 add. jets)
+
 
 
 Xsec_8TeV, $\sigma_{t\bar{t}}$(8 TeV)
