@@ -2808,6 +2808,34 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	else if(nbjets==2)
 		dy2bjetserr=0.3;
 
+        int naddjets = -1;
+        TString stackName = stack->getName();
+        if (stackName.Contains(",0 b-jets")) naddjets=0;
+        else if (stackName.Contains(",1 b-jets")) naddjets=1;
+        else if (stackName.Contains(",2 b-jets")) naddjets=2;
+        else if (stackName.Contains(",3 b-jets")) naddjets=3;
+        else std::cerr<<"WARNING: undefined number of additional jets"<<std::endl;
+
+	float dy0jetserr=0, dy1jetserr=0, dy2jetserr=0, dy3jetserr=0;
+
+        if (nbjets==0){
+            if      (naddjets==0) dy0jetserr=0.05;
+            else if (naddjets==1) dy1jetserr=0.1;
+            else if (naddjets==2) dy2jetserr=0.3;
+            else if (naddjets==3) dy3jetserr=0.5;
+        }
+        else if (nbjets==1){
+            if      (naddjets==0) dy0jetserr=0.1;
+            else if (naddjets==1) dy1jetserr=0.3;
+            else if (naddjets==2) dy2jetserr=0.5;
+            else if (naddjets==3) dy3jetserr=0.5;
+        }
+        else if (nbjets==2){
+            if      (naddjets==0) dy0jetserr=0.3;
+            else if (naddjets==1) dy1jetserr=0.5;
+            else if (naddjets==2) dy2jetserr=0.5;
+            else if (naddjets==3) dy3jetserr=0.5;
+        }
 
 	//hardcoded scaling of QCD/Wjets....
 	try{
@@ -2823,6 +2851,11 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	stack->addRelErrorToContribution(dy0bjetserr,"DY","BG_0_bjets_");
 	stack->addRelErrorToContribution(dy1bjetserr,"DY","BG_1_bjets_");
 	stack->addRelErrorToContribution(dy2bjetserr,"DY","BG_2_bjets_");
+
+	stack->addRelErrorToContribution(dy0jetserr,"DY","BG_0_addjets_");
+	stack->addRelErrorToContribution(dy1jetserr,"DY","BG_1_addjets_");
+	stack->addRelErrorToContribution(dy2jetserr,"DY","BG_2_addjets_");
+	stack->addRelErrorToContribution(dy3jetserr,"DY","BG_3_addjets_");
 
 	if(debug)
 		std::cout << "ttbarXsecFitter::addUncertainties: added DY var" <<std::endl;
