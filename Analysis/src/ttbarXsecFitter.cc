@@ -2817,10 +2817,25 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
         else std::cerr<<"WARNING: undefined number of additional jets"<<std::endl;
 
 	float dy0jetserr=0, dy1jetserr=0, dy2jetserr=0, dy3jetserr=0;
-	if      (naddjets==0) dy0jetserr=0.1;
-	else if (naddjets==1) dy1jetserr=0.1;
-	else if (naddjets==2) dy2jetserr=0.1;
-	else if (naddjets==3) dy3jetserr=0.1;
+
+        if (nbjets==0){
+            if      (naddjets==0) dy0jetserr=0.05;
+            else if (naddjets==1) dy1jetserr=0.1;
+            else if (naddjets==2) dy2jetserr=0.3;
+            else if (naddjets==3) dy3jetserr=0.5;
+        }
+        else if (nbjets==1){
+            if      (naddjets==0) dy0jetserr=0.1;
+            else if (naddjets==1) dy1jetserr=0.3;
+            else if (naddjets==2) dy2jetserr=0.5;
+            else if (naddjets==3) dy3jetserr=0.5;
+        }
+        else if (nbjets==2){
+            if      (naddjets==0) dy0jetserr=0.3;
+            else if (naddjets==1) dy1jetserr=0.5;
+            else if (naddjets==2) dy2jetserr=0.5;
+            else if (naddjets==3) dy3jetserr=0.5;
+        }
 
 	//hardcoded scaling of QCD/Wjets....
 	try{
