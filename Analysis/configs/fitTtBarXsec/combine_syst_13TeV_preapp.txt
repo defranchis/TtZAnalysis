@@ -32,7 +32,7 @@ JES =  JES_AbsoluteMPFBias + JES_RelativeFSR + JES_RelativeStatFSR + JES_Absolut
 % BG_1_bjets_DY = BG_1_bjets_DY_low + BG_1_bjets_DY_ee + BG_1_bjets_DY_mm + BG_1_bjets_DY_tt
 % BG_2_bjets_DY = BG_2_bjets_DY_low + BG_2_bjets_DY_ee + BG_2_bjets_DY_mm + BG_2_bjets_DY_tt
 
-BG_DY = BG_0_bjets_DY + BG_1_bjets_DY + BG_2_bjets_DY
+BG_DY = BG_0_bjets_DY + BG_1_bjets_DY + BG_2_bjets_DY + BG_0_addjets_DY + BG_1_addjets_DY + BG_2_addjets_DY + BG_3_addjets_DY
 %BG_DY = BG_0_bjets_DY_low + BG_0_bjets_DY_ee + BG_0_bjets_DY_mm + BG_0_bjets_DY_tt + BG_1_bjets_DY_low + BG_1_bjets_DY_ee + BG_1_bjets_DY_mm + BG_1_bjets_DY_tt + BG_2_bjets_DY_low + BG_2_bjets_DY_ee + BG_2_bjets_DY_mm + BG_2_bjets_DY_tt
 %Hadro_JES = JES_Flavor + TT_BJESNUDEC + TT_BJESRETUNE
 
