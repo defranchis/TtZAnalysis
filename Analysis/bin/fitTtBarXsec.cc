@@ -232,28 +232,13 @@ invokeApplication(){
 				//pl.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt","CMSPaperSplit03Left");
 				size_t datasetidx=mainfitter.getDatasetIndex(datasets.at(file).data() );
 				mainfitter.addUncertainties(&stack, datasetidx);
-                                stack.removeError("BG_0_bjets_DY_up");
-                                stack.removeError("BG_0_bjets_DY_down");
-                                stack.removeError("BG_1_bjets_DY_up");
-                                stack.removeError("BG_1_bjets_DY_down");
-                                stack.removeError("BG_2_bjets_DY_up");
-                                stack.removeError("BG_2_bjets_DY_down");
-                                stack.removeError("BG_0_addjets_DY_up");
-                                stack.removeError("BG_1_addjets_DY_up");
-                                stack.removeError("BG_2_addjets_DY_up");
-                                stack.removeError("BG_3_addjets_DY_up");
-                                stack.removeError("BG_0_addjets_DY_down");
-                                stack.removeError("BG_1_addjets_DY_down");
-                                stack.removeError("BG_2_addjets_DY_down");
-                                stack.removeError("BG_3_addjets_DY_down");
-                                stack.removeError("BG_t#bar{t}bg_up");
-                                stack.removeError("BG_t#bar{t}bg_down");
-                                stack.removeError("BG_VV_up");
-                                stack.removeError("BG_VV_down");
-                                stack.removeError("BG_Wjets_up");
-                                stack.removeError("BG_Wjets_down");
-                                stack.removeError("BG_tW/#bar{t}W_up");
-                                stack.removeError("BG_tW/#bar{t}W_down");
+                                for (TString m_syst : stack.getSystNameList()){
+                                    if (m_syst.BeginsWith("BG_")){
+                                        stack.removeError(m_syst+"_up");
+                                        stack.removeError(m_syst+"_down");
+                                        if (debug) std::cout<<"removed systematics "<<m_syst<<" from control plots"<<std::endl;
+                                    }
+                                }
 
 				pl.setStack(&stack);
 				std::string outname=(ctrplotsoutir+"/"+stack.getFormattedName()+"_"+datasets.at(file)).Data();
