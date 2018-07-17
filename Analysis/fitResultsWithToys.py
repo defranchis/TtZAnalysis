@@ -12,6 +12,8 @@ l1 = f1.read().splitlines()
 
 inFile = ROOT.TFile('toys.root','READ')
 
+massFit = True
+
 # h = inFile.FindObjectAny('top mass _pull')
 # print h.GetMean(), h.GetRMS()
 
@@ -106,6 +108,8 @@ for line in l1_short:
     contribution = str( TString(contribution).ReplaceAll('{','') )
     contribution = str( TString(contribution).ReplaceAll('}','') )
     if 'mass' in name: continue
+    if not massFit: 
+        if 'NLO'  in name: continue
     tmpname = TString(name);
     tmpname.ReplaceAll('#','')
     tmpname.ReplaceAll('rightarrow','to')
@@ -324,6 +328,7 @@ c1.Clear()
 ###
 
 histo_pdf.SetTitle('')
+histo_pdf.GetYaxis().SetTitle('normalized pull')
 histo_pdf.SetMaximum(1.3)
 histo_pdf.SetMinimum(-1.3)
 histo_pdf.SetMarkerStyle(8)
@@ -332,6 +337,7 @@ histo_pdf.SetLineWidth(2)
 histo_pdf.SetLineColor(kBlue+1)
 
 histo_stat_pdf.SetTitle('')
+histo_stat_pdf.GetYaxis().SetTitle('normalized pull')
 histo_stat_pdf.SetMaximum(1.3)
 histo_stat_pdf.SetMinimum(-1.3)
 histo_stat_pdf.SetMarkerStyle(8)
@@ -340,6 +346,7 @@ histo_stat_pdf.SetLineWidth(2)
 histo_stat_pdf.SetLineColor(kRed)
 
 histo_central_pdf.SetTitle('')
+histo_central_pdf.GetYaxis().SetTitle('normalized pull')
 histo_central_pdf.SetMaximum(1.3)
 histo_central_pdf.SetMinimum(-1.3)
 histo_central_pdf.SetMarkerStyle(1)
@@ -366,6 +373,7 @@ c1.Clear()
 ###
 
 histo_jes.SetTitle('')
+histo_jes.GetYaxis().SetTitle('normalized pull')
 histo_jes.SetMaximum(2.1)
 histo_jes.SetMinimum(-2.8)
 histo_jes.SetMarkerStyle(8)
@@ -374,6 +382,7 @@ histo_jes.SetLineWidth(2)
 histo_jes.SetLineColor(kBlue+1)
 
 histo_stat_jes.SetTitle('')
+histo_stat_jes.GetYaxis().SetTitle('normalized pull')
 histo_stat_jes.SetMaximum(2.1)
 histo_stat_jes.SetMinimum(-2.8)
 histo_stat_jes.SetMarkerStyle(8)
@@ -382,6 +391,7 @@ histo_stat_jes.SetLineWidth(2)
 histo_stat_jes.SetLineColor(kRed)
 
 histo_central_jes.SetTitle('')
+histo_central_jes.GetYaxis().SetTitle('normalized pull')
 histo_central_jes.SetMaximum(2.1)
 histo_central_jes.SetMinimum(-2.8)
 histo_central_jes.SetMarkerStyle(1)
@@ -408,6 +418,7 @@ c1.Clear()
 ###
 
 histo_btag.SetTitle('')
+histo_btag.GetYaxis().SetTitle('normalized pull')
 histo_btag.SetMaximum(1.9)
 histo_btag.SetMinimum(-1.3)
 histo_btag.SetMarkerStyle(8)
@@ -416,6 +427,7 @@ histo_btag.SetLineWidth(2)
 histo_btag.SetLineColor(kBlue+1)
 
 histo_stat_btag.SetTitle('')
+histo_stat_btag.GetYaxis().SetTitle('normalized pull')
 histo_stat_btag.SetMaximum(1.9)
 histo_stat_btag.SetMinimum(-1.3)
 histo_stat_btag.SetMarkerStyle(8)
@@ -424,6 +436,7 @@ histo_stat_btag.SetLineWidth(2)
 histo_stat_btag.SetLineColor(kRed)
 
 histo_central_btag.SetTitle('')
+histo_central_btag.GetYaxis().SetTitle('normalized pull')
 histo_central_btag.SetMaximum(1.9)
 histo_central_btag.SetMinimum(-1.3)
 histo_central_btag.SetMarkerStyle(1)
@@ -450,6 +463,7 @@ c1.Clear()
 ###
 
 histo_mod.SetTitle('')
+histo_mod.GetYaxis().SetTitle('normalized pull')
 histo_mod.SetMaximum(1.7)
 histo_mod.SetMinimum(-2.3)
 histo_mod.SetMarkerStyle(8)
@@ -458,6 +472,7 @@ histo_mod.SetLineWidth(2)
 histo_mod.SetLineColor(kBlue+1)
 
 histo_stat_mod.SetTitle('')
+histo_stat_mod.GetYaxis().SetTitle('normalized pull')
 histo_stat_mod.SetMaximum(1.7)
 histo_stat_mod.SetMinimum(-2.3)
 histo_stat_mod.SetMarkerStyle(8)
@@ -466,6 +481,7 @@ histo_stat_mod.SetLineWidth(2)
 histo_stat_mod.SetLineColor(kRed)
 
 histo_central_mod.SetTitle('')
+histo_central_mod.GetYaxis().SetTitle('normalized pull')
 histo_central_mod.SetMaximum(1.7)
 histo_central_mod.SetMinimum(-2.3)
 histo_central_mod.SetMarkerStyle(1)
