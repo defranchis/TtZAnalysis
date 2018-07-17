@@ -20,9 +20,14 @@ h_contrib = []
 
 maxToys=-1
 
+massFit = True
+
 for texfile in filelist:
     if not texfile.endswith('.tex'): continue
-    if not texfile.startswith('xsecFit_tab_TOPMASS_'): continue #redundant
+    if massFit:
+        if not texfile.startswith('xsecFit_tab_TOPMASS_'): continue #redundant
+    else:
+        if not texfile.startswith('xsecFit_tab13TeV_'): continue #redundant
 
     nfile += 1
     if nfile%1000 == 0 : print 'processing file n.', nfile
