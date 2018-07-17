@@ -4,7 +4,7 @@
 
 massfit=true
 
-input_dir=20180712_1709_distribs/output #change accordingly
+input_dir=20180712_1709_distribs/output
 
 
 if [ "$massfit" == true ]; then
@@ -15,7 +15,7 @@ if [ "$massfit" == true ]; then
     nJobs=250
 elif [ "$massfit" == false ]; then
     config=datasets_13_TeV.txt
-    input_dir_pre=/nfs/dust/cms/user/tarndt/AnalysisWorkdir/
+    input_dir_pre=/nfs/dust/cms/user/tarndt/AnalysisWorkdir
     inputfiles=*_13TeV_172.5_nominal_syst.ztop #use wildcards if more files needed
     nToys=50
     nJobs=750
@@ -26,6 +26,7 @@ else
     return
 fi
 
+echo
 echo
 echo "running $nJobs jobs with $nToys toys each"
 echo
@@ -65,13 +66,15 @@ if [ -f ../toys_workdir/*tex ]; then
 else
 
     cd ../toys_workdir
-    if [ -f *.ztop ]; then
-        mkdir -p zz_temp_softlinks
-        mv *.ztop zz_temp_softlinks
-        cd zz_temp_softlinks
-        find -type l -delete
-        cd ..
+    if ls *.ztop >/dev/null 2>&1; then
+        echo
+        for tempfile in *.ztop ; do
+            unlink $tempfile
+            echo "INFO: unlinked file $tempfile"
+        done
+        echo
     fi
+
     ln -s $input_dir_pre/$input_dir/$inputfiles .
     cd ../submit_toys
 
@@ -80,5 +83,5 @@ else
     echo
     echo "to submit: condor_submit submit_HTCondor.submit"
     echo
-
+    echo
 fi
