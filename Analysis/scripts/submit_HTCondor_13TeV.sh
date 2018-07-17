@@ -2,8 +2,8 @@
 
 
 channels=( "emu"
-    "ee"
-    "mumu"
+    # "ee"
+    # "mumu"
      # "smu"
 );
 ## scale and match variations will be ignored for other top masses then 172.5.. (hardcoded below)
@@ -426,7 +426,7 @@ for (( i=0;i<${#channels[@]};i++)); do
 		then
 		    cd $BATCHDIR
 		    condor_submit $workdir/jobscripts/${outname}
-                    sleep 1
+                    # sleep 1
 		    cd $workdir
 		else
 		    all=`ps ax | grep -E 'analyse' | wc -l`

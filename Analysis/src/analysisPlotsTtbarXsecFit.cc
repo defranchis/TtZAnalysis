@@ -22,6 +22,7 @@ void analysisPlotsTtbarXsecFit::bookPlots(){
 
 	std::vector<float> bins=histo1D::createBinning(1,0,1);
 	//leadjetpt_plots, secjetpt_plots, thirdjetpt_plots, total_plots;
+	total_0bjets = addPlot(bins,bins,"total 0 b-jets","","Events");
 	total_plots.at(cat_0bjet0jet) = addPlot(bins,bins,"total 0,0 b-jets","","Events");
 	total_plots.at(cat_0bjet1jet) = addPlot(bins,bins,"total 0,1 b-jets","","Events");
 	total_plots.at(cat_0bjet2jet) = addPlot(bins,bins,"total 0,2 b-jets","","Events");
@@ -175,6 +176,8 @@ void analysisPlotsTtbarXsecFit::fillPlotsGen(){
 	//only fill one bin in some visible part of the histogram to get the total
 	// n_gen and a nice display of PS migrations
 	if(genvisleptons1.size()>1 && (genvisleptons1.at(0)->pt() > 25 || genvisleptons1.at(1)->pt() > 25  )){
+                total_0bjets->fillGen(0.5,puweight());
+
 	        for(size_t i=0;i<total_plots.size();i++){
 			total_plots.at(i)->fillGen(0.5,puweight());
 			//agrohsje changed from 20.5 to 30.5 checked with Jan 
@@ -211,6 +214,8 @@ void analysisPlotsTtbarXsecFit::fillPlotsReco(){
 		setJetCategory(nbjets,naddjets);
 		//agrohsje 
 		//if(naddjets==0)
+		if (nbjets==0) total_0bjets->fillReco(0.5,puweight());
+
 		total_plots.at(jetcategory)->fillReco(0.5,puweight());
 		if(naddjets==1)
 			leadjetpt_plots.at(jetcategory)->fillReco(event()->selectedjets->at(0)->pt(),puweight());
