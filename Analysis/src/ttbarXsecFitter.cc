@@ -2614,6 +2614,8 @@ void  ttbarXsecFitter::dataset::readStacks(const std::string configfilename,cons
                         // else if (plotname == "third jet pt 1,3 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,40,50,200});
                         // else if (plotname == "lead jet pt 2,1 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,50,90,160}); 
                         // else if (plotname == "second jet pt 2,2 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,45,100,300}); 
+                        else if (plotname == "m_lb min step 8") tmpstack = tmpstack.rebinXToBinning({20,50,75,105,130,160});
+                        else if (plotname == "m_lb min test step 8") tmpstack = tmpstack.rebinXToBinning({20,50,75,105,130,160});
 
                         
                         inputstacks_.at(bjetcount).push_back(tmpstack); //BEFORE ADDIND UNC!
