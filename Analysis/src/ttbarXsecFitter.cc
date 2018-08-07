@@ -1488,14 +1488,14 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
                 if (stack.getName() == "m_lb min 1,1 b-jets step 8") stack = stack.rebinXToBinning({20,48,76,104,132,160});
                 else if (stack.getName() == "m_lb min 1,2 b-jets step 8") stack = stack.rebinXToBinning({20,48,76,104,132,160});
                 else if (stack.getName() == "lead jet pt 0,1 b-jets step 8") stack = stack.rebinXToBinning({30,50,100,200}); 
-                else if (stack.getName() == "second jet pt 0,2 b-jets step 8") stack = stack.rebinXToBinning({30,40,50,100,200}); 
-                else if (stack.getName() == "third jet pt 0,3 b-jets step 8") stack = stack.rebinXToBinning({30,50,200});
+                else if (stack.getName() == "second jet pt 0,2 b-jets step 8") stack = stack.rebinXToBinning({30,50,120,200}); 
+                else if (stack.getName() == "third jet pt 0,3 b-jets step 8") stack = stack.rebinXToBinning({30,60,200});
                 
                 if (poststack.getName() == "m_lb min 1,1 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({20,48,76,104,132,160});
                 else if (poststack.getName() == "m_lb min 1,2 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({20,48,76,104,132,160});
                 else if (poststack.getName() == "lead jet pt 0,1 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,50,100,200});
-                else if (poststack.getName() == "second jet pt 0,2 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,40,50,100,200});
-                else if (poststack.getName() == "third jet pt 0,3 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,50,200});
+                else if (poststack.getName() == "second jet pt 0,2 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,50,120,200});
+                else if (poststack.getName() == "third jet pt 0,3 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,60,200});
 
 		TString name=stack.getName();
 		name.ReplaceAll(" ","_");
@@ -2609,11 +2609,13 @@ void  ttbarXsecFitter::dataset::readStacks(const std::string configfilename,cons
                         if (plotname == "m_lb min 1,1 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({20,48,76,104,132,160});
                         else if (plotname == "m_lb min 1,2 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({20,48,76,104,132,160});
                         else if (plotname == "lead jet pt 0,1 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,50,100,200}); 
-                        else if (plotname == "second jet pt 0,2 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,40,50,100,200}); 
-                        else if (plotname == "third jet pt 0,3 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,50,200});
+                        else if (plotname == "second jet pt 0,2 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,50,120,200}); 
+                        else if (plotname == "third jet pt 0,3 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,60,200});
                         // else if (plotname == "third jet pt 1,3 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,40,50,200});
                         // else if (plotname == "lead jet pt 2,1 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,50,90,160}); 
                         // else if (plotname == "second jet pt 2,2 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,45,100,300}); 
+                        else if (plotname == "m_lb min step 8") tmpstack = tmpstack.rebinXToBinning({20,50,75,105,130,160});
+                        else if (plotname == "m_lb min test step 8") tmpstack = tmpstack.rebinXToBinning({20,50,75,105,130,160});
 
                         
                         inputstacks_.at(bjetcount).push_back(tmpstack); //BEFORE ADDIND UNC!

@@ -18,6 +18,7 @@ public:
 	Mlb(0),
 	mlb(0),
 	mlbmin(0),
+	mlbmin_test(0),
 	mlbivansbins(0),
 	mlbminbsrad(0),
 	leadleppt(0),
@@ -63,6 +64,7 @@ private:
 	*Mlb,
 	*mlb,
 	*mlbmin,
+	*mlbmin_test,
 	*mlbivansbins,
 	*mlbminbsrad,            
 

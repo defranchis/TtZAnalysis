@@ -83,6 +83,7 @@ void analysisPlotsMlbMt::bookPlots(){
 	mlb=addPlot(genmlb_bins,genmlb_bins,"m_lb","m_{lb}* [GeV]", "Events/GeV");
 
 	mlbmin=addPlot(genmlbmin_bins,genmlbmin_bins,"m_lb min","m_{lb}^{min} [GeV]", "Events/GeV");
+	mlbmin_test=addPlot(genmlbmin_bins,genmlbmin_bins,"m_lb min test","m_{lb}^{min} [GeV]", "Events/GeV");
 
 
 	for(size_t nbjet=0;nbjet<3;nbjet++){
@@ -199,6 +200,7 @@ void analysisPlotsMlbMt::fillPlotsGen(){
 				Mlb->fillGen(fMlb,puweight());
 				mlb->fillGen(fmlb,puweight());
 				mlbmin->fillGen(fmlbmin,puweight());
+				mlbmin_test->fillGen(fmlbmin,puweight());
 
 
 
@@ -323,6 +325,9 @@ void analysisPlotsMlbMt::fillPlotsReco(){
                                 mlb_5_.at(nbjets-1)->fillReco(fmlbmin,puweight());
                                 mlb_7_.at(nbjets-1)->fillReco(fmlbmin,puweight());
                                 mlb_10_.at(nbjets-1)->fillReco(fmlbmin,puweight());
+                            }
+                            if (naddjets>0){
+                                mlbmin_test->fillReco(fmlbmin,puweight());
                             }
                         }
 			mlbivansbins->fillReco(fmlb,puweight());
