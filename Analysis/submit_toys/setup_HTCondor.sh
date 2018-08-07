@@ -4,7 +4,7 @@
 
 massfit=true
 
-input_dir=20180712_1709_distribs/output
+input_dir=20180802_1156_tW_norm/output
 
 
 if [ "$massfit" == true ]; then
@@ -58,7 +58,7 @@ fi
 mkdir -p outputHTCondor
 mkdir -p ../toys_workdir
 
-if [ -f ../toys_workdir/*tex ]; then
+if ls ../toys_workdir/*.tex >/dev/null 2>&1; then
     echo
     echo "first move .tex files in toys_workdir to some other directory!"
     echo "STOPPING"
