@@ -59,6 +59,7 @@ invokeApplication(){
 	const bool topontop =  parser->getOpt<bool>("-topontop",false,"plots ttbar signal on top");
 	const bool likelihoodscan =  parser->getOpt<bool>("-scan",false,"Maps the likelihood around the minimum as a function of the cross section(s). Needs a lot of CPU time!");
 
+	const bool mlbCrossCheck = parser->getOpt<bool>("-mlbCrossCheck",false,"cross check with only one mlb distribution");
 
 	TString outfile;
 
@@ -107,6 +108,7 @@ invokeApplication(){
 	mainfitter.setNoSystBreakdown((onlytotalerror));
 	mainfitter.setIgnorePriors(!fitsystematics);
 	mainfitter.setRemoveSyst(!fitsystematics);
+	mainfitter.setMlbCrossCheck(mlbCrossCheck);
 
 	//extendedVariable::debug=true;
 	ttbarXsecFitter::debug=debug;
@@ -576,7 +578,8 @@ invokeApplication(){
 			dir+=mainfitter.datasetName(ndts).Data();
 			system(("mkdir -p "+dir).data());
 			dir+="/";
-			mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots.txt",dir);
+                        if (!mlbCrossCheck) mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots.txt",dir);
+                        else mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots_mlb.txt",dir);
 		}
                 if (!onlyemu){
                     for(size_t ndts=0;ndts<mainfitter.nDatasets();ndts++){

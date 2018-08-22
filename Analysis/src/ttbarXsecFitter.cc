@@ -511,8 +511,12 @@ void  ttbarXsecFitter::printControlStack(bool fittedvalues,size_t bjetcat,size_t
 		std::cout << "ttbarXsecFitter::printControlStack: fit not successful, skipping post-fit plots" <<std::endl;
 		return;
 	}
+        if (mlbCrossCheck_ && bjetcat!=1) return;
 	plotterMultiStack plm;
-	if (emuOnly_ || bjetcat ==0) plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_emu.txt");
+	if (emuOnly_ || bjetcat ==0) {
+            if (!mlbCrossCheck_) plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_emu.txt");
+            else plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_mlb.txt");
+        }
         else plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_standard.txt");
 	if(!fittedvalues)
 		plm.addStyleForAllPlots(getenv("CMSSW_BASE")
@@ -520,9 +524,13 @@ void  ttbarXsecFitter::printControlStack(bool fittedvalues,size_t bjetcat,size_t
 				"[merge for pre-fit plots]",
 				"[end - merge for pre-fit plots]");
 
-        if (emuOnly_ || bjetcat==0)
-            plm.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_emu.txt",
-                                     toString(bjetcat)+"btag"+toString( datasets_.at(datasetidx).getName()));
+        if (emuOnly_ || bjetcat==0){
+            if (!mlbCrossCheck_) plm.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_emu.txt", 
+                                                          toString(bjetcat)+"btag"+toString( datasets_.at(datasetidx).getName()));
+            else plm.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_mlb.txt", 
+                                                          toString(bjetcat)+"btag"+toString( datasets_.at(datasetidx).getName()));
+        }
+
 	else plm.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_standard.txt",
                                       toString(bjetcat)+"btag"+toString( datasets_.at(datasetidx).getName()));
 
@@ -1497,7 +1505,7 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
                 else if (poststack.getName() == "lead jet pt 0,1 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,50,100,200});
                 else if (poststack.getName() == "second jet pt 0,2 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,50,120,200});
                 else if (poststack.getName() == "third jet pt 0,3 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,60,200});
-                else if (poststack.getName() == "m_lb min step 8") poststack = poststack.rebinXToBinning({20,50,75,105,130,160});
+                else if (poststack.getName() == "m_lb min step 8_postfit") poststack = poststack.rebinXToBinning({20,50,75,105,130,160});
 
 		TString name=stack.getName();
 		name.ReplaceAll(" ","_");
@@ -2131,6 +2139,10 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
 				//std::cout << bin << "/"<< signalshape_nbjet_.at(nbjet).getNBins()<<" " << nbjet << " " << std::endl;
 				double lumi_xsec    = set->lumi() * (variations[set->xsecIdx()] +set->xsecOffset()) ;
 				double signal=lumi_xsec* acceptance * eps_emu* omega_b * set->signalshape(nbjet).getBin(bin)->getValue(variations) / shapeintegral;
+                                
+                                if (mlbCrossCheck_){
+                                    signal=lumi_xsec* acceptance * eps_emu* set->signalshape(nbjet).getBin(bin)->getValue(variations);
+                                }
 
 				double nbackground = set->background(nbjet).getBin(bin)->getValue(variations);
 
