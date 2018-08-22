@@ -1449,7 +1449,7 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
 		else if(inputfile.find("7TeV")!=std::string::npos)
 			pl.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/general/noCMS_boxes.txt","CMSSplit03Left7TeV");
 
-		if(hasmtvar)
+		if(hasmtvar && massFit_)
 			//pl.setSystLabel("#splitline{Syst}{+#Deltam_{t}^{MC}}");
 			pl.setSystLabel("Syst+#Deltam_{t}^{MC}");
 		histoStack stack,poststack;

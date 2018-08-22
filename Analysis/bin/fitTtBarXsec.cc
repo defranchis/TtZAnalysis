@@ -85,6 +85,7 @@ invokeApplication(){
 	ttbarXsecFitter mainfitter;
 	mainfitter.setTopOnTop(topontop);
 	mainfitter.setDummyFit(dummyrun);
+        mainfitter.setMassFit(tmpcheck);
 
 	if(lhmode=="chi2datamc")
 		mainfitter.setLikelihoodMode(ttbarXsecFitter::lhm_chi2datamcstat);
