@@ -59,6 +59,7 @@ invokeApplication(){
 	const bool topontop =  parser->getOpt<bool>("-topontop",false,"plots ttbar signal on top");
 	const bool likelihoodscan =  parser->getOpt<bool>("-scan",false,"Maps the likelihood around the minimum as a function of the cross section(s). Needs a lot of CPU time!");
 
+	const bool mlbCrossCheck = parser->getOpt<bool>("-mlbCrossCheck",false,"cross check with only one mlb distribution");
 
 	TString outfile;
 
@@ -85,6 +86,7 @@ invokeApplication(){
 	ttbarXsecFitter mainfitter;
 	mainfitter.setTopOnTop(topontop);
 	mainfitter.setDummyFit(dummyrun);
+        mainfitter.setMassFit(tmpcheck);
 
 	if(lhmode=="chi2datamc")
 		mainfitter.setLikelihoodMode(ttbarXsecFitter::lhm_chi2datamcstat);
@@ -106,6 +108,7 @@ invokeApplication(){
 	mainfitter.setNoSystBreakdown((onlytotalerror));
 	mainfitter.setIgnorePriors(!fitsystematics);
 	mainfitter.setRemoveSyst(!fitsystematics);
+	mainfitter.setMlbCrossCheck(mlbCrossCheck);
 
 	//extendedVariable::debug=true;
 	ttbarXsecFitter::debug=debug;
@@ -215,8 +218,9 @@ invokeApplication(){
                                 if (stack.getName() == "m_lb min 1,1 b-jets step 8") stack = stack.rebinXToBinning({20,48,76,104,132,160});
                                 else if (stack.getName() == "m_lb min 1,2 b-jets step 8") stack = stack.rebinXToBinning({20,48,76,104,132,160});
                                 else if (stack.getName() == "lead jet pt 0,1 b-jets step 8") stack = stack.rebinXToBinning({30,50,100,200});
-                                else if (stack.getName() == "second jet pt 0,2 b-jets step 8") stack = stack.rebinXToBinning({30,40,50,100,200});
-                                else if (stack.getName() == "third jet pt 0,3 b-jets step 8") stack = stack.rebinXToBinning({30,50,200});
+                                else if (stack.getName() == "second jet pt 0,2 b-jets step 8") stack = stack.rebinXToBinning({30,50,120,200});
+                                else if (stack.getName() == "third jet pt 0,3 b-jets step 8") stack = stack.rebinXToBinning({30,60,200});
+                                else if (stack.getName() == "m_lb min step 8") stack = stack.rebinXToBinning({20,50,75,105,130,160});
 
 				plotterControlPlot pl;
 				//plotterControlPlot::debug=true;
@@ -574,7 +578,8 @@ invokeApplication(){
 			dir+=mainfitter.datasetName(ndts).Data();
 			system(("mkdir -p "+dir).data());
 			dir+="/";
-			mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots.txt",dir);
+                        if (!mlbCrossCheck) mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots.txt",dir);
+                        else mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots_mlb.txt",dir);
 		}
                 if (!onlyemu){
                     for(size_t ndts=0;ndts<mainfitter.nDatasets();ndts++){

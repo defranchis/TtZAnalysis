@@ -40,7 +40,7 @@ public:
 		useMConly_(false),removesyst_(false),nominos_(false),
                 variationToFit_(""),emuOnly_(false),seed_(0),
                 parameterwriteback_(true),
-                nosystbd_(false),silent_(false),nopriors_(false),doToys_(false),topmassrepl_(-100),pseudodatarun_(false),
+                nosystbd_(false),silent_(false),nopriors_(false),doToys_(false),massFit_(false),topmassrepl_(-100),mlbCrossCheck_(false),pseudodatarun_(false),
 		wjetsrescalefactor_(1),
 		topontop_(false)
 	{
@@ -92,6 +92,7 @@ public:
 	 */
 	void setSilent(bool silent){silent_=silent;}
 	void setDoToys(bool doToys){doToys_=doToys;}
+        void setMassFit(bool massFit){massFit_=massFit;}
 
 	void setTopOnTop(bool set){topontop_=set;}
 	/**
@@ -101,6 +102,7 @@ public:
 
 	void setReplaceTopMass(float mass){topmassrepl_=mass;}
 
+	void setMlbCrossCheck(float xcheck){mlbCrossCheck_=xcheck;}
 	/**
 	 * Reads in the input from file
 	 * leave some hardcoded parts here for now
@@ -448,7 +450,9 @@ private:
 
 	bool nosystbd_,silent_,nopriors_;
         bool doToys_;
+        bool massFit_;
 	float topmassrepl_;
+        bool mlbCrossCheck_;
 
 	bool pseudodatarun_;
 
