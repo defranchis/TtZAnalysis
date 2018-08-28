@@ -394,6 +394,13 @@ process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
 process.BadPFMuonFilter.muons = cms.InputTag("slimmedMuons")
 process.BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates")
 
+process.load('TopAnalysis.ZTopUtils.BadElectronFilter')
+
+
+from TopAnalysis.ZTopUtils.MetFilterCombiner_cfi import metFilterCombiner
+
+process.metFilters=metFilterCombiner.clone(src=cms.InputTag('TriggerResults','',filterProcess),addsrc=cms.VInputTag("BadElectronFilter","BadPFMuonFilter","BadChargedCandidateFilter"),flag=cms.vstring("Flag_HBHENoiseFilter","Flag_goodVertices","Flag_globalTightHalo2016Filter","Flag_HBHENoiseIsoFilter","Flag_EcalDeadCellTriggerPrimitiveFilter"))
+
 
 from TopAnalysis.ZTopUtils.MetFilterCombiner_cfi import metFilterCombiner
 

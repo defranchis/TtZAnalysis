@@ -9,7 +9,7 @@
 
 [merge_syst]
 
-%JES_Flavor         linear       JES_FlavorPureGluon   JES_FlavorPureQuark    JES_FlavorPureCharm   JES_FlavorPureBottom
+JES_Flavor         linear       JES_FlavorPureGluon   JES_FlavorPureQuark    JES_FlavorPureCharm   JES_FlavorPureBottom
 
 [end-merge_syst]
 
@@ -20,14 +20,21 @@
 
 [merge in table]
 
-%JES =  JES_PileUpPtBB + JES_PileUpPtEC + JES_PileUpPtHF + JES_HighPtExtra + JES_SinglePionECAL + JES_SinglePionHCAL +  + JES_AbsoluteMPFBias + JES_RelativeFSR + JES_AbsoluteStat + JES_AbsoluteScale   +  JES_Time  +  JES_RelativeJEREC1  +  JES_RelativeJEREC2  +  JES_RelativeJERHF +   JES_RelativePtBB  +  JES_RelativePtEC1  +  JES_RelativePtEC2  + JES_RelativePtHF  + JES_RelativeStatEC2  +  JES_RelativeStatHF + JES_PileUpDataMC + JES_PileUpBias
-BG_DY = BG_0_bjets_DY + BG_1_bjets_DY + BG_2_bjets_DY
+JES =  JES_AbsoluteMPFBias + JES_RelativeFSR + JES_RelativeStatFSR + JES_AbsoluteStat + JES_AbsoluteScale + JES_Fragmentation + JES_SinglePionECAL + JES_SinglePionHCAL + JES_TimePtEta + JES_RelativeJEREC1 + JES_RelativePtBB + JES_RelativePtEC1 + JES_RelativeStatEC + JES_PileUpDataMC + JES_RelativeBal + JES_PileUpPtBB + JES_PileUpPtRef + JES_PileUpPtEC1 + JES_Flavor
+
+BG_DY = BG_0_bjets_DY + BG_1_bjets_DY + BG_2_bjets_DY 
 %Hadro_JES = JES_Flavor + TT_BJESNUDEC + TT_BJESRETUNE
 
-PDF = PDF1 + PDF2 + PDF3 + PDF4 + PDF5 + PDF6 + PDF7 + PDF8 + PDF9 + PDF10 + PDF11 + PDF12 + PDF13 + PDF14 + PDF15 + PDF16 + PDF17 + PDF18 + PDF19 + PDF20 + PDF21 + PDF22 + PDF23 + PDF24 + PDF25 + PDF26 
+PDF = PDF1 + PDF2 + PDF3 + PDF4 + PDF5 + PDF6 + PDF7 + PDF8 + PDF9 + PDF10 + PDF11 + PDF12 + PDF13 + PDF14 + PDF15 + PDF16 + PDF17 + PDF18 + PDF19 + PDF20 + PDF21 + PDF22 + PDF23 + PDF24 + PDF25 + PDF26 + PDF27 + PDF28 
 
-LES = MUONES + ELECES
+% LES = MUONES + ELECES
+ELECESR = ELECES + ELECER_RHO + ELECER_PHI
 LEPIDISO = ELECSF + MUONSF
+
+TT_BFRAG = TT_FRAG + TT_FRAG_PETERSON
+TT_CR_ALL = TT_CRERD + TT_CRGLUON + TT_CRQCD
+
+BTAG_TOT = BTAGL + BTAGH_bfragmentation + BTAGH_btempcorr + BTAGH_cb + BTAGH_cfragmentation + BTAGH_dmux + BTAGH_gluonsplitting + BTAGH_jes + BTAGH_jetaway + BTAGH_ksl + BTAGH_l2c + BTAGH_ltothers + BTAGH_mudr + BTAGH_mupt + BTAGH_sampledependence + BTAGH_ptrel + BTAGH_statistic
 
 %BTAGH = BTAGH_BFragmentation + BTAGH_DeltaR + BTAGH_GluonSplitting + BTAGH_IFSR + BTAGH_IP-bias + BTAGH_JES + BTAGH_JetAway + BTAGH_KT  + BTAGH_LT-Bias  + BTAGH_LT-Cb  + BTAGH_LT-others  + BTAGH_MuPt  + BTAGH_PS  + BTAGH_PT-l2c + BTAGH_S8-ptrel + BTAGH_Statistic + BTAGH_TCT 
 [end - merge in table]

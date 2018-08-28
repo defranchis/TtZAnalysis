@@ -20,6 +20,7 @@
 #include <vector>
 #include "TString.h"
 #include "TtZAnalysis/Tools/interface/histoStackVector.h"
+#include <string>
 
 invokeApplication(){
 	using namespace ztop;
@@ -47,17 +48,17 @@ invokeApplication(){
 
 	//try to load variations first (prob smaller)
 	try{
-		csvup->loadFromTFile(input.at(2));
+            csvup->readFromFile((std::string)input.at(2));
 	}catch(...){
 		std::cout << "could not read up variation file"<<std::endl;
-		delete csvnom,csvup,csvdown;
+		delete csvnom; delete csvup; delete csvdown;
 		return -1;
 	}
 	try{
-		csvnom->loadFromTFile(input.at(1));
+            csvnom->readFromFile((std::string)input.at(1));
 	}catch(...){
 		std::cout << "could not read nominal file"<<std::endl;
-		delete csvnom,csvup,csvdown;
+		delete csvnom; delete csvup; delete csvdown;
 		return -1;
 	}
 
@@ -65,17 +66,17 @@ invokeApplication(){
 	delete csvup;
 
 	try{
-		csvdown->loadFromTFile(input.at(3));
+            csvdown->readFromFile((std::string)input.at(3));
 	}catch(...){
 		std::cout << "could not read down variation file"<<std::endl;
-		delete csvnom,csvdown;
+		delete csvnom; delete csvdown;
 		return -1;
 	}
 
 	csvnom->addMCErrorStackVector(input.at(0)+"_down",*csvdown);
 	delete csvdown;
 
-	csvnom->writeAllToTFile(output,true);
+	csvnom->writeToFile((std::string)output);
 	delete csvnom;
 	return 0;
 }

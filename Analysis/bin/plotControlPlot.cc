@@ -82,6 +82,14 @@ invokeApplication(){
 		if(plotname.Length()<1) continue;
 		try{
 			stack= csv->getStack(plotname);//copy
+
+                        if (plotname == "m_lb min 1,1 b-jets step 8") stack = stack.rebinXToBinning({20,48,76,104,132,160});
+                        else if (plotname == "m_lb min 1,2 b-jets step 8") stack = stack.rebinXToBinning({20,48,76,104,132,160});
+                        else if (plotname == "lead jet pt 0,1 b-jets step 8") stack = stack.rebinXToBinning({30,50,100,200}); 
+                        else if (plotname == "second jet pt 0,2 b-jets step 8") stack = stack.rebinXToBinning({30,40,50,100,200}); 
+                        else if (plotname == "third jet pt 0,3 b-jets step 8") stack = stack.rebinXToBinning({30,50,200});
+                        // else if (plotname == "third jet pt 1,3 b-jets step 8") stack = stack.rebinXToBinning({30,40,50,200});
+                        
 		}catch(...){
 			notfound.push_back(plotname);
 			continue;
@@ -118,6 +126,8 @@ invokeApplication(){
 		}
 		else{
 			outname+=".pdf";
+			cv.Print(outname);
+                        outname.ReplaceAll(".pdf",".png"); 
 			cv.Print(outname);
 		}
 

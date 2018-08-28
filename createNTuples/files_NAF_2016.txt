@@ -121,9 +121,9 @@
 
 
 ######TTBar
-#350  /TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar            isSignal=True includePDFWeights=True PDF=CT14 nominalPDF=3001 beginPDFVar=3002 endPDFVar=3057 genFilter=ttbar
+350  /TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar            isSignal=True includePDFWeights=True PDF=CT14 nominalPDF=3001 beginPDFVar=3002 endPDFVar=3057 genFilter=ttbar
 
-#550  /TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM     tree_13TeV_emuttbarbg         isSignal=True includePDFWeights=True PDF=CT14 nominalPDF=3001 beginPDFVar=3002 endPDFVar=3057 genFilter=ttbar genFilterInvert=True
+550  /TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM     tree_13TeV_emuttbarbg         isSignal=True includePDFWeights=True PDF=CT14 nominalPDF=3001 beginPDFVar=3002 endPDFVar=3057 genFilter=ttbar genFilterInvert=True
 
 #350    /TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_backup_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM      tree_13TeV_emuttbar_amc_mgbr    isSignal=True genFilter=ttbar
 
@@ -183,7 +183,6 @@
 #150   /TT_TuneCUETP8M2T4_13TeV-powheg-fsrdown-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM     tree_13TeV_emuttbar_ttfsrdown_extv2         isSignal=True genFilter=ttbar
 
 #250   /TT_TuneCUETP8M2T4_13TeV-powheg-fsrdown-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM    tree_13TeV_emuttbarbg_ttfsrdown_extv2       isSignal=True genFilter=ttbar genFilterInvert=True
-
 
 
 #150   /TT_TuneCUETP8M2T4_13TeV-powheg-fsrup-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar_ttfsrup         isSignal=True genFilter=ttbar

@@ -24,6 +24,9 @@
 <bin name="makeCombination" file="makeCombination.cc" />
 <bin name="displayStatusBar" file="displayStatusBar.cc" />
 
+<bin name="addVariation" file="addVariation.cc" />
+<!-- <bin name="printVariations" file="printVariations.cc" /> -->
+
 <bin name="predicttest" file="predicttest.cc" />
 <bin name="movecontribution" file="movecontribution.cc" />
 
@@ -31,6 +34,8 @@
 <bin name="wExtractA7" file="wExtractA7.cc" />
 
 <bin name="compareContributions" file="compareContributions.cc" />
+
+<bin name="testPrefire" file="testPrefire.cc" />
 
 <bin name="extractMtFromInclXsec" file="extractMtFromInclXsec.cc" />
 <Flags CXXFLAGS="-lXMLParser -lunfold -fopenmp"/>

@@ -18,6 +18,7 @@ void topAnalyzer::setChannel(const TString& chan){
 	if(chan.Contains("mumu")) b_mumu_=true;
 	else if(chan.Contains("emu")) b_emu_=true;
 	else if(chan.Contains("ee")) b_ee_=true;
+        else if(chan.Contains("smu"))b_smu_=true;
 	else{
 		std::cout << "channel wrongly set! exit" << std::endl;
 		std::exit(EXIT_FAILURE);
@@ -50,6 +51,7 @@ topAnalyzer::topAnalyzer():basicAnalyzer(){
 	b_ee_=false;
 	b_mumu_=false;
 	b_emu_=false;
+        b_smu_=false;
 	is7TeV_=false;
 	showstatus_=false;
 	onlySummary_=false;
@@ -62,6 +64,7 @@ topAnalyzer::topAnalyzer():basicAnalyzer(){
 	singlefile_=false;
 	topmass_="172.5";
 	usepdfw_=-1;
+        isSignalMerged_=false;
 	usediscr_=false;
 	eventbranch_="NTEvent";
 
@@ -102,7 +105,7 @@ int topAnalyzer::start(){
 	clear();
 
 	//add changes due to top mass value
-
+        random = new TRandom3(12354);
 
 	readFileList();
 
@@ -140,7 +143,7 @@ void topAnalyzer::readFileList(){
 	basicAnalyzer::readFileList(filelist_.Data());
 }
 
-float topAnalyzer::createNormalizationInfo(TFile *f, bool isMC,size_t anaid){
+float topAnalyzer::createNormalizationInfo(TFile *f, bool isMC,size_t anaid,bool isSignal){
 	float norm=1;
 	using namespace ztop;
 	using namespace std;
@@ -154,12 +157,13 @@ float topAnalyzer::createNormalizationInfo(TFile *f, bool isMC,size_t anaid){
 	histo1D::c_makelist=tmp; //switch off automatic listing
 
 	float genentries=0;
+	float genentries_post=0;
 	if(isMC){
 
 		TTree * tnorm = (TTree*) f->Get("preCutPUInfo/preCutPUInfo");
 		genentries=tnorm->GetEntries();
 
-		norm = lumi_   / genentries;
+		// norm = lumi_   / genentries;
 		for(size_t i=1;i<=generated->getNBins();i++){
 			generated->setBinContent(i, (float)genentries);
 			generated->setBinStat(i,sqrt(genentries));
@@ -168,6 +172,7 @@ float topAnalyzer::createNormalizationInfo(TFile *f, bool isMC,size_t anaid){
 		TTree * tfgen = (TTree*) f->Get("postCutPUInfo/PUTreePostCut");
 		if(tfgen){
 			fgen=tfgen->GetEntries();
+                        genentries_post=fgen;
 			for(size_t i=1;i<=generated2->getNBins();i++){
 				generated2->setBinContent(i, (float)fgen);
 				generated2->setBinStat(i, sqrt(fgen));
@@ -179,6 +184,10 @@ float topAnalyzer::createNormalizationInfo(TFile *f, bool isMC,size_t anaid){
 				generated2->setBinStat(i, sqrt(genentries));
 			}
 		}
+
+                if (isSignal && isSignalMerged_) norm = lumi_ / genentries_post * .0644612603689; //HARDCODED
+                else norm = lumi_ / genentries;
+                    
 	}
 	else{//not mc
 		for(size_t i=1;i<=generated->getNBins();i++){

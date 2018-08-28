@@ -150,10 +150,11 @@ void simpleFitter::setParameter(size_t idx,double value){
 		throw std::out_of_range("simpleFitter::setParameter: index out of range");
 	paras_.at(idx)=value;
 }
-void simpleFitter::setParameterFixed(size_t idx,bool fixed){
+void simpleFitter::setParameterFixed(size_t idx, bool fixed, double value){
 	if(idx >= paras_.size())
 		throw std::out_of_range("simpleFitter::setParameterFixed: index out of range");
 	parafixed_.at(idx)=fixed;
+        if (value!=0) paras_.at(idx)=value;
 }
 
 void simpleFitter::setParameterLowerLimit(size_t idx,double value){
@@ -398,7 +399,10 @@ texTabler simpleFitter::makeCorrTable() const{
 		for(size_t i=0;i<corr.getBinsX().size()-1;i++){
 			//names
 			if(i && !j)
-				tab << "";//Formatter.translateName(parameternames_.at(i-1));
+                            // tab << "";//Formatter.translateName(parameternames_.at(i-1));
+                            if(paranames_.size()>i-1)
+                                tab << paranames_.at(i-1);
+                            else tab << "";
 			else if(j && !i)
 				if(paranames_.size()>j-1)
 					tab << paranames_.at(j-1);
@@ -406,15 +410,16 @@ texTabler simpleFitter::makeCorrTable() const{
 					tab<< "";
 			else if (!j && !i)
 				tab << "";
-			else if(i<=j){
+			// else if(i<=j){
+			else{
 				float content=corr.getBinContent(i,j);
 				if(fabs(content)<0.3)
 					tab << Formatter.toFixedCommaTString(corr.getBinContent(i,j),0.01);
 				else
 					tab <<  "\\textbf{" +Formatter.toFixedCommaTString(corr.getBinContent(i,j),0.01) +"}";
 			}
-			else
-				tab << "";
+			// else
+			// 	tab << "";
 		}
 		tab<<texLine(); //row done
 	}
@@ -750,6 +755,12 @@ double simpleFitter::nuisanceGaus(const double & in){
 	return in*in;
 }
 
+double simpleFitter::nuisanceGausBroad(const double & in){
+        return in*in * 1.35;
+}
+double simpleFitter::nuisanceGausMass(const double & in){
+        return in*in * 9.;
+}
 
 
 double simpleFitter::nuisanceBox(const double & in){

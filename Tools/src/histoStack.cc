@@ -591,6 +591,23 @@ void histoStack::addGlobalRelMCError(TString sysname,double error){
 		else containers1DUnfold_[i].addGlobalRelError(sysname,0);
 	}
 }
+
+void histoStack::addGlobalRelBGError(TString sysname,double error){
+    std::vector<size_t> exclude = getSignalIdxs();
+    for(unsigned int i=0;i<containers_.size();i++){
+        if(legends_[i]!=dataleg_ && (std::find(exclude.begin(),exclude.end(),i)==exclude.end())) containers_[i].addGlobalRelError(sysname,error);
+        else containers_[i].addGlobalRelError(sysname,0);
+    }
+    for(unsigned int i=0;i<containers2D_.size();i++){
+        if(legends_[i]!=dataleg_ && (std::find(exclude.begin(),exclude.end(),i)==exclude.end())) containers2D_[i].addGlobalRelError(sysname,error);
+        else containers2D_[i].addGlobalRelError(sysname,0);
+    }
+    for(unsigned int i=0;i<containers1DUnfold_.size();i++){
+        if(legends_[i]!=dataleg_ && (std::find(exclude.begin(),exclude.end(),i)==exclude.end())) containers1DUnfold_[i].addGlobalRelError(sysname,error);
+        else containers1DUnfold_[i].addGlobalRelError(sysname,0);
+    }
+}
+
 void histoStack::addRelErrorToContribution(double err, const TString& contributionname, TString nameprefix, bool lognormal){
 	if(debug)
 		std::cout << "containerStack::addRelErrorToContribution: " << contributionname <<std::endl;
@@ -1868,6 +1885,41 @@ histo1D histoStack::getBackgroundContainer()const{
 			out+=containers1DUnfold_.at(i).getRecoContainer();
 		else
 			out+=containers_.at(i);
+	}
+
+	return out;
+
+}
+std::vector<histo1D> histoStack::getBackgroundContainers()const{
+	if(mode != dim1 && mode !=unfolddim1){
+		throw std::logic_error("histoStack::getBackgroundContainers: only defined for 1D stacks");
+	}
+	std::vector<size_t> sidx=getSignalIdxs();
+        std::vector<histo1D> out;
+	for(size_t i=0;i<legends_.size();i++){
+		if(std::find(sidx.begin(),sidx.end(),i) != sidx.end() || getLegend(i) == dataleg_){
+			continue;
+		}
+		if(mode ==unfolddim1)
+                    out.push_back(containers1DUnfold_.at(i).getRecoContainer());
+		else
+                    out.push_back(containers_.at(i));
+	}
+
+	return out;
+
+}
+std::vector<TString> histoStack::getBackgroundLegends()const{
+	if(mode != dim1 && mode !=unfolddim1){
+		throw std::logic_error("histoStack::getBackgroundLegends: only defined for 1D stacks");
+	}
+	std::vector<size_t> sidx=getSignalIdxs();
+        std::vector<TString> out;
+	for(size_t i=0;i<legends_.size();i++){
+		if(std::find(sidx.begin(),sidx.end(),i) != sidx.end() || getLegend(i) == dataleg_){
+			continue;
+		}
+                out.push_back(getLegend(i));
 	}
 
 	return out;

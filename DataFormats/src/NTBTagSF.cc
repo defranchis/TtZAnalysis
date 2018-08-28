@@ -19,9 +19,9 @@ void NTBTagSF::changeNTJetTags( std::vector<ztop::NTJet *> *jets)const{
 	if(!isMC_ || mode_!=randomtagging_mode || makesEff()) return;
 	for(size_t i=0;i<jets->size();i++){
 		ztop::NTJet * jet=jets->at(i);
-		if(std::abs(jet->genPartonFlavour()) == 0) continue;
+		//if(std::abs(jet->genPartonFlavour()) == 0) continue;
 		bool shouldbetagged=false;
-		shouldbetagged= jetIsTagged(jet->pt(),jet->eta(),jet->genPartonFlavour(),jet->btag(),
+		shouldbetagged= jetIsTagged(jet->pt(),jet->eta(),jet->getMember(1),jet->btag(),
 				std::abs<int>(1.e6 * sin(jet->phi())));
 
 		// throw std::logic_error(" NTBTagSF::changeNTJetTags wrong type (undefined");
@@ -37,6 +37,21 @@ void NTBTagSF::changeNTJetTags( std::vector<ztop::NTJet *> *jets)const{
 }
 void NTBTagSF::changeNTJetTags( std::vector<ztop::NTJet *> &jets)const{
 	NTBTagSF::changeNTJetTags(&jets);
+}
+
+
+float NTBTagSF::getEventWeightSimple( std::vector<ztop::NTJet *> *jets){
+    if(!isMC_ || mode_!=simplereweighting_mode || makesEff()) return 1.;
+    for(size_t i=0;i<jets->size();i++){
+        ztop::NTJet * jet=jets->at(i);
+        countJet(jet->pt(),jet->eta(),jet->getMember(1),jet->btag());
+    }
+    
+    return greaterEqualOneTagSF();
+}
+
+float NTBTagSF::getEventWeightSimple( std::vector<ztop::NTJet *> &jets){
+    return NTBTagSF::getEventWeightSimple(&jets);
 }
 
 
@@ -63,6 +78,19 @@ void NTBTagSF::readFromFile(const std::string& filename){
 	}
 	TFile * f = new TFile(filename.data(),"READ");
 	bTagSFBase::readFromTFile(f);
+	f->Close();
+	delete f;
+
+}
+
+void NTBTagSF::readReferenceFromFile(const std::string& filename){
+	if(!fileExists(filename.data())){
+		std::string err="NTBTagSF::readFromTFile: "+filename;
+		err+=" does not exist";
+		throw std::runtime_error(err);
+	}
+	TFile * f = new TFile(filename.data(),"READ");
+	bTagSFBase::prepareReferenceEfficienciesFromTFile(f);
 	f->Close();
 	delete f;
 

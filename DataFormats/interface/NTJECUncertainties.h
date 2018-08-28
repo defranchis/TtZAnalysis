@@ -24,8 +24,8 @@ public:
 		enabled_=true;
 	} //! up, down, no
 
-	void setIs2012(bool is){JecBase_.setIs2012(is);}//use to distinguish run i and ii
-    
+	void setIs2012(bool is){is2012_=is;JecBase_.setIs2012(is);}//use to distinguish run i and ii
+        void setIs2016(bool is){JecBase_.setIs2016(is);} 
 	/**
 	 * Adds a source with name to the sources to be varied
 	 */
@@ -54,7 +54,10 @@ public:
 		float recoeta=jet->eta();
 		float recophi=jet->phi();
 		float recom=jet->p4().M();
-		JecBase_.applyJECUncertainties(recopt,recoeta,recophi,recom,jet->genPartonFlavour());
+                 
+		/* if(is2012_) JecBase_.applyJECUncertainties(recopt,recoeta,recophi,recom,jet->genPartonFlavour()); */
+		if(true) JecBase_.applyJECUncertainties(recopt,recoeta,recophi,recom,jet->genPartonFlavour()); // always on
+                else JecBase_.applyJECUncertainties(recopt,recoeta,recophi,recom,jet->getMember(1));
 		jet->setP4(ztop::NTLorentzVector<float>(recopt,recoeta,recophi,recom));
 	}
 	void applyToJets(std::vector<ztop::NTJet *> jets){
@@ -65,6 +68,7 @@ public:
 protected:
 	JECBase JecBase_;
 	bool enabled_;
+        bool is2012_;
 
 };
 

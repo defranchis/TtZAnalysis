@@ -9,6 +9,7 @@
 #define ANALYZER_RUN2_H_
 
 #include "../interface/topAnalyzer.h"
+#include "../interface/analysisPlotsTtbarXsecFitSingleLep.h"
 
 class top_analyzer_run2 : public ztop::topAnalyzer{
 public:
@@ -18,9 +19,17 @@ public:
 
 
 	void analyze(size_t i);
-	bool checkTrigger(std::vector<bool> * ,ztop::NTEvent * , bool , size_t);
+        bool checkTrigger(std::vector<bool> * ,ztop::NTEvent * , bool , size_t);
 
-	//no copy
+        bool isDilep;
+        bool isSingleEle;
+        bool isSingleMu;
+        bool isRunBtoD ;
+        bool isRunEtoF ;
+        bool isRunFtoG ;
+        bool isRunH ;
+	
+        //no copy
 private:
 	top_analyzer_run2(const top_analyzer_run2 &);
 	top_analyzer_run2& operator = (const top_analyzer_run2 &);

@@ -9,13 +9,29 @@ $  [parameters-begin] until [parameters-end]
 
 $ inputfile,                       legend entry,        color,   xsection,   legendNumber (for sorting,- allows for gaps),  (opt) isSignal
 
-  tree_13TeV_data_ee.root,              data,                1,        1,              99
-  tree_13TeV_data_ee_RunC.root,              data,                1,        1,              99
-$tree_13Tev_data_MET_RunC.root,              data,                1,        1,              99
-$tree_13Tev_data_MET.root,              data,                1,        1,              99
-$MuonEG_Trigger.root,               data,                1,        1,              99
-   tree_13TeV_data_singleEle_ee.root,             data,                1,        1,              99
-   tree_13TeV_data_singleEle_ee_RunC.root,            data,                1,        1,              99
+   tree_13Tev_data_SingleElectron_RunB.root,              data,                1,        1,              99
+   tree_13Tev_data_SingleElectron_RunC.root,              data,                1,        1,              99
+   tree_13Tev_data_SingleElectron_RunD.root,              data,                1,        1,              99
+   tree_13Tev_data_SingleElectron_RunE.root,              data,                1,        1,              99
+   tree_13Tev_data_SingleElectron_RunF_v1.root,              data,                1,        1,              99
+   tree_13Tev_data_SingleElectron_RunF_v2.root,              data,                1,        1,              99
+   tree_13Tev_data_SingleElectron_RunG.root,              data,                1,        1,              99
+   tree_13Tev_data_SingleElectron_RunH_v1.root,              data,                1,        1,              99
+   tree_13Tev_data_SingleElectron_RunH_v2.root,              data,                1,        1,              99
+
+
+
+   tree_13Tev_data_DoubleEG_RunB.root,                 data,                1,        1,              99
+   tree_13Tev_data_DoubleEG_RunC.root,                 data,                1,        1,              99
+   tree_13Tev_data_DoubleEG_RunD.root,                 data,                1,        1,              99
+   tree_13Tev_data_DoubleEG_RunE.root,                 data,                1,        1,              99
+   tree_13Tev_data_DoubleEG_RunF_v1.root,                 data,                1,        1,              99
+   tree_13Tev_data_DoubleEG_RunF_v2.root,                 data,                1,        1,              99
+   tree_13Tev_data_DoubleEG_RunG.root,                 data,                1,        1,              99
+   tree_13Tev_data_DoubleEG_RunH_v1.root,                 data,                1,        1,              99
+   tree_13Tev_data_DoubleEG_RunH_v2.root,                 data,                1,        1,              99
+
+
 
 $ add tag "_mgbr" if W->lnu BR is 11.104% and not 10.620% 
 $tree_13TeV_emuttbar_amc_mgbr.root,     t#bar{t},		633,	  831.76,	  0,      true   
@@ -28,57 +44,67 @@ $tree_13TeV_emuttbarbg_her.root,        t#bar{t}bg,	   	634,	  831.76,	  1
 $Sync.root,           t#bar{t},           633,      831.76,         0,      true
 
 
-   tree_13TeV_tW.root,                tW/#bar{t}W,	   	616,	  35.6,	          4
-   tree_13TeV_tbarW.root,	           tW/#bar{t}W,	   	616,	  35.6,	          4
+   tree_13TeV_tW_ext.root,                tW/#bar{t}W,	   	616,	  35.85,	          4
+   tree_13TeV_tbarW_ext.root,	           tW/#bar{t}W,	   	616,	  35.85,	          4
 
-   tree_13TeV_dy1050.root,            DY,                  852,      22635.1,        5  
-   tree_13TeV_dy50inf.root,           DY,                  852,      6025.2,         5 
+   tree_13TeV_dy1050.root,                   DY,                  852,      22635.1,        5  
+   tree_13TeV_dy50inf_ee_pow.root,           DY,                  852,      1921.8,         5 
+   tree_13TeV_dy50inf_tt_pow.root,           DY,                  852,      1921.8,         5 
+   tree_13TeV_dy50inf_pow.root,              DY,                  852,      1921.8,         5 
+
+   $ tree_13TeV_dy1050.root,            DY,                  852,      22635.1,        5  
+   $ tree_13TeV_dy50inf.root,           DY,                  852,      5765.4,         5 
 
    tree_13TeV_wjets.root,		   Wjets,		413,	  61526,	  2
 
    tree_13TeV_ww.root,		   VV,			390,      118.7,   	  3
-   tree_13TeV_wz.root,		   VV,			390,	  44.9,   	  3
-   tree_13TeV_zz.root,		   VV,			390,	  15.4,	          3  
+   tree_13TeV_wz.root,		   VV,			390,	  47.1,   	  3
+   tree_13TeV_zz.root,		   VV,			390,	  16.5,	          3  
 
 [inputfiles-end]
 
 
 
 [parameters-begin] 
-$$ all directories except for inputfiles are relative to $CMSSW_BASE
+$ inputFilesDir   = /nfs/dust/cms/user/tarndt/NTuples/Prod_8026/
+inputFilesDir   = /nfs/dust/cms/group/topcmsdesy/ntuple13tev/ttZ_framework/v2/
 
-inputFilesDir   = /nfs/dust/cms/user/tarndt/NTuples/Prod_763/ 
-$inputFilesDir  = /nfs/dust/cms/user/agrohsje/samples/cms/ttxsec_2015_goodvtx/ 
+Lumi            = 35922
 
-Lumi            = 2225 $2109  $64.78  41.6
+JECFile         = /src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016BCDV3_DATA_UncertaintySources_AK4PFchs.txt
 
-JECFile         = /src/TtZAnalysis/Analysis/data/analyse/Fall15_25nsV2_DATA_UncertaintySources_AK4PFchs.txt 
-                                                         
-MuonSFFile      = /src/TtZAnalysis/Analysis/data/analyse/muon_tight_sf2D_13TeV.root
+MuonSFFile      = /src/TtZAnalysis/Analysis/data/analyse/MuonIdIsoTracking_average_Moriond17_Prel.root
+MuonSFFileBtoF      = /src/TtZAnalysis/Analysis/data/analyse/MuonIdIsoTracking_BtoF.root
+MuonSFFileGH      = /src/TtZAnalysis/Analysis/data/analyse/MuonIdIsoTracking_GH.root
 MuonSFHisto     = MuonIdIsoSF  $SF_statErr
-TrackingSFFile  = /src/TtZAnalysis/Analysis/data/analyse/muon_trackSF_8TeV.root
-TrackingSFHisto = tracking_eff
+TrackingSFFile  = /src/TtZAnalysis/Analysis/data/analyse/Tracking_EfficienciesAndSF_BCDEFGH.root
+TrackingSFHisto = ratio_eff_eta3_dr030e030_corr
 
-$elec_tight_sf2D_13TeV.root, elec_tight_sf2D_13TeV_1p7systematics.root, elec_tight_sf2D_13TeV_4psystematics.root
-ElecSFFile      = /src/TtZAnalysis/Analysis/data/analyse/elec_tight_sf2D_13TeV_RunD.root
-ElecSFHisto     = EGamma_SF2D
+ElecSFFile      = /src/TtZAnalysis/Analysis/data/analyse/ElectronIsoIdSF_Moriond2017.root
+ElecSFHisto     = ElectronIdIsoSF  $GlobalSF
+ElecTrackingSFFile = /src/TtZAnalysis/Analysis/data/analyse/elec_tracking_sf2D_2016.root
+ElecTrackingSFHisto = EGamma_SF2D
 
-TriggerSFFile   = /src/TtZAnalysis/Analysis/data/analyse/triggerSummary_ee_13TeV_2015_siLep.root
+TriggerSFFile   = /src/TtZAnalysis/Analysis/data/analyse/triggerSummary_ee.root
 
 $without .root
-$PUFile         = /src/TtZAnalysis/Analysis/data/analyse/Legacy2012.json_PU  
-PUFile          = /src/TtZAnalysis/Analysis/data/analyse/2015D.json_PU 
-$PUFile         = /src/TtZAnalysis/Analysis/data/analyse/nvtx_data_2015 
-$PUFile         = /src/TtZAnalysis/Analysis/data/analyse/ngoodvtx_data_2015 
+$PUFile         = /src/TtZAnalysis/Analysis/data/analyse/Legacy2012.json_PU
+PUFileBtoF      = /src/TtZAnalysis/Analysis/data/analyse/PU_RunBtoF
+PUFileGH        = /src/TtZAnalysis/Analysis/data/analyse/PU_RunGH
+$PUFile         = /src/TtZAnalysis/Analysis/data/analyse/nvtx_data_2015
+$PUFile         = /src/TtZAnalysis/Analysis/data/analyse/ngoodvtx_data_2015
 
-$ flat uncertainties of 5/10 % for b/c jets 
+$ flat uncertainties of 5/10 % for b/c jets
 $btagSFFile     = /src/TtZAnalysis/Analysis/data/analyse/CSV_8TeV_5unc.csv
 $ prel. 13 TeV btag SFs
-btagSFFile      = /src/TtZAnalysis/Analysis/data/analyse/CSVv2_2015CD_25ns_76X_recommended_13TeV.csv 
+$ btagSFFile      = /src/TtZAnalysis/Analysis/data/analyse/CSVv2_Moriond17_B_H.csv
+btagSFFile      = /src/TtZAnalysis/Analysis/data/analyse/CSVv2_Run2016_mujets_SystematicBreakdown.csv
 btagFile        = btags_74
 
 $modeOptions = GsfelectronsNotoppt
 $modeOptions = GsfelectronsNotopptNoweights
 $modeOptions = GsfelectronsNozcutNometcutNotopptNobcut
-modeOptions = GsfelectronsZerojetNozcutNometcutNobcutNotoppt
+$modeOptions = GsfelectronsZerojetNometcutNobcutNotopptJetpt25
+$modeOptions = GsfelectronsZerojetNometcutNobcutNotoppt
+modeOptions = GsfelectronsZerojetNometcutNotoppt
 [parameters-end]
