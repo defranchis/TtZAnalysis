@@ -14,7 +14,7 @@ options.register('dataset', 'emu',VarParsing.VarParsing.multiplicity.singleton, 
 options.register('isSignal',False,VarParsing.VarParsing.multiplicity.singleton,VarParsing.VarParsing.varType.bool,"is SignalMC")
 options.register('maxEvents',-1,VarParsing.VarParsing.multiplicity.singleton,VarParsing.VarParsing.varType.int,"maximum events")
 options.register('skipEvents', 0, VarParsing.VarParsing.multiplicity.singleton, VarParsing.VarParsing.varType.int, "skip N events")
-options.register('inputScript','TopAnalysis.Configuration.MC.Spring15.miniAODv2.TT_TuneCUETP8M1_13TeV_powheg_pythia8_RunIISpring15MiniAODv2_74X_mcRun2_asymptotic_v2_ext3_v1_and_v1_cff',VarParsing.VarParsing.multiplicity.singleton,VarParsing.VarParsing.varType.string,"input Script")
+options.register('inputScript','TopAnalysis.Configuration.MC.Summer16.miniAODv2.DYJetsToLL_M_10to50_TuneCUETP8M1_13TeV_madgraphMLM_pythia8_RunIISummer16MiniAODv2_PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_v1_cff',VarParsing.VarParsing.multiplicity.singleton,VarParsing.VarParsing.varType.string,"input Script")
 #options.register('inputScript', '', VarParsing.VarParsing.multiplicity.singleton, VarParsing.VarParsing.varType.string, "python file with input source")
 options.register('json','nojson',VarParsing.VarParsing.multiplicity.singleton,VarParsing.VarParsing.varType.string,"json files")
 options.register('outputFile','def_out',VarParsing.VarParsing.multiplicity.singleton,VarParsing.VarParsing.varType.string,"output File (w/o .root)")
@@ -106,7 +106,7 @@ opt.muonOptions={'inputCollectionAod':'selectedPatMuons'+pfpostfix,
                  'outputCollection':'',
                  'Cuts':False} #Only very loose cuts
 opt.electronOptions={'inputCollectionAod':'selectedPatElectrons'+pfpostfix,
-                 'inputCollectionMiniAod':'slimmedElectrons',
+                 'inputCollectionMiniAod':'slimmedElectrons::PAT',
                  'outputCollection':'',
                  'idName':'Spring15-medium', # Name of the Id in the IdVector (on the Electrons)
                  'Cuts':False,
@@ -243,8 +243,30 @@ process.hDampDown = cms.EDProducer("EventWeightMCSystematic",
                                    printLHE=cms.bool(False)
                                    )
 
+process.scaleUpDY = cms.EDProducer("EventWeightMCSystematic",
+                                 genEventInfoTag=cms.InputTag("generator"),
+                                 lheEventInfoTag=cms.InputTag("externalLHEProducer"),
+                                 weightID=cms.string("1005"),
+                                 printLHE=cms.bool(False)
+                                 )
+process.scaleDownDY = cms.EDProducer("EventWeightMCSystematic",
+                                   genEventInfoTag=cms.InputTag("generator"),
+                                   lheEventInfoTag=cms.InputTag("externalLHEProducer"),
+                                   weightID=cms.string("1009"),
+                                   printLHE=cms.bool(False)
+                                   )
+process.scaleUpST = process.scaleUp.clone()
+process.scaleDownST = process.scaleDown.clone()
+process.hDampUpST = process.hDampUp.clone()
+process.hDampDownST = process.hDampDown.clone()
+
+
 if isSignal:
     additionalWeights = cms.vstring("nominal","scaleUp","scaleDown","hDampUp","hDampDown")
+elif dataset == "DY":
+    additionalWeights = cms.vstring("nominal","scaleUpDY","scaleDownDY")
+elif dataset == "ST":
+    additionalWeights = cms.vstring("nominal","scaleUpST","scaleDownST","hDampUpST","hDampDownST")
 elif runOnMC:
     additionalWeights = cms.vstring("nominal")
 else: 
@@ -373,16 +395,15 @@ process.BadPFMuonFilter.muons = cms.InputTag("slimmedMuons")
 process.BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates")
 
 
+from TopAnalysis.ZTopUtils.MetFilterCombiner_cfi import metFilterCombiner
+
+process.metFilters=metFilterCombiner.clone(src=cms.InputTag('TriggerResults','',filterProcess),addsrc=cms.VInputTag("BadPFMuonFilter","BadChargedCandidateFilter"),flag=cms.vstring("Flag_HBHENoiseFilter","Flag_goodVertices","Flag_globalTightHalo2016Filter","Flag_HBHENoiseIsoFilter","Flag_EcalDeadCellTriggerPrimitiveFilter"))
+
+
 
 if runOnMC :
      process.prefilterSequence = cms.Sequence(
-         process.HBHENoiseFilter*
-         process.HBHENoiseIsoFilter*
-         process.cscFilter*
-         process.vertexFilter*
-         process.ecalDeadCellFilter*
-         process.BadChargedCandidateFilter*
-         process.BadPFMuonFilter
+
      )
 
 
@@ -456,7 +477,7 @@ from PhysicsTools.PatAlgos.selectionLayer1.jetSelector_cfi import *
 
 process.kinElectrons = selectedPatElectrons.clone(
     src = opt.electronOptions["outputCollection"],
-    cut = 'pt > 8  && abs(eta) < 2.7' # because of ECalP4 to be on the safe side
+    cut = 'pt > 10  && abs(eta) < 2.7'#cut = 'pt > 8  && abs(eta) < 2.7' # because of ECalP4 to be on the safe side
     )        
 
 process.muonEleMerge = cms.EDProducer("CandViewMerger",
@@ -466,8 +487,8 @@ process.muonEleMerge = cms.EDProducer("CandViewMerger",
 ## filter on at least two opposite charge elecs/muons or emu
 process.filterkinLeptons = cms.EDFilter("SimpleCounter",
                                         src = cms.VInputTag(cms.InputTag("muonEleMerge")), 
-                                        requireOppoQ = cms.bool(True),
-                                        minNumber = cms.uint32(minleptons),
+                                        requireOppoQ = cms.bool(True),#requireOppoQ = cms.bool(False),#requireOppoQ = cms.bool(True),
+                                        minNumber = cms.uint32(1),#minNumber = cms.uint32(minleptons),
                                         debug=cms.bool(debug)
                                         )
 if not runOnMC and dataset !='MET':
@@ -529,7 +550,7 @@ process.PFTree   = cms.EDAnalyzer('TreeWriterTtZ',
                                   runOnAOD  = cms.bool(runOnAOD),
                                   #general input collections
                                   treeName = cms.string('pfTree'),
-                                  muonSrc = cms.InputTag(muonTag),
+                                  muonSrc = cms.InputTag(opt.muonOptions['outputCollection']),
                                   keepElecIdOnly = cms.string("Spring15-medium"),
                                   elecGSFSrc = cms.InputTag(opt.electronOptions["outputCollection"]), #just the same here to make it run. this can be prevented by a try{}catch(...){} in treewriter for getByLabel
                                   elecPFSrc = cms.InputTag(opt.electronOptions["outputCollection"]),
@@ -545,7 +566,7 @@ process.PFTree   = cms.EDAnalyzer('TreeWriterTtZ',
                                   
                                   #block for extended information needed for efficiency studies
                                   includeReco = cms.bool(False),
-                                  recoMuonSrc = cms.InputTag('muons'),
+                                  recoMuonSrc = cms.InputTag(opt.muonOptions['outputCollection']),
                                   isPFMuonCand = cms.bool(False),
                                   recoElecSrc  = cms.InputTag('gsfElectrons'),
                                   isPFElecCand = cms.bool(False),
@@ -556,8 +577,8 @@ process.PFTree   = cms.EDAnalyzer('TreeWriterTtZ',
                                   includeTrigger = cms.bool(True),
                                   triggerResults = cms.InputTag('TriggerResults','','HLT'), #needed for both AOD and MiniAOD
                                   triggerEvent   = cms.InputTag('patTriggerEvent'), ### "selectedPatTrigger" for MiniAODs
-                                  triggerObjects = cms.vstring(""),
-                                  #triggerObjects = cms.vstring("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v","HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v","hltL3fL1sDoubleMu114L1f0L2f10OneMuL3Filtered17","hltDiMuonGlb17Glb8RelTrkIsoFiltered0p4","hltDiMuonGlb17Trk8RelTrkIsoFiltered0p4","hltL3pfL1sDoubleMu114L1f0L2pf0L3PreFiltered8","hltL2pfL1sDoubleMu114ORDoubleMu125L1f0L2PreFiltered0","hltDiMuonGlb17Trk8RelTrkIsoFiltered0p4","hltDiMuonGlbFiltered17TrkFiltered8"),
+                                  #triggerObjects = cms.vstring(""),
+                                  triggerObjects = cms.vstring("HLT_Ele27_WPTight_Gsf_v","HLT_IsoTkMu24_v","HLT_IsoMu24_v","HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v","HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v","hltL3fL1sDoubleMu114L1f0L2f10OneMuL3Filtered17","hltDiMuonGlb17Glb8RelTrkIsoFiltered0p4","hltDiMuonGlb17Trk8RelTrkIsoFiltered0p4","hltL3pfL1sDoubleMu114L1f0L2pf0L3PreFiltered8","hltL2pfL1sDoubleMu114ORDoubleMu125L1f0L2PreFiltered0","hltDiMuonGlb17Trk8RelTrkIsoFiltered0p4","hltDiMuonGlbFiltered17TrkFiltered8"),
                                   
                                   #block for event information.  Essential (PU)
                                   PUInfo = cms.InputTag('slimmedAddPileupInfo'),
@@ -569,6 +590,7 @@ process.PFTree   = cms.EDAnalyzer('TreeWriterTtZ',
                                   
                                   includeGen = cms.bool(isSignal),
                                   genParticles = cms.InputTag(genParticleCollection),
+                                  bFragWeightFile = cms.string(os.path.relpath(os.environ['CMSSW_BASE']+'/src/TopAnalysis/Configuration/analysis/common/data/bfragweights.root')),
                                   # agrohsje fix later 
                                   genJets = cms.InputTag("ak4GenJetsNoNuNoLepton"), 
                                   #cms.InputTag(""), # in miniaod:slimmedGenJets, in aod:ak4GenJets

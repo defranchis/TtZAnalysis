@@ -1,112 +1,123 @@
 ##Trigger Data
 
-#110    /MET/Run2016B-23Sep2016-v3/MINIAOD        tree_13Tev_data_MET_RunB       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#110    /MET/Run2016B-03Feb2017_ver2-v2/MINIAOD        tree_13Tev_data_MET_RunB       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
 
-#40    /MET/Run2016C-23Sep2016-v1/MINIAOD        tree_13Tev_data_MET_RunC       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#40    /MET/Run2016C-03Feb2017-v1/MINIAOD        tree_13Tev_data_MET_RunC       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
 
-#160    /MET/Run2016D-23Sep2016-v1/MINIAOD        tree_13Tev_data_MET_RunD       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#160    /MET/Run2016D-03Feb2017-v1/MINIAOD        tree_13Tev_data_MET_RunD       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
 
-#160    /MET/Run2016E-23Sep2016-v1/MINIAOD        tree_13Tev_data_MET_RunE       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#160    /MET/Run2016E-03Feb2017-v1/MINIAOD        tree_13Tev_data_MET_RunE       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
 
-#160    /MET/Run2016F-23Sep2016-v1/MINIAOD        tree_13Tev_data_MET_RunF       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#160    /MET/Run2016F-03Feb2017-v1/MINIAOD        tree_13Tev_data_MET_RunF       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
 
-#160    /MET/Run2016G-23Sep2016-v1/MINIAOD        tree_13Tev_data_MET_RunG       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#160    /MET/Run2016G-03Feb2017-v1/MINIAOD        tree_13Tev_data_MET_RunG       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#160    /MET/Run2016H-PromptReco-v2/MINIAOD        tree_13Tev_data_MET_RunH_v1       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#160    /MET/Run2016H-03Feb2017_ver2-v1/MINIAOD        tree_13Tev_data_MET_RunH_v1       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#10    /MET/Run2016H-PromptReco-v3/MINIAOD        tree_13Tev_data_MET_RunH_v2       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#10    /MET/Run2016H-03Feb2017_ver3-v1/MINIAOD        tree_13Tev_data_MET_RunH_v2       runOnMC=False dataset=MET json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
 
 ############ Muon EG Stream
 
-#120     /MuonEG/Run2016B-23Sep2016-v3/MINIAOD        tree_13Tev_data_MuonEG_RunB       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#120     /MuonEG/Run2016B-03Feb2017_ver2-v2/MINIAOD        tree_13Tev_data_MuonEG_RunB       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-70     /MuonEG/Run2016C-23Sep2016-v1/MINIAOD        tree_13Tev_data_MuonEG_RunC       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#70     /MuonEG/Run2016C-03Feb2017-v1/MINIAOD        tree_13Tev_data_MuonEG_RunC       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#170     /MuonEG/Run2016D-23Sep2016-v1/MINIAOD        tree_13Tev_data_MuonEG_RunD       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#170     /MuonEG/Run2016D-03Feb2017-v1/MINIAOD        tree_13Tev_data_MuonEG_RunD       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#170     /MuonEG/Run2016E-23Sep2016-v1/MINIAOD        tree_13Tev_data_MuonEG_RunE       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#170     /MuonEG/Run2016E-03Feb2017-v1/MINIAOD        tree_13Tev_data_MuonEG_RunE       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#170     /MuonEG/Run2016F-23Sep2016-v1/MINIAOD        tree_13Tev_data_MuonEG_RunF       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#170     /MuonEG/Run2016F-03Feb2017-v1/MINIAOD        tree_13Tev_data_MuonEG_RunF_v1       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON_RunF1.txt
 
-#170     /MuonEG/Run2016G-23Sep2016-v1/MINIAOD        tree_13Tev_data_MuonEG_RunG       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#170     /MuonEG/Run2016F-03Feb2017-v1/MINIAOD        tree_13Tev_data_MuonEG_RunF_v2       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON_RunF2.txt
 
-#170     /MuonEG/Run2016H-PromptReco-v2/MINIAOD        tree_13Tev_data_MuonEG_RunH_v1       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#170     /MuonEG/Run2016G-03Feb2017-v1/MINIAOD        tree_13Tev_data_MuonEG_RunG       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#10     /MuonEG/Run2016H-PromptReco-v3/MINIAOD        tree_13Tev_data_MuonEG_RunH_v2       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#170     /MuonEG/Run2016H-03Feb2017_ver2-v1/MINIAOD        tree_13Tev_data_MuonEG_RunH_v1       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+
+#10     /MuonEG/Run2016H-03Feb2017_ver3-v1/MINIAOD       tree_13Tev_data_MuonEG_RunH_v2       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
 ###########Electron data Streams
 
-#150    /DoubleEG/Run2016B-23Sep2016-v3/MINIAOD        tree_13Tev_data_DoubleEG_RunB       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#150    /DoubleEG/Run2016B-03Feb2017_ver2-v2/MINIAOD        tree_13Tev_data_DoubleEG_RunB       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#170    /SingleElectron/Run2016B-23Sep2016-v3/MINIAOD        tree_13Tev_data_SingleElectron_RunB       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#370    /SingleElectron/Run2016B-03Feb2017_ver2-v2/MINIAOD        tree_13Tev_data_SingleElectron_RunB       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#50    /DoubleEG/Run2016C-23Sep2016-v1/MINIAOD        tree_13Tev_data_DoubleEG_RunC       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#50     /DoubleEG/Run2016C-03Feb2017-v1/MINIAOD        tree_13Tev_data_DoubleEG_RunC       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#170    /SingleElectron/Run2016C-23Sep2016-v1/MINIAOD        tree_13Tev_data_SingleElectron_RunC       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#270    /SingleElectron/Run2016C-03Feb2017-v1/MINIAOD        tree_13Tev_data_SingleElectron_RunC       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#150    /DoubleEG/Run2016D-23Sep2016-v1/MINIAOD        tree_13Tev_data_DoubleEG_RunD       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#150    /DoubleEG/Run2016D-03Feb2017-v1/MINIAOD        tree_13Tev_data_DoubleEG_RunD       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#170    /SingleElectron/Run2016D-23Sep2016-v1/MINIAOD        tree_13Tev_data_SingleElectron_RunD       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#270    /SingleElectron/Run2016D-03Feb2017-v1/MINIAOD        tree_13Tev_data_SingleElectron_RunD       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#70    /DoubleEG/Run2016E-23Sep2016-v1/MINIAOD       tree_13Tev_data_DoubleEG_RunE       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#70     /DoubleEG/Run2016E-03Feb2017-v1/MINIAOD       tree_13Tev_data_DoubleEG_RunE       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#100    /SingleElectron/Run2016E-23Sep2016-v1/MINIAOD        tree_13Tev_data_SingleElectron_RunE       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#200    /SingleElectron/Run2016E-03Feb2017-v1/MINIAOD        tree_13Tev_data_SingleElectron_RunE       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#50    /DoubleEG/Run2016F-23Sep2016-v1/MINIAOD        tree_13Tev_data_DoubleEG_RunF       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#50    /DoubleEG/Run2016F-03Feb2017-v1/MINIAOD        tree_13Tev_data_DoubleEG_RunF_v1       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON_RunF1.txt
 
-#90    /SingleElectron/Run2016F-23Sep2016-v1/MINIAOD        tree_13Tev_data_SingleElectron_RunF       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#190    /SingleElectron/Run2016F-03Feb2017-v1/MINIAOD       tree_13Tev_data_SingleElectron_RunF_v1       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON_RunF1.txt
 
-#120    /DoubleEG/Run2016G-23Sep2016-v1/MINIAOD        tree_13Tev_data_DoubleEG_RunG       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#50    /DoubleEG/Run2016F-03Feb2017-v1/MINIAOD        tree_13Tev_data_DoubleEG_RunF_v2       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON_RunF2.txt
 
-#170    /SingleElectron/Run2016G-23Sep2016-v1/MINIAOD        tree_13Tev_data_SingleElectron_RunG       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#190    /SingleElectron/Run2016F-03Feb2017-v1/MINIAOD        tree_13Tev_data_SingleElectron_RunF_v2       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON_RunF2.txt
 
-#120    /DoubleEG/Run2016H-PromptReco-v2/MINIAOD        tree_13Tev_data_DoubleEG_RunH_v1       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#120    /DoubleEG/Run2016G-03Feb2017-v1/MINIAOD        tree_13Tev_data_DoubleEG_RunG       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#170    /SingleElectron/Run2016H-PromptReco-v2/MINIAOD        tree_13Tev_data_SingleElectron_RunH_v1       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#270    /SingleElectron/Run2016G-03Feb2017-v1/MINIAOD        tree_13Tev_data_SingleElectron_RunG       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#120    /DoubleEG/Run2016H-PromptReco-v3/MINIAOD        tree_13Tev_data_DoubleEG_RunH_v2       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#120    /DoubleEG/Run2016H-03Feb2017_ver2-v1/MINIAOD        tree_13Tev_data_DoubleEG_RunH_v1       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#170    /SingleElectron/Run2016H-PromptReco-v3/MINIAOD        tree_13Tev_data_SingleElectron_RunH_v2       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#270    /SingleElectron/Run2016H-03Feb2017_ver2-v1/MINIAOD        tree_13Tev_data_SingleElectron_RunH_v1       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+
+#20    /DoubleEG/Run2016H-03Feb2017_ver3-v1/MINIAOD        tree_13Tev_data_DoubleEG_RunH_v2       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+
+#70    /SingleElectron/Run2016H-03Feb2017_ver3-v1/MINIAOD        tree_13Tev_data_SingleElectron_RunH_v2       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
 ########Muon data streams
 
-#150    /DoubleMuon/Run2016B-23Sep2016-v3/MINIAOD        tree_13Tev_data_DoubleMuon_RunB       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#150    /DoubleMuon/Run2016B-03Feb2017_ver2-v2/MINIAOD        tree_13Tev_data_DoubleMuon_RunB       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#170    /SingleMuon/Run2016B-23Sep2016-v3/MINIAOD        tree_13Tev_data_SingleMuon_RunB       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#370    /SingleMuon/Run2016B-03Feb2017_ver2-v2/MINIAOD        tree_13Tev_data_SingleMuon_SMU_RunB       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#50    /DoubleMuon/Run2016C-23Sep2016-v1/MINIAOD        tree_13Tev_data_DoubleMuon_RunC       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#50    /DoubleMuon/Run2016C-03Feb2017-v1/MINIAOD        tree_13Tev_data_DoubleMuon_RunC       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#90    /SingleMuon/Run2016C-23Sep2016-v1/MINIAOD        tree_13Tev_data_SingleMuon_RunC       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#290    /SingleMuon/Run2016C-03Feb2017-v1/MINIAOD        tree_13Tev_data_SingleMuon_SMU_RunC       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#100    /DoubleMuon/Run2016D-23Sep2016-v1/MINIAOD        tree_13Tev_data_DoubleMuon_RunD       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#100    /DoubleMuon/Run2016D-03Feb2017-v1/MINIAOD        tree_13Tev_data_DoubleMuon_RunD       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#150    /SingleMuon/Run2016D-23Sep2016-v1/MINIAOD        tree_13Tev_data_SingleMuon_RunD       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#350    /SingleMuon/Run2016D-03Feb2017-v1/MINIAOD        tree_13Tev_data_SingleMuon_SMU_RunD       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#80    /DoubleMuon/Run2016E-23Sep2016-v1/MINIAOD        tree_13Tev_data_DoubleMuon_RunE       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#80    /DoubleMuon/Run2016E-03Feb2017-v1/MINIAOD        tree_13Tev_data_DoubleMuon_RunE       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#120    /SingleMuon/Run2016E-23Sep2016-v1/MINIAOD        tree_13Tev_data_SingleMuon_RunE       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#320    /SingleMuon/Run2016E-03Feb2017-v1/MINIAOD        tree_13Tev_data_SingleMuon_SMU_RunE       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#80    /DoubleMuon/Run2016F-23Sep2016-v1/MINIAOD        tree_13Tev_data_DoubleMuon_RunF       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#80    /DoubleMuon/Run2016F-03Feb2017-v1/MINIAOD        tree_13Tev_data_DoubleMuon_RunF_v1       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON_RunF1.txt
 
-#120   /SingleMuon/Run2016F-23Sep2016-v1/MINIAOD        tree_13Tev_data_SingleMuon_RunF       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#320   /SingleMuon/Run2016F-03Feb2017-v1/MINIAOD        tree_13Tev_data_SingleMuon_SMU_RunF_v1       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON_RunF1.txt
 
-#120   /DoubleMuon/Run2016G-23Sep2016-v1/MINIAOD     tree_13Tev_data_DoubleMuon_RunG       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#80    /DoubleMuon/Run2016F-03Feb2017-v1/MINIAOD        tree_13Tev_data_DoubleMuon_RunF_v2       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON_RunF2.txt
 
-#170   /SingleMuon/Run2016G-23Sep2016-v1/MINIAOD        tree_13Tev_data_SingleMuon_RunG       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#320   /SingleMuon/Run2016F-03Feb2017-v1/MINIAOD        tree_13Tev_data_SingleMuon_SMU_RunF_v2       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON_RunF2.txt
 
-#120   /DoubleMuon/Run2016H-PromptReco-v2/MINIAOD     tree_13Tev_data_DoubleMuon_RunH_v1       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#170   /SingleMuon/Run2016H-PromptReco-v2/MINIAOD        tree_13Tev_data_SingleMuon_RunH_v1       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#120   /DoubleMuon/Run2016G-03Feb2017-v1/MINIAOD     tree_13Tev_data_DoubleMuon_RunG       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#10   /DoubleMuon/Run2016H-PromptReco-v3/MINIAOD     tree_13Tev_data_DoubleMuon_RunH_v2       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#370   /SingleMuon/Run2016G-03Feb2017-v1/MINIAOD        tree_13Tev_data_SingleMuon_SMU_RunG       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
-#10   /SingleMuon/Run2016H-PromptReco-v3/MINIAOD        tree_13Tev_data_SingleMuon_RunH_v2       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_8024/CMSSW_8_0_24_patch1/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+#120   /DoubleMuon/Run2016H-03Feb2017_ver2-v1/MINIAOD     tree_13Tev_data_DoubleMuon_RunH_v1       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+
+#370   /SingleMuon/Run2016H-03Feb2017_ver2-v1/MINIAOD        tree_13Tev_data_SingleMuon_SMU_RunH_v1       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+
+#10    /DoubleMuon/Run2016H-03Feb2017_ver3-v1/MINIAOD     tree_13Tev_data_DoubleMuon_RunH_v2       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+
+#20    /SingleMuon/Run2016H-03Feb2017_ver3-v1/MINIAOD        tree_13Tev_data_SingleMuon_SMU_RunH_v2       runOnMC=False json=/nfs/dust/cms/user/tarndt/Test_tth/CMSSW_8_0_26_patch2/src/TtZAnalysis/createNTuples/jsonfiles/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
 
 ######TTBar
@@ -114,10 +125,18 @@
 
 #550  /TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM     tree_13TeV_emuttbarbg         isSignal=True includePDFWeights=True PDF=CT14 nominalPDF=3001 beginPDFVar=3002 endPDFVar=3057 genFilter=ttbar genFilterInvert=True
 
-#300    /TTJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM      tree_13TeV_emuttbar_amc_mgbr    isSignal=True genFilter=ttbar
+#350    /TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_backup_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM      tree_13TeV_emuttbar_amc_mgbr    isSignal=True genFilter=ttbar
 
-#400    /TTJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM       tree_13TeV_emuttbarbg_amc_mgbr      isSignal=True genFilter=ttbar genFilterInvert=True
+#500    /TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_backup_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM       tree_13TeV_emuttbarbg_amc_mgbr      isSignal=True genFilter=ttbar genFilterInvert=True
 
+
+#350    /TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM      tree_13TeV_emuttbar_ext1_amc_mgbr    isSignal=True genFilter=ttbar
+
+#500    /TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM       tree_13TeV_emuttbarbg_ext1_amc_mgbr      isSignal=True genFilter=ttbar genFilterInvert=True
+
+#850    /TTJets_Dilept_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM      tree_13TeV_emuttbar_ext2_amc_mgbr    isSignal=True genFilter=ttbar
+
+850    /TTJets_Dilept_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM      tree_13TeV_emuttbar_ext3_amc_mgbr    isSignal=True genFilter=ttbar
 
 #300    /TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM      tree_13TeV_emuttbar_mg5_mgbr    isSignal=True genFilter=ttbar
 
@@ -126,6 +145,10 @@
 #150   /TT_TuneEE5C_13TeV-powheg-herwigpp/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar_powher         isSignal=True genFilter=ttbar partonShower=herwigpp
 
 #250   /TT_TuneEE5C_13TeV-powheg-herwigpp/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbarbg_powher       isSignal=True genFilter=ttbar genFilterInvert=True partonShower=herwigpp
+
+#350  /TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_backup_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar_ext            isSignal=True includePDFWeights=True PDF=CT14 nominalPDF=3001 beginPDFVar=3002 endPDFVar=3057 genFilter=ttbar
+
+#550  /TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_backup_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM     tree_13TeV_emuttbarbg_ext         isSignal=True includePDFWeights=True PDF=CT14 nominalPDF=3001 beginPDFVar=3002 endPDFVar=3057 genFilter=ttbar genFilterInvert=True
 
 
 ####TTBar Scale
@@ -142,9 +165,26 @@
 
 #250   /TT_TuneCUETP8M2T4_13TeV-powheg-isrup-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM   tree_13TeV_emuttbarbg_ttisrup       isSignal=True genFilter=ttbar genFilterInvert=True
 
+
+#150   /TT_TuneCUETP8M2T4_13TeV-powheg-isrup-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM     tree_13TeV_emuttbar_ttisrup_ext         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_13TeV-powheg-isrup-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM    tree_13TeV_emuttbarbg_ttisrup_ext       isSignal=True genFilter=ttbar genFilterInvert=True
+
+
+
 #150   /TT_TuneCUETP8M2T4_13TeV-powheg-fsrdown-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar_ttfsrdown         isSignal=True genFilter=ttbar
 
 #250   /TT_TuneCUETP8M2T4_13TeV-powheg-fsrdown-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM   tree_13TeV_emuttbarbg_ttfsrdown       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#150   /TT_TuneCUETP8M2T4_13TeV-powheg-fsrdown-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM    tree_13TeV_emuttbar_ttfsrdown_ext         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_13TeV-powheg-fsrdown-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM   tree_13TeV_emuttbarbg_ttfsrdown_ext       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#150   /TT_TuneCUETP8M2T4_13TeV-powheg-fsrdown-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM     tree_13TeV_emuttbar_ttfsrdown_extv2         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_13TeV-powheg-fsrdown-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM    tree_13TeV_emuttbarbg_ttfsrdown_extv2       isSignal=True genFilter=ttbar genFilterInvert=True
+
+
 
 #150   /TT_TuneCUETP8M2T4_13TeV-powheg-fsrup-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar_ttfsrup         isSignal=True genFilter=ttbar
 
@@ -154,10 +194,127 @@
 
 #250   /TT_TuneCUETP8M2T4_13TeV-powheg-fsrup-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM   tree_13TeV_emuttbarbg_ttfsrup_ext       isSignal=True genFilter=ttbar genFilterInvert=True
 
+####TTBar Tune
+
+
 #150   /TT_TuneCUETP8M2T4down_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar_tttunedown         isSignal=True genFilter=ttbar
 
 #250   /TT_TuneCUETP8M2T4down_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM   tree_13TeV_emuttbarbg_tttunedown       isSignal=True genFilter=ttbar genFilterInvert=True
 
+#150   /TT_TuneCUETP8M2T4down_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM    tree_13TeV_emuttbar_tttunedown_ext         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4down_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM   tree_13TeV_emuttbarbg_tttunedown_ext       isSignal=True genFilter=ttbar genFilterInvert=True
+
+
+#350   /TTTo2L2Nu_TuneCUETP8M2T4down_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar_tttunedown_extv2         isSignal=True genFilter=ttbar
+
+
+#150   /TT_TuneCUETP8M2T4up_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar_tttuneup         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4up_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM   tree_13TeV_emuttbarbg_tttuneup       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#150   /TT_TuneCUETP8M2T4up_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM    tree_13TeV_emuttbar_tttuneup_ext         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4up_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM   tree_13TeV_emuttbarbg_tttuneup_ext       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#350   /TTTo2L2Nu_TuneCUETP8M2T4up_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM     tree_13TeV_emuttbar_tttuneup_extv2         isSignal=True genFilter=ttbar
+
+
+
+####TTBar Match
+
+#150   /TT_hdampUP_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar_hdampup         isSignal=True genFilter=ttbar
+
+#250   /TT_hdampUP_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM   tree_13TeV_emuttbarbg_hdampup       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#150   /TT_hdampUP_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM    tree_13TeV_emuttbar_hdampup_ext         isSignal=True genFilter=ttbar
+
+#250   /TT_hdampUP_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM   tree_13TeV_emuttbarbg_hdampup_ext       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#350   /TTTo2L2Nu_hdampUP_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM     tree_13TeV_emuttbar_hdampup_extv2         isSignal=True genFilter=ttbar
+
+
+#150   /TT_hdampDOWN_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar_hdampdown         isSignal=True genFilter=ttbar
+
+#250   /TT_hdampDOWN_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM   tree_13TeV_emuttbarbg_hdampdown       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#150   /TT_hdampDOWN_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM    tree_13TeV_emuttbar_hdampdown_ext         isSignal=True genFilter=ttbar
+
+#250   /TT_hdampDOWN_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM   tree_13TeV_emuttbarbg_hdampdown_ext       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#350   /TTTo2L2Nu_hdampDOWN_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM     tree_13TeV_emuttbar_hdampdown_extv2         isSignal=True genFilter=ttbar
+
+########Top mass
+
+#150   /TT_TuneCUETP8M2T4_mtop1755_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar_mt175.5         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_mtop1755_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM   tree_13TeV_emuttbarbg_mt175.5       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#150   /TT_TuneCUETP8M2T4_mtop1755_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM    tree_13TeV_emuttbar_mt175.5_ext_v1         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_mtop1755_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM   tree_13TeV_emuttbarbg_mt175.5_ext_v1       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#150   /TT_TuneCUETP8M2T4_mtop1755_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM    tree_13TeV_emuttbar_mt175.5_ext_v2         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_mtop1755_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM   tree_13TeV_emuttbarbg_mt175.5_ext_v2       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#350   /TTTo2L2Nu_TuneCUETP8M2T4_mtop1755_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM     tree_13TeV_emuttbar_mt175.5_ext_v3         isSignal=True genFilter=ttbar
+
+
+#150   /TT_TuneCUETP8M2T4_mtop1695_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_backup_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar_mt169.5         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_mtop1695_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_backup_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM   tree_13TeV_emuttbarbg_mt169.5       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#150   /TT_TuneCUETP8M2T4_mtop1695_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM    tree_13TeV_emuttbar_mt169.5_ext_v1         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_mtop1695_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM   tree_13TeV_emuttbarbg_mt169.5_ext_v1       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#150   /TT_TuneCUETP8M2T4_mtop1695_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM    tree_13TeV_emuttbar_mt169.5_ext_v2         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_mtop1695_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM   tree_13TeV_emuttbarbg_mt169.5_ext_v2       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#350   /TTTo2L2Nu_TuneCUETP8M2T4_mtop1695_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM     tree_13TeV_emuttbar_mt169.5_ext_v3         isSignal=True genFilter=ttbar
+
+#150   /TT_TuneCUETP8M2T4_mtop1665_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM      tree_13TeV_emuttbar_mt166.5         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_mtop1665_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM      tree_13TeV_emuttbarbg_mt166.5       isSignal=True genFilter=ttbar genFilterInvert=True
+
+
+#150   /TT_TuneCUETP8M2T4_mtop1715_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM      tree_13TeV_emuttbar_mt171.5         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_mtop1715_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM      tree_13TeV_emuttbarbg_mt171.5       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#150   /TT_TuneCUETP8M2T4_mtop1735_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM      tree_13TeV_emuttbar_mt173.5         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_mtop1735_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM      tree_13TeV_emuttbarbg_mt173.5       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#150   /TT_TuneCUETP8M2T4_mtop1785_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM      tree_13TeV_emuttbar_mt178.5         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_mtop1785_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM      tree_13TeV_emuttbarbg_mt178.5       isSignal=True genFilter=ttbar genFilterInvert=True
+
+
+########## Color Reconnection
+
+#150   /TT_TuneCUETP8M2T4_erdON_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar_tterdon         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_erdON_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM   tree_13TeV_emuttbarbg_tterdon       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#150   /TT_TuneCUETP8M2T4_erdON_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM    tree_13TeV_emuttbar_tterdon_ext         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_erdON_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM   tree_13TeV_emuttbarbg_tterdon_ext       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#150   /TT_TuneCUETP8M2T4_QCDbasedCRTune_erdON_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar_ttqcdcr         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_QCDbasedCRTune_erdON_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM   tree_13TeV_emuttbarbg_ttqcdcr       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#350   /TTTo2L2Nu_TuneCUETP8M2T4_QCDbasedCRTune_erdON_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM     tree_13TeV_emuttbar_ttqcdcr_ext         isSignal=True genFilter=ttbar
+
+
+#150   /TT_TuneCUETP8M2T4_GluonMoveCRTune_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM    tree_13TeV_emuttbar_ttgluoncr         isSignal=True genFilter=ttbar
+
+#250   /TT_TuneCUETP8M2T4_GluonMoveCRTune_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM   tree_13TeV_emuttbarbg_ttgluoncr       isSignal=True genFilter=ttbar genFilterInvert=True
+
+#350   /TTTo2L2Nu_TuneCUETP8M2T4_GluonMoveCRTune_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM     tree_13TeV_emuttbar_ttgluoncr_ext         isSignal=True genFilter=ttbar
 
 
 #####Single top
@@ -165,18 +322,84 @@
 
 #100     /ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M2T4/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM     tree_13TeV_tbarW        
 
+#300     /tW_top_nonallhad/userProd/MINIAODSIM       tree_13TeV_tW_ext           dataset=ST
+
+#300     /tW_tbar_nonallhad/userProd/MINIAODSIM       tree_13TeV_tbarW_ext           dataset=ST
+
+#300     /tW_top_nonallhad_FSR_up/userProd/MINIAODSIM       tree_13TeV_tW_ext_fsrup           dataset=ST
+
+#300     /tW_tbar_nonallhad_FSR_up/userProd/MINIAODSIM       tree_13TeV_tbarW_ext_fsrup           dataset=ST
+
+#300     /tW_top_nonallhad_FSR_down/userProd/MINIAODSIM       tree_13TeV_tW_ext_fsrdown           dataset=ST
+
+#300     /tW_tbar_nonallhad_FSR_down/userProd/MINIAODSIM       tree_13TeV_tbarW_ext_fsrdown           dataset=ST
+
+#300     /tW_top_nonallhad_MASS_up/userProd/MINIAODSIM       tree_13TeV_tW_ext_mt175.5           dataset=ST
+
+#300     /tW_tbar_nonallhad_MASS_up/userProd/MINIAODSIM       tree_13TeV_tbarW_ext_mt175.5           dataset=ST
+
+#300     /tW_top_nonallhad_MASS_down/userProd/MINIAODSIM       tree_13TeV_tW_ext_mt169.5           dataset=ST
+
+#300     /tW_tbar_nonallhad_MASS_down/userProd/MINIAODSIM       tree_13TeV_tbarW_ext_mt169.5           dataset=ST
 
 
+#300     /tW_top_nonallhad_ISR_up/userProd/MINIAODSIM       tree_13TeV_tW_ext_isrup           dataset=ST
+
+#300     /tW_tbar_nonallhad_ISR_up/userProd/MINIAODSIM       tree_13TeV_tbarW_ext_isrup           dataset=ST
+
+#300     /tW_top_nonallhad_ISR_down/userProd/MINIAODSIM       tree_13TeV_tW_ext_isrdown           dataset=ST
+
+#300     /tW_tbar_nonallhad_ISR_down/userProd/MINIAODSIM       tree_13TeV_tbarW_ext_isrdown           dataset=ST
+
+
+#100     /ST_tW_top_5f_mtop1755_NoFullyHadronicDecays_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM         tree_13TeV_tW_mt175.5
+
+#100     /ST_tW_antitop_5f_mtop1755_NoFullyHadronicDecays_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM      tree_13TeV_tbarW_mt175.5
+
+#100     /ST_tW_top_5f_mtop1695_NoFullyHadronicDecays_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM         tree_13TeV_tW_mt169.5
+
+#100     /ST_tW_antitop_5f_mtop1695_NoFullyHadronicDecays_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM      tree_13TeV_tbarW_mt169.5
+
+#100     /ST_tW_top_5f_MEscaleup_NoFullyHadronicDecays_13TeV-powheg/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM          tree_13TeV_tW_twmescaleup
+
+#100     /ST_tW_antitop_5f_MEscaleup_NoFullyHadronicDecays_13TeV-powheg/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM       tree_13TeV_tbarW_twmescaleup
+
+#100     /ST_tW_top_MEscaledown_5f_NoFullyHadronicDecays_13TeV-powheg/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM           tree_13TeV_tW_twmescaledown
+
+#100     /ST_tW_antitop_MEscaledown_5f_NoFullyHadronicDecays_13TeV-powheg/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM        tree_13TeV_tbarW_twmescaledown
+
+#100     /ST_tW_top_5f_isrup_NoFullyHadronicDecays_13TeV-powheg/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM            tree_13TeV_tW_twisrup
+
+#100     /ST_tW_antitop_5f_isrup_NoFullyHadronicDecays_13TeV-powheg/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM         tree_13TeV_tbarW_twisrup
+
+#100     /ST_tW_top_isrdown_5f_NoFullyHadronicDecays_13TeV-powheg/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM             tree_13TeV_tW_twisrdown
+
+#100     /ST_tW_antitop_isrdown_5f_NoFullyHadronicDecays_13TeV-powheg/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM         tree_13TeV_tbarW_twisrdown
+
+#100     /ST_tW_top_5f_fsrup_NoFullyHadronicDecays_13TeV-powheg/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM             tree_13TeV_tW_twfsrup
+
+#100     /ST_tW_antitop_5f_fsrup_NoFullyHadronicDecays_13TeV-powheg/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM          tree_13TeV_tbarW_twfsrup
+
+#100     /ST_tW_top_fsrdown_5f_NoFullyHadronicDecays_13TeV-powheg/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM              tree_13TeV_tW_twfsrdown
+
+#100     /ST_tW_antitop_fsrdown_5f_NoFullyHadronicDecays_13TeV-powheg/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM           tree_13TeV_tbarW_twfsrdown
 
 ###### Drell Yan
 
+#400    /DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM      tree_13TeV_dy50inf       dataset=DY
 
-#400    /DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v2/MINIAODSIM      tree_13TeV_dy50inf       
+#400     /DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM      tree_13TeV_dy50inf_lo
 
-#400     /DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14_ext1-v1/MINIAODSIM      tree_13TeV_dy50inf_lo     
+#400    /DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM          tree_13TeV_dy1050_lo
 
 
-#400      /DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM        tree_13TeV_dy1050     
+#400    /DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v2/MINIAODSIM          tree_13TeV_dy1050      dataset=DY
+
+#400    /Z1jet_ZToLL1J_TuneCUETP8M2T4_13TeV_powheg_minlo_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v3/MINIAODSIM      tree_13TeV_dy50inf_pow       dataset=DY
+
+#400     /Z1jet_ZToEE1J_TuneCUETP8M2T4_13TeV_powheg_minlo_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM       tree_13TeV_dy50inf_ee_pow       dataset=DY
+
+#400     /Z1jet_ZToTauTau1J_TuneCUETP8M2T4_13TeV_powheg_minlo_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM       tree_13TeV_dy50inf_tt_pow       dataset=DY
   
 ######  W Jets
 
@@ -184,10 +407,10 @@
 
 ####### VV
 
-#100    /ZZ_TuneCUETP8M1_13TeV-pythia8/RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM        tree_13TeV_zz           
+#100    /ZZ_TuneCUETP8M1_13TeV-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM        tree_13TeV_zz           
 
-#100    /WZ_TuneCUETP8M1_13TeV-pythia8/RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM         tree_13TeV_wz          
+#100    /WZ_TuneCUETP8M1_13TeV-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM         tree_13TeV_wz          
 
-#100    /WW_TuneCUETP8M1_13TeV-pythia8/RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM         tree_13TeV_ww          
+#100    /WW_TuneCUETP8M1_13TeV-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM         tree_13TeV_ww          
 
  
