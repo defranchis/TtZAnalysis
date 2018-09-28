@@ -13,6 +13,7 @@ l1 = f1.read().splitlines()
 inFile = ROOT.TFile('toys.root','READ')
 
 massFit = True
+preliminary = False
 
 # h = inFile.FindObjectAny('top mass _pull')
 # print h.GetMean(), h.GetRMS()
@@ -71,7 +72,7 @@ latexLabel2.SetNDC()
 
 latexLabel3 = ROOT.TLatex()
 latexLabel3.SetTextSize(0.04)
-# latexLabel3.SetTextFont(42)
+latexLabel3.SetTextFont(42)
 latexLabel3.SetNDC()
 
 
@@ -229,16 +230,22 @@ for i in range(0,len(name_btag)):
 
 
 for i in range(0,len(name_mod)):
+    
+    temp_name=name_mod[i]
+    temp_name = str( TString(temp_name).ReplaceAll('ttbar','t#bar{t}') )
+    temp_name = str( TString(temp_name).ReplaceAll('Top pT','top quark p_{T}') )
+    temp_name = str( TString(temp_name).ReplaceAll('fragmentation','fragm. Bowler-Lund') )
+
     histo_mod.Fill(i,pull_mod[i])
-    histo_mod.GetXaxis().SetBinLabel(i+1,name_mod[i])
+    histo_mod.GetXaxis().SetBinLabel(i+1,temp_name)
     histo_mod.SetBinError(i+1,constraint_mod[i])
 
     histo_stat_mod.Fill(i,pull_mod[i])
-    histo_stat_mod.GetXaxis().SetBinLabel(i+1,name_mod[i])
+    histo_stat_mod.GetXaxis().SetBinLabel(i+1,temp_name)
     histo_stat_mod.SetBinError(i+1,(constraint_mod[i]**2+stat_toys_mod[i]**2)**.5)
 
     histo_central_mod.Fill(i,central_toys_mod[i])
-    histo_central_mod.GetXaxis().SetBinLabel(i+1,name_mod[i])
+    histo_central_mod.GetXaxis().SetBinLabel(i+1,temp_name)
     histo_central_mod.SetBinError(i+1,0.)
 
 if not os.path.exists('summaryPlotsToys'):
@@ -500,6 +507,7 @@ line_down_mod.Draw('same')
 histo_mod.Draw('psameE1')
 
 latexLabel1.DrawLatex(0.11, 0.92, "CMS")
+if preliminary: latexLabel3.DrawLatex(0.2, 0.92 , "#it{Preliminary}")
 latexLabel2.DrawLatex(0.70, 0.92, "35.9 fb^{-1} (13 TeV)")
 latexLabel2.DrawLatex(0.62, 0.83, "modelling uncertainties")
 
