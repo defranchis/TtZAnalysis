@@ -11,12 +11,12 @@ $?cfg
 
 [end - plotterControlPlot]
  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  
-[textBoxes - boxes]
+ $ [textBoxes - boxes]
 
-    externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
-    externalMarker = CMSPaperSplit03Left13TeV
+ $     externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
+ $     externalMarker = CMSPaperSplit03Left13TeV
 
-[end - textBoxes]
+ $ [end - textBoxes]
 
  [legendStyle]
 
