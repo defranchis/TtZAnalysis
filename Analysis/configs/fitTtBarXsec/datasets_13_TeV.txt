@@ -102,25 +102,10 @@ $plots for datasets
 
 [ 13TeV ]
 
-   emu_13TeV_172.5_nominal_syst.ztop | total 0,0 b-jets step 8        $$these should include 3+ bjets events DXi zero jets zero bjets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | total 0,0 b-jets step 8   
    emu_13TeV_172.5_nominal_syst.ztop | lead jet pt 0,1 b-jets step 8
    emu_13TeV_172.5_nominal_syst.ztop | second jet pt 0,2 b-jets step 8
    emu_13TeV_172.5_nominal_syst.ztop | third jet pt 0,3 b-jets step 8
-
-$   emu_13TeV_172.5_nominal_syst.ztop | total 0,0 b-jets step 8 $$these should include 3+ bjets events
-$   emu_13TeV_172.5_nominal_syst.ztop | total 0,1 b-jets step 8
-$   emu_13TeV_172.5_nominal_syst.ztop | total 0,2 b-jets step 8
-$   emu_13TeV_172.5_nominal_syst.ztop | total 0,3 b-jets step 8
-
-   $ mumu_13TeV_172.5_nominal_syst.ztop | total 0,0 b-jets step 8 $$these should include 3+ bjets events mll zero jets zero bjets step 8
-   $ mumu_13TeV_172.5_nominal_syst.ztop | total 0,1 b-jets step 8
-   $ mumu_13TeV_172.5_nominal_syst.ztop | total 0,2 b-jets step 8
-   $ mumu_13TeV_172.5_nominal_syst.ztop | total 0,3 b-jets step 8
-
-   $ ee_13TeV_172.5_nominal_syst.ztop | total 0,0 b-jets step 8 $$these should include 3+ bjets events
-   $ ee_13TeV_172.5_nominal_syst.ztop | total 0,1 b-jets step 8
-   $ ee_13TeV_172.5_nominal_syst.ztop | total 0,2 b-jets step 8
-   $ ee_13TeV_172.5_nominal_syst.ztop | total 0,3 b-jets step 8
 
 
 bjet++
@@ -130,30 +115,15 @@ bjet++
    emu_13TeV_172.5_nominal_syst.ztop | second jet pt 1,2 b-jets step 8
    emu_13TeV_172.5_nominal_syst.ztop | third jet pt 1,3 b-jets step 8 
 
-$   mumu_13TeV_172.5_nominal_syst.ztop | total 1,0 b-jets step 8
-$   mumu_13TeV_172.5_nominal_syst.ztop | lead jet pt 1,1 b-jets step 8
-$   mumu_13TeV_172.5_nominal_syst.ztop | second jet pt 1,2 b-jets step 8
-$   mumu_13TeV_172.5_nominal_syst.ztop | third jet pt 1,3 b-jets step 8
-
-$   ee_13TeV_172.5_nominal_syst.ztop | total 1,0 b-jets step 8
-$   ee_13TeV_172.5_nominal_syst.ztop | lead jet pt 1,1 b-jets step 8
-$   ee_13TeV_172.5_nominal_syst.ztop | second jet pt 1,2 b-jets step 8
-$   ee_13TeV_172.5_nominal_syst.ztop | third jet pt 1,3 b-jets step 8
-
-$   emu_13TeV_172.5_nominal_syst.ztop | total 1,0 b-jets step 8
-$   emu_13TeV_172.5_nominal_syst.ztop | total 1,1 b-jets step 8
-$   emu_13TeV_172.5_nominal_syst.ztop | total 1,2 b-jets step 8
-$   emu_13TeV_172.5_nominal_syst.ztop | total 1,3 b-jets step 8
-
    mumu_13TeV_172.5_nominal_syst.ztop | total 1,0 b-jets step 8
-   mumu_13TeV_172.5_nominal_syst.ztop | total 1,1 b-jets step 8
-   mumu_13TeV_172.5_nominal_syst.ztop | total 1,2 b-jets step 8
-   mumu_13TeV_172.5_nominal_syst.ztop | total 1,3 b-jets step 8
+   mumu_13TeV_172.5_nominal_syst.ztop | lead jet pt 1,1 b-jets step 8
+   mumu_13TeV_172.5_nominal_syst.ztop | second jet pt 1,2 b-jets step 8
+   mumu_13TeV_172.5_nominal_syst.ztop | third jet pt 1,3 b-jets step 8
 
    ee_13TeV_172.5_nominal_syst.ztop | total 1,0 b-jets step 8
-   ee_13TeV_172.5_nominal_syst.ztop | total 1,1 b-jets step 8
-   ee_13TeV_172.5_nominal_syst.ztop | total 1,2 b-jets step 8
-   ee_13TeV_172.5_nominal_syst.ztop | total 1,3 b-jets step 8
+   ee_13TeV_172.5_nominal_syst.ztop | lead jet pt 1,1 b-jets step 8
+   ee_13TeV_172.5_nominal_syst.ztop | second jet pt 1,2 b-jets step 8
+   ee_13TeV_172.5_nominal_syst.ztop | third jet pt 1,3 b-jets step 8
 
 
 bjet++
@@ -161,38 +131,23 @@ bjet++
    emu_13TeV_172.5_nominal_syst.ztop | total 2,0 b-jets step 8
    emu_13TeV_172.5_nominal_syst.ztop | lead jet pt 2,1 b-jets step 8
    emu_13TeV_172.5_nominal_syst.ztop | second jet pt 2,2 b-jets step 8
-   emu_13TeV_172.5_nominal_syst.ztop | total 2,3 b-jets step 8 $third jet pt 2,3 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | total 2,3 b-jets step 8
 
    mumu_13TeV_172.5_nominal_syst.ztop | total 2,0 b-jets step 8
    mumu_13TeV_172.5_nominal_syst.ztop | lead jet pt 2,1 b-jets step 8
    mumu_13TeV_172.5_nominal_syst.ztop | second jet pt 2,2 b-jets step 8
-   mumu_13TeV_172.5_nominal_syst.ztop | total 2,3 b-jets step 8 $third jet pt 2,3 b-jets step 8
+   mumu_13TeV_172.5_nominal_syst.ztop | total 2,3 b-jets step 8
+
+   ee_13TeV_172.5_nominal_syst.ztop | total 2,0 b-jets step 8 
+   ee_13TeV_172.5_nominal_syst.ztop | lead jet pt 2,1 b-jets step 8
+   ee_13TeV_172.5_nominal_syst.ztop | second jet pt 2,2 b-jets step 8
+   ee_13TeV_172.5_nominal_syst.ztop | total 2,3 b-jets step 8 
 
    $ smu_13TeV_172.5_nominal_syst.ztop | total 2,0 b-jets step 8
    $ smu_13TeV_172.5_nominal_syst.ztop | lead jet pt 2,1 b-jets step 8
    $ smu_13TeV_172.5_nominal_syst.ztop | second jet pt 2,2 b-jets step 8
    $ smu_13TeV_172.5_nominal_syst.ztop | third jet pt 2,3 b-jets step 8
 
-
-   ee_13TeV_172.5_nominal_syst.ztop | total 2,0 b-jets step 8$m_lb min fine 2,0 b-jets step 8
-   ee_13TeV_172.5_nominal_syst.ztop | lead jet pt 2,1 b-jets step 8
-   ee_13TeV_172.5_nominal_syst.ztop | second jet pt 2,2 b-jets step 8
-   ee_13TeV_172.5_nominal_syst.ztop | total 2,3 b-jets step 8 $third jet pt 2,3 b-jets step 8
-
-$   emu_13TeV_172.5_nominal_syst.ztop | total 2,0 b-jets step 8
-$   emu_13TeV_172.5_nominal_syst.ztop | total 2,1 b-jets step 8
-$   emu_13TeV_172.5_nominal_syst.ztop | total 2,2 b-jets step 8
-$   emu_13TeV_172.5_nominal_syst.ztop | total 2,3 b-jets step 8
-
-$   mumu_13TeV_172.5_nominal_syst.ztop | total 2,0 b-jets step 8
-$   mumu_13TeV_172.5_nominal_syst.ztop | total 2,1 b-jets step 8
-$   mumu_13TeV_172.5_nominal_syst.ztop | total 2,2 b-jets step 8
-$   mumu_13TeV_172.5_nominal_syst.ztop | total 2,3 b-jets step 8
-
-$   ee_13TeV_172.5_nominal_syst.ztop | total 2,0 b-jets step 8
-$   ee_13TeV_172.5_nominal_syst.ztop | total 2,1 b-jets step 8
-$   ee_13TeV_172.5_nominal_syst.ztop | total 2,2 b-jets step 8
-$   ee_13TeV_172.5_nominal_syst.ztop | total 2,3 b-jets step 8
 
 
 [ end - 13TeV ]
