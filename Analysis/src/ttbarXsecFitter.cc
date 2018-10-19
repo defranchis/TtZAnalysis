@@ -1353,7 +1353,8 @@ histoStack ttbarXsecFitter::applyParametersToStack(const histoStack& stack, size
 	tmpvar *= multi ; //add xsec and lumi
 	tmpvar *= datasets_.at(datasetidx).acceptance() ; //in case this wasnt a unfold histo
 	tmpvar *= datasets_.at(datasetidx).eps_emu() ;//to get right reco
-	tmpvar *= datasets_.at(datasetidx).omega_b(bjetcat); //add bjet norm
+        if (mlbCrossCheck_) tmpvar *= integral;
+        else tmpvar *= datasets_.at(datasetidx).omega_b(bjetcat); //add bjet norm
 
 	//get part of b-jet norm
 	extendedVariable subpart;
