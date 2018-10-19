@@ -222,6 +222,10 @@ invokeApplication(){
                                 else if (stack.getName() == "third jet pt 0,3 b-jets step 8") stack = stack.rebinXToBinning({30,60,200});
                                 else if (stack.getName() == "m_lb min step 8") stack = stack.rebinXToBinning({20,50,75,105,130,160});
 
+                                else if (stack.getName() == "lead lepton pt step 8") stack = stack.cutLeft(20-0.1);
+                                else if (stack.getName() == "seclead lepton pt step 8") stack = stack.cutLeft(20-0.1);
+
+
 				plotterControlPlot pl;
 				//plotterControlPlot::debug=true;
 				//histoStack::debug=true;
