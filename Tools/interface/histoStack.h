@@ -177,6 +177,8 @@ public:
 	histoStack rebinXToBinning(const std::vector<float> &)const;
 	histoStack rebinYToBinning(const std::vector<float> &)const;
 
+	histoStack cutLeft(const float & )const;
+	histoStack cutRight(const float & )const;
 
 	histoStack operator + ( const histoStack& );
 	histoStack operator - ( const histoStack& );

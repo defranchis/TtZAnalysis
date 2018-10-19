@@ -1545,6 +1545,37 @@ histoStack histoStack::rebinYToBinning(const std::vector<float> & newbins)const{
 	return out;
 }
 
+histoStack histoStack::cutLeft(const float & cut)const{
+
+	histoStack out=*this;
+	for(size_t i=0;i<containers_.size();i++)
+            out.containers_.at(i)=containers_.at(i).cutLeft(cut);
+
+	// for(size_t i=0;i<containers2D_.size();i++)
+	// 	out.containers2D_.at(i)=containers2D_.at(i).cutLeftX(cut);
+
+	// for(size_t i=0;i<containers1DUnfold_.size();i++)
+	// 	out.containers1DUnfold_.at(i)=containers1DUnfold_.at(i).cutLeft(cut);
+
+	return out;
+}
+
+histoStack histoStack::cutRight(const float & cut)const{
+
+	histoStack out=*this;
+	for(size_t i=0;i<containers_.size();i++)
+            out.containers_.at(i)=containers_.at(i).cutRight(cut);
+
+	// for(size_t i=0;i<containers2D_.size();i++)
+	// 	out.containers2D_.at(i)=containers2D_.at(i).cutRightX(cut);
+
+	// for(size_t i=0;i<containers1DUnfold_.size();i++)
+	// 	out.containers1DUnfold_.at(i)=containers1DUnfold_.at(i).cutRight(cut);
+
+	return out;
+}
+
+
 
 //just perform functions on the containers with same names
 ztop::histoStack histoStack::operator + (const histoStack& stackin){
