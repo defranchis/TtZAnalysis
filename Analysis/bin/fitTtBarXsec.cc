@@ -45,7 +45,7 @@ invokeApplication(){
 	const bool fitsystematics =! parser->getOpt<bool>("-nosyst",false,"removes systematics");
 	const bool onlyemu = parser->getOpt<bool>("-emu",false,"fit only emu channel");
 	const bool onlytotalerror = parser->getOpt<bool>("-onlytotal",false,"no syst breakdown");
-	const bool onlycontrolplots = parser->getOpt<bool>("-onlycontrol",false,"only control plots");
+	const bool docontrolplots = parser->getOpt<bool>("-controlplots",false,"only control plots");
 	const bool nominos = parser->getOpt<bool>("-nominos",false,"switches off systematics breakdown");
 	const float topmass = parser->getOpt<float>("-topmass",0,"Set top mass");
 	const bool tmpcheck = parser->getOpt<bool>("M",false,"top mass fit");
@@ -132,7 +132,7 @@ invokeApplication(){
 	mainfitter.readInput((fullcfgpath+inputconfig).Data());
 	std::cout << "Input file sucessfully read. Free for changes." << std::endl;
 
-	if(onlycontrolplots){
+	if(docontrolplots){
 
 		//get list of input files, fast brute force -> can be changed since input is read by
 		// fitter before, now
@@ -270,7 +270,7 @@ invokeApplication(){
 		}
 
                 if(npseudoexp>1 || nToys > 1) return 0;
-	} //onlycontrolplots
+	} //docontrolplots
 
 
 	//simpleFitter::printlevel=-1; //for now
