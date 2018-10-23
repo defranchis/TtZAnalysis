@@ -12,14 +12,15 @@ $?cfg
 
  [legendStyle]
 
-    x0  =  0.3
-	y0  =  0.65
-	x1  =  0.86
+        x0  =  0.28
+$	y0  =  0.52
+	y0  =  0.68
+	x1  =  0.88
 	y1  =  0.88
 
 	
-	nColumns        = 2
-	columnSeparator = 0.05
+	nColumns        = 3
+	columnSeparator = 0.01
 
 [end legendStyle]
 

@@ -181,7 +181,17 @@ invokeApplication(){
 		//get files
 
 		for(size_t file=0;file<filestoprocess.size();file++){
-			TString ctrplotsoutir=outfile+"_controlPlots"+file;
+                        TString channel_cp = "emu";
+                        if ( ((TString)filestoprocess.at(file)).BeginsWith("ee_") ){
+                            specialplotsfile=cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_controlplots_ee.txt";
+                            channel_cp = "ee";
+                        }
+                        else if ( ((TString)filestoprocess.at(file)).BeginsWith("mumu_") ){
+                            specialplotsfile=cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_controlplots_mumu.txt";
+                            channel_cp = "mumu";
+                        }
+
+			TString ctrplotsoutir=outfile+"_controlPlots_"+channel_cp;
 			//ctrplotsoutir+="_"+datasets.at(file);
 			system(((TString)"mkdir -p " +ctrplotsoutir).Data());
 			histoStackVector vec;
