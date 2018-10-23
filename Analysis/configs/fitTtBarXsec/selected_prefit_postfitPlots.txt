@@ -435,3 +435,15 @@ $
                  yaxis.max      = 48
       [end plotStyle]
 [end - controlplot]
+
+[plot - m_lb min step 8]
+
+       [plotterControlPlot]
+       nolegend = false
+       [end - plotterControlPlot]
+       [textBoxes - boxes]
+          externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
+          externalMarker = CMSPaperSplit03Left13TeVemu
+       [end - textBoxes]
+
+[end - additional plots]
