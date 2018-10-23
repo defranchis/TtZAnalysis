@@ -605,7 +605,7 @@ invokeApplication(){
                         dir+=mainfitter.datasetName(ndts).Data();
                         system(("mkdir -p "+dir).data());
                         dir+="/";
-                        mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots.txt",dir);
+                        mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots_mumu.txt",dir);
                     }
                     for(size_t ndts=0;ndts<mainfitter.nDatasets();ndts++){
                         std::string infile="ee_";
@@ -616,7 +616,7 @@ invokeApplication(){
                         dir+=mainfitter.datasetName(ndts).Data();
                         system(("mkdir -p "+dir).data());
                         dir+="/";
-                        mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots.txt",dir);
+                        mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots_ee.txt",dir);
                     }
                 }
 	}
