@@ -251,7 +251,7 @@ invokeApplication(){
 				size_t datasetidx=mainfitter.getDatasetIndex(datasets.at(file).data() );
 				mainfitter.addUncertainties(&stack, datasetidx);
                                 for (TString m_syst : stack.getSystNameList()){
-                                    if (m_syst.BeginsWith("BG_")){
+                                    if (m_syst.BeginsWith("BG_") || m_syst=="TOPMASS" || (m_syst=="TT_GENMCATNLO"&&(!tmpcheck))){
                                         stack.removeError(m_syst+"_up");
                                         stack.removeError(m_syst+"_down");
                                         if (debug) std::cout<<"removed systematics "<<m_syst<<" from control plots"<<std::endl;
