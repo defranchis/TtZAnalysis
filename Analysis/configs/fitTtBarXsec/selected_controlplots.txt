@@ -424,17 +424,15 @@ defaultStyle = src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_standa
        [end - textBoxes]
        [legendStyle]
 
-        x0  =  0.3
-        y0  =  0.65
-        x1  =  0.86
-        y1  =  0.88
+                x0  =  0.30
+                y0  =  0.68
+                x1  =  0.88
+                y1  =  0.88
 
-
-        nColumns        = 2
-        columnSeparator = 0.05
+                nColumns        = 3
+                columnSeparator = 0.01
 
         [end legendStyle]
-
 
 
 [plot - m_lb min coarse 1;2 b-jets step 8]
@@ -450,17 +448,15 @@ defaultStyle = src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_standa
        [end - textBoxes]
        [legendStyle]
 
-        x0  =  0.3
-        y0  =  0.65
-        x1  =  0.86
-        y1  =  0.88
+                x0  =  0.30
+                y0  =  0.68
+                x1  =  0.88
+                y1  =  0.88
 
-
-        nColumns        = 2
-        columnSeparator = 0.05
+                nColumns        = 3
+                columnSeparator = 0.01
 
         [end legendStyle]
-
 
 
 
@@ -477,17 +473,15 @@ defaultStyle = src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_standa
        [end - textBoxes]
        [legendStyle]
 
-        x0  =  0.3
-        y0  =  0.65
-        x1  =  0.86
-        y1  =  0.88
+                x0  =  0.30
+                y0  =  0.68
+                x1  =  0.88
+                y1  =  0.88
 
+                nColumns        = 3
+                columnSeparator = 0.01
 
-        nColumns        = 2
-        columnSeparator = 0.05
-
-        [end legendStyle]
-
+       [end legendStyle]
 
 
 [plot - m_lb min coarse 2;1 b-jets step 8]
