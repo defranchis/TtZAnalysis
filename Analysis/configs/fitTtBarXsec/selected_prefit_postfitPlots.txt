@@ -353,6 +353,9 @@ $
                 columnSeparator = 0.01
 
         [end legendStyle]
+        [plotStyle - Ratio]
+                xaxis.name = m_{l\:\mathrm{b}}^{\mathrm{min}} \: [\mathrm{GeV}]
+        [end plotStyle]
 
 [end - controlplot]
 
@@ -379,6 +382,9 @@ $
                 columnSeparator = 0.01
 
         [end legendStyle]
+        [plotStyle - Ratio]
+                xaxis.name = m_{l\:\mathrm{b}}^{\mathrm{min}} \: [\mathrm{GeV}]
+        [end plotStyle]
 
 [end - controlplot]
 
@@ -406,6 +412,9 @@ $
                 columnSeparator = 0.01
 
         [end legendStyle]
+        [plotStyle - Ratio]
+                xaxis.name = m_{l\:\mathrm{b}}^{\mathrm{min}} \: [\mathrm{GeV}]
+        [end plotStyle]
 
 [end - controlplot]
 
@@ -419,6 +428,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVemu21
        [end - textBoxes]
+        [plotStyle - Ratio]
+                xaxis.name = m_{l\:\mathrm{b}}^{\mathrm{min}} \: [\mathrm{GeV}]
+        [end plotStyle]
 [end - controlplot]
 
 
@@ -434,6 +446,9 @@ $
       [plotStyle - Upper]
                  yaxis.max      = 48
       [end plotStyle]
+        [plotStyle - Ratio]
+                xaxis.name = m_{l\:\mathrm{b}}^{\mathrm{min}} \: [\mathrm{GeV}]
+        [end plotStyle]
 [end - controlplot]
 
 [plot - m_lb min step 8]
@@ -445,5 +460,8 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVemu
        [end - textBoxes]
+        [plotStyle - Ratio]
+                xaxis.name = m_{l\:\mathrm{b}}^{\mathrm{min}} \: [\mathrm{GeV}]
+        [end plotStyle]
 
 [end - additional plots]
