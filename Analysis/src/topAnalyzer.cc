@@ -71,8 +71,9 @@ topAnalyzer::topAnalyzer():basicAnalyzer(){
 	///set defaults for SF
 	pdfweighter_.switchOff(true); //switch off as default
 	fakedata_startentries_=0.9;
-
-
+        doKinReco_ = false;
+        kinReco_ = 0;
+        kinRecoSF_ = 0;
 }
 /**
  * takes care of not already deleted containers etc
@@ -232,6 +233,10 @@ float topAnalyzer::createNormalizationInfo(TFile *f, bool isMC,size_t anaid,bool
 }
 
 
+void topAnalyzer::setKinReco(KinematicReconstruction * kinReco, KinematicReconstructionScaleFactors * kinRecoSF){
+    kinReco_ = kinReco;
+    kinRecoSF_ = kinRecoSF;
+}
 
 
 

@@ -9,6 +9,12 @@
 #include "TtZAnalysis/Tools/interface/applicationMainMacro.h"
 
 #include "TopAnalysis/ZTopUtils/interface/version.h"
+
+#include "../interface/sampleHelpers.h"
+#include "../interface/KinematicReconstruction.h"
+#include "../interface/KinematicReconstructionSolution.h"
+
+
 //#include "Analyzer.cc"
 //should be taken care of by the linker!
 
@@ -43,6 +49,8 @@ invokeApplication(){
 	const bool interactive = parser->getOpt<bool>      ("I",false,"enable interactive mode: no fork limit");
 
 	float fakedatastartentries = parser->getOpt<float>    ("-startdiv",0.9,"point to start fake data entries wrt to to evts");
+
+	const bool doKinReco = parser->getOpt<bool>      ("-kinReco",false,"perform kinematic reconstruction");        
 
 	bool createLH=false;
 	if(discrfile.length()<1)
@@ -222,6 +230,15 @@ invokeApplication(){
 	ana->getTriggerSF()->setInput(trigsffile,trigsfhisto);
         ana->getTriggerBGSF()->setInput(trigsffile,trigsfhisto);
         ana->getJERAdjuster()->setSystematics("def_2016");
+
+        ana->setDoKinReco(doKinReco);
+        if (doKinReco){
+            std::vector<TString> channels {channel};
+            KinematicReconstruction * kinReco = new KinematicReconstruction(Era::run2_13tev_2016_25ns, 0, true); // era, min b-tags, prefer b-tags
+            KinematicReconstructionScaleFactors * kinRecoSF = new KinematicReconstructionScaleFactors(Era::run2_13tev_2016_25ns,Channel::convert(channels),Systematic::Systematic(Syst));
+            kinRecoSF->prepareChannel(Channel::convert(channel));
+            ana->setKinReco(kinReco, kinRecoSF);
+        }
 
 	if(elecEnsffile.EndsWith("DEFFILEWILDCARDDONTREMOVE")){
 		if(energy == "7TeV" || energy == "8TeV")

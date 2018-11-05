@@ -68,6 +68,8 @@
 #include "../interface/tBranchHandler.h"
 
 #include "basicAnalyzer.h"
+#include "../interface/KinematicReconstruction.h"
+#include "../interface/KinematicReconstructionSolution.h"
 
 namespace ztop{class NTEvent;}
 
@@ -176,7 +178,8 @@ public:
 
 	void setIsSignalMerged(bool isMerged){isSignalMerged_=isMerged;}
 
-
+        void setDoKinReco(bool doKinReco){doKinReco_=doKinReco;}
+        void setKinReco(KinematicReconstruction * kinReco, KinematicReconstructionScaleFactors * kinRecoSF);
 
 	int start();
 	//  void start(TString);
@@ -267,7 +270,9 @@ protected:
 
 	float fakedata_startentries_;
 
-
+        bool doKinReco_;
+        KinematicReconstruction * kinReco_;
+        KinematicReconstructionScaleFactors * kinRecoSF_;
 
 };
 }
