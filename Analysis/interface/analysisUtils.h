@@ -33,6 +33,10 @@ namespace common{
 
     /// Conversion from our VLV type to vector of TLorentzVector (std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >)
     const std::vector<TLorentzVector> VLVtoVTLV(const VLV& vlv);
+
+
+    /// Conversion from vector of TLorentzVector to vector of VLV
+    const VLV VTLVtoVLV(const std::vector<TLorentzVector> vtlv);
 }
 
 

@@ -75,6 +75,19 @@ const std::vector<TLorentzVector> common::VLVtoVTLV(const VLV& vlv)
 }
 
 
+const VLV common::VTLVtoVLV(const std::vector<TLorentzVector> vtlv)
+{
+  VLV result;
+
+  for(unsigned int i = 0; i < vtlv.size(); i++){
+    LV lv; lv.SetXYZT(vtlv[i].X(), vtlv[i].Y(), vtlv[i].Z(), vtlv[i].T());
+    result.push_back(lv);
+  }
+
+  return result;
+}
+
+
 
 
 // --- Functions concerning the treatment of indices of vectors (for working with data stored in nTuple branches) -------------
