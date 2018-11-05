@@ -3,9 +3,300 @@
            0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
 [end - textBoxes]
 
+[textBoxes - CMSPaperSplit03Left13TeVemu]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.38,   0.943,  e#mu channel,   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVemu00]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  0 b tags  0 add. jets  (e#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVemu01]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  0 b tags  1 add. jet  (e#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVemu02]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  0 b tags  2 add. jets  (e#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVemu03]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  0 b tags  3 add. jets  (e#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVemu10]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  1 b tag  0 add. jets  (e#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVemu11]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  1 b tag  1 add. jet  (e#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVemu12]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  1 b tag  2 add. jets  (e#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVemu13]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  1 b tag  3 add. jets  (e#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+
+[textBoxes - CMSPaperSplit03Left13TeVemu20]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  2 b tags  0 add. jets  (e#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVemu21]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  2 b tags  1 add. jet  (e#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVemu22]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  2 b tags  2 add. jets  (e#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVemu23]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  2 b tags  3 add. jets  (e#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+
+[textBoxes - CMSPaperSplit03Left13TeVee]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.38,   0.943,  ee channel,   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+
+[textBoxes - CMSPaperSplit03Left13TeVee00]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  0 b tags  0 add. jets  (ee),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVee01]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  0 b tags  1 add. jet  (ee),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVee02]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  0 b tags  2 add. jets  (ee),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVee03]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  0 b tags  3 add. jets  (ee),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+
+[textBoxes - CMSPaperSplit03Left13TeVee10]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  1 b tag  0 add. jets  (ee),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVee11]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  1 b tag  1 add. jet  (ee),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVee12]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  1 b tag  2 add. jets  (ee),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVee13]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  1 b tag  3 add. jets  (ee),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+
+[textBoxes - CMSPaperSplit03Left13TeVee20]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  2 b tags  0 add. jets  (ee),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVee21]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  2 b tags  1 add. jet  (ee),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVee22]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  2 b tags  2 add. jets  (ee),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVee23]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  2 b tags  3 add. jets  (ee),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+
+[textBoxes - CMSPaperSplit03Left13TeVmumu]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.38,   0.943,  #mu#mu channel,   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+
+[textBoxes - CMSPaperSplit03Left13TeVmumu00]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  0 b tags  0 add. jets  (#mu#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVmumu01]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  0 b tags  1 add. jet  (#mu#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVmumu02]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  0 b tags  2 add. jets  (#mu#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVmumu03]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  0 b tags  3 add. jets  (#mu#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+
+[textBoxes - CMSPaperSplit03Left13TeVmumu10]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  1 b tag  0 add. jets  (#mu#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVmumu11]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  1 b tag  1 add. jet  (#mu#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVmumu12]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  1 b tag  2 add. jets  (#mu#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVmumu13]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  1 b tag  3 add. jets  (#mu#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+
+[textBoxes - CMSPaperSplit03Left13TeVmumu20]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  2 b tags  0 add. jets  (#mu#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVmumu21]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  2 b tags  1 add. jet  (#mu#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVmumu22]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  2 b tags  2 add. jets  (#mu#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+[textBoxes - CMSPaperSplit03Left13TeVmumu23]
+           0.185,   0.85,   CMS,   0.06, 61, 11
+           0.58,   0.943,  2 b tags  3 add. jets  (#mu#mu),   0.048,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+
+
+
+
 [textBoxes - CMSPaperSplit03Left13TeVWIP]
            0.185,   0.85,   CMS,   0.06, 61, 11
 	   0.185,   0.79,   Work in progress,   0.0456, 52, 11
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+[end - textBoxes]
+
+[textBoxes - CMSPASSplit03Left13TeV]
+           0.23,   0.943,   CMS,   0.06, 61, 11
+	   0.33,   0.943,   Preliminary,   0.0456, 52, 11
            0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
 [end - textBoxes]
 

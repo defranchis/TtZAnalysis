@@ -16,7 +16,7 @@ namespace ztop{
 
 plotterControlPlot::plotterControlPlot(): plotterBase(), divideat_(0),
 		stackp_(0),/*tempdataentry_(0),*/invertplots_(false),psmigthresh_(0),yspacemulti_(1.3),mcsysstatleg_(true),nolegend_(false),
-		systlabel_("MC syst+stat"){
+		systlabel_("Syst"){
 
 	readStyleFromFileInCMSSW("/src/TtZAnalysis/Tools/styles/controlPlots_standard.txt");
 	gStyle->SetOptStat(0);
@@ -324,7 +324,7 @@ void plotterControlPlot::drawControlPlot(){
 		if(dataentry==0) firstmccount++;
 
 		std::vector<TString> legendentries;
-		bool foundPSmig=false;
+		// bool foundPSmig=false;
 		if(sorted.size() != usestack->size())
 			throw std::out_of_range("plotterControlPlot::drawControlPlot: serious: sorted.size() != usestack->size()");
 
@@ -382,14 +382,14 @@ void plotterControlPlot::drawControlPlot(){
 							tempcont = usestack->getContainer1DUnfold(i).getBackground();
 							sumcont+=tempcont;
 							histo1D visSig=usestack->getContainer1DUnfold(i).getVisibleSignal();
-							if(tempcont.integral(true) / visSig.integral(true) >psmigthresh_){
+							/*if(tempcont.integral(true) / visSig.integral(true) >psmigthresh_){
 								foundPSmig=true;
 								TH1D * h=addObject(sumcont.getTH1D(usestack->getLegend(i)+" PSmig "+usestack->getName()+"_stack_h",divbbw,true,true)); //no errors
 								mcstylepsmig_.applyContainerStyle(h,false);
 								h->SetFillColor(1);//usestack->colors_.at(i)+5);
 								stackedhistos.push_back(h);
 								legendentries.push_back("");
-							}
+							}*/
 							tempcont = visSig;
 							sumcont+=tempcont;
 							TH1D * hsig=addObject(sumcont.getTH1D(usestack->getLegend(i)+" "+usestack->getName()+"_stack_h",divbbw,true,true));
@@ -451,16 +451,21 @@ void plotterControlPlot::drawControlPlot(){
 		if(corrm_)
 			sumcont.mergeAllErrors("mergederr",false,*corrm_);
 		TG * mcerr=addObject(sumcont.getTGraph(usestack->getName()+"mcerr_cp",divbbw,false,false,false));
+                TG * mcerr_dummy= addObject(sumcont.getTGraph(usestack->getName()+"mcerr_cp",divbbw,false,false,false));
 		mcstyleupper_.applyContainerStyle(mcerr,true);
+                mcstyleratio_.applyContainerStyle(mcerr_dummy,false);
+                mcerr_dummy->SetLineWidth(1);
+                mcerr_dummy->SetLineColor(1);
 		mcerr->GetXaxis()->SetTickLength(0);
 		if(mcsysstatleg_)
 			tmplegp_->AddEntry(mcerr,systlabel_,"f");
-		if(usestack->is1DUnfold() && foundPSmig){ //
+                        tmplegp_->AddEntry(mcerr_dummy,"MC Stat",mcstyleupper_.legendDrawStyle);
+		/*if(usestack->is1DUnfold() && foundPSmig){ //
 			TH1D * dummy=addObject(new TH1D());
 			mcstylepsmig_.applyContainerStyle(dummy,false);
 			dummy->SetFillColor(1);
 			tmplegp_->AddEntry(dummy,"PS migrations",mcstylepsmig_.legendDrawStyle);
-		}
+		}*/
 		mcerr->Draw("same"+mcstyleupper_.sysRootDrawOpt);
 
 		histoContent::addStatCorrelated=tmpaddStatCorrelated;

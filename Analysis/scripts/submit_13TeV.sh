@@ -148,11 +148,45 @@ systs=(
 
 # # ########
 
-    "BTAGH_up"
-    "BTAGH_down"
+    # "BTAGH_up"
+    # "BTAGH_down"
     "BTAGL_up"
     "BTAGL_down"
-    
+
+    "BTAGH_bfragmentation_up"
+    "BTAGH_btempcorr_up"
+    "BTAGH_cb_up"
+    "BTAGH_cfragmentation_up"
+    "BTAGH_dmux_up"
+    "BTAGH_gluonsplitting_up"
+    "BTAGH_jes_up"
+    "BTAGH_jetaway_up"
+    "BTAGH_ksl_up"
+    "BTAGH_l2c_up"
+    "BTAGH_ltothers_up"
+    "BTAGH_mudr_up"
+    "BTAGH_mupt_up"
+    "BTAGH_sampledependence_up"
+    "BTAGH_ptrel_up"
+    "BTAGH_statistic_up"
+
+    "BTAGH_bfragmentation_down"
+    "BTAGH_btempcorr_down"
+    "BTAGH_cb_down"
+    "BTAGH_cfragmentation_down"
+    "BTAGH_dmux_down"
+    "BTAGH_gluonsplitting_down"
+    "BTAGH_jes_down"
+    "BTAGH_jetaway_down"
+    "BTAGH_ksl_down"
+    "BTAGH_l2c_down"
+    "BTAGH_ltothers_down"
+    "BTAGH_mudr_down"
+    "BTAGH_mupt_down"
+    "BTAGH_sampledependence_down"
+    "BTAGH_ptrel_down"
+    "BTAGH_statistic_down"
+     
 # #####csv rew section
 
     "TOPPT_up"

@@ -22,6 +22,7 @@ void analysisPlotsTtbarXsecFit::bookPlots(){
 
 	std::vector<float> bins=histo1D::createBinning(1,0,1);
 	//leadjetpt_plots, secjetpt_plots, thirdjetpt_plots, total_plots;
+	total_0bjets = addPlot(bins,bins,"total 0 b-jets","","Events");
 	total_plots.at(cat_0bjet0jet) = addPlot(bins,bins,"total 0,0 b-jets","","Events");
 	total_plots.at(cat_0bjet1jet) = addPlot(bins,bins,"total 0,1 b-jets","","Events");
 	total_plots.at(cat_0bjet2jet) = addPlot(bins,bins,"total 0,2 b-jets","","Events");
@@ -41,6 +42,7 @@ void analysisPlotsTtbarXsecFit::bookPlots(){
         leadjetpt_plots.at(cat_0bjet1jet) = addPlot(bins,bins,"lead jet pt 0,1 b-jets","p_{T} [GeV]","Events/GeV");
         leadjetpt_plots.at(cat_0bjet2jet) = addPlot(bins,bins,"lead jet pt 0,2 b-jets","p_{T} [GeV]","Events/GeV");
         leadjetpt_plots.at(cat_0bjet3jet) = addPlot(bins,bins,"lead jet pt 0,3 b-jets","p_{T} [GeV]","Events/GeV");
+        leadFwdJetPt = addPlot(bins,bins,"leading forward jet pt","p_{T} [GeV]","Events/GeV");
         bins.clear();
 	bins << 30  << 40 << 50 << 60 << 70 << 80 << 90 << 100 << 120 << 140 << 160 << 200;
 	leadjetpt_plots.at(cat_1bjet0jet) = addPlot(bins,bins,"lead jet pt 1,0 b-jets","p_{T} [GeV]","Events/GeV");
@@ -115,6 +117,10 @@ void analysisPlotsTtbarXsecFit::bookPlots(){
 	//bins=histo1D::createBinning(4,-0.5,3.5);
 	bins=histo1D::createBinning(3,-0.5,2.5);
 	jetmulti_plots.at(cat_2bjet) = addPlot(bins,bins,"jet multi 2x b-jets","","Events");
+
+	bins.clear();
+	bins=histo1D::createBinning(7,-0.5,6.5);
+        FwdJetMulti = addPlot(bins,bins,"forward jet multiplicity","","Events");
 	
 	//agrohsje ht 
 	bins.clear();
@@ -175,6 +181,10 @@ void analysisPlotsTtbarXsecFit::fillPlotsGen(){
 	//only fill one bin in some visible part of the histogram to get the total
 	// n_gen and a nice display of PS migrations
 	if(genvisleptons1.size()>1 && (genvisleptons1.at(0)->pt() > 25 || genvisleptons1.at(1)->pt() > 25  )){
+                total_0bjets->fillGen(0.5,puweight());
+                leadFwdJetPt->fillGen(30.5,puweight());
+                FwdJetMulti->fillGen(0,puweight());
+
 	        for(size_t i=0;i<total_plots.size();i++){
 			total_plots.at(i)->fillGen(0.5,puweight());
 			//agrohsje changed from 20.5 to 30.5 checked with Jan 
@@ -211,6 +221,11 @@ void analysisPlotsTtbarXsecFit::fillPlotsReco(){
 		setJetCategory(nbjets,naddjets);
 		//agrohsje 
 		//if(naddjets==0)
+		if (nbjets==0) total_0bjets->fillReco(0.5,puweight());
+                FwdJetMulti->fillReco(event()->selectedFwdJets->size(),puweight());
+                if (event()->selectedFwdJets->size() > 0)
+                    leadFwdJetPt->fillReco(event()->selectedFwdJets->at(0)->pt(),puweight());
+
 		total_plots.at(jetcategory)->fillReco(0.5,puweight());
 		if(naddjets==1)
 			leadjetpt_plots.at(jetcategory)->fillReco(event()->selectedjets->at(0)->pt(),puweight());

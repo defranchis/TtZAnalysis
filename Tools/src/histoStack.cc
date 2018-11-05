@@ -1545,6 +1545,37 @@ histoStack histoStack::rebinYToBinning(const std::vector<float> & newbins)const{
 	return out;
 }
 
+histoStack histoStack::cutLeft(const float & cut)const{
+
+	histoStack out=*this;
+	for(size_t i=0;i<containers_.size();i++)
+            out.containers_.at(i)=containers_.at(i).cutLeft(cut);
+
+	// for(size_t i=0;i<containers2D_.size();i++)
+	// 	out.containers2D_.at(i)=containers2D_.at(i).cutLeftX(cut);
+
+	// for(size_t i=0;i<containers1DUnfold_.size();i++)
+	// 	out.containers1DUnfold_.at(i)=containers1DUnfold_.at(i).cutLeft(cut);
+
+	return out;
+}
+
+histoStack histoStack::cutRight(const float & cut)const{
+
+	histoStack out=*this;
+	for(size_t i=0;i<containers_.size();i++)
+            out.containers_.at(i)=containers_.at(i).cutRight(cut);
+
+	// for(size_t i=0;i<containers2D_.size();i++)
+	// 	out.containers2D_.at(i)=containers2D_.at(i).cutRightX(cut);
+
+	// for(size_t i=0;i<containers1DUnfold_.size();i++)
+	// 	out.containers1DUnfold_.at(i)=containers1DUnfold_.at(i).cutRight(cut);
+
+	return out;
+}
+
+
 
 //just perform functions on the containers with same names
 ztop::histoStack histoStack::operator + (const histoStack& stackin){
@@ -1885,6 +1916,41 @@ histo1D histoStack::getBackgroundContainer()const{
 			out+=containers1DUnfold_.at(i).getRecoContainer();
 		else
 			out+=containers_.at(i);
+	}
+
+	return out;
+
+}
+std::vector<histo1D> histoStack::getBackgroundContainers()const{
+	if(mode != dim1 && mode !=unfolddim1){
+		throw std::logic_error("histoStack::getBackgroundContainers: only defined for 1D stacks");
+	}
+	std::vector<size_t> sidx=getSignalIdxs();
+        std::vector<histo1D> out;
+	for(size_t i=0;i<legends_.size();i++){
+		if(std::find(sidx.begin(),sidx.end(),i) != sidx.end() || getLegend(i) == dataleg_){
+			continue;
+		}
+		if(mode ==unfolddim1)
+                    out.push_back(containers1DUnfold_.at(i).getRecoContainer());
+		else
+                    out.push_back(containers_.at(i));
+	}
+
+	return out;
+
+}
+std::vector<TString> histoStack::getBackgroundLegends()const{
+	if(mode != dim1 && mode !=unfolddim1){
+		throw std::logic_error("histoStack::getBackgroundLegends: only defined for 1D stacks");
+	}
+	std::vector<size_t> sidx=getSignalIdxs();
+        std::vector<TString> out;
+	for(size_t i=0;i<legends_.size();i++){
+		if(std::find(sidx.begin(),sidx.end(),i) != sidx.end() || getLegend(i) == dataleg_){
+			continue;
+		}
+                out.push_back(getLegend(i));
 	}
 
 	return out;

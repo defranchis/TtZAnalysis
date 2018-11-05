@@ -10,7 +10,7 @@ namespace ztop{
 
 class NTBTagSF : public bTagSFBase{
 public:
-    NTBTagSF():bTagSFBase(true),isMC_(true),mode_(simplereweighting_mode){}
+    NTBTagSF():bTagSFBase(true,true),isMC_(true),mode_(simplereweighting_mode){}
     ~NTBTagSF(){}
 
     enum modes{randomtagging_mode,shapereweighting_mode,simplereweighting_mode};
@@ -37,10 +37,11 @@ public:
 
     void writeToFile(const std::string&); //! creates and writes histograms
     void readFromFile(const std::string&);  //! reads histograms
+    void readReferenceFromFile(const std::string&);  //! reads reference histograms
 
 
 private:
-    NTBTagSF(const ztop::NTBTagSF&rhs):bTagSFBase(true),isMC_(true),mode_(simplereweighting_mode){}
+    NTBTagSF(const ztop::NTBTagSF&rhs):bTagSFBase(true,true),isMC_(true),mode_(simplereweighting_mode){}
     NTBTagSF& operator=(const ztop::NTBTagSF&rhs){return *this;}
 
     bool isMC_;

@@ -9,15 +9,15 @@ $  [parameters-begin] until [parameters-end]
 
 $ inputfile,                       legend entry,        color,   xsection,   legendNumber (for sorting,- allows for gaps),  (opt) isSignal
 
-   tree_13Tev_data_SingleMuon_RunB_SMU.root,                 data,                1,        1,              99
-   tree_13Tev_data_SingleMuon_RunC_SMU.root,                 data,                1,        1,              99
-   tree_13Tev_data_SingleMuon_RunD_SMU.root,                 data,                1,        1,              99
-   tree_13Tev_data_SingleMuon_RunE_SMU.root,                 data,                1,        1,              99
-   tree_13Tev_data_SingleMuon_RunF_v1_SMU.root,                 data,                1,        1,              99
-   tree_13Tev_data_SingleMuon_RunF_v2_SMU.root,                 data,                1,        1,              99
-   tree_13Tev_data_SingleMuon_RunG_SMU.root,                 data,                1,        1,              99
-   tree_13Tev_data_SingleMuon_RunH_v1_SMU.root,                 data,                1,        1,              99
-   tree_13Tev_data_SingleMuon_RunH_v2_SMU.root,                 data,                1,        1,              99
+   tree_13Tev_data_SingleMuon_RunB.root,                 data,                1,        1,              99
+   tree_13Tev_data_SingleMuon_RunC.root,                 data,                1,        1,              99
+   tree_13Tev_data_SingleMuon_RunD.root,                 data,                1,        1,              99
+   tree_13Tev_data_SingleMuon_RunE.root,                 data,                1,        1,              99
+   tree_13Tev_data_SingleMuon_RunF_v1.root,                 data,                1,        1,              99
+   tree_13Tev_data_SingleMuon_RunF_v2.root,                 data,                1,        1,              99
+   tree_13Tev_data_SingleMuon_RunG.root,                 data,                1,        1,              99
+   tree_13Tev_data_SingleMuon_RunH_v1.root,                 data,                1,        1,              99
+   tree_13Tev_data_SingleMuon_RunH_v2.root,                 data,                1,        1,              99
 
 
 $ add tag "_mgbr" if W->lnu BR is 11.104% and not 10.620% 
@@ -30,18 +30,22 @@ $tree_13TeV_emuttbarbg_her.root,        t#bar{t}bg,	   	634,	  831.76,	  1
 
 $Sync.root,           t#bar{t},           633,      831.76,         0,      true
 
+   tree_13TeV_tW_ext.root,                tW/#bar{t}W,          616,      19.47,                  4
+   tree_13TeV_tbarW_ext.root,              tW/#bar{t}W,         616,      19.47,                  4
 
-   tree_13TeV_tW.root,                tW/#bar{t}W,	   	616,	  35.6,	          4
-   tree_13TeV_tbarW.root,	           tW/#bar{t}W,	   	616,	  35.6,	          4
+   tree_13TeV_dy1050.root,                   DY,                  852,      22635.1,        5
+   tree_13TeV_dy50inf_ee_pow.root,           DY,                  852,      1921.8,         5
+   tree_13TeV_dy50inf_tt_pow.root,           DY,                  852,      1921.8,         5
+   tree_13TeV_dy50inf_pow.root,              DY,                  852,      1921.8,         5
 
-   tree_13TeV_dy1050.root,            DY,                  852,      22635.1,        5  
-   tree_13TeV_dy50inf.root,           DY,                  852,      5765.4,         5 
+   $ tree_13TeV_dy50inf.root,           DY,                  852,      5765.4,         5
 
-   tree_13TeV_wjets.root,		   Wjets,		413,	  61526,	  2
+   tree_13TeV_wjets.root,                  Wjets,               413,      61526,          2
 
-   tree_13TeV_ww.root,		   VV,			390,      118.7,   	  3
-   tree_13TeV_wz.root,		   VV,			390,	  47.1,   	  3
-   tree_13TeV_zz.root,		   VV,			390,	  16.5,	          3  
+   tree_13TeV_ww.root,             VV,                  390,      118.7,          3
+   tree_13TeV_wz.root,             VV,                  390,      47.1,           3
+   tree_13TeV_zz.root,             VV,                  390,      16.5,           3
+
 
 [inputfiles-end]
 
@@ -49,7 +53,7 @@ $Sync.root,           t#bar{t},           633,      831.76,         0,      true
 
 [parameters-begin] 
 
-inputFilesDir   = /nfs/dust/cms/user/tarndt/NTuples/Prod_8026/
+inputFilesDir   = /nfs/dust/cms/group/topcmsdesy/ntuple13tev/ttZ_framework/v2/
 
 Lumi            = 35922
 
@@ -69,7 +73,6 @@ ElecTrackingSFHisto = EGamma_SF2D
 
 TriggerSFFile   = /src/TtZAnalysis/Analysis/data/analyse/MuTrigwithUncert.root
 
-$without .root
 $PUFile         = /src/TtZAnalysis/Analysis/data/analyse/Legacy2012.json_PU
 PUFileBtoF      = /src/TtZAnalysis/Analysis/data/analyse/PU_RunBtoF
 PUFileGH        = /src/TtZAnalysis/Analysis/data/analyse/PU_RunGH
@@ -79,7 +82,8 @@ $PUFile         = /src/TtZAnalysis/Analysis/data/analyse/ngoodvtx_data_2015
 $ flat uncertainties of 5/10 % for b/c jets
 $btagSFFile     = /src/TtZAnalysis/Analysis/data/analyse/CSV_8TeV_5unc.csv
 $ prel. 13 TeV btag SFs
-btagSFFile      = /src/TtZAnalysis/Analysis/data/analyse/CSVv2_Moriond17_B_H.csv
+$ btagSFFile      = /src/TtZAnalysis/Analysis/data/analyse/CSVv2_Moriond17_B_H.csv
+btagSFFile      = /src/TtZAnalysis/Analysis/data/analyse/CSVv2_Run2016_mujets_SystematicBreakdown.csv
 btagFile        = btags_74
 
 

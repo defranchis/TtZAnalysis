@@ -247,8 +247,12 @@ invokeApplication(){
 	ana->setOutFileAdd(outfileadd);
 	ana->setOutDir(outdir);
 
+        TString btagreffile = btagfile;
+        btagreffile.ReplaceAll(Syst,"nominal");
+
 	ana->getBTagSF()->setMakeEff(dobtag);
 	ana->setBTagMCEffFile(btagfile);
+	ana->setBTagMCRefEffFile(btagreffile);
 
 	//change
 	ana->getBTagSF()->setMode(NTBTagSF::simplereweighting_mode);
@@ -256,7 +260,7 @@ invokeApplication(){
 	if(energy == "13TeV"){
 		//agrohsje
 		//ana->getBTagSF()->loadSF  (btagSFFile, BTagEntry::OP_MEDIUM,"csvv2","mujets","up","down");
-		ana->getBTagSF()->loadSF  (btagSFFile, BTagEntry::OP_TIGHT,"csvv2_2016","mujets","up","down");
+		ana->getBTagSF()->loadSF  (btagSFFile, btagop,"csvv2_2016","mujets","up","down");
 	}else if (energy == "7TeV" || energy == "8TeV"){
 		if(mode.Contains("Btagloosewp"))
 			btagop=BTagEntry::OP_LOOSE;
@@ -535,6 +539,13 @@ invokeApplication(){
 				ana->getBTagSF()->loadBCSF(btagSFFile, btagop,"csv","mujets","up_PileUp","down_PileUp");
 				ana->getBTagSF()->setSystematics(bTagSFBase::heavyup);}
 		}
+		else if(energy=="13TeV"){
+			if(!dobtag&&!globalbsf){
+				ana->getBTagSF()->loadBCSF(btagSFFile, btagop,"csvv2_2016","mujets","up_pileup","down_pileup");
+				ana->getBTagSF()->setSystematics(bTagSFBase::heavyup);
+                                ana->setBTagMCRefEffFile(btagfile);
+                        }
+		}
 	}
 	else if(Syst=="PU_down"){
                 ana->getPUReweighterBtoF()->setDataTruePUInput(pufileBtoF+"_down.root");
@@ -543,6 +554,13 @@ invokeApplication(){
 			if(!dobtag&&!globalbsf){
 				ana->getBTagSF()->loadBCSF(btagSFFile, btagop,"csv","mujets","up_PileUp","down_PileUp");
 				ana->getBTagSF()->setSystematics(bTagSFBase::heavydown);}
+		}
+		else if(energy=="13TeV"){
+			if(!dobtag&&!globalbsf){
+				ana->getBTagSF()->loadBCSF(btagSFFile, btagop,"csvv2_2016","mujets","up_pileup","down_pileup");
+				ana->getBTagSF()->setSystematics(bTagSFBase::heavydown);
+                                ana->setBTagMCRefEffFile(btagfile);
+                        }
 		}
 	}
 	//btag uncertainties are correlated
@@ -731,10 +749,12 @@ invokeApplication(){
                 ana->addWeightBranch("NTWeight_scaleDown");
         }
         else if(Syst=="TT_FRAG_up"){
-            // already done
+                ana->getAdditionalJEC()->setSystematics("up");
+                ana->getAdditionalJEC()->setVariation(Syst.ReplaceAll("_up",""));
         }
         else if(Syst=="TT_FRAG_down"){
-            // already done
+                ana->getAdditionalJEC()->setSystematics("down");
+                ana->getAdditionalJEC()->setVariation(Syst.ReplaceAll("_down",""));
         }
         else if(Syst=="TT_FRAG_PETERSON_up"){
             // already done
@@ -850,8 +870,9 @@ invokeApplication(){
 			ana->setFilePostfixReplace("ttbarviatau.root","ttbarviatau_mcatnlo.root");
 		}
 		else if(energy=="13TeV"){
-			ana->setFilePostfixReplace("ttbar.root","ttbar_amc_mgbr.root");
-			ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_amc_mgbr.root");
+			ana->setFilePostfixReplace("ttbar.root","ttbar_ext_amc_mgbr.root");
+			ana->setFilePostfixReplace("ttbarbg.root","ttbarbg_ext_amc_mgbr.root");
+                        ana->setIsSignalMerged(true);
 		}
 	}
 	else if(Syst=="TT_GENMCATNLO_down"){

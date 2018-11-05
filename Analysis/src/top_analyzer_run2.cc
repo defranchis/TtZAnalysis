@@ -390,10 +390,13 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		std::cout << "testmode("<< anaid << "): preparing btag SF" << std::endl;
 
 	btagefffile_+="_"+inputfile_;
+	btageffreffile_+="_"+originputfile_;
 	getBTagSF()->setIsMC(isMC);
-	if(!getBTagSF()->getMakeEff())
+	if(!getBTagSF()->getMakeEff()){
 		getBTagSF()->readFromFile(btagefffile_.Data());
-
+                if (isTtbarLike) getBTagSF()->readReferenceFromFile(btageffreffile_.Data());
+                else getBTagSF()->readReferenceFromFile(btagefffile_.Data());
+        }
 	//  if(testmode_)
 	//    std::cout << "testmode(" <<anaid << ") setBtagSmaplename " <<channel_+"_"+btagSysAdd+"_"+toString(inputfile_)).Data() <<std::endl;
 
@@ -1288,6 +1291,20 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 		vector<NTJet*> * selectedjets=&hardjets;// &hardjets;
 
+                vector<NTJet*> selectedFwdJets;
+
+		for(size_t i=0;i<treejets.size();i++){
+
+                    if(!noOverlap(treejets.at(i), isomuons,     0.4)) continue;
+                    if(!noOverlap(treejets.at(i), isoelectrons, 0.4)) continue;
+                    if(fabs(treejets.at(i)->eta())<2.5) continue;
+                    if(fabs(treejets.at(i)->eta())>3.0) continue;
+                    if(treejets.at(i)->pt() < 30) continue;
+                    selectedFwdJets << (treejets.at(i));
+                }
+
+                std::sort(selectedFwdJets.begin(),selectedFwdJets.end(), comparePt<ztop::NTJet*>);
+                evt.selectedFwdJets=&selectedFwdJets;
 
 
 		evt.dphilljjets=&dphilljjets;

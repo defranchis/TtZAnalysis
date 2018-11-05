@@ -6,7 +6,7 @@
 $$ merged name, merged color, contrA, contrB, ...
  
    DY      ,     868, DY#rightarrowll, DY#rightarrow#tau#tau
-   non W/Z ,     413, QCD/Wjets, t#bar{t}bg
+   t#bar{t} other ,     413, t#bar{t}bg
   $$ VV/t#bar{t}V, 390, t#bar{t}V, VV
    
    tW/#bar{t}W, 616, tW/#bar{t}W#rightarrowll

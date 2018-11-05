@@ -100,6 +100,7 @@ public:
 	void setEnergy(TString e){if(e.Contains("7TeV")) is7TeV_=true; energy_=e;}
 	void setTopMass(TString topmass){topmass_=topmass;}
 	void setBTagMCEffFile(TString file){btagefffile_=file;}
+	void setBTagMCRefEffFile(TString file){btageffreffile_=file;}
 	TString getChannel(){return channel_;}
 	//TString getSyst(){return syst_;}
 	TString Energy(){return energy_;}
@@ -241,7 +242,7 @@ protected:
 	size_t filecount_;
 	TString outfileadd_;
 
-	TString btagefffile_;
+	TString btagefffile_, btageffreffile_;
 
 	//for scalefactors provided in THXX format:
 	ztop::scalefactors elecsf_,muonsf_,muonsfBtoF_,muonsfGH_,triggerbgsf_,triggersf_,elecenergysf_,elecenergyressf_phi_,elecenergyressf_rho_,additionalJEC_,muonenergysf_,trackingsf_, elecTrackingsf_,elecbgsf_,muonbgsf_,muonbgsfBtoF_,muonbgsfGH_,trackingbgsf_, elecTrackingbgsf_;

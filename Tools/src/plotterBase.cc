@@ -186,6 +186,16 @@ void plotterBase::printToPng(const std::string& outname){
 	c.Print(outnameeps);
 	pad_=oldpad;
 }
+void plotterBase::printToEps(const std::string& outname){
+	TVirtualPad * oldpad=pad_;
+	TCanvas c;
+	usePad(&c);
+	draw();
+	TString outnameeps=outname;
+	outnameeps+=".eps";
+	c.Print(outnameeps);
+	pad_=oldpad;
+}
 void plotterBase::saveToTFile(const TString& outname){
 	TVirtualPad * oldpad=pad_;
 	TFile f(outname,"RECREATE");

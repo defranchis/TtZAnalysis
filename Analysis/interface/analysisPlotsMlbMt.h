@@ -18,6 +18,7 @@ public:
 	Mlb(0),
 	mlb(0),
 	mlbmin(0),
+	mlbmin_test(0),
 	mlbivansbins(0),
 	mlbminbsrad(0),
 	leadleppt(0),
@@ -26,7 +27,9 @@ public:
 	vistotal(0),
 	mlbcombthresh_(165),
 	rightassocounter_(0),totalcounter_(0)
-{extraplots_.resize(cat_bjetjetmax,0);extraplots2_.resize(cat_bjetjetmax,0);extraplots3_.resize(cat_bjetjetmax,0);}
+{extraplots_.resize(cat_bjetjetmax,0);extraplots2_.resize(cat_bjetjetmax,0);extraplots3_.resize(cat_bjetjetmax,0);
+ mlb_3_.resize(cat_bjetjetmax-1,0); mlb_5_.resize(cat_bjetjetmax-1,0); mlb_7_.resize(cat_bjetjetmax-1,0); mlb_10_.resize(cat_bjetjetmax-1,0);
+}
 
 	~analysisPlotsMlbMt(){/* destruction is handled in base class! */
 		if(totalcounter_)
@@ -55,14 +58,15 @@ private:
 	std::vector<histo1DUnfold*> extraplots2_;
 	std::vector<histo1DUnfold*> extraplots3_;
 
-
+        std::vector<histo1DUnfold*> mlb_3_, mlb_5_, mlb_7_, mlb_10_;
 
 	histo1DUnfold
 	*Mlb,
 	*mlb,
 	*mlbmin,
+	*mlbmin_test,
 	*mlbivansbins,
-	*mlbminbsrad,
+	*mlbminbsrad,            
 
 	*leadleppt,
 	*mll,

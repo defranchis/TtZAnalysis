@@ -57,8 +57,8 @@ $tree_13TeV_emuttbarbg_her.root,        t#bar{t}bg,	   	634,	  831.76,	  1
 $Sync.root,           t#bar{t},           633,      831.76,         0,      true
 
 
-   tree_13TeV_tW_ext.root,                tW/#bar{t}W,	   	616,	  19.47,	          4
-   tree_13TeV_tbarW_ext.root,	           tW/#bar{t}W,	   	616,	  19.47,	          4
+   tree_13TeV_tW_ext.root,                tW/#bar{t}W,	   	616,	  35.85,	          4
+   tree_13TeV_tbarW_ext.root,	           tW/#bar{t}W,	   	616,	  35.85,	          4
 
    tree_13TeV_dy1050.root,                   DY,                  852,      22635.1,        5  
    tree_13TeV_dy50inf_ee_pow.root,           DY,                  852,      1921.8,         5 
@@ -109,7 +109,8 @@ $PUFile         = /src/TtZAnalysis/Analysis/data/analyse/ngoodvtx_data_2015
 $ flat uncertainties of 5/10 % for b/c jets
 $btagSFFile     = /src/TtZAnalysis/Analysis/data/analyse/CSV_8TeV_5unc.csv
 $ prel. 13 TeV btag SFs
-btagSFFile      = /src/TtZAnalysis/Analysis/data/analyse/CSVv2_Moriond17_B_H.csv
+$ btagSFFile      = /src/TtZAnalysis/Analysis/data/analyse/CSVv2_Moriond17_B_H.csv
+btagSFFile      = /src/TtZAnalysis/Analysis/data/analyse/CSVv2_Run2016_mujets_SystematicBreakdown.csv
 btagFile        = btags_74
 
 $modeOptions = GsfelectronsNotoppt

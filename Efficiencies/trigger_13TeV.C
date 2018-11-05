@@ -4,8 +4,8 @@
 #include "TTreePerfStats.h"
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
 
-#define DEF_ELEC_PT 15
-#define DEF_MUON_PT 15
+#define DEF_ELEC_PT 20
+#define DEF_MUON_PT 20
 
 double 
 triggerAnalyzer::selectDileptons(std::vector<ztop::NTMuon> * inputMuons, std::vector<ztop::NTElectron> * inputElectrons){
@@ -26,7 +26,7 @@ triggerAnalyzer::selectDileptons(std::vector<ztop::NTMuon> * inputMuons, std::ve
 		//tight muon selection: https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#Tight_Muon
 		//isPF is implicit
 
-		if(muon->isGlobal()
+		/*if(muon->isGlobal()
 				&& muon->normChi2()<10.
 				&& muon->muonHits()>0
 				&& muon->matchedStations() >1  //not in trees
@@ -35,6 +35,8 @@ triggerAnalyzer::selectDileptons(std::vector<ztop::NTMuon> * inputMuons, std::ve
 				&& muon->pixHits()>0
 				&& muon->trkHits()>5
 				&& fabs(muon->isoVal()) < 0.15){
+                */
+                if(muon->getMember(7) && fabs(muon->isoVal()) < 0.15){
 			tempmuons << muon;
 
 		}
@@ -165,7 +167,6 @@ void trigger_tightLeptons(){
         //triggerObjects <<"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v"<<"HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v"<<"hltL3fL1sDoubleMu114L1f0L2f10OneMuL3Filtered17"<<"hltDiMuonGlb17Glb8RelTrkIsoFiltered0p4"<<"hltDiMuonGlb17Trk8RelTrkIsoFiltered0p4"<<"hltL3pfL1sDoubleMu114L1f0L2pf0L3PreFiltered8"<<"hltL2pfL1sDoubleMu114ORDoubleMu125L1f0L2PreFiltered0"<<"hltDiMuonGlb17Trk8RelTrkIsoFiltered0p4"<<"hltDiMuonGlbFiltered17TrkFiltered8";
         ta_mumud.setTriggerObjects(triggerObjects);
 
-	ta_mumud.setBinsEta(binsmumueta);
 	ta_mumud.setBinsEta2dX(bins2dmumu);
 	ta_mumud.setBinsEta2dY(bins2dmumu);
 
@@ -188,7 +189,7 @@ void trigger_tightLeptons(){
         //ta_mumuMC.setIncludeCorr(false);
         //ta_emuMC.setIncludeCorr(false);
 
-	TString dir="/nfs/dust/cms/user/tarndt/NTuples/Prod_8024/";
+	TString dir="/nfs/dust/cms/user/tarndt/NTuples/Prod_8026/";
         //TString dir="/nfs/dust/cms/group/topcmsdesy/TTH_Trigger/";
 
 	TString cmssw_base=getenv("CMSSW_BASE");
@@ -204,7 +205,7 @@ void trigger_tightLeptons(){
 
 	emumcfiles << dir+"tree_13TeV_emuttbar.root"<< dir+"tree_13TeV_emuttbarbg.root" ;
 
-	datafilesFull  << dir + "tree_13Tev_data_MET_RunC.root"<< dir + "tree_13Tev_data_MET_RunB.root"<< dir + "tree_13Tev_data_MET_RunD.root"<< dir + "tree_13Tev_data_MET_RunE.root"<< dir + "tree_13Tev_data_MET_RunF.root"<< dir + "tree_13Tev_data_MET_RunG.root";
+	datafilesFull  << dir + "tree_13Tev_data_MET_RunC.root"<< dir + "tree_13Tev_data_MET_RunB.root"<< dir + "tree_13Tev_data_MET_RunD.root"<< dir + "tree_13Tev_data_MET_RunE.root"<< dir + "tree_13Tev_data_MET_RunF.root"<<  dir + "tree_13Tev_data_MET_RunG.root";
  
         datafilesRunH  << dir + "tree_13Tev_data_MET_RunH_v1.root" << dir + "tree_13Tev_data_MET_RunH_v2.root";
 
@@ -242,8 +243,8 @@ void trigger_tightLeptons(){
 
         std::vector<string> mumuTriggersRunH, emuTriggersRunH;
 
-        mumuTriggersRunH << "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v" << "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v" << "HLT_IsoTkMu24_v"<<"HLT_IsoMu24_v"<<"HLT_Ele27_WPTight_Gsf_v";
-        emuTriggersRunH << "HLT_IsoTkMu24_v"<<"HLT_IsoMu24_v"<<"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v"<<"HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v";
+        emuTriggersRunH << "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v" << "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v" << "HLT_IsoTkMu24_v"<<"HLT_IsoMu24_v"<<"HLT_Ele27_WPTight_Gsf_v";
+        mumuTriggersRunH << "HLT_IsoTkMu24_v"<<"HLT_IsoMu24_v"<<"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v"<<"HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v";
 
         triggerAnalyzer ta_eedH=ta_eed;
         triggerAnalyzer ta_mumudH=ta_mumud;

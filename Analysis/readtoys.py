@@ -3,22 +3,36 @@ import os
 import ROOT
 from ROOT import *
 
-# gStyle.SetOptStat(0000)
+gStyle.SetOptStat(1110)
 
-base_dir = 'toys_workdir/02_noBox'
+base_dir = 'toys_workdir'
 filelist = os.listdir(base_dir)
 
 h_mass = ROOT.TH1F('h_mass','h_mass',700,160.,185.)
 h_xsec = ROOT.TH1F('h_xsec','h_xsec',500,730,930)
 
+nfile = 0
+
 for texfile in filelist:
     if not texfile.endswith('.tex'): continue
     if not texfile.startswith('xsecFit_tab_TOPMASS_'): continue #redundant
 
+    nfile += 1
+    if nfile%1000 == 0 : print 'processing file n.', nfile
+
     f1 = open(base_dir+'/'+texfile,'r')
     l1 = f1.read().splitlines()
-
-    for i in range(0,3): del l1[0]
+    
+    # print texfile
+    brokenfile = False
+    for i in range(0,3): 
+        try: del l1[0]
+        except IndexError:
+            print texfile, 'is broken'
+            brokenfile = True
+            break
+            
+    if brokenfile: continue
 
     l1_short = []
 
@@ -61,11 +75,13 @@ print round(h_xsec.GetMean(),1), round(h_xsec.GetRMS(),1), round(h_xsec.GetRMS()
 print
 
 c = ROOT.TCanvas('c','c')
-h_mass.Draw()
+h_mass.SetTitle('effect of MC stats on top MC mass;m_{t}^{MC} [GeV];a.u.')
+h_mass.DrawNormalized()
 c.Print('mass.png','png')
 
 c.Clear()
-h_xsec.Draw()
+h_xsec.SetTitle('effect of MC stats on ttbar cross section;#sigma_{t#bar{t}} [pb];a.u.')
+h_xsec.DrawNormalized()
 c.Print('xsec.png','png')
 
 rootfile = ROOT.TFile('toys.root','recreate')
