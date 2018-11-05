@@ -238,6 +238,15 @@ void topAnalyzer::setKinReco(KinematicReconstruction * kinReco, KinematicReconst
     kinRecoSF_ = kinRecoSF;
 }
 
+KinematicReconstructionSolutions topAnalyzer::getKinRecoSolutions(const int leptonIndex, const int antiLeptonIndex,
+                                                                  const std::vector<int>& jetIndices, const std::vector<int>& bjetIndices,
+                                                                  const VLV& allLeptons, const VLV& jets,
+                                                                  const std::vector<double>& jetBtags, const LV& met)const
+{
+    if(!kinReco_) return KinematicReconstructionSolutions();    
+    return kinReco_->solutions({leptonIndex}, {antiLeptonIndex}, jetIndices, bjetIndices,
+                                                   allLeptons, jets, jetBtags, met);
+}
 
 
 fileForker::fileforker_status topAnalyzer::writeOutput(){
