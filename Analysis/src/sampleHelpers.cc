@@ -757,7 +757,9 @@ variationNumber_(-1)
 {
 
     TString fragment(systematicName);
-    type_ = convertType(systematicName);
+    if (fragment == "nominal") fragment = "Nominal";
+
+    type_ = convertType(fragment);
     fragment.ReplaceAll(convertType(type_), "");
     variation_ = convertVariation(fragment);
     fragment.ReplaceAll(convertVariation(variation_), "");
