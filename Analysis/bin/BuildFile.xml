@@ -33,6 +33,10 @@
 <!-- <bin name="compareContributions" file="compareContributions.cc" /> -->
 <bin name="convertFromDiffXsFwk" file="convertFromDiffXsFwk.cc" />
 <bin name="makeControlPlotsFromDiffXsFwk" file="makeControlPlotsFromDiffXsFwk.cc" />
+<bin name="printSyst" file="printSyst.cc" />
+<bin name="testFit" file="testFit.cc" />
+<bin name="testCombinedFit" file="testCombinedFit.cc" />
+<bin name="testCombinedPseudoDataFit" file="testCombinedPseudoDataFit.cc" />
 
 <bin name="extractMtFromInclXsec" file="extractMtFromInclXsec.cc" />
 <Flags CXXFLAGS="-lXMLParser -lunfold -fopenmp"/>
