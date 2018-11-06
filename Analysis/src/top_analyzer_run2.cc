@@ -159,6 +159,36 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		 * In Madgraph: 0.11104
 		 */
 	}
+        //check which datastream the File Uses
+        isSingleMu = false;
+        isDilep = false;
+        isSingleEle= false;
+        if(inputfile_.Contains("SingleMuon")) isSingleMu=true;
+        else if (inputfile_.Contains("SingleElectron")) isSingleEle=true;
+        else if (inputfile_.Contains("MuonEG") || inputfile_.Contains("DoubleEG") || inputfile_.Contains("DoubleMuon") ) isDilep= true;
+        
+        // Check for which Runs is used
+        isRunBtoD = false ;
+        isRunEtoF = false;
+        isRunFtoG = false;
+        isRunH = false;
+        bool isTtbarLike = false;
+        bool isTtbar = false;
+            
+        if(!isMC){
+                 if(inputfile_.Contains("RunB") || inputfile_.Contains("RunC") || inputfile_.Contains("RunD")) isRunBtoD=true;
+                 else if(inputfile_.Contains("RunE") || inputfile_.Contains("RunF_v1")) isRunEtoF= true;
+                 else if(inputfile_.Contains("RunF_v2") || inputfile_.Contains("RunG")) isRunFtoG=true;
+                 else if(inputfile_.Contains("RunH") ) isRunH=true;
+        }
+        else {
+                if(inputfile_.Contains("ttbar")||inputfile_.Contains("tbarW")||inputfile_.Contains("tW")) isTtbarLike=true;
+                if(inputfile_.Contains("ttbar")) isTtbar=true;
+        }
+ 
+        //std::cout<<isSingleMu<<isDilep<<isSingleEle<<std::endl;
+        
+        
 	// for pure dileptonic samples 
 	if(isdileptonexcl || inputfile_.Contains("_mgdecays_") || inputfile_.Contains("_tbarWtoLL")|| inputfile_.Contains("_tWtoLL")){
 		normmultiplier=0.1062; //fully leptonic branching fraction for both Ws
@@ -213,6 +243,12 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	else if(mode_.Contains("Jetpt60")){
 		jetptcut=60;
 	}
+        else if(mode_.Contains("Jetpt20")){
+                jetptcut=20;
+        }
+        else if(mode_.Contains("Jetpt25")){
+                jetptcut=25;
+        }
 	else{
 		jetptcut=30;
 	}
@@ -234,6 +270,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		getTriggerSF()->setSystematics("nom");
 
 		getElecEnergySF()->setSystematics("nom");
+		getElecEnergyResolutionSF_rho()->setSystematics("nom");
+		getElecEnergyResolutionSF_phi()->setSystematics("nom");
+		getAdditionalJEC()->setSystematics("nom");
 		getElecSF()->setSystematics("nom");
 		getMuonEnergySF()->setSystematics("nom");
 		getMuonSF()->setSystematics("nom");
@@ -243,7 +282,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		// getPUReweighter()-> //setSystematics("nom");
 		getBTagSF()->setSystematics(NTBTagSF::nominal);
 		getJECUncertainties()->setSystematics("no");
-		getJERAdjuster()->setSystematics("def_2015");
+		getJERAdjuster()->setSystematics("def_2016");
 
 		getTopPtReweighter()->setSystematics(reweightfunctions::nominal); //setSystematics("nom");
 
@@ -257,7 +296,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		fr.setEndMarker("[parameters-end]");
 		fr.readFile(pathtoconffile_.Data());
 
-		getPUReweighter()->setDataTruePUInput(((std::string)getenv("CMSSW_BASE")+fr.getValue<string>("PUFile") +".root").data());
+		getPUReweighterGH()->setDataTruePUInput(((std::string)getenv("CMSSW_BASE")+fr.getValue<string>("PUFile") +".root").data());
 
 
 		// not needed anymore
@@ -294,12 +333,16 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 	analysisPlotsMlbMt mlbmtplots_step8(8);
 	analysisPlotsTtbarXsecFit xsecfitplots_step8(8);
+        analysisPlotsTtbarXsecFitSingleLep singlelepplots_step8(8);
 
 	xsecfitplots_step8.enable();
 	mlbmtplots_step8.enable();
 	mlbmtplots_step8.bookPlots();
 	xsecfitplots_step8.enable();
 	xsecfitplots_step8.bookPlots();
+ 
+        singlelepplots_step8.enable();
+        singlelepplots_step8.bookPlots();
 
 	//global settings for analysis plots
 	histo1DUnfold::setAllListedMC(isMC && !fakedata);
@@ -324,6 +367,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	zplots.initSteps(8);
 	mlbmtplots_step8.setEvent(evt);
 	xsecfitplots_step8.setEvent(evt);
+        singlelepplots_step8.setEvent(evt);
 
 	if(!fileExists((datasetdirectory_+inputfile_).Data())){
 		std::cout << datasetdirectory_+inputfile_ << " not found!!" << std::endl;
@@ -333,7 +377,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	TFile *intfile;
 	intfile=TFile::Open(datasetdirectory_+inputfile_);
 	//get normalization - switch on or off pdf weighter before!!!
-	norm_=createNormalizationInfo(intfile,isMC,anaid);
+        norm_=createNormalizationInfo(intfile,isMC,anaid,signal_);
 	intfile->Close();
 	delete intfile;
 
@@ -346,41 +390,102 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		std::cout << "testmode("<< anaid << "): preparing btag SF" << std::endl;
 
 	btagefffile_+="_"+inputfile_;
+	btageffreffile_+="_"+originputfile_;
 	getBTagSF()->setIsMC(isMC);
-	if(!getBTagSF()->getMakeEff())
+	if(!getBTagSF()->getMakeEff()){
 		getBTagSF()->readFromFile(btagefffile_.Data());
-
+                if (isTtbarLike) getBTagSF()->readReferenceFromFile(btageffreffile_.Data());
+                else getBTagSF()->readReferenceFromFile(btagefffile_.Data());
+        }
 	//  if(testmode_)
 	//    std::cout << "testmode(" <<anaid << ") setBtagSmaplename " <<channel_+"_"+btagSysAdd+"_"+toString(inputfile_)).Data() <<std::endl;
 
 	//range check switched off because of different ranges in bins compared to diff Xsec (leps)
 	getTriggerSF()->setRangeCheck(false);
+        getTriggerBGSF()->setRangeCheck(false);
 	getElecSF()->setRangeCheck(false);
-	getMuonSF()->setRangeCheck(false);
+        getMuonSFBtoF()->setRangeCheck(false);
+	getMuonSFGH()->setRangeCheck(false);
 	getTrackingSF()->setRangeCheck(false);
+        getElecTrackingSF()->setRangeCheck(false);
+
+        getElecBGSF()->setRangeCheck(false);
+        getMuonBGSF()->setRangeCheck(false);
+        getMuonBGSFBtoF()->setRangeCheck(false);
+        getMuonBGSFGH()->setRangeCheck(false);
+        getTrackingBGSF()->setRangeCheck(false);
+        getElecTrackingBGSF()->setRangeCheck(false);
 
 	getElecSF()->setIsMC(isMC);
-	getMuonSF()->setIsMC(isMC);
+        getMuonSFBtoF()->setIsMC(isMC);
+	getMuonSFGH()->setIsMC(isMC);
 	getTriggerSF()->setIsMC(isMC);
+        getTriggerBGSF()->setIsMC(isMC);
 	getTrackingSF()->setIsMC(isMC);
+        getElecTrackingSF()->setIsMC(isMC);
+
+        getElecBGSF()->setIsMC(isMC);
+        getMuonBGSF()->setIsMC(isMC);
+        getMuonBGSFBtoF()->setIsMC(isMC);
+        getMuonBGSFGH()->setIsMC(isMC);
+        getTrackingBGSF()->setIsMC(isMC);
+        getElecTrackingBGSF()->setIsMC(isMC);
+
 
 	//some global checks
 	getElecEnergySF()->setRangeCheck(false);
+	getElecEnergyResolutionSF_rho()->setRangeCheck(false);
+	getElecEnergyResolutionSF_phi()->setRangeCheck(false);
+	getAdditionalJEC()->setRangeCheck(false);
 	getMuonEnergySF()->setRangeCheck(false);
 	getElecEnergySF()->setIsMC(isMC);
+	getElecEnergyResolutionSF_rho()->setIsMC(isMC);
+	getElecEnergyResolutionSF_phi()->setIsMC(isMC);
+	getAdditionalJEC()->setIsMC(isMC);
 	getMuonEnergySF()->setIsMC(isMC);
+
+	getAdditionalJEC()->setIsTtbar(isTtbar);
+	getAdditionalJEC()->setIsTtbarLike(isTtbarLike);
 
 	//REMOVE AGAIN OR DO PROPERLY !!! 
 	//agrohsje/tarndt include jes at ana level for testing 
 	NTJES jescorr = NTJES();
 	//took files from https://twiki.cern.ch/twiki/bin/view/CMS/JECDataMC
-	const TString* dataJECFile = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Spring16_25nsV3_DATA_L2L3Residual_AK4PFchs.txt");
-	const TString* mcL1JECFile = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Spring16_25nsV3_MC_L1FastJet_AK4PFchs.txt");
-	const TString* mcL2JECFile = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Spring16_25nsV3_MC_L2Relative_AK4PFchs.txt");
-	const TString* mcL3JECFile = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Spring16_25nsV3_MC_L3Absolute_AK4PFchs.txt");
+	const TString* mcL2L3JECFile = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016V3_MC_L2L3Residual_AK4PFchs.txt");
+	const TString* mcL1JECFile = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016V3_MC_L1FastJet_AK4PFchs.txt");
+	const TString* mcL2JECFile = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016V3_MC_L2Relative_AK4PFchs.txt");
+	const TString* mcL3JECFile = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016V3_MC_L3Absolute_AK4PFchs.txt");
+      
+        const TString* dataL2L3JECFile_RunsBtoD = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016BCDV3_DATA_L2L3Residual_AK4PFchs.txt");
+        const TString* dataL1JECFile_RunsBtoD = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016BCDV3_DATA_L1FastJet_AK4PFchs.txt");
+        const TString* dataL2JECFile_RunsBtoD = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016BCDV3_DATA_L2Relative_AK4PFchs.txt");
+        const TString* dataL3JECFile_RunsBtoD = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016BCDV3_DATA_L3Absolute_AK4PFchs.txt");
 
-	jescorr.setFilesCorrection(mcL1JECFile,mcL2JECFile,
-			mcL3JECFile,dataJECFile,(const bool) isMC);
+        const TString* dataL2L3JECFile_RunsEtoF = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016EFV3_DATA_L2L3Residual_AK4PFchs.txt");
+        const TString* dataL1JECFile_RunsEtoF = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016EFV3_DATA_L1FastJet_AK4PFchs.txt");
+        const TString* dataL2JECFile_RunsEtoF = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016EFV3_DATA_L2Relative_AK4PFchs.txt");
+        const TString* dataL3JECFile_RunsEtoF = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016EFV3_DATA_L3Absolute_AK4PFchs.txt");
+
+        const TString* dataL2L3JECFile_RunsFtoG = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016GV3_DATA_L2L3Residual_AK4PFchs.txt");
+        const TString* dataL1JECFile_RunsFtoG = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016GV3_DATA_L1FastJet_AK4PFchs.txt");
+        const TString* dataL2JECFile_RunsFtoG = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016GV3_DATA_L2Relative_AK4PFchs.txt");
+        const TString* dataL3JECFile_RunsFtoG = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016GV3_DATA_L3Absolute_AK4PFchs.txt");
+
+        const TString* dataL2L3JECFile_RunsH = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016HV3_DATA_L2L3Residual_AK4PFchs.txt");
+        const TString* dataL1JECFile_RunsH = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016HV3_DATA_L1FastJet_AK4PFchs.txt");
+        const TString* dataL2JECFile_RunsH = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016HV3_DATA_L2Relative_AK4PFchs.txt");
+        const TString* dataL3JECFile_RunsH = new TString((std::string) getenv("CMSSW_BASE")+"/src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016HV3_DATA_L3Absolute_AK4PFchs.txt");
+
+
+        if(isMC) jescorr.setFilesCorrection(mcL1JECFile,mcL2JECFile, mcL3JECFile,mcL2L3JECFile,(const bool) isMC);
+        else if(isRunBtoD) jescorr.setFilesCorrection(dataL1JECFile_RunsBtoD,dataL2JECFile_RunsBtoD, dataL3JECFile_RunsBtoD,dataL2L3JECFile_RunsBtoD,(const bool) isMC);
+        else if(isRunEtoF) jescorr.setFilesCorrection(dataL1JECFile_RunsEtoF,dataL2JECFile_RunsEtoF, dataL3JECFile_RunsEtoF,dataL2L3JECFile_RunsEtoF,(const bool) isMC);
+        else if(isRunFtoG) jescorr.setFilesCorrection(dataL1JECFile_RunsFtoG,dataL2JECFile_RunsFtoG, dataL3JECFile_RunsFtoG,dataL2L3JECFile_RunsFtoG,(const bool) isMC);
+        else if(isRunH) jescorr.setFilesCorrection(dataL1JECFile_RunsH,dataL2JECFile_RunsH, dataL3JECFile_RunsH,dataL2L3JECFile_RunsH,(const bool) isMC);
+
+
+        //std::cout<<"isRunH: "<<isRunH<<"   "<<"isSingleEle: "<<isSingleEle<<std::endl;
+
 
 	/*
 	 * Open Main tree,
@@ -417,6 +522,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	tBranchHandler<ULong64_t> b_RunNumber(t,"RunNumber");
 	tBranchHandler<ULong64_t> b_LumiBlock(t,"LumiBlock");
 	tBranchHandler<ULong64_t> b_AnalyseEvent(t,"Skim");
+        tBranchHandler<ULong64_t> b_MetFilter(t,"Metfilter");
+        
 
 	std::vector<ztop::simpleReweighter> mcreweighters;
 
@@ -534,9 +641,12 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 		//reports current status to parent
 		reportStatus(entry,nEntries);
-
+                double randomNum = random->Uniform();
 		float puweight=1;
-		if (isMC) puweight = getPUReweighter()->getPUweight(b_Event.content()->truePU());
+                if (isMC) { 
+                    if(randomNum<0.548) puweight = getPUReweighterBtoF()->getPUweight(b_Event.content()->truePU());
+                    else puweight = getPUReweighterGH()->getPUweight(b_Event.content()->truePU());
+                }
 		//agrohsje
 		pusum+=puweight;
 		if(apllweightsone) puweight=1;
@@ -569,7 +679,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 		vector<NTGenParticle*>  gentops,genbs,genbsrad;
 		vector<NTGenParticle*>  genws;
-		vector<NTGenParticle *> genleptons1,genleptons3;
+		vector<NTGenParticle *> genleptons1,genleptons3,tmp_genleptons1;
 		vector<NTGenJet *>      genjets;
 		vector<NTGenParticle *> genbhadrons;
 
@@ -603,8 +713,20 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			genws=produceCollection(b_GenWs.content(), &gentops);
 
 			genleptons3=produceCollection(b_GenLeptons3.content(),&genws);
-			genleptons1=produceCollection(b_GenLeptons1.content(),&genleptons3);
-
+			tmp_genleptons1=produceCollection(b_GenLeptons1.content(),&genleptons3);
+                        
+                        if (tmp_genleptons1.size() > 1){
+                       if(b_ee_ && std::abs(tmp_genleptons1.at(0)->pdgId())==11 && std::abs(tmp_genleptons1.at(1)->pdgId())==11){
+                             genleptons1 = tmp_genleptons1;}
+                        if(b_mumu_ && std::abs(tmp_genleptons1.at(0)->pdgId())==13 && std::abs(tmp_genleptons1.at(1)->pdgId())==13 ){
+                             genleptons1 = tmp_genleptons1;}
+                        if(b_emu_ &&( (std::abs(tmp_genleptons1.at(0)->pdgId())==11 && std::abs(tmp_genleptons1.at(1)->pdgId())==13) || (std::abs(tmp_genleptons1.at(0)->pdgId())==13 && std::abs(tmp_genleptons1.at(1)->pdgId())==11))){
+                             genleptons1 = tmp_genleptons1;}
+                        }
+                        if(b_smu_ && tmp_genleptons1.size() ==1 && std::abs(tmp_genleptons1.at(0)->pdgId())==13 ) genleptons1 = tmp_genleptons1;
+                        //else{ genleptons1 = tmp_genleptons1;}
+                        
+                        //genleptons1=produceCollection(b_GenLeptons1.content(),&genleptons3);
 			//b-hadrons that stem from a b quark that itself originates in a top are
 			//assoziated to that top by the bhadronmatcher (Nazar)
 			//this logic is used and kept here
@@ -617,14 +739,17 @@ void  top_analyzer_run2::analyze(size_t anaid){
 				/*
 				 * fill gen info here
 				 */
+                                if (b_smu_)singlelepplots_step8.fillPlotsGen();
 				mlbmtplots_step8.fillPlotsGen();
 				xsecfitplots_step8.fillPlotsGen();
+                                
 			}
 		} /// isMC ends
 
 		//agrohsje : check if event fails preselection and should be skipped
 		//std::cout<<" agrohsje check flag " << *b_AnalyseEvent.content()<<std::endl;
 		if (b_emu_ && *b_AnalyseEvent.content()!=1) continue;
+                if ( isMC && *b_MetFilter.content() == 1) continue;
 
 		/////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////////
@@ -639,7 +764,12 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		if(testmode_ && entry==0)
 			std::cout << "testmode("<< anaid << "): got trigger boolians" << std::endl;
 
+//if (true) std::cout<<b_TriggerBools.content()->at(32)<<"  "<<b_TriggerBools.content()->at(33)<<"  "<<b_TriggerBools.content()->at(43)<<"  "<<b_TriggerBools.content()->at(44)<<"  "<<b_TriggerBools.content()->at(36)<<std::endl;
+
 		if(!checkTrigger(b_TriggerBools.content(),b_Event.content(), isMC,anaid)) continue;
+
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): After Trigger Cut " << std::endl;
 
 		/*
 		 * Muons
@@ -657,10 +787,14 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		evt.isomuons=&isomuons;
 		for(size_t i=0;i<b_Muons.content()->size();i++){
 			NTMuon* muon = & b_Muons.content()->at(i);
-			if(isMC)
-				muon->setP4(muon->p4() * getMuonEnergySF()->getScalefactor(muon->eta()));
+			if(isMC){
+				// muon->setP4(muon->p4() * getMuonEnergySF()->getScalefactor(muon->eta()));
+				muon->setP4(muon->p4() * getMuonEnergySF()->getMuonRochesterFactorFromEnvelope(muon) );
+                                // std::cout<<"TEST_MD\t"<<getMuonEnergySF()->getMuonRochesterFactorFromEnvelope_up(muon)<<"\t"<<getMuonEnergySF()->getMuonRochesterFactorFromEnvelope_down(muon)<<"\t1\t1"<<std::endl;
+                        }
+                        // std::cout<<"muon Rochester SF from envelope = "<<getMuonEnergySF()->getMuonRochesterFactorFromEnvelope(muon)<<std::endl;
 			allleps << muon;
-			/*
+			/*if (*b_EventNumber.content() ==19458568){
 			  std::cout<<*b_EventNumber.content() 
 			  <<" muon->pt() "<<muon->pt()
 			  <<" muon->eta() "<<muon->eta()
@@ -676,9 +810,10 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			  <<" muon->muonHits() "<<muon->muonHits()
 			  <<" fabs(muon->isoVal()) "<<fabs(muon->isoVal())
 			  <<std::endl;
-			 */
+			 }*/
 			if(muon->pt() < lepptthresh)       continue;
 			if(fabs(muon->eta())>2.4) continue;
+			//if(fabs(muon->eta())>2.1) continue;
 			kinmuons << &(b_Muons.content()->at(i));
 
 			//tight muon selection: https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#Tight_Muon
@@ -716,12 +851,19 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		for(size_t i=0;i<b_Electrons.content()->size();i++){
 			NTElectron * elec=&(b_Electrons.content()->at(i));
 			float ensf=1;
-			if(isMC)
-				ensf=getElecEnergySF()->getScalefactor(elec->eta());
+			if(isMC){
+                            // ensf=getElecEnergySF()->getScalefactor(elec->eta());
+                            ensf=getElecEnergySF()->getElectronESFactor(elec);
+                            ensf*=getElecEnergyResolutionSF_rho()->getElectronERFactor_rho(elec);
+                            ensf*=getElecEnergyResolutionSF_phi()->getElectronERFactor_phi(elec);
+                        }
 
+                        // std::cout<<"TEST<_MD "<<getElecEnergySF()->getElectronESFactorUp(elec)<<" "<<getElecEnergySF()->getElectronESFactorDown(elec)<<" "
+                        //          <<getElecEnergyResolutionSF()->getElectronERFactorUp(elec)<<" "<<getElecEnergyResolutionSF()->getElectronERFactorDown(elec)<<endl;
 			//elec->setECalP4(elec->ECalP4() * ensf);
+                        // std::cout<<"TESTMD: "<<ensf<<std::endl;
 			elec->setP4(elec->p4() * ensf); //both the same now!!
-			/*if (*b_EventNumber.content() == 898269822) {
+		      	/*if (*b_EventNumber.content() ==19458568 ) {
 			    std::cout<<" agrohsje check electrons "
 				     <<*b_EventNumber.content()
 				     <<" elec->pt() " <<elec->pt()
@@ -729,6 +871,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 				     <<" fabs(elec->suClu().eta()) " <<fabs(elec->suClu().eta()) 
 				     <<" elec->storedId() " <<elec->storedId()
                                      <<" elec->q() "<<elec->q()
+                                     <<" elec->d0V() "<<elec->d0V()
+                                     <<" elec->dzV() "<<elec->dzV() 
                                    //  <<" mll: " << (b_Electrons.content()->at(0).p4() + b_Electrons.content()->at(1).p4()).m()
 				     <<std::endl;
 			}*/
@@ -740,9 +884,11 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			float suclueta = fabs(elec->suClu().eta());//elec->ECalP4().eta());
 			if(abseta > 2.4) continue;
 			if(suclueta > 1.4442 && suclueta < 1.5660) continue; //transistion region
+                        if(suclueta < 1.4442 && (fabs(elec->d0V()) > 0.05 ||fabs(elec->dzV())>0.10) ) continue;
+                        if(suclueta > 1.5660 && (fabs(elec->d0V()) > 0.10 ||fabs(elec->dzV())>0.20) ) continue;                       
 			kinelectrons  << elec;
+                        idelectrons << elec;
 			if(elec->storedId() > 0.9){  ////agrohsje 1 or 0 should work 
-				idelectrons <<  elec;
 				//iso already included in ID
 				isoelectrons <<  elec;
 				isoleptons << elec;
@@ -772,11 +918,14 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		if(b_ee_ && idelectrons.size() < 2) continue;
 		if(b_mumu_ && (idmuons.size() < 2 )) continue;
 		if(b_emu_ && (idmuons.size() + idelectrons.size() < 2 )) continue;
+                if(b_smu_ && (idmuons.size() != 1 || idelectrons.size() > 0))continue;
 
 		sel_step[1]+=puweight;
 		plots.makeControlPlots(step);
 		zplots.makeControlPlots(step);
 
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP 1" << std::endl;
 
 
 		//////// require two iso leptons  STEP 2  //////////////////////////
@@ -810,6 +959,10 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			channelmuons << isomuons.at(0);
 			channelelectrons << isoelectrons.at(0);
 		}
+                if(b_smu_){
+                        if(isomuons.size() !=1) continue;
+                        else channelmuons << isomuons.at(0);
+                }
 
 		//make pair
 		pair<vector<NTElectron*>, vector<NTMuon*> > oppopair,sspair;
@@ -819,6 +972,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		oppopair = ztop::getOppoQHighestPtPair(channelelectrons, channelmuons);
 		sspair = ztop::getOppoQHighestPtPair(channelelectrons, channelmuons,-1);
 
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): Made Dilepton pairs" << std::endl;
 
 
 		pair<vector<NTElectron*>, vector<NTMuon*> > *leppair=&oppopair;
@@ -850,9 +1005,21 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			mll=dilp4.M();
 			firstlep=leppair->first[0];
 			seclep=leppair->first[1];
-			lepweight*=getElecSF()->getScalefactor((firstlep->eta()),firstlep->pt());
-			lepweight*=getElecSF()->getScalefactor((seclep->eta()),seclep->pt());
-			lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        if(isTtbarLike){
+			lepweight*=getElecSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
+			lepweight*=getElecSF()->getScalefactor(leppair->first[1]->suClu().eta(),seclep->pt());
+                        //lepweight*=getElecTrackingSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
+                        //lepweight*=getElecTrackingSF()->getScalefactor(leppair->first[1]->suClu().eta(),seclep->pt());
+                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
+                        else{
+                        lepweight*=getElecBGSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
+                        lepweight*=getElecBGSF()->getScalefactor(leppair->first[1]->suClu().eta(),seclep->pt());
+                        //lepweight*=getElecTrackingBGSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
+                        //lepweight*=getElecTrackingBGSF()->getScalefactor(leppair->first[1]->suClu().eta(),seclep->pt());
+                         lepweight*=getTriggerBGSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
+                        //tarndt 2016
 		}
 		else if(b_mumu_){
 			if(leppair->second.size() < 2) continue;
@@ -860,12 +1027,31 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			mll=dilp4.M();
 			firstlep=leppair->second[0];
 			seclep=leppair->second[1];
-			lepweight*=getMuonSF()->getScalefactor(firstlep->pt(),fabs(firstlep->eta()));
-			lepweight*=getMuonSF()->getScalefactor(seclep->pt(),fabs(seclep->eta()));
+                        if(isTtbarLike && randomNum < 0.548){
+			lepweight*=getMuonSFBtoF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+			lepweight*=getMuonSFBtoF()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
+                        else if (isTtbarLike && randomNum > 0.548){
+                        lepweight*=getMuonSFGH()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        lepweight*=getMuonSFGH()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
+                        else if(!isTtbarLike && randomNum < 0.548){
+                        lepweight*=getMuonBGSFBtoF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        lepweight*=getMuonBGSFBtoF()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        lepweight*=getTriggerBGSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
+                        else if(!isTtbarLike && randomNum > 0.548){
+                        lepweight*=getMuonBGSFGH()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        lepweight*=getMuonBGSFGH()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        lepweight*=getTriggerBGSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
+
 			//agrohsje not used for time being
-			//lepweight*=getTrackingSF()->getScalefactor((firstlep->eta()));
-			//lepweight*=getTrackingSF()->getScalefactor((seclep->eta()));
-			lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+			//lepweight*=getTrackingSF()->getScalefactor(firstlep->eta());
+			//lepweight*=getTrackingSF()->getScalefactor(seclep->eta());
+			//tarndt 2016
 		}
 		else if(b_emu_){
 			if(leppair->first.size() < 1 || leppair->second.size() < 1) continue;
@@ -873,17 +1059,49 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			mll=dilp4.M();
 			firstlep=leppair->first[0];
 			seclep=leppair->second[0];
-			lepweight*=getElecSF()->getScalefactor((firstlep->eta()),firstlep->pt());
-			lepweight*=getMuonSF()->getScalefactor(fabs(seclep->eta()),seclep->pt());
-			//agrohsje not used for time being
-			//lepweight*=getTrackingSF()->getScalefactor((seclep->eta()));
+                        if(isTtbarLike){
+			lepweight*=getElecSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
+			if(randomNum < 0.548)lepweight*=getMuonSFBtoF()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        else lepweight*=getMuonSFGH()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        //lepweight*=getElecTrackingSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
+                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
+                        else{
+                        lepweight*=getElecBGSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
+                        if (randomNum < 0.548)lepweight*=getMuonBGSFBtoF()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        else lepweight*=getMuonBGSFGH()->getScalefactor(fabs(seclep->eta()),seclep->pt());
+                        //lepweight*=getElecTrackingBGSF()->getScalefactor(leppair->first[0]->suClu().eta(),firstlep->pt());
+                        lepweight*=getTriggerBGSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
+                        }
+                  	//agrohsje not used for time being
+			//lepweight*=getTrackingSF()->getScalefactor(seclep->eta());
 			// tarndt 2016
-                        //lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),fabs(seclep->eta()));
-                        if(isMC) lepweight*=0.885;
 		}
+                else if (b_smu_){
+                        mll=30;
+                        firstlep=channelmuons.at(0);
+                        seclep=channelmuons.at(0);
+                        dilp4=leppair->first[0]->p4();
+                        if(signal_ && randomNum < 0.548){
+                        lepweight*=getMuonSFBtoF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        }
+                        else if (signal_ && randomNum > 0.548){
+                        lepweight*=getMuonSFGH()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        lepweight*=getTriggerSF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        }
+                        else if(!signal_ && randomNum < 0.548){
+                        lepweight*=getMuonBGSFBtoF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        lepweight*=getTriggerBGSF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        }
+                        else if(!signal_ && randomNum > 0.548){
+                        lepweight*=getMuonBGSFGH()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        lepweight*=getTriggerBGSF()->getScalefactor(fabs(firstlep->eta()),firstlep->pt());
+                        }               
+                }
 
 		//channel defined
-		if(firstlep->pt() > seclep->pt()){
+		if(firstlep->pt() > seclep->pt() || b_smu_){
 			leadingptlep=firstlep;
 			secleadingptlep=seclep;
 		}
@@ -896,6 +1114,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		evt.secleadinglep=secleadingptlep;
 		evt.mll=&mll;
 
+                //2016 PT cut leading lep > 25 GEV
+                if (leadingptlep->pt() < 25.) continue; //|| secleadingptlep->pt() < 25.) continue;
 
 		float leplepdr=dR_3d(leadingptlep->p4(),secleadingptlep->p4());
 		evt.leplepdr=&leplepdr;
@@ -914,14 +1134,21 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		sel_step[2]+=puweight;
 		plots.makeControlPlots(step);
 		zplots.makeControlPlots(step);
+                 
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP2 " << std::endl;
+
 
 		///////// cut on invariant mll mass /// STEP 3 ///////////////////////////////////////
 		step++;
 		if(mll < mllcut)
 			continue;
 
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP3 " << std::endl;
+
 		//now agrohsje added for debugging
-		//		std::cout<<*b_EventNumber.content()<</*" "<<leadingptlep->pt()<<" "<<leadingptlep->eta()<<" "<<secleadingptlep->pt()<<" "<<secleadingptlep->eta()<<*/std::endl;
+	        //std::cout<<*b_EventNumber.content()<</*" "<<leadingptlep->pt()<<" "<<leadingptlep->eta()<<" "<<secleadingptlep->pt()<<" "<<secleadingptlep->eta()<<*/std::endl;
 
 
 		// create jec jets for met and ID jets
@@ -937,6 +1164,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 		double dpx=0;
 		double dpy=0;
+                 
+                //if (*b_EventNumber.content() != 19458568) continue;
 
 		for(size_t i=0;i<treejets.size();i++){ //ALSO THE RESOLUTION AFFECTS MET. HERE INTENDED!!! GOOD?
 			NTLorentzVector<float>  oldp4=treejets.at(i)->p4();
@@ -945,10 +1174,14 @@ void  top_analyzer_run2::analyze(size_t anaid){
 				useJetForMet=true; //dont even do something
 			//agrohsje/tarndt just for testing REMOVE
 			//std::cout<<"jet["<<i<<"] in event "<<*b_EventNumber.content()<<std::endl;
-			//std::cout<<"agrohsje jet pt before: pt="<<treejets.at(i)->pt()<<" rho=" <<b_Event.content()->isoRho(0)<< " area="<< treejets.at(i)->getMember(0) <<std::endl;
+			//std::cout<<"agrohsje jet pt before: pt="<<treejets.at(i)->pt()<<" rho=" <<b_Event.content()->isoRho(0)<< " area="<< treejets.at(i)->getMember(0)<< "   uncorr pt: "<<treejets.at(i)->p4Uncorr().pt()<<"  gen pt: "<< treejets.at(i)->genP4().pt() <<std::endl;
 			jescorr.correctJet(treejets.at(i), treejets.at(i)->getMember(0),b_Event.content()->isoRho(0));
 			//std::cout<<"agrohsje jet pt after jes: pt="<<treejets.at(i)->pt()<<" eta="<<treejets.at(i)->eta()<<std::endl;
 			if(isMC){
+                            // if (treejets.at(i)->pt()>30){
+                            //     std::cout<<"CHECK MD JEC: "<<treejets.at(i)->pt()<<" "<<getAdditionalJEC()->getAdditionalJECFactor(treejets.at(i))<<std::endl;
+                            // }
+                                treejets.at(i)->setP4( treejets.at(i)->p4() * getAdditionalJEC()->getAdditionalJECFactor(treejets.at(i)) );
 				//agrohsje global 4% scaling for JESup/JESdown can be added to ZTopUtils/src/JECBase.cc
 				//use NTJES w./ ZTopUtils/src/JESBase.cc for both correction/uncertainties
 				getJECUncertainties()->applyToJet(treejets.at(i));
@@ -993,6 +1226,10 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		double nmpy=b_Met.content()->p4().Py() + dpy;
 		if(!usemvamet)
 			adjustedmet.setP4(D_LorentzVector(nmpx,nmpy,0,sqrt(nmpx*nmpx+nmpy*nmpy))); //COMMENTED FOR MVA MET
+
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): Got jets+MET " << std::endl;
+
 
 		///////////////combined variables////////////
 
@@ -1054,6 +1291,20 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 		vector<NTJet*> * selectedjets=&hardjets;// &hardjets;
 
+                vector<NTJet*> selectedFwdJets;
+
+		for(size_t i=0;i<treejets.size();i++){
+
+                    if(!noOverlap(treejets.at(i), isomuons,     0.4)) continue;
+                    if(!noOverlap(treejets.at(i), isoelectrons, 0.4)) continue;
+                    if(fabs(treejets.at(i)->eta())<2.5) continue;
+                    if(fabs(treejets.at(i)->eta())>3.0) continue;
+                    if(treejets.at(i)->pt() < 30) continue;
+                    selectedFwdJets << (treejets.at(i));
+                }
+
+                std::sort(selectedFwdJets.begin(),selectedFwdJets.end(), comparePt<ztop::NTJet*>);
+                evt.selectedFwdJets=&selectedFwdJets;
 
 
 		evt.dphilljjets=&dphilljjets;
@@ -1078,8 +1329,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		evt.selectedbjets=&selectedbjets;
 		evt.selectednonbjets=&selectednonbjets;
 
+		if(getBTagSF()->getMode() == NTBTagSF::randomtagging_mode) 
+                    getBTagSF()->changeNTJetTags(selectedjets);
 
-		getBTagSF()->changeNTJetTags(selectedjets);
 		for(size_t i=0;i<hardjets.size();i++){
 			if(selectedjets->at(i)->btag() < getBTagSF()->getWPDiscrValue()){
 				//std::cout<<"agrohsje btagging in event " << *b_EventNumber.content() <<" "<<selectedjets->at(i)->pt()<<"  "<<selectedjets->at(i)->btag() <<std::endl;
@@ -1233,6 +1485,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			zplots.makeControlPlots(step);
 
 		}
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP4 " << std::endl;
+
 
 
 		///////////////////// at least one jet cut STEP 5 ////////////
@@ -1243,6 +1498,12 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		if(getBTagSF()->getMode() == NTBTagSF::shapereweighting_mode){
 			throw std::runtime_error("NTBTagSF::shapereweighting_mode: not impl");
 		}
+		else if(getBTagSF()->getMode() == NTBTagSF::simplereweighting_mode){
+                    puweight *= getBTagSF()->getEventWeightSimple(selectedjets);
+		}
+
+
+
 		if(apllweightsone) puweight=1;
 		//ht+=adjustedmet.met();
 		//double mllj=0;
@@ -1263,19 +1524,22 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		if(isZrange){
 			zplots.makeControlPlots(step);
 		}
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP5 " << std::endl;
+
 		//agrohsje debug jet 
-		/*
-		if(*b_EventNumber.content()>19075300){
-		    std::cout<< *b_EventNumber.content() <<" : "<<std::endl;  
-		    for(unsigned ijet=0; ijet<selectedjets->size();ijet++){
+		
+		/*if(*b_EventNumber.content()== 64270328){
+			std::cout<< *b_EventNumber.content() <<" : "<<std::endl;  
+			for(unsigned ijet=0; ijet<selectedjets->size();ijet++){
 			std::cout<<"jet pt = "<<selectedjets->at(ijet)->pt() 
 				 <<", jet eta = "<<selectedjets->at(ijet)->eta()
 				 <<", jet id = "<<selectedjets->at(ijet)->id()
 				 <<", jet btag() = "<<selectedjets->at(ijet)->btag()<<std::endl;
 		    }
 		    std::cout<<"######################################################################"<<std::endl;
-		}
-		 */
+		}*/
+		 
 		/////////////////////// at least two jets STEP 6 /////////////
 		step++;
 
@@ -1292,6 +1556,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 			zplots.makeControlPlots(step);
 		}
+
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP6 " << std::endl;
 
 
 		//////////////////// MET cut STEP 7//////////////////////////////////
@@ -1314,9 +1581,12 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		}
 
 		//make the b-tag SF
-		for(size_t i=0;i<selectedbjets.size();i++){
+		for(size_t i=0;i<selectedjets->size();i++){
 			getBTagSF()->fillEff(selectedjets->at(i),puweight);
 		}
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP7 " << std::endl;
+
 
 		///////////////////// btag cut STEP 8 //////////////////////////
 		step++;
@@ -1325,13 +1595,19 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		// if(usetopdiscr && topdiscr3<0.9) continue;
 		if(usetopdiscr && lh_toplh<0.3) continue;
 
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): BTagCuts " << std::endl;
+
 		//agrohsje print run and event numbers 
-		//std::cout<< *b_EventNumber.content()<< "  "<< *b_RunNumber.content() <<std::endl;
+		//std::cout<< *b_EventNumber.content()<<std::endl;// "  "<< *b_RunNumber.content() <<std::endl;
 
 		if(apllweightsone) puweight=1;
 
 		float mlbmin=0;
 		evt.mlbmin=&mlbmin;
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): STEP8 " << std::endl;
+
 
 		if(analysisMllRange){
 
@@ -1341,11 +1617,18 @@ void  top_analyzer_run2::analyze(size_t anaid){
 				float tmp=(secleadingptlep->p4()+selectedbjets.at(0)->p4()).m();
 				if(mlbmin>tmp)mlbmin=tmp;
 			}
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): before Control Plots " << std::endl;
+
 
 			xsecplots.makeControlPlots(step);
 
 			plots.makeControlPlots(step);
 			sel_step[8]+=puweight;
+
+                if(testmode_ && entry==0)
+                        std::cout << "testmode("<< anaid << "): after Control Plots " << std::endl;
+
 
 			mlbmtplots_step8.fillPlotsReco();
 			xsecfitplots_step8.fillPlotsReco();
@@ -1360,7 +1643,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			break; //one event survived, sufficient
 		}
 		//agrohsje debug pu 
-		pusum_sel+=getPUReweighter()->getPUweight(b_Event.content()->truePU());
+		if (randomNum < 0.548)pusum_sel+=getPUReweighterBtoF()->getPUweight(b_Event.content()->truePU());
+                else pusum_sel+=getPUReweighterGH()->getPUweight(b_Event.content()->truePU());
 		nEntries_sel++;
 	}
 	//clear input tree and close
@@ -1446,22 +1730,38 @@ void  top_analyzer_run2::analyze(size_t anaid){
 }
 
 
-
 bool top_analyzer_run2::checkTrigger(std::vector<bool> * p_TriggerBools,ztop::NTEvent * pEvent, bool isMC,size_t anaid)
 {
+        //if (isMC) return true;
 	if(b_emu_){
-		//tarndt 2016
-                //if(!(p_TriggerBools->at(35) || p_TriggerBools->at(37) || p_TriggerBools->at(39) || p_TriggerBools->at(40) || p_TriggerBools->at(41)) )
-			//return false
-                return true;
+                //if (isDilep) return true;//std::cout<<p_TriggerBools->at(32)<<p_TriggerBools->at(33)<<std::endl;
+                if (isMC &&(p_TriggerBools->at(32)||p_TriggerBools->at(33)|| p_TriggerBools->at(34)|| p_TriggerBools->at(35)|| p_TriggerBools->at(36) ) ) return true;
+                if(!isRunH && isDilep && (p_TriggerBools->at(32)||p_TriggerBools->at(33)) ) return true;
+                if(!isRunH && isSingleEle && !(p_TriggerBools->at(32)||p_TriggerBools->at(33)) && p_TriggerBools->at(36) ) return true;
+                if(!isRunH && isSingleMu && !(p_TriggerBools->at(32)||p_TriggerBools->at(33)) && !(p_TriggerBools->at(36))  &&  (p_TriggerBools->at(34)|| p_TriggerBools->at(35)) ) return true;
+                if(isRunH && isDilep && (p_TriggerBools->at(43)||p_TriggerBools->at(44))) return true ;
+                if (isRunH && isSingleEle && !(p_TriggerBools->at(43)||p_TriggerBools->at(44))  && p_TriggerBools->at(36)) return true;
+                if (isRunH && isSingleMu && !(p_TriggerBools->at(43)||p_TriggerBools->at(44)) && !(p_TriggerBools->at(36)) && (p_TriggerBools->at(34)|| p_TriggerBools->at(35))) return true;
+                //else if (isRunH && isSingleEle &&!(p_TriggerBools->at(43)||p_TriggerBools->at(44))  && p_TriggerBools->at(36)) return true;
 	}
 	else if(b_mumu_){
-		if(! (p_TriggerBools->at(29)||p_TriggerBools->at(27)|| p_TriggerBools->at(39) || p_TriggerBools->at(40)  )) return false;
+                if (isMC && (p_TriggerBools->at(28)||p_TriggerBools->at(30) || p_TriggerBools->at(34)|| p_TriggerBools->at(35))) return true;
+                if(!isRunH && isDilep && (p_TriggerBools->at(28)||p_TriggerBools->at(30)) ) return true;
+                if(!isRunH && isSingleMu && ! (p_TriggerBools->at(28)||p_TriggerBools->at(30)) && (p_TriggerBools->at(34)|| p_TriggerBools->at(35)) ) return true;
+                if(isRunH && isDilep && (p_TriggerBools->at(27)||p_TriggerBools->at(29))) return true;
+                if(isRunH && isSingleMu && ! (p_TriggerBools->at(27)||p_TriggerBools->at(29)) && (p_TriggerBools->at(34)|| p_TriggerBools->at(35))) return true;
+
 	}
 	else if(b_ee_){
-		if(! p_TriggerBools->at(31)|| p_TriggerBools->at(41)) return false;
+                if (isMC &&(p_TriggerBools->at(31) || p_TriggerBools->at(36))) return true;
+		if(isDilep && p_TriggerBools->at(31) ) return true;
+                if(isSingleEle && ! p_TriggerBools->at(31) && p_TriggerBools->at(36)) return true;
 	}
-	return true;
+        else if (b_smu_){
+                if(p_TriggerBools->at(34)|| p_TriggerBools->at(35)) return true;
+	}
+        return false;
 }
+
 
 

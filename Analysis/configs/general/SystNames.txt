@@ -13,21 +13,69 @@
 
 [syst names]
 
-BTAGH,	 	B-tag
-BTAGL,   	Mistag
+BTAGH,	 	b-tag
+BTAGL,   	b-mistag
+BTAG_TOT,       b-tagging
 ELECES, 	Electron energy scale
-ELECSF,		Electron ID, isolation
+ELECESR, 	Electron energy
+ELECER, 	Electron energy resolution
+ELECER_PHI, 	Electron energy resolution - phi
+ELECER_RHO, 	Electron energy resolution - rho
+ELECSF,		Electron ID / isolation
+ELECSF_ALL,	Electron ID / isolation
 JER,		Jet energy resolution
 JES,		Jet energy scale
 MUONES,		Muon energy scale
-MUONSF,		Muon ID, isolation
+MUONSF,		Muon ID / isolation
+MUONSF_ALL,	Muon ID / isolation
 PU,			Pile-up
 TOPPT,		Top $p_{T}$
 TRIGGER,	Trigger
+TRIGGERSF,	Trigger
 BG,			Backgrounds
 TT_MATCH,	ME/PS matching
 TT_SCALE,	$Q^{2}$ scale
 LUMI,		Luminosity
+Lumi,		Luminosity
+TT_CR_ALL,  Color reconnection
+ST_MESCALE, tW ME scale
+TT_MESCALE, $t\bar{t}$ ME scale
+DYSCALE, DY ME scale
+TT_TTTUNE, UE tune
+TT_BRANCH, B-hadron BR
+TT_FRAG,  fragmentation
+TT_FRAG_PETERSON,  fragm. Peterson
+TT_BFRAG, B-Fragmentation
+TT_FSRSCALE, $t\bar{t}$ FSR scale
+TT_ISRSCALE, $t\bar{t}$ ISR scale
+ST_FSRSCALE, tW FSR scale
+ST_ISRSCALE, tW ISR scale
+TOPMASS, $m_{t}^{MC}$
+Xsec, $\sigma_{t\bar{t}}$
+
+BTAGH_bfragmentation, b-tag: b fragmentation
+BTAGH_btempcorr, b-tag: b template correction
+BTAGH_cb, b-tag: JP correction
+BTAGH_cfragmentation, b-tag: c fragmentation
+BTAGH_dmux, b-tag: $D \to \mu X$ BR
+BTAGH_gluonsplitting, b-tag: gluon splitting 
+BTAGH_jes, b-tag: JES
+BTAGH_jetaway, b-tag: away jet tag
+BTAGH_ksl, b-tag: $K_s^0$ ($\Lambda$) production
+BTAGH_l2c, b-tag: light to c ratio
+BTAGH_ltothers, b-tag: LT others
+BTAGH_mudr, b-tag: muon $\DeltaR$
+BTAGH_mupt, b-tag: muon $p_T$
+BTAGH_sampledependence, b-tag: sample dependence
+BTAGH_ptrel, b-tag: muon $p_T$ rel
+BTAGH_statistic, b-tag: statistical
+
+
+TT_CRERD, CR ERD on
+TT_CRQCD, CR QCD-inspired
+TT_CRGLUON, CR Gluon move
+
+DY_GEN, DY generator
 
 LEPIDISO,   Lepton ID/isolation
 LES,        Lepton energy scale
@@ -37,9 +85,17 @@ JEC_residuals,          JES: Residual corrections
 JES_AbsoluteMPFBias,			JES: MPF
 JES_RelativeFSR, 	    JES: Intercalibration
 JES_CorrelationGroupbJES,				JES: b-JES
-JES_Flavor,				JES: Flavor
+JES_Flavor,				JES: Flavor response
 JES_Uncorrelated,		JES: Uncorrelated
 JES_PileupPt,           JES: Pileup
+JES_Fragmentation, JES: Fragmentation
+JES_PileUpPtEC1, JES: PileUp $p_T$ EC1
+JES_PileUpPtRef, JES: PileUp $p_T$ Ref
+JES_RelativeBal, JES: Relative Balance
+JES_RelativeStatEC, JES: Relative Stat EC
+JES_RelativeStatFSR, JES: Relative Stat FSR
+JES_TimePtEta, JES: Time $p_T$ $\eta$
+
 
 JES_AbsoluteScale , JES: Absolute Scale
 JES_AbsoluteStat , JES: Absolute Stat
@@ -61,8 +117,10 @@ JES_RelativeStatHF , JES: Relative Stat HF
 JES_SinglePionECAL , JES: Single pion ECAL
 JES_SinglePionHCAL , JES: Single pion HCAL
 JES_Time , JES: Time
-  JES_FlavorPureBottom, JES: Flavor ($b$)
-  JES_FlavorPureQuark,  JES: Flavor (light)
+JES_FlavorPureBottom, JES: Flavor ($b$)
+JES_FlavorPureQuark,  JES: Flavor ($uds$)
+JES_FlavorPureGluon,  JES: Flavor ($g$)
+JES_FlavorPureCharm,  JES: Flavor ($c$)
 
 JES, Jet energy scale
 
@@ -77,7 +135,7 @@ TT_GENPOWPY,    MG+PY $\rightarrow$ PH+PY
 TT_GENMCATNLO,  NLO generator 
 
 BG_tW/#bar{t}W#rightarrowll, Single top background
-BG_tW/bartW, Single top background
+BG_tW/#bar{t}W, tW background
 BG_VV, Diboson background
 BG_t#bar{t}bg, $t\bar{t}$ background
 BG_Wjets,  W+jets background
@@ -89,6 +147,11 @@ BG_0_bjets_DY, DY background (0 b-jets)
 BG_1_bjets_DY, DY background (1 b-jets)
 BG_2_bjets_DY, DY background (2 b-jets)
 BG_DY, DY background
+
+BG_0_addjets_DY, DY background (0 add. jets)
+BG_1_addjets_DY, DY background (1 add. jets)
+BG_2_addjets_DY, DY background (2 add. jets)
+BG_3_addjets_DY, DY background (3 add. jets)
 
 
 

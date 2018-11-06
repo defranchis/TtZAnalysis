@@ -1,0 +1,20 @@
+> analyse -i emu_13TeV_config.txt -e 13TeV -B -s JES_up  " ### testmode:
+> -T, external btag file: -b xxxbtag.root,
+>
+> cd
+> ~/xxl/workarea/cms/xsection/CMSSW_7_2_2_patch2/src/TtZAnalysis/Analysis/scripts
+> ./submit.sh testallsys -B
+>
+>
+> cp emu_13TeV_172.5_nominal.root emu_13TeV_172.5_nominal_syst.root
+> or
+> mergeSyst *nominal.root *up.root *down.root
+>
+> addPseudodata -P emu_13TeV_172.5_nominal_syst.root
+>
+> ### not needed if -P is used plotCSV emu_13TeV_172.5_nominal.root
+>
+>
+> fitTtBarXsec -i datasets_13_TeV.txt
+>
+>

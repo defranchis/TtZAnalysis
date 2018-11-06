@@ -10,6 +10,7 @@
 #include "../interface/ttbarXsecFitter.h"
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include "TtZAnalysis/Tools/interface/histoStack.h"
 #include "TtZAnalysis/Tools/interface/plotterControlPlot.h"
 #include "TtZAnalysis/Tools/interface/plotterMultiplePlots.h"
@@ -26,24 +27,28 @@ invokeApplication(){
 
 	parser->bepicky=true;
 	const TString lhmode = parser->getOpt<TString>("m","poissondata",
-			"modes for the likelihood assumption in the fit.  possible: chi2data, chi2datamc, poissondata default: poissondata");
+			"modes for the likelihood assumption in the fit.  possible: chi2data, chi2datamc, chi2datafullmc, poissondata default: poissondata");
 	const TString inputconfig = parser->getOpt<TString>("i","ttbarXsecFitter_mll.txt","input config (located in TtZAnalysis/Analysis/configs");
 	const bool onlyMC=parser->getOpt<bool>("-onlyMC",false,"use plain MC, no data. Compare sum(MC) to MC. useful to check if a fit could work theoretically");
-	if(lhmode!="chi2datamc" && lhmode!="chi2data" && lhmode!="poissondata"){
+	const TString fitToVariation=parser->getOpt<TString>("-fitToVariation","","fit to MC variation");
+	if(lhmode!="chi2datamc" && lhmode!="chi2data" && lhmode!="poissondata" && lhmode!="chi2datafullmc"){
 		parser->coutHelp();
 		exit(-1);
 	}
 	const bool exclude0bjetbin  = parser->getOpt<bool>("-exclude0bjet",false,"Excludes 0,3+ bjet bin from the fit");
 	const int npseudoexp = parser->getOpt<int>("p",0,"number of pseudo experiments");
+	const int nToys = parser->getOpt<int>("-nToys",0,"number of toys");
+	const unsigned int seed = parser->getOpt<int>("-seed",0,"RNG seed for toys");
 	const bool debug = parser->getOpt<bool>("d",false,"switches on debug output");
 	const TString pseudoOpts = parser->getOpt<TString>("-pdopts","",
 			"additional options for pseudodata: Gaus: use Gaussian random distribution ");
 	const bool fitsystematics =! parser->getOpt<bool>("-nosyst",false,"removes systematics");
+	const bool onlyemu = parser->getOpt<bool>("-emu",false,"fit only emu channel");
 	const bool onlytotalerror = parser->getOpt<bool>("-onlytotal",false,"no syst breakdown");
-	const bool onlycontrolplots = parser->getOpt<bool>("-onlycontrol",false,"only control plots");
+	const bool docontrolplots = parser->getOpt<bool>("-controlplots",false,"only control plots");
 	const bool nominos = parser->getOpt<bool>("-nominos",false,"switches off systematics breakdown");
 	const float topmass = parser->getOpt<float>("-topmass",0,"Set top mass");
-	const bool tmpcheck = parser->getOpt<bool>("M",false,"Quick temp check");
+	const bool tmpcheck = parser->getOpt<bool>("M",false,"top mass fit");
 	const bool candc = parser->getOpt<bool>("-cutandcount",false,"also produce fast cut and count (2 jets 1 b-tag) result");
 
 	const bool printplots = ! parser->getOpt<bool>("-noplots",false,"switches off all plotting");
@@ -54,6 +59,7 @@ invokeApplication(){
 	const bool topontop =  parser->getOpt<bool>("-topontop",false,"plots ttbar signal on top");
 	const bool likelihoodscan =  parser->getOpt<bool>("-scan",false,"Maps the likelihood around the minimum as a function of the cross section(s). Needs a lot of CPU time!");
 
+	const bool mlbCrossCheck = parser->getOpt<bool>("-mlbCrossCheck",false,"cross check with only one mlb distribution");
 
 	TString outfile;
 
@@ -73,9 +79,14 @@ invokeApplication(){
 		return -1;
 	}
 
+        if (npseudoexp && nToys){
+            throw std::logic_error("fitTtBarXsec: cannot perform pseudo-experiments and systematic toys at the same time");
+        }
+
 	ttbarXsecFitter mainfitter;
 	mainfitter.setTopOnTop(topontop);
 	mainfitter.setDummyFit(dummyrun);
+        mainfitter.setMassFit(tmpcheck);
 
 	if(lhmode=="chi2datamc")
 		mainfitter.setLikelihoodMode(ttbarXsecFitter::lhm_chi2datamcstat);
@@ -83,33 +94,45 @@ invokeApplication(){
 		mainfitter.setLikelihoodMode(ttbarXsecFitter::lhm_chi2datastat);
 	if(lhmode=="poissondata")
 		mainfitter.setLikelihoodMode(ttbarXsecFitter::lhm_poissondatastat);
+	if(lhmode=="chi2datafullmc")
+		mainfitter.setLikelihoodMode(ttbarXsecFitter::lhm_chi2datafullmcstat);
 
 	if(topmass)
 		mainfitter.setReplaceTopMass(topmass);
 
 	mainfitter.setExcludeZeroBjetBin(exclude0bjetbin);
 	mainfitter.setUseMCOnly(onlyMC);
-	mainfitter.setNoMinos(nominos);
+	mainfitter.setEmuOnly(onlyemu);
+        mainfitter.setFitToVariation(fitToVariation);
+        mainfitter.setNoMinos(nominos);
 	mainfitter.setNoSystBreakdown((onlytotalerror));
 	mainfitter.setIgnorePriors(!fitsystematics);
 	mainfitter.setRemoveSyst(!fitsystematics);
+	mainfitter.setMlbCrossCheck(mlbCrossCheck);
 
 	//extendedVariable::debug=true;
 	ttbarXsecFitter::debug=debug;
 
 
 
-	if(npseudoexp>0){
+	if(npseudoexp){
 		mainfitter.setRemoveSyst(true);
-		mainfitter.setSilent(true);
+		if (npseudoexp>1) mainfitter.setSilent(true);
 		mainfitter.setIgnorePriors(true);
 	}
+        if (nToys){
+            mainfitter.setSeed(seed);
+            mainfitter.setSilent(true);
+            mainfitter.setDoToys(true);
+        }
+
+        std::cout<<nToys<<" toys with seed "<<seed<<std::endl;
 	//simpleFitter::printlevel=1;
 
 	mainfitter.readInput((fullcfgpath+inputconfig).Data());
 	std::cout << "Input file sucessfully read. Free for changes." << std::endl;
 
-	if(onlycontrolplots){
+	if(docontrolplots){
 
 		//get list of input files, fast brute force -> can be changed since input is read by
 		// fitter before, now
@@ -158,7 +181,17 @@ invokeApplication(){
 		//get files
 
 		for(size_t file=0;file<filestoprocess.size();file++){
-			TString ctrplotsoutir=outfile+"_controlPlots";
+                        TString channel_cp = "emu";
+                        if ( ((TString)filestoprocess.at(file)).BeginsWith("ee_") ){
+                            specialplotsfile=cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_controlplots_ee.txt";
+                            channel_cp = "ee";
+                        }
+                        else if ( ((TString)filestoprocess.at(file)).BeginsWith("mumu_") ){
+                            specialplotsfile=cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_controlplots_mumu.txt";
+                            channel_cp = "mumu";
+                        }
+
+			TString ctrplotsoutir=outfile+"_controlPlots_"+channel_cp;
 			//ctrplotsoutir+="_"+datasets.at(file);
 			system(((TString)"mkdir -p " +ctrplotsoutir).Data());
 			histoStackVector vec;
@@ -174,6 +207,10 @@ invokeApplication(){
 			//fileReader::debug=false;
 			//get plot names
 			std::vector<std::string> plotnames= specialcplots.getMarkerValues("plot");
+                        std::vector<std::string> formatedplotnames= specialcplots.getMarkerValues("plot");
+                        for(size_t pln=0;pln<formatedplotnames.size();pln++){
+                                std::replace(formatedplotnames.at(pln).begin(),formatedplotnames.at(pln).end(),';',',');
+                        }
 
 			std::string fracfile=specialcplots.dumpFormattedToTmp();
 
@@ -187,7 +224,18 @@ invokeApplication(){
 			}
 
 			for(size_t stackit=0;stackit<plotnames.size();stackit++){
-				histoStack stack=vec.getStack(plotnames.at(stackit).data());
+				histoStack stack=vec.getStack(formatedplotnames.at(stackit).data());
+                                if (stack.getName() == "m_lb min 1,1 b-jets step 8") stack = stack.rebinXToBinning({20,48,76,104,132,160});
+                                else if (stack.getName() == "m_lb min 1,2 b-jets step 8") stack = stack.rebinXToBinning({20,48,76,104,132,160});
+                                else if (stack.getName() == "lead jet pt 0,1 b-jets step 8") stack = stack.rebinXToBinning({30,50,100,200});
+                                else if (stack.getName() == "second jet pt 0,2 b-jets step 8") stack = stack.rebinXToBinning({30,50,120,200});
+                                else if (stack.getName() == "third jet pt 0,3 b-jets step 8") stack = stack.rebinXToBinning({30,60,200});
+                                else if (stack.getName() == "m_lb min step 8") stack = stack.rebinXToBinning({20,50,75,105,130,160});
+
+                                else if (stack.getName() == "lead lepton pt step 8") stack = stack.cutLeft(20-0.1);
+                                else if (stack.getName() == "seclead lepton pt step 8") stack = stack.cutLeft(20-0.1);
+
+
 				plotterControlPlot pl;
 				//plotterControlPlot::debug=true;
 				//histoStack::debug=true;
@@ -202,6 +250,14 @@ invokeApplication(){
 				//pl.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt","CMSPaperSplit03Left");
 				size_t datasetidx=mainfitter.getDatasetIndex(datasets.at(file).data() );
 				mainfitter.addUncertainties(&stack, datasetidx);
+                                for (TString m_syst : stack.getSystNameList()){
+                                    if (m_syst.BeginsWith("BG_") || m_syst=="TOPMASS" || (m_syst=="TT_GENMCATNLO"&&(!tmpcheck))){
+                                        stack.removeError(m_syst+"_up");
+                                        stack.removeError(m_syst+"_down");
+                                        if (debug) std::cout<<"removed systematics "<<m_syst<<" from control plots"<<std::endl;
+                                    }
+                                }
+
 				pl.setStack(&stack);
 				std::string outname=(ctrplotsoutir+"/"+stack.getFormattedName()+"_"+datasets.at(file)).Data();
 				if(namemulti.at(stackit)>0)
@@ -213,8 +269,8 @@ invokeApplication(){
 			system(("rm -f "+fracfile).data());
 		}
 
-		return 0;
-	} //onlycontrolplots
+                if(npseudoexp>1 || nToys > 1) return 0;
+	} //docontrolplots
 
 
 	//simpleFitter::printlevel=-1; //for now
@@ -231,7 +287,7 @@ invokeApplication(){
 	bool fitsucc=true;
 	//ttbarXsecFitter::debug=true;
 
-	if(npseudoexp){
+	if(npseudoexp || nToys){
 		size_t failcount=0;
 		gErrorIgnoreLevel = 3000;
 		size_t ndatasets=mainfitter.nDatasets();
@@ -249,21 +305,38 @@ invokeApplication(){
 		if(pseudoOpts.Contains("Gaus"))
 			pdmode=histo1D::pseudodata_gaus;
 		std::cout << std::endl;
-		for(int i=0;i<npseudoexp;i++){
+                int n_iterations = npseudoexp;
+                if (nToys) n_iterations = nToys;
+		for(int i=0;i<n_iterations;i++){
 			if(i>0)
-				displayStatusBar(i,npseudoexp);
+				displayStatusBar(i,n_iterations);
 			std::vector<float> xsecs,errup,errdown;
-			mainfitter.createPseudoDataFromMC(pdmode);
+                        if (npseudoexp)	mainfitter.createPseudoDataFromMC(pdmode);
+                        else mainfitter.createToysFromSyst(pdmode);
 			mainfitter.createContinuousDependencies();
-			if(!i)
-				std::cout << "creating pseudo experiments...\n" <<std::endl;
+			if(!i){
+                            if (npseudoexp) std::cout << "creating pseudo experiments...\n" <<std::endl;
+                            else std::cout << "creating toy experiments...\n" <<std::endl;
+                        }
 			bool succ=true;
 			try{
-				mainfitter.fit(xsecs,errup,errdown);
+                               mainfitter.fit(xsecs,errup,errdown);
 			}catch(...){
 				failcount++;
 				succ=false;
 			}
+                        if(nToys>0 && succ){
+                            if (tmpcheck){
+                                mainfitter.createSystematicsBreakdown(0,"TOPMASS");
+                                texTabler tab=mainfitter.makeSystBreakDownTable(0,true,"TOPMASS");
+                                tab.writeToFile(outfile+"_tab_TOPMASS_"+std::to_string(seed)+"_"+std::to_string(i+1)+".tex");
+                            }
+                            else{
+                                mainfitter.createSystematicsBreakdown(0);
+                                texTabler tab=mainfitter.makeSystBreakDownTable(0,true);
+                                tab.writeToFile(outfile+"_tab13TeV_"+std::to_string(seed)+"_"+std::to_string(i+1)+".tex");
+                            }
+                        }
 			if(succ && ! tmpcheck){
 				for(size_t ndts=0;ndts<ndatasets;ndts++){
 					double pull=xsecs.at(ndts)-mainfitter.getXsecOffset(ndts);
@@ -289,14 +362,15 @@ invokeApplication(){
 
 			const std::vector<float> & par=mainfitter.tempdata;
 			for(size_t i=0;i<par.size();i++){
-				abspull.fill(par.at(i)*6); //HARDCODED
+				abspull.fill(par.at(i)*3); //HARDCODED
 				double stat=(std::max(fabs(par.at(i+1)),fabs(par.at(i+2))));
+                                // double stat = fabs(par.at(i+3));
 				double pull = par.at(i) / stat;
 				if(!i){
 					std::cout << "parameter stat error: " << stat << std::endl;
 				}
 
-				++i;++i;
+				++i;++i;// ++i;
 				for(size_t ndts=0;ndts<ndatasets;ndts++){
 					pulls.at(ndts).fill ( pull);
 				}
@@ -305,11 +379,16 @@ invokeApplication(){
 
 		//fit
 		for(size_t i=0;i<pulls.size()+1;i++){ //both pulls
+                    if (nToys > 0) break;
 			histo1D * c=0;
+                        TH1D * h=0;
 			if(i<pulls.size())
 				c=&pulls.at(i);
 			else
 				c=&abspull;
+
+                        h = c->getTH1D();
+                        h->SetName("pull");
 			graph tofit; tofit.import(c,true);
 			graphFitter fitter;
 			fitter.readGraph(&tofit);
@@ -333,7 +412,8 @@ invokeApplication(){
 
 			TCanvas * cv=new TCanvas();
 			plotterMultiplePlots plm;
-			plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/multiplePlots_pulls.txt");
+                        if (tmpcheck) plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/multiplePlots_pulls_mass.txt");
+                        else plm.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/multiplePlots_pulls.txt");
 			plm.usePad(cv);
 			plm.addPlot(c);
 			plm.setLastNoLegend();
@@ -344,6 +424,7 @@ invokeApplication(){
 			if(i<pulls.size()){
 				TFile f(outfile+"_pull_" + mainfitter.datasetName(i)+ ".root","RECREATE");
 				cv->Write();
+                                h->Write();
 				f.Close();
 				cv->Print(outfile+"_pull_" + mainfitter.datasetName(i)+ ".pdf");
 				outfilefull=toString(outfile+"_pull_" + mainfitter.datasetName(i)+".ztop");
@@ -351,6 +432,7 @@ invokeApplication(){
 			else{
 				TFile f(outfile+"_pull_abs.root","RECREATE");
 				cv->Write();
+                                h->Write();
 				f.Close();
 				cv->Print(outfile+"_pull_abs.pdf");
 				outfilefull=toString(outfile+"_pull_abs.ztop");
@@ -359,9 +441,10 @@ invokeApplication(){
 			c->writeToFile(outfilefull); //for post-fits
 
 		}
-		std::cout << "Pseudodata run done. " << failcount << " failed out of " << npseudoexp << std::endl;
+		if (npseudoexp) std::cout << "Pseudodata run done. " << failcount << " failed out of " << npseudoexp << std::endl;
+                else std::cout << "Syst toys run done. " << failcount << " failed out of " << nToys << std::endl;
 
-		return 0;
+                if(n_iterations>1) return 0;
 	}
 	else{
 		//ttbarXsecFitter::debug=false;
@@ -403,6 +486,7 @@ invokeApplication(){
 			TString dir=outfile+"_vars/";
 			system( ("mkdir -p "+dir).Data());
 			for(size_t nbjet=0;nbjet<3;nbjet++){
+                                // if (!onlyemu && nbjet==0) continue;
 
 				mainfitter.printControlStack(false,nbjet,ndts,outfile.Data());
 				mainfitter.printControlStack(true,nbjet,ndts,outfile.Data());
@@ -504,14 +588,37 @@ invokeApplication(){
 			infile+=mainfitter.datasetName(ndts).Data();
 			infile+="_172.5_nominal_syst.ztop";
 			std::string dir=outfile.Data();
-			dir+="_";
+			dir+="_emu_";
 			dir+=mainfitter.datasetName(ndts).Data();
 			system(("mkdir -p "+dir).data());
 			dir+="/";
-			mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots.txt",dir);
-
-
+                        if (!mlbCrossCheck) mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots.txt",dir);
+                        else mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots_mlb.txt",dir);
 		}
+                if (!onlyemu){
+                    for(size_t ndts=0;ndts<mainfitter.nDatasets();ndts++){
+                        std::string infile="mumu_";
+                        infile+=mainfitter.datasetName(ndts).Data();
+                        infile+="_172.5_nominal_syst.ztop";
+                        std::string dir=outfile.Data();
+                        dir+="_mumu_";
+                        dir+=mainfitter.datasetName(ndts).Data();
+                        system(("mkdir -p "+dir).data());
+                        dir+="/";
+                        mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots_mumu.txt",dir);
+                    }
+                    for(size_t ndts=0;ndts<mainfitter.nDatasets();ndts++){
+                        std::string infile="ee_";
+                        infile+=mainfitter.datasetName(ndts).Data();
+                        infile+="_172.5_nominal_syst.ztop";
+                        std::string dir=outfile.Data();
+                        dir+="_ee_";
+                        dir+=mainfitter.datasetName(ndts).Data();
+                        system(("mkdir -p "+dir).data());
+                        dir+="/";
+                        mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots_ee.txt",dir);
+                    }
+                }
 	}
 	std::cout << "fitTtBarXsec done" << std::endl;
 	return 0;

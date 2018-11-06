@@ -112,6 +112,7 @@ public:
 	void multiplyNorm(size_t , float);
 	void multiplyAllMCNorms(float);
 	void addGlobalRelMCError(TString,double);   //! adds a global systematic variation to the systematics stored (e.g. lumi) is o+err
+	void addGlobalRelBGError(TString,double);   //! adds a global systematic variation to the systematics stored (e.g. lumi) is o+err
 
 	void addRelErrorToContribution(double err, const TString& contributionname, TString nameprefix="BG", bool lognormal=false);
 	void addRelErrorToContributions(double err, const std::vector<size_t> contribidxs, TString nameprefix="BG", bool lognormal=false);
@@ -176,6 +177,8 @@ public:
 	histoStack rebinXToBinning(const std::vector<float> &)const;
 	histoStack rebinYToBinning(const std::vector<float> &)const;
 
+	histoStack cutLeft(const float & )const;
+	histoStack cutRight(const float & )const;
 
 	histoStack operator + ( const histoStack& );
 	histoStack operator - ( const histoStack& );
@@ -211,6 +214,8 @@ public:
 	histo1D getBackgroundContainer()const;
 	histo1D getDataContainer()const;
 
+        std::vector<histo1D> getBackgroundContainers()const;
+        std::vector<TString> getBackgroundLegends()const;
 
 	histo2D getSignalContainer2D()const;
 	histo2D getBackgroundContainer2D()const;

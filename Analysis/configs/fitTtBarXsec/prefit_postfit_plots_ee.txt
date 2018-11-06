@@ -1,0 +1,70 @@
+
+# this is just a list of plots that are plotted pre/post fit as control ditributions
+# they will only include: data, signal, background (merged) but will incorporate all 
+# correlations
+#
+# It is essential to provide input plots divided into nbjets categories
+# categories can be merged in a second step (see format)
+# an optional style file can be specified
+#
+# comments: # 
+# format: 
+#    b-jetcat: plotname (: opt plotformatfile)
+#  or
+#    b-jetcat: plotname = plot1 + plot2 + ... (: opt plotformatfile)  FIXME!
+#  the latter if (same binned) plots should be merged to one afterwards
+#  here, if categories are merged, b-jetcat can be set to a starting value
+#
+# keep in mind that bjet category 0 also includes 3+ bjets
+#  
+
+
+
+
+0 :total 0,0 b-jets step 8 = total 0,0 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+0 :total 0,1 b-jets step 8 = total 0,1 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+0 :total 0,2 b-jets step 8 = total 0,2 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+0 :total 0,3 b-jets step 8 = total 0,3 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+0 :mll zero jets zero bjets step 8 = mll zero jets zero bjets step 8
+0 :mll one jets zero bjets step 8 = mll one jets zero bjets step 8
+0 :mll two jets zero bjets step 8 = mll two jets zero bjets step 8
+0 :mll three jets zero bjets step 8 = mll three jets zero bjets step 8
+0 :lead jet pt 0,1 b-jets step 8 = lead jet pt 0,1 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+0 :second jet pt 0,2 b-jets step 8 = second jet pt 0,2 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+0 :third jet pt 0,3 b-jets step 8 = third jet pt 0,3 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+
+0 :DXi zero jets zero bjets step 8 = DXi zero jets zero bjets step 8
+
+1 :total 1,0 b-jets step 8 = total 1,0 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+1 :total 1,1 b-jets step 8 = total 1,1 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+1 :total 1,2 b-jets step 8 = total 1,2 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+1 :total 1,3 b-jets step 8 = total 1,3 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+1 :lead jet pt 1,1 b-jets step 8 = lead jet pt 1,1 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+1 :second jet pt 1,2 b-jets step 8 = second jet pt 1,2 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+1 :third jet pt 1,3 b-jets step 8 = third jet pt 1,3 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+
+2 :total 2,0 b-jets step 8 = total 2,0 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+2 :total 2,1 b-jets step 8 = total 2,1 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+2 :total 2,2 b-jets step 8 = total 2,2 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+2 :total 2,3 b-jets step 8 = total 2,3 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+2 :lead jet pt 2,1 b-jets step 8 = lead jet pt 2,1 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+2 :second jet pt 2,2 b-jets step 8 = second jet pt 2,2 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+2 :third jet pt 2,3 b-jets step 8 = third jet pt 2,3 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+
+
+1: m_lb min step 8 =  m_lb min 1 b-jets step 8 + m_lb min 2 b-jets step 8
+
+
+0: selected b-jet multi step 8 = selected b-jet multi 0 b-jets step 8 + selected b-jet multi 1 b-jets step 8 + selected b-jet multi 2 b-jets step 8
+
+0: lead lep pt step 8 = lead lep pt 0 b-jets step 8 + lead lep pt 1 b-jets step 8 + lead lep pt 2 b-jets step 8
+
+
+0: sec lep pt step 8 =  sec lep pt 0 b-jets step 8 + sec lep pt 1 b-jets step 8 + sec lep pt 2 b-jets step 8
+
+1: m_lb min 1,1 b-jets step 8 = m_lb min 1,1 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+1: m_lb min coarse 1,2 b-jets step 8 = m_lb min coarse 1,2 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+1: m_lb min coarse 1,3 b-jets step 8 = m_lb min coarse 1,3 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+
+2: m_lb min coarse 2,1 b-jets step 8 = m_lb min coarse 2,1 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt
+2: m_lb min coarse 2,2 b-jets step 8 = m_lb min coarse 2,2 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_ee.txt

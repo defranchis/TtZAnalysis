@@ -362,8 +362,8 @@ $?cfg
     yaxis.labelOffset = 0.005
     yaxis.tickLength  = 0.03
     yaxis.ndiv        = 505
-    yaxis.max         = 1.18
-    yaxis.min         = 0.82
+    yaxis.max         = 1.03
+    yaxis.min         = 0.97
     yaxis.log         = false
     yaxis.name        = Ratio
     

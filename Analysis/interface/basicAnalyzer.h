@@ -44,6 +44,7 @@ public:
 
 	void setFilePostfixReplace(const TString& file,const TString& pf,bool clear=false);
 	void setFilePostfixReplace(const std::vector<TString>& files,const std::vector<TString>& pf);
+        void setFileXsecReplace(const TString& file,double xsec);
 
 	void setTestMode(bool test){testmode_=test;}
 
@@ -81,9 +82,10 @@ protected:
 	bool createOutFile()const;
 
 	TString replaceExtension(TString filename );
+        int replaceXsec(TString filename);
 
 
-	std::vector<TString> infiles_,legentries_;
+	std::vector<TString> infiles_,legentries_, originfiles_;
 	std::vector<int> colz_;
 	std::vector<double> norms_;
 	std::vector<size_t> legords_;
@@ -91,7 +93,7 @@ protected:
 	std::vector<TString> extraopts_;
 
 	///child variables
-	TString inputfile_;
+	TString inputfile_, originputfile_;
 	TString legendname_;
 	int col_;
 	double norm_;
@@ -102,7 +104,8 @@ protected:
 
 	TString syst_;
 	double lumi_;
-	std::vector<TString> fwithfix_,ftorepl_;
+	std::vector<TString> fwithfix_,ftorepl_,ftoreplxsec_;
+        std::vector<double> xsectorepl_;
 	int freplaced_;
 	bool testmode_;
 

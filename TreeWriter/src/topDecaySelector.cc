@@ -45,6 +45,33 @@ topDecaySelector& topDecaySelector::operator = (const topDecaySelector&rhs){
 
 //this is where the magic happens
 void  topDecaySelector::process(){
+
+        //clearing vectors
+        finalstateleptons_.clear();
+        finalstateleptonsdressed_.clear();
+        finalstateleptonsfromw_.clear();
+        meleptons_.clear();
+        dectops_.clear();
+        decws_.clear();
+        metops_.clear();
+        mews_.clear();
+        finalstateneutrinos_.clear();
+        meneutrinos_.clear();
+        mebs_.clear();
+        dectops_mothers_.clear();
+        mews_mothers_.clear();
+        decws_mothers_.clear();
+        meleptons_mothers_.clear();
+        finalstateleptonsfromw_mothers_.clear();
+        meneutrinos_mothers_.clear();
+        mebs_mothers_.clear();
+        metops_daughters_.clear();
+        dectops_daughters_.clear();
+        mews_daughters_.clear();
+        decws_daughters_.clear();
+        meleptons_daughters_.clear();
+
+
         
         //Vectors to save the tops, ws
         std::vector<const reco::GenParticle *> tops, ws;
@@ -57,7 +84,7 @@ void  topDecaySelector::process(){
         if(debug) std::cout << "Filling tops" << std::endl;
         for(size_t i=0;i<incollectionp_->size();i++){
                 mother = incollectionp_->at(i);
-                if(std::abs(mother->pdgId()) ==6 && std::abs(mother->status())==statTop_ ){ 
+                if(std::abs(mother->pdgId()) ==6 && std::abs(mother->status())==statTop_ ){
                         metops_.push_back(mother);
                         daughter = findLastParticle(mother);
                         tops.push_back(daughter);

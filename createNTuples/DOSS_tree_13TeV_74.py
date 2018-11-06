@@ -372,17 +372,18 @@ process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
 process.BadPFMuonFilter.muons = cms.InputTag("slimmedMuons")
 process.BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates")
 
+process.load('TopAnalysis.ZTopUtils.BadElectronFilter')
+
+
+from TopAnalysis.ZTopUtils.MetFilterCombiner_cfi import metFilterCombiner
+
+process.metFilters=metFilterCombiner.clone(src=cms.InputTag('TriggerResults','',filterProcess),addsrc=cms.VInputTag("BadElectronFilter","BadPFMuonFilter","BadChargedCandidateFilter"),flag=cms.vstring("Flag_HBHENoiseFilter","Flag_goodVertices","Flag_globalTightHalo2016Filter","Flag_HBHENoiseIsoFilter","Flag_EcalDeadCellTriggerPrimitiveFilter"))
+
 
 
 if runOnMC :
      process.prefilterSequence = cms.Sequence(
-         process.HBHENoiseFilter*
-         process.HBHENoiseIsoFilter*
-         process.cscFilter*
-         process.vertexFilter*
-         process.ecalDeadCellFilter*
-         process.BadChargedCandidateFilter*
-         process.BadPFMuonFilter
+
      )
 
 
@@ -556,8 +557,8 @@ process.PFTree   = cms.EDAnalyzer('TreeWriterTtZ',
                                   includeTrigger = cms.bool(True),
                                   triggerResults = cms.InputTag('TriggerResults','','HLT'), #needed for both AOD and MiniAOD
                                   triggerEvent   = cms.InputTag('patTriggerEvent'), ### "selectedPatTrigger" for MiniAODs
-                                  triggerObjects = cms.vstring(""),
-                                  #triggerObjects = cms.vstring("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v","HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v","hltL3fL1sDoubleMu114L1f0L2f10OneMuL3Filtered17","hltDiMuonGlb17Glb8RelTrkIsoFiltered0p4","hltDiMuonGlb17Trk8RelTrkIsoFiltered0p4","hltL3pfL1sDoubleMu114L1f0L2pf0L3PreFiltered8","hltL2pfL1sDoubleMu114ORDoubleMu125L1f0L2PreFiltered0","hltDiMuonGlb17Trk8RelTrkIsoFiltered0p4","hltDiMuonGlbFiltered17TrkFiltered8"),
+                                  #triggerObjects = cms.vstring(""),
+                                  triggerObjects = cms.vstring("HLT_Ele27_WPTight_Gsf_v","HLT_IsoTkMu24_v","HLT_IsoMu24_v","HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v","HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v","hltL3fL1sDoubleMu114L1f0L2f10OneMuL3Filtered17","hltDiMuonGlb17Glb8RelTrkIsoFiltered0p4","hltDiMuonGlb17Trk8RelTrkIsoFiltered0p4","hltL3pfL1sDoubleMu114L1f0L2pf0L3PreFiltered8","hltL2pfL1sDoubleMu114ORDoubleMu125L1f0L2PreFiltered0","hltDiMuonGlb17Trk8RelTrkIsoFiltered0p4","hltDiMuonGlbFiltered17TrkFiltered8"),
                                   
                                   #block for event information.  Essential (PU)
                                   PUInfo = cms.InputTag('slimmedAddPileupInfo'),

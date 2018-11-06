@@ -1,3 +1,4 @@
+
 /*
  * scalefactors.h
  *
@@ -15,6 +16,9 @@
 #include <stdexcept>
 #include "TFile.h"
 
+#include "TtZAnalysis/DataFormats/interface/NTJet.h"
+#include "TtZAnalysis/DataFormats/interface/NTElectron.h"
+#include "TtZAnalysis/DataFormats/interface/NTMuon.h"
 
 namespace ztop{
 
@@ -23,7 +27,7 @@ public:
 
 	enum systematics{sys_up,sys_down,sys_nominal};
 
-	scalefactors(): h(0), isth2d_(false), isMC_(false), syst_(sys_nominal), rangecheck_(true),isglobal_(false),glsf_(0),glsfup_(0),glsfd_(0),switchedoff_(false){}
+scalefactors(): h(0), isth2d_(false), isMC_(false), syst_(sys_nominal), variation_(""), rangecheck_(true),isglobal_(false),glsf_(0),glsfup_(0),glsfd_(0),switchedoff_(false){}
 	scalefactors(const scalefactors&);
 	scalefactors& operator = (const scalefactors& );
 	~scalefactors(){}
@@ -32,7 +36,12 @@ public:
 	void setGlobal(double sf,double errup=0,double errdown=0);
 	int setSystematics(TString updownnom);
 
+	void setVariation(TString variation){variation_=variation;}
+
 	void setIsMC(bool is){isMC_=is;}
+	void setIsTtbar(bool istt){isTtbar_=istt;}
+	void setIsTtbarLike(bool isttlike){isTtbarLike_=isttlike;}
+
 	void setRangeCheck(bool check){rangecheck_=check;}
 
 	void switchOff(bool switchoff){switchedoff_=switchoff;}
@@ -42,12 +51,30 @@ public:
 
 	double getScalefactor(double xval,double yval=0)const;
 
+        float getElectronESFactor( NTElectron* ele ) const;
+        float getElectronERFactor_phi( NTElectron* ele ) const;
+        float getElectronERFactor_rho( NTElectron* ele ) const;
+        float getElectronESERFactorFromEnvelope( NTElectron* ele ) const;
+
+        float getAdditionalJECFactor( NTJet* jet ) const;
+        float readJECFactorFromFile( NTJet* jet ) const;
+
+        float getMuonRochesterFactorFromEnvelope( NTMuon* muon ) const;
+        float getMuonRochesterFactorFromEnvelope_up( NTMuon* muon ) const;
+        float getMuonRochesterFactorFromEnvelope_down( NTMuon* muon ) const;
+
+        float getElectronESFactorUp( NTElectron* ele ) const;
+        float getElectronESFactorDown( NTElectron* ele ) const;
+        float getElectronERFactorUp( NTElectron* ele ) const;
+        float getElectronERFactorDown( NTElectron* ele ) const;
+
 private:
 	TH1D th1d_,th1derrup_,th1derrdown_;
 	TH2D th2d_,th2derrup_,th2derrdown_;
 	TH1 * h;
-	bool isth2d_,isMC_;
+	bool isth2d_,isMC_,isTtbar_,isTtbarLike_;
 	systematics syst_;
+        TString variation_;
 	bool rangecheck_;
 	bool isglobal_;
 	double glsf_,glsfup_,glsfd_;
@@ -94,7 +121,11 @@ inline double scalefactors::getScalefactor(double xval,double yval)const{
 			std::cout << "scalefactors::getScalefactor: scale factor very small ~0. warning\nmaybe ut of range? input was: " << xval<< ","<< yval<< std::endl;
 			throw std::runtime_error("scalefactors::getScalefactor: scale factor very small ~0. maybe ut of range");
 		}
-		if(content<0.001){
+	       if(content<0.001){
+                        if (xval < h->GetXaxis()->GetXmin()) this->getScalefactor(h->GetXaxis()->GetXmin()*1.000000001,yval);
+                        else if (xval > h->GetXaxis()->GetXmax()) this->getScalefactor(h->GetXaxis()->GetXmin()*0.9999999999,yval);
+                        else if (yval < h->GetYaxis()->GetXmin()) this->getScalefactor(xval,h->GetYaxis()->GetXmin()*1.000000001);
+                        else if (yval > h->GetYaxis()->GetXmax()) this->getScalefactor(xval,h->GetYaxis()->GetXmin()*0.9999999999);
 			return 1;
 		}
 		return content;

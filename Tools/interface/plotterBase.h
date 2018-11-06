@@ -89,7 +89,8 @@ tmplegp_(0),corrm_(0),yspacemulti_(1.3),pad_(0),drawlegend_(true),preparepad_(tr
      void readTStyleFromFile(const std::string& pathtofile);
 
      void printToPdf(const std::string& outname);
-void printToPng(const std::string& outname);
+     void printToPng(const std::string& outname);
+     void printToEps(const std::string& outname);
      void saveToTFile(const TString& outname);
 
      /**

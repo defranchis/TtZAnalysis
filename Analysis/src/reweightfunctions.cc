@@ -22,6 +22,9 @@ void reweightfunctions::setFunction(functiontype func){
    	else if(type_==flat){
    		std::cout << "reweightfunctions::setFunction: set to flat (==1)" <<std::endl;
    	}
+        if(type_==toppt_2016){
+                std::cout << "reweightfunctions::setFunction: set to top pt" <<std::endl;
+        }
 
 
 }
@@ -73,7 +76,14 @@ void reweightfunctions::reWeight(const float& in1,const float& in2, float& previ
             newweight= previousweight;
     }
 
-
+    if(type_ == toppt_2016){
+        if(syst_ == nominal)
+            newweight= sqrt(  TMath::Exp(0.0615-0.0005*in1)  * TMath::Exp(0.0615-0.0005*in2) );
+        if(syst_ == up)
+            newweight= sqrt( std::max(0.,1+(2.*(TMath::Exp(0.0615-0.0005*in1)-1)))* std::max(0.,1+(2.*(TMath::Exp(0.0615-0.0005*in2)-1))) );
+        if(syst_ == down)
+            newweight= previousweight;
+    }
 
     //base class calls
     setNewWeight(newweight);

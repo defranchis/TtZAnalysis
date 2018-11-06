@@ -146,6 +146,8 @@ TreeWriterBase::TreeWriterBase(const edm::ParameterSet& iConfig)
     consumeTemplate<std::vector<reco::Vertex>>(vertices_);
     consumeTemplate<reco::BeamSpot>(edm::InputTag("offlineBeamSpot"));
     consumeTemplate<bool>(edm::InputTag("filterkinLeptons"));
+    consumeTemplate<bool>(edm::InputTag("metFilters"));
+
     if(includereco_){
         if(pfElecCands_)
             consumeTemplate<std::vector<reco::PFCandidate>>(recoelecs_);
@@ -1046,6 +1048,9 @@ TreeWriterBase::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     edm::Handle<bool>skim;
     iEvent.getByLabel("filterkinLeptons",skim);
     skim_= *skim;
+    edm::Handle<bool>metFilter;
+    iEvent.getByLabel("metFilters",metFilter);
+    metFilter_=*metFilter;
     //catch (...) {skim_=1;}
 #endif
     /*ZTOP_COUTVAR(iEvent.id().run());
@@ -1227,6 +1232,7 @@ TreeWriterBase::beginJob()
 
 #ifndef CMSSW_LEQ_5
     Ntuple->Branch("Skim", &skim_);
+    Ntuple->Branch("Metfilter",&metFilter_ );
 #endif
 
     if(debugmode) std::cout <<"branches set" << std::endl;

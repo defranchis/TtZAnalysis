@@ -24,10 +24,10 @@ class histoStack;
 class ttbarXsecFitter {
 public:
 	friend class dataset;
-	enum likelihoodmodes{lhm_chi2datastat,lhm_chi2datamcstat,lhm_poissondatastat};
+	enum likelihoodmodes{lhm_chi2datastat,lhm_chi2datamcstat,lhm_poissondatastat,lhm_chi2datafullmcstat};
 
 	enum priors{prior_gauss,prior_box,prior_float,prior_narrowboxleft,prior_narrowboxright,
-		prior_parameterfixed};
+                    prior_parameterfixed,prior_gaussbroad,prior_gaussmass,prior_narrowboxfsr,prior_parameterfixed_up,prior_parameterfixed_down};
 
 	/**
 	 * Lumi uncertainties in %, lumi in pb
@@ -38,8 +38,9 @@ public:
 		lhmode_(lhm_chi2datamcstat),
 		fitsucc_(false),norm_nbjet_global_(true),
 		useMConly_(false),removesyst_(false),nominos_(false),
-		parameterwriteback_(true),
-		nosystbd_(false),silent_(false),nopriors_(false),topmassrepl_(-100),pseudodatarun_(false),
+                variationToFit_(""),emuOnly_(false),seed_(0),
+                parameterwriteback_(true),
+                nosystbd_(false),silent_(false),nopriors_(false),doToys_(false),massFit_(false),topmassrepl_(-100),mlbCrossCheck_(false),pseudodatarun_(false),
 		wjetsrescalefactor_(1),
 		topontop_(false)
 	{
@@ -63,6 +64,9 @@ public:
 
 
 	void setUseMCOnly(bool set){useMConly_=set;}
+	void setFitToVariation(TString var){variationToFit_=var;}
+	void setEmuOnly(bool emu){emuOnly_=emu;}
+	void setSeed(unsigned int seed){seed_=seed;}
 
 	void setNoMinos(bool nomin){nominos_=nomin;}
 
@@ -87,7 +91,8 @@ public:
 	 * no fit output
 	 */
 	void setSilent(bool silent){silent_=silent;}
-
+	void setDoToys(bool doToys){doToys_=doToys;}
+        void setMassFit(bool massFit){massFit_=massFit;}
 
 	void setTopOnTop(bool set){topontop_=set;}
 	/**
@@ -97,6 +102,7 @@ public:
 
 	void setReplaceTopMass(float mass){topmassrepl_=mass;}
 
+	void setMlbCrossCheck(float xcheck){mlbCrossCheck_=xcheck;}
 	/**
 	 * Reads in the input from file
 	 * leave some hardcoded parts here for now
@@ -160,6 +166,7 @@ public:
 	graph getResultsGraph(size_t idx,const float x_coord)const;
 
 	void createPseudoDataFromMC(histo1D::pseudodatamodes mode=histo1D::pseudodata_poisson);
+	void createToysFromSyst(histo1D::pseudodatamodes mode=histo1D::pseudodata_poisson);
 
 	void createContinuousDependencies();
 
@@ -227,7 +234,7 @@ private:
 
 		dataset(double lumi,double lumiunc, double xsecin, TString name, ttbarXsecFitter* par):
 			lumi_(lumi),xsecoff_(xsecin),unclumi_(lumiunc),
-			lumiidx_(9999),xsecidx_(9999),name_(name),totalvisgencontsread_(0),firstpseudoexp_(true),parent_(par)
+                        lumiidx_(9999),xsecidx_(9999),massidx_(9999),name_(name),totalvisgencontsread_(0),firstpseudoexp_(true),firstToy_(true),parent_(par)
 		{}
 
 		extendedVariable& eps_emu(){return eps_emu_;}
@@ -259,7 +266,9 @@ private:
 		const double & lumi()const{return lumi_;}
 		const double & xsecOffset()const{return xsecoff_;}
 		const size_t & xsecIdx()const;
+		const size_t & massIdx()const;
 		void createXsecIdx();
+		void createMassIdx();
 
 		void readStack(const histoStack& stack, size_t nbjet);
 		void readStackVec(const std::vector<histoStack>& stacks, size_t nbjet);
@@ -275,6 +284,7 @@ private:
 		void cutAndCountSelfCheck(const std::vector<std::pair<TString, double> >&)const;
 
 		void createPseudoDataFromMC(histo1D::pseudodatamodes mode, const std::vector<size_t> & excludefromvar);
+		void createToysFromSyst(histo1D::pseudodatamodes mode);
 		void createContinuousDependencies();
 
 		std::vector<TString> getSystNames()const{
@@ -312,11 +322,11 @@ private:
 				const std::vector<histo1D>& signalvisPSgen,
 				size_t bjetcategory);
 
-		dataset():totalvisgencontsread_(0),firstpseudoexp_(true){}
+                dataset():totalvisgencontsread_(0),firstpseudoexp_(true),firstToy_(true){}
 
 		double lumi_,xsecoff_;
 		double unclumi_;
-		size_t lumiidx_,xsecidx_;
+		size_t lumiidx_,xsecidx_,massidx_;
 		TString name_;
 
 		//global per dataset dependence on extrapolation unc are set to 0 here
@@ -357,6 +367,9 @@ private:
 		std::vector<histo1D> backgroundconts_nbjets_;
 		std::vector<histo1D> backgroundcontsorig_nbjets_;
 
+                std::vector<std::vector<histo1D>> backgroundconts_split_nbjets_;
+                std::vector<TString> backgroundlegends_;
+
 		std::vector<systematic_unc> post_fit_systematics_,post_fit_systematics_simple_;
 
 		///just for plotting afterwards!
@@ -364,6 +377,7 @@ private:
 		std::vector<std::vector<histoStack> > inputstacks_;
 
 		bool firstpseudoexp_;
+		bool firstToy_;
 		ttbarXsecFitter * parent_;
 
 	};
@@ -420,7 +434,11 @@ private:
 	formatter format_;
 
 	bool useMConly_,removesyst_,nominos_;
-
+        TString variationToFit_;
+        bool emuOnly_;
+        unsigned int seed_;
+        std::vector<TString> var_for_toys_;
+        
 	static TRandom3 * random_;
 	bool parameterwriteback_;
 	ROOT::Math::Functor functor_; //(this,&ttbarXsecFitter::toBeMinimized,ndependencies_);
@@ -431,7 +449,10 @@ private:
 	std::vector<std::pair<TString, double> > priorcorrcoeff_;
 
 	bool nosystbd_,silent_,nopriors_;
+        bool doToys_;
+        bool massFit_;
 	float topmassrepl_;
+        bool mlbCrossCheck_;
 
 	bool pseudodatarun_;
 
