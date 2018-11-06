@@ -296,6 +296,15 @@ double variateHisto1D::toBeMinimizedInFit(const double * variations)const{
         }
 
 
+        if (usepriors){
+            if ( variations_.size() != priors_.size())
+                throw std::runtime_error("Error! Function variateHisto1D::setPrior: vectors have different sizes");
+
+            if ( variations_.size() != nsigma_.size())
+                throw std::runtime_error("Error! Function variateHisto1D::setPrior: vectors have different sizes");
+        }
+
+
 	comparehist_=&h;
 	simpleFitter fitter;
 	fitter.setRequireFitFunction(false);
