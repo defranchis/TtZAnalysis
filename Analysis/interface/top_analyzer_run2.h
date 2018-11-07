@@ -9,6 +9,7 @@
 #define ANALYZER_RUN2_H_
 
 #include "../interface/topAnalyzer.h"
+#include "../interface/analysisUtils.h"
 #include "../interface/analysisPlotsTtbarXsecFitSingleLep.h"
 
 class top_analyzer_run2 : public ztop::topAnalyzer{

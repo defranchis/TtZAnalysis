@@ -974,8 +974,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
                 if(testmode_ && entry==0)
                         std::cout << "testmode("<< anaid << "): Made Dilepton pairs" << std::endl;
-
-
+                
 		pair<vector<NTElectron*>, vector<NTMuon*> > *leppair=&oppopair;
 		if(mode_samesign)
 			leppair=&sspair;
@@ -1328,17 +1327,28 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		vector<NTJet*>  selectedbjets,selectednonbjets;
 		evt.selectedbjets=&selectedbjets;
 		evt.selectednonbjets=&selectednonbjets;
+                std::vector<int> bjet_indices;
+                VLV jetVLV;
 
 		if(getBTagSF()->getMode() == NTBTagSF::randomtagging_mode) 
                     getBTagSF()->changeNTJetTags(selectedjets);
 
 		for(size_t i=0;i<hardjets.size();i++){
+
+                        TLorentzVector jetTLV; 
+                        if (doKinReco_){
+                            jetTLV.SetPtEtaPhiE(selectedjets->at(i)->pt(),selectedjets->at(i)->eta(),selectedjets->at(i)->phi(),selectedjets->at(i)->e());
+                            jetVLV.push_back(common::TLVtoLV(jetTLV));
+                        }
+
 			if(selectedjets->at(i)->btag() < getBTagSF()->getWPDiscrValue()){
 				//std::cout<<"agrohsje btagging in event " << *b_EventNumber.content() <<" "<<selectedjets->at(i)->pt()<<"  "<<selectedjets->at(i)->btag() <<std::endl;
 				selectednonbjets.push_back(selectedjets->at(i));
 				continue;
 			}
 			selectedbjets.push_back(selectedjets->at(i));
+                        if (doKinReco_) bjet_indices.push_back(i);
+                        
 		}
 
 		float btagscontr=1;
@@ -1495,6 +1505,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 		if(!zerojet && selectedjets->size() < 1) continue;
 
+                // need 2 jets for kinematic reconstruction
+                if(doKinReco_ && selectedjets->size() < 2) continue;
+
 		if(getBTagSF()->getMode() == NTBTagSF::shapereweighting_mode){
 			throw std::runtime_error("NTBTagSF::shapereweighting_mode: not impl");
 		}
@@ -1588,8 +1601,70 @@ void  top_analyzer_run2::analyze(size_t anaid){
                         std::cout << "testmode("<< anaid << "): STEP7 " << std::endl;
 
 
-		///////////////////// btag cut STEP 8 //////////////////////////
+		///////////////////// btag cut STEP 8 (and kinematic reconstruction) //////////////////////////
 		step++;
+
+                KinematicReconstructionSolutions kinRecoSols;
+                if (doKinReco_){
+                    if (signal_) puweight *= kinRecoSF_->getSF();
+                    
+                    if (leadingptlep->q()*secleadingptlep->q()>0) continue;
+
+                    VLV leptonsVLV;
+                    TLorentzVector lv_temp;
+
+                    lv_temp.SetPtEtaPhiE(leadingptlep->pt(),leadingptlep->eta(),leadingptlep->phi(),leadingptlep->e());
+                    leptonsVLV.push_back(common::TLVtoLV(lv_temp));
+
+                    lv_temp.SetPtEtaPhiE(secleadingptlep->pt(),secleadingptlep->eta(),secleadingptlep->phi(),secleadingptlep->e());
+                    leptonsVLV.push_back(common::TLVtoLV(lv_temp));
+
+                    int leptonIndex = 0;
+                    int antileptonIndex = 0;
+                    if (leadingptlep->q()<0) antileptonIndex = 1;
+                    else leptonIndex = 1;
+
+                    TVector2 METv2; METv2.SetMagPhi(adjustedmet.met(),adjustedmet.phi());
+                    LV METLV; METLV.SetXYZT(METv2.Px(),METv2.Py(),0,0);
+
+                    std::vector<double> dummy;
+                    std::vector<int> jet_indices;
+
+                    for (unsigned int i=0; i<selectedjets->size(); ++i) jet_indices.push_back(i);
+
+                    kinRecoSols = this->getKinRecoSolutions(leptonIndex, antileptonIndex, jet_indices, bjet_indices, leptonsVLV, jetVLV, dummy, METLV);
+
+                    if (kinRecoSols.numberOfSolutions()<1) continue;
+
+                    const KinematicReconstructionSolution solution = kinRecoSols.solution();
+
+                    TLorentzVector top_sol = common::LVtoTLV(solution.top());
+                    TLorentzVector antitop_sol = common::LVtoTLV(solution.antiTop());
+                    TLorentzVector ttbar_sol = common::LVtoTLV(solution.ttbar());
+                    // int n_bTags = solution.numberOfBtags();
+
+                    float mtt, pt_top, eta_top, pt_antitop, eta_antitop, pt_ttbar, eta_ttbar;
+
+                    mtt = ttbar_sol.M();
+                    pt_top = top_sol.Pt();
+                    eta_top = top_sol.Eta();
+                    pt_antitop = antitop_sol.Pt();
+                    eta_antitop = antitop_sol.Eta();
+                    pt_ttbar = ttbar_sol.Pt();
+                    eta_ttbar = ttbar_sol.Eta();
+
+                    evt.mtt = &mtt;
+                    evt.pt_top = &pt_top;
+                    evt.eta_top = &eta_top;
+                    evt.pt_antitop = &pt_antitop;
+                    evt.eta_antitop = &eta_antitop;
+                    evt.pt_ttbar = &pt_ttbar;
+                    evt.eta_ttbar = &eta_ttbar;
+                   
+                }
+
+
+                if(apllweightsone) puweight=1;
 
 		if(!usetopdiscr && !nobcut && selectedbjets.size() < 1) continue;
 		// if(usetopdiscr && topdiscr3<0.9) continue;
