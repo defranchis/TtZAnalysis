@@ -334,13 +334,17 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	analysisPlotsMlbMt mlbmtplots_step8(8);
 	analysisPlotsTtbarXsecFit xsecfitplots_step8(8);
         analysisPlotsTtbarXsecFitSingleLep singlelepplots_step8(8);
+	analysisPlotsKinReco kinrecoplots_step8(8);
 
 	xsecfitplots_step8.enable();
 	mlbmtplots_step8.enable();
 	mlbmtplots_step8.bookPlots();
 	xsecfitplots_step8.enable();
 	xsecfitplots_step8.bookPlots();
- 
+        if (doKinReco_){
+            kinrecoplots_step8.enable();
+            kinrecoplots_step8.bookPlots();
+        }
         singlelepplots_step8.enable();
         singlelepplots_step8.bookPlots();
 
@@ -366,6 +370,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	plots.initSteps(8);
 	zplots.initSteps(8);
 	mlbmtplots_step8.setEvent(evt);
+	if (doKinReco_) kinrecoplots_step8.setEvent(evt);
 	xsecfitplots_step8.setEvent(evt);
         singlelepplots_step8.setEvent(evt);
 
@@ -742,7 +747,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
                                 if (b_smu_)singlelepplots_step8.fillPlotsGen();
 				mlbmtplots_step8.fillPlotsGen();
 				xsecfitplots_step8.fillPlotsGen();
-                                
+                                if(doKinReco_) kinrecoplots_step8.fillPlotsGen();
 			}
 		} /// isMC ends
 
@@ -1706,6 +1711,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 
 			mlbmtplots_step8.fillPlotsReco();
+			kinrecoplots_step8.fillPlotsReco();
 			xsecfitplots_step8.fillPlotsReco();
 
 		}
