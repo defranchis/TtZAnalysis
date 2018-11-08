@@ -256,7 +256,7 @@ void analysisPlotsMlbMt::fillPlotsGen(){
 
 	std::vector<NTGenParticle*> genvisleptons1=produceCollection(event()->genleptons1,20,2.4);
 
-	if(genvisleptons1.size()>1){
+	if(genvisleptons1.size()>1 && (genvisleptons1.at(0)->pt()>25 || genvisleptons1.at(1)->pt()>25) ){
 		for(size_t i=0;i<extraplots_.size();i++){
 			if(extraplots_.at(i)){
 				extraplots_.at(i)->fillGen(20.5,puweight()); //same as for incl xsec
