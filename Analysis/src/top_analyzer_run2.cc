@@ -1711,8 +1711,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 
 			mlbmtplots_step8.fillPlotsReco();
-			kinrecoplots_step8.fillPlotsReco();
 			xsecfitplots_step8.fillPlotsReco();
+			if (doKinReco_) kinrecoplots_step8.fillPlotsReco();
 
 		}
 		if(isZrange){
