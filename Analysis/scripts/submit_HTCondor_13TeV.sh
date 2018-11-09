@@ -345,16 +345,21 @@ cd $workdir
 echo copying data files...
 rsync -a $analysisDir/data/analyse data/ --exclude *_btags
 cd $analysisDir/data/analyse
-for d in *_btags
-do
-    tar czf $workdir/data/analyse/$d.tar.gz $d &
-done
-wait
-cd $workdir/data/analyse
-for f in *_btags.tar.gz #maybe there are even more
-do
-    tar xzf $f &
-done
+
+if [[ "${addParameters}" == *"-B"* ]]; then
+    echo "not copying b-tagging eff. files"
+else
+    for d in *_btags
+    do
+        tar czf $workdir/data/analyse/$d.tar.gz $d &
+    done
+    wait
+    cd $workdir/data/analyse
+    for f in *_btags.tar.gz #maybe there are even more
+    do
+        tar xzf $f &
+    done
+fi
 # do other stuff in the meantime...
 
 
