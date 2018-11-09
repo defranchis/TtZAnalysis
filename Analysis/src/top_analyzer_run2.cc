@@ -1105,6 +1105,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
                 }
 
 		//channel defined
+                bool isMuonLeadingLepton = false;
+                if (b_mumu_ || b_smu_ ) isMuonLeadingLepton = true;
+
 		if(firstlep->pt() > seclep->pt() || b_smu_){
 			leadingptlep=firstlep;
 			secleadingptlep=seclep;
@@ -1112,6 +1115,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		else{
 			leadingptlep=seclep;
 			secleadingptlep=firstlep;
+                        if (b_emu_) isMuonLeadingLepton = true;
 		}
 		//just to avoid warnings
 		evt.leadinglep=leadingptlep;
@@ -1611,24 +1615,36 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
                 KinematicReconstructionSolutions kinRecoSols;
                 if (doKinReco_){
-                    if (signal_) puweight *= kinRecoSF_->getSF();
-                    
+
                     if (leadingptlep->q()*secleadingptlep->q()>0) continue;
+                    if (signal_) puweight *= kinRecoSF_->getSF();
+
+                    bool isAntiMuon = false;
+                    LV muon_lv;
 
                     VLV leptonsVLV;
-                    TLorentzVector lv_temp;
+                    TLorentzVector tlv_temp;
 
-                    lv_temp.SetPtEtaPhiE(leadingptlep->pt(),leadingptlep->eta(),leadingptlep->phi(),leadingptlep->e());
-                    leptonsVLV.push_back(common::TLVtoLV(lv_temp));
+                    tlv_temp.SetPtEtaPhiE(leadingptlep->pt(),leadingptlep->eta(),leadingptlep->phi(),leadingptlep->e());
+                    leptonsVLV.push_back(common::TLVtoLV(tlv_temp));
 
-                    lv_temp.SetPtEtaPhiE(secleadingptlep->pt(),secleadingptlep->eta(),secleadingptlep->phi(),secleadingptlep->e());
-                    leptonsVLV.push_back(common::TLVtoLV(lv_temp));
+                    tlv_temp.SetPtEtaPhiE(secleadingptlep->pt(),secleadingptlep->eta(),secleadingptlep->phi(),secleadingptlep->e());
+                    leptonsVLV.push_back(common::TLVtoLV(tlv_temp));
+
+                    if (isMuonLeadingLepton) muon_lv = leptonsVLV.at(0);
+                    else muon_lv = leptonsVLV.at(1);
+
 
                     int leptonIndex = 0;
                     int antileptonIndex = 0;
-                    if (leadingptlep->q()<0) antileptonIndex = 1;
-                    else leptonIndex = 1;
-
+                    if (leadingptlep->q()<0) {
+                        antileptonIndex = 1;
+                        if (!isMuonLeadingLepton) isAntiMuon = true;
+                    }
+                    else{
+                        leptonIndex = 1;
+                        if (isMuonLeadingLepton) isAntiMuon = true;
+                    }
                     TVector2 METv2; METv2.SetMagPhi(adjustedmet.met(),adjustedmet.phi());
                     LV METLV; METLV.SetXYZT(METv2.Px(),METv2.Py(),0,0);
 
@@ -1648,7 +1664,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
                     TLorentzVector ttbar_sol = common::LVtoTLV(solution.ttbar());
                     // int n_bTags = solution.numberOfBtags();
 
-                    float mtt, pt_top, eta_top, pt_antitop, eta_antitop, pt_ttbar, eta_ttbar;
+                    float mtt, m_mub, pt_top, eta_top, pt_antitop, eta_antitop, pt_ttbar, eta_ttbar;
 
                     mtt = ttbar_sol.M();
                     pt_top = top_sol.Pt();
@@ -1658,14 +1674,19 @@ void  top_analyzer_run2::analyze(size_t anaid){
                     pt_ttbar = ttbar_sol.Pt();
                     eta_ttbar = ttbar_sol.Eta();
 
+                    int bjet_index = solution.antiBjetIndex();
+                    if (isAntiMuon) bjet_index = solution.bjetIndex();
+                    m_mub = (muon_lv+jetVLV.at(bjet_index)).M();
+
                     evt.mtt = &mtt;
+                    evt.m_mub = &m_mub;
                     evt.pt_top = &pt_top;
                     evt.eta_top = &eta_top;
                     evt.pt_antitop = &pt_antitop;
                     evt.eta_antitop = &eta_antitop;
                     evt.pt_ttbar = &pt_ttbar;
                     evt.eta_ttbar = &eta_ttbar;
-                   
+
                 }
 
 
