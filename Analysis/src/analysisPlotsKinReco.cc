@@ -16,6 +16,7 @@ namespace ztop{
 
     void analysisPlotsKinReco::setJetCategory(size_t nbjets,size_t njets){
 	if(nbjets < 1 || nbjets>2){
+            bjetcategory=cat_0bjet;
             if(njets<1)
                 jetcategory=cat_0bjet0jet;
             else if(njets<2)
@@ -26,6 +27,7 @@ namespace ztop{
                 jetcategory=cat_0bjet3jet;
 	}
 	else if(nbjets < 2){
+            bjetcategory=cat_1bjet;
             if(njets<1)
                 jetcategory=cat_1bjet0jet;
             else if(njets<2)
@@ -36,6 +38,7 @@ namespace ztop{
                 jetcategory=cat_1bjet3jet;
 	}
 	else if(nbjets < 3){
+            bjetcategory=cat_2bjet;
             if(njets<1)
                 jetcategory=cat_2bjet0jet;
             else if(njets<2)
@@ -66,6 +69,9 @@ namespace ztop{
         vector<float> eta_bins=histo1D::createBinning(60,-3.,3.);        
         vector<float> mtt_bins, pt_bins;
 
+	std::vector<float> bins=histo1D::createBinning(1,0,1); bins.clear();
+        bins << 30 << 35 << 40<< 45 << 50 << 55 << 60 << 70 << 80 << 90 << 100 << 120 << 140 << 200;
+
 	for(float i=0;i<=700;i+=20){
             pt_bins<<i;	}	
 	for(float i=300;i<=2000;i+=50){
@@ -86,6 +92,7 @@ namespace ztop{
             m_mub_5_.at(nbjet)=addPlot(coarsebins,coarsebins,"m_mub min coarse "+toTString(nbjet)+" b-jets","m_{#mub} [GeV]", "Events/GeV");
             m_mub_7_.at(nbjet)=addPlot(finebins,finebins,"m_mub min fine "+toTString(nbjet)+" b-jets","m_{#mub} [GeV]", "Events/GeV");
             m_mub_10_.at(nbjet)=addPlot(veryfinebins,veryfinebins,"m_mub min very fine "+toTString(nbjet)+" b-jets","m_{#mub} [GeV]", "Events/GeV");
+            last_jet_pt_.at(nbjet)=addPlot(bins,bins,"last jet pt "+toTString(nbjet)+" b-jets","p_{T} [GeV]","Events/GeV");
         }
 
     }
@@ -100,12 +107,12 @@ namespace ztop{
         if (!event()->gentops) return;
         if (event()->gentops->size()<2) return;
         
-	std::vector<NTGenParticle*> genvisleptons3=produceCollection(event()->genleptons3,20,2.4);
+	std::vector<NTGenParticle*> genvisleptons1=produceCollection(event()->genleptons1,20,2.4);
 	std::vector<NTGenJet*> genvisjets=produceCollection(event()->genjets,30,2.4);
 
-	if(!requireNumber(2,genvisleptons3)) return;
+	if(!requireNumber(2,genvisleptons1)) return;
         if(!requireNumber(2,genvisjets)) return;
-        if(genvisleptons3.at(0)->pt()<25 && genvisleptons3.at(1)->pt()<25) return;
+        if(genvisleptons1.at(0)->pt()<25 && genvisleptons1.at(1)->pt()<25) return;
 
         mtt->fillGen((event()->gentops->at(0)->p4()+event()->gentops->at(1)->p4()).m(),puweight());
         pt_ttbar->fillGen((event()->gentops->at(0)->p4()+event()->gentops->at(1)->p4()).pt(),puweight());
@@ -116,6 +123,7 @@ namespace ztop{
             m_mub_5_.at(i)->fillGen(20.5,puweight());
             m_mub_7_.at(i)->fillGen(20.5,puweight());
             m_mub_10_.at(i)->fillGen(20.5,puweight());
+            last_jet_pt_.at(i)->fillGen(30.5,puweight());
         }
 
 
@@ -154,6 +162,10 @@ namespace ztop{
         m_mub_5_.at(bjetcategory)->fillReco(*event()->m_mub,puweight());
         m_mub_7_.at(bjetcategory)->fillReco(*event()->m_mub,puweight());
         m_mub_10_.at(bjetcategory)->fillReco(*event()->m_mub,puweight());
+
+        if (event()->selectedjets->size()>0){
+            last_jet_pt_.at(bjetcategory)->fillReco( event()->selectedjets->at(event()->selectedjets->size()-1)->pt() ,puweight());
+        }
     }
 
 }//ns

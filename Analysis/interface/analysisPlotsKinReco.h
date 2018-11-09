@@ -27,6 +27,7 @@ namespace ztop{
                 m_mub_5_.resize(cat_bjetmax,0);
                 m_mub_7_.resize(cat_bjetmax,0);
                 m_mub_10_.resize(cat_bjetmax,0);
+                last_jet_pt_.resize(cat_bjetmax,0);
             }
   	~analysisPlotsKinReco(){ /* destruction is handled in base class! */
 	}
@@ -51,6 +52,7 @@ namespace ztop{
 	void setBJetCategory(size_t nbjets);
 
         std::vector<histo1DUnfold*> m_mub_3_, m_mub_5_, m_mub_7_, m_mub_10_;
+        std::vector<histo1DUnfold*> last_jet_pt_;
 
 
         histo1DUnfold  
