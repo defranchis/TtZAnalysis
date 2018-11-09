@@ -41,7 +41,7 @@ allj=()
 for file in *; 
 do
 
-    if [ "$file" = "job_HTCondor.sh" ]; then
+    if [ "$file" = *"job_HTCondor"* ]; then
         continue
     fi
 
