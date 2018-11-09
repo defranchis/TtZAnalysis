@@ -262,6 +262,14 @@ templatesDir=$CMSSW_BASE/src/TtZAnalysis/Analysis/templates
 
 ########add pdf variations#######
 
+if [[ "${addParameters}" == *"-B"* ]]
+then
+    pdfeigenvectors=0
+    echo
+    echo "not running PDF variations when btag SF are derived"
+    echo
+fi
+
 if [[ $pdfeigenvectors != "0" ]] && [[ $pdfeigenvectors ]]
 then
     systs=( "${systs[@]}" "PDF_sysnominal" );
@@ -426,7 +434,6 @@ for (( i=0;i<${#channels[@]};i++)); do
 		then
 		    cd $BATCHDIR
 		    condor_submit $workdir/jobscripts/${outname}
-                    # sleep 1
 		    cd $workdir
 		else
 		    all=`ps ax | grep -E 'analyse' | wc -l`
