@@ -47,11 +47,21 @@ namespace ztop{
 	}
     }
 
+    void analysisPlotsKinReco::setBJetCategory(size_t nbjets){
+	if(nbjets < 1 || nbjets>2) bjetcategory=cat_0bjet;
+	else if(nbjets < 2)        bjetcategory=cat_1bjet;
+	else if(nbjets < 3)        bjetcategory=cat_2bjet;
+    }
+
     void analysisPlotsKinReco::bookPlots(){
 	if(!use()) return;
 	using namespace std;
 	using namespace ztop;
 
+	vector<float> veryfinebins=histo1D::createBinning(10,20,160);
+	vector<float> finebins=histo1D::createBinning(7,20,160);
+	vector<float> coarsebins=histo1D::createBinning(5,20,160);
+	vector<float> verycoarsebins=histo1D::createBinning(3,20,160);
 
         vector<float> eta_bins=histo1D::createBinning(60,-3.,3.);        
         vector<float> mtt_bins, pt_bins;
@@ -70,6 +80,14 @@ namespace ztop{
         eta_antitop=addPlot(eta_bins,eta_bins,"antitop eta kin reco","antitop #eta", "Events");
         pt_ttbar=addPlot(pt_bins,pt_bins,"ttbar pt kin reco","t#bar{t} p_{T} [GeV]", "Events/GeV");
         eta_ttbar=addPlot(eta_bins,eta_bins,"ttbar eta kin reco","t#bar{t} #eta", "Events");
+
+	for(size_t nbjet=0;nbjet<cat_bjetmax;nbjet++){
+            m_mub_3_.at(nbjet)=addPlot(verycoarsebins,verycoarsebins,"m_mub min very coarse "+toTString(nbjet)+" b-jets","m_{#mub} [GeV]", "Events/GeV");
+            m_mub_5_.at(nbjet)=addPlot(coarsebins,coarsebins,"m_mub min coarse "+toTString(nbjet)+" b-jets","m_{#mub} [GeV]", "Events/GeV");
+            m_mub_7_.at(nbjet)=addPlot(finebins,finebins,"m_mub min fine "+toTString(nbjet)+" b-jets","m_{#mub} [GeV]", "Events/GeV");
+            m_mub_10_.at(nbjet)=addPlot(veryfinebins,veryfinebins,"m_mub min very fine "+toTString(nbjet)+" b-jets","m_{#mub} [GeV]", "Events/GeV");
+        }
+
     }
 
 
@@ -93,6 +111,14 @@ namespace ztop{
         pt_ttbar->fillGen((event()->gentops->at(0)->p4()+event()->gentops->at(1)->p4()).pt(),puweight());
         eta_ttbar->fillGen((event()->gentops->at(0)->p4()+event()->gentops->at(1)->p4()).eta(),puweight());
 
+        for(size_t i=0;i<cat_bjetmax;i++){
+            m_mub_3_.at(i)->fillGen(20.5,puweight());
+            m_mub_5_.at(i)->fillGen(20.5,puweight());
+            m_mub_7_.at(i)->fillGen(20.5,puweight());
+            m_mub_10_.at(i)->fillGen(20.5,puweight());
+        }
+
+
         int itop = 0; int iantitop = 1;
         if(event()->gentops->at(0)->pdgId()<0){
             itop=1; iantitop=1; }
@@ -110,6 +136,12 @@ namespace ztop{
 	using namespace std;
 	using namespace ztop;
 
+	size_t nbjets=0;
+	if(event()->selectedbjets){
+		nbjets=event()->selectedbjets->size();
+		setBJetCategory(nbjets);
+	}
+
         mtt->fillReco(*event()->mtt,puweight());
         pt_ttbar->fillReco(*event()->pt_ttbar,puweight());
         eta_ttbar->fillReco(*event()->eta_ttbar,puweight());
@@ -118,6 +150,10 @@ namespace ztop{
         pt_antitop->fillReco(*event()->pt_antitop,puweight());
         eta_antitop->fillReco(*event()->eta_antitop,puweight());
 
+        m_mub_3_.at(bjetcategory)->fillReco(*event()->m_mub,puweight());
+        m_mub_5_.at(bjetcategory)->fillReco(*event()->m_mub,puweight());
+        m_mub_7_.at(bjetcategory)->fillReco(*event()->m_mub,puweight());
+        m_mub_10_.at(bjetcategory)->fillReco(*event()->m_mub,puweight());
     }
 
 }//ns

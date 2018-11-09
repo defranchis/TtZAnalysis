@@ -21,7 +21,13 @@ namespace ztop{
             pt_antitop(0),
             eta_antitop(0),
             pt_ttbar(0),
-            eta_ttbar(0){}
+            eta_ttbar(0)
+            {
+                m_mub_3_.resize(cat_bjetmax,0);
+                m_mub_5_.resize(cat_bjetmax,0);
+                m_mub_7_.resize(cat_bjetmax,0);
+                m_mub_10_.resize(cat_bjetmax,0);
+            }
   	~analysisPlotsKinReco(){ /* destruction is handled in base class! */
 	}
 
@@ -37,7 +43,15 @@ namespace ztop{
             cat_2bjet0jet,cat_2bjet1jet,cat_2bjet2jet,cat_2bjet3jet,cat_bjetjetmax}
 	jetcategory;
 
+	enum bjetcategories{
+            cat_0bjet, cat_1bjet, cat_2bjet, cat_bjetmax}
+	bjetcategory;
+
 	void setJetCategory(size_t nbjets,size_t njets);
+	void setBJetCategory(size_t nbjets);
+
+        std::vector<histo1DUnfold*> m_mub_3_, m_mub_5_, m_mub_7_, m_mub_10_;
+
 
         histo1DUnfold  
             * mtt,
