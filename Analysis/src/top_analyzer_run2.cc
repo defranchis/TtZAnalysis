@@ -344,6 +344,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
         if (doKinReco_){
             kinrecoplots_step8.enable();
             kinrecoplots_step8.bookPlots();
+            kinrecoplots_step8.setKinRecoPS(true);
+            xsecfitplots_step8.setKinRecoPS(true);
+            mlbmtplots_step8.setKinRecoPS(true);
         }
         singlelepplots_step8.enable();
         singlelepplots_step8.bookPlots();

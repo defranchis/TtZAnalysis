@@ -176,11 +176,15 @@ void analysisPlotsTtbarXsecFit::fillPlotsGen(){
 	 */
 
 	std::vector<NTGenParticle*> genvisleptons1=produceCollection(event()->genleptons1,20,2.4);
+	std::vector<NTGenJet*> genvisjets=produceCollection(event()->genjets,30,2.4);
 	totevts_++;
 	totevtsw_+=puweight();
 	//only fill one bin in some visible part of the histogram to get the total
 	// n_gen and a nice display of PS migrations
 	if(genvisleptons1.size()>1 && (genvisleptons1.at(0)->pt() > 25 || genvisleptons1.at(1)->pt() > 25  )){
+                if(useKinRecoPS())
+                 if(!requireNumber(2,genvisjets)) return;
+                
                 total_0bjets->fillGen(0.5,puweight());
                 leadFwdJetPt->fillGen(30.5,puweight());
                 FwdJetMulti->fillGen(0,puweight());
