@@ -757,7 +757,8 @@ variationNumber_(-1)
 {
 
     TString fragment(systematicName);
-    if (fragment == "nominal") fragment = "Nominal";
+    // if (fragment == "nominal") fragment = "Nominal";
+    fragment = "Nominal"; //HARDCODED
 
     type_ = convertType(fragment);
     fragment.ReplaceAll(convertType(type_), "");
