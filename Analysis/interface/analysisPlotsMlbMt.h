@@ -28,7 +28,7 @@ public:
 	mlbcombthresh_(165),
 	rightassocounter_(0),totalcounter_(0)
 {extraplots_.resize(cat_bjetjetmax,0);extraplots2_.resize(cat_bjetjetmax,0);extraplots3_.resize(cat_bjetjetmax,0);
- mlb_3_.resize(cat_bjetmax-1,0); mlb_5_.resize(cat_bjetmax-1,0); mlb_7_.resize(cat_bjetmax-1,0); mlb_10_.resize(cat_bjetmax-1,0);
+    mlb_3_.resize(cat_bjetmax,0); mlb_5_.resize(cat_bjetmax,0); mlb_7_.resize(cat_bjetmax,0); mlb_10_.resize(cat_bjetmax,0);
 }
 
 	~analysisPlotsMlbMt(){/* destruction is handled in base class! */
@@ -57,7 +57,6 @@ private:
 	bjetcategory;
 
 	void setJetCategory(size_t nbjets,size_t njets);
-	void setBJetCategory(size_t nbjets); 
 
 	std::vector<histo1DUnfold*> extraplots_;
 	std::vector<histo1DUnfold*> extraplots2_;
