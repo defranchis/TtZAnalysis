@@ -36,6 +36,7 @@
 <bin name="compareContributions" file="compareContributions.cc" />
 
 <bin name="testPrefire" file="testPrefire.cc" />
+<bin name="testPurity" file="testPurity.cc" />
 
 <bin name="extractMtFromInclXsec" file="extractMtFromInclXsec.cc" />
 <Flags CXXFLAGS="-lXMLParser -lunfold -fopenmp"/>
