@@ -232,6 +232,9 @@ invokeApplication(){
                                 else if (stack.getName() == "third jet pt 0,3 b-jets step 8") stack = stack.rebinXToBinning({30,60,200});
                                 else if (stack.getName() == "m_lb min step 8") stack = stack.rebinXToBinning({20,50,75,105,130,160});
                                 else if (stack.getName() == "last jet pt 2 b-jets step 8") stack = stack.rebinXToBinning({30,40,50,60,70,80,90,100,120,140,200});
+                                else if (stack.getName() == "last jet pt 2 b-jets mtt1 step 8") stack = stack.rebinXToBinning({30,40,60,200});
+                                else if (stack.getName() == "last jet pt 2 b-jets mtt2 step 8") stack = stack.rebinXToBinning({30,50,70,100,200});
+                                else if (stack.getName() == "last jet pt 2 b-jets mtt3 step 8") stack = stack.rebinXToBinning({30,50,70,120,200});
 
                                 else if (stack.getName() == "lead lepton pt step 8") stack = stack.cutLeft(20-0.1);
                                 else if (stack.getName() == "seclead lepton pt step 8") stack = stack.cutLeft(20-0.1);
