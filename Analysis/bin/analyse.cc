@@ -93,6 +93,7 @@ invokeApplication(){
 	// TString
 	if(maninputfile!="")
 		inputfile=maninputfile;
+        if (doKinReco) inputfile.ReplaceAll(".txt","_mtt.txt");
 	//do not prepend absolute path (batch submission)
 	inputfile=configbase+inputfile;
 

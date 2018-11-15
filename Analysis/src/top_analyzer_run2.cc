@@ -759,6 +759,15 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		if (b_emu_ && *b_AnalyseEvent.content()!=1) continue;
                 if ( isMC && *b_MetFilter.content() == 1) continue;
 
+                //split into gen mtt bins
+                if (isMC && signal_ && doKinReco_){
+                    if (gentops.size()<2) continue;
+                    float gen_mtt = (gentops.at(0)->p4() + gentops.at(1)->p4()).M();
+                    setMttCategories(gen_mtt,legendname_);
+                    if ((int)gen_mttcategory != (int)leg_mttcategory) continue;
+                }
+
+
 		/////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////////
 		///////////////////       Reco Part      ////////////////////
@@ -1870,3 +1879,20 @@ bool top_analyzer_run2::checkTrigger(std::vector<bool> * p_TriggerBools,ztop::NT
 
 
 
+void top_analyzer_run2::setMttCategories(float gen_mtt, TString legendname){
+    if ((int)cat_mttmax_leg != (int)cat_mttmax_gen)
+        throw std::logic_error("top_analyzer_run2:::setMttCategories: gen and legened mtt bins must be the same");
+    
+    if (gen_mtt < bin_1_) gen_mttcategory = cat_mtt1_gen;
+    else if (gen_mtt < bin_2_) gen_mttcategory = cat_mtt2_gen;
+    else gen_mttcategory = cat_mtt3_gen;
+
+    legendname.ReplaceAll(" ","");
+    
+    if (legendname.EndsWith("mtt1")) leg_mttcategory = cat_mtt1_leg;
+    else if (legendname.EndsWith("mtt2")) leg_mttcategory = cat_mtt2_leg;
+    else if (legendname.EndsWith("mtt3")) leg_mttcategory = cat_mtt3_leg;
+    else 
+        throw std::runtime_error((std::string)"top_analyzer_run2:::setMttCategories: category for legend "+legendname+" not found");
+
+}
