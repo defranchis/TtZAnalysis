@@ -6,11 +6,11 @@
 $$ merged name, merged color, contrA, contrB, ...
  
    $ DY      ,     868, DY#rightarrowll, DY#rightarrow#tau#tau
-   t#bar{t} other ,     413, t#bar{t}bg
+   t#bar{t} other ,     635, t#bar{t}bg
   $$ VV/t#bar{t}V, 390, t#bar{t}V, VV
    
    $ tW/#bar{t}W, 616, tW/#bar{t}W#rightarrowll
-   tW / #bar{t}W, 616, tW/#bar{t}W
+   tW / #bar{t}W, 617 , tW/#bar{t}W
    W+jets, 413, Wjets
   
    Data , 0 , data
@@ -27,9 +27,9 @@ $$ merged name, merged color, contrA, contrB, ...
  QCD/W+jets , 413, QCD/Wjets
  Data , 0 , data
  
-  t#bar{t} bkg. , 634 , t#bar{t}bg
+  t#bar{t} bkg. , 635 , t#bar{t}bg
 
-   tW / #bar{t}W, 616, tW/#bar{t}W
+   tW / #bar{t}W, 617 , tW/#bar{t}W
    W+jets, 413, Wjets
  
  [end - merge legends]
