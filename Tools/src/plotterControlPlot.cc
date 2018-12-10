@@ -459,7 +459,7 @@ void plotterControlPlot::drawControlPlot(){
 		mcerr->GetXaxis()->SetTickLength(0);
 		if(mcsysstatleg_)
 			tmplegp_->AddEntry(mcerr,systlabel_,"f");
-                        tmplegp_->AddEntry(mcerr_dummy,"MC Stat",mcstyleupper_.legendDrawStyle);
+                        tmplegp_->AddEntry(mcerr_dummy,"MC stat",mcstyleupper_.legendDrawStyle);
 		/*if(usestack->is1DUnfold() && foundPSmig){ //
 			TH1D * dummy=addObject(new TH1D());
 			mcstylepsmig_.applyContainerStyle(dummy,false);
