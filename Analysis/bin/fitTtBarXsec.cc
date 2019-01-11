@@ -60,6 +60,7 @@ invokeApplication(){
 	const bool likelihoodscan =  parser->getOpt<bool>("-scan",false,"Maps the likelihood around the minimum as a function of the cross section(s). Needs a lot of CPU time!");
 
 	const bool mlbCrossCheck = parser->getOpt<bool>("-mlbCrossCheck",false,"cross check with only one mlb distribution");
+	const bool mttfit = parser->getOpt<int>("-mttfit",false,"differential mtt analysis");
 
 	TString outfile;
 
@@ -87,6 +88,7 @@ invokeApplication(){
 	mainfitter.setTopOnTop(topontop);
 	mainfitter.setDummyFit(dummyrun);
         mainfitter.setMassFit(tmpcheck);
+        mainfitter.setDoMttFit(mttfit); 
 
 	if(lhmode=="chi2datamc")
 		mainfitter.setLikelihoodMode(ttbarXsecFitter::lhm_chi2datamcstat);
@@ -526,22 +528,35 @@ invokeApplication(){
 		TString dtsname=mainfitter.datasetName(ndts);
 		texTabler tab;
 
-		tab=mainfitter.makeSystBreakDownTable(ndts);
-		tab.writeToFile(outfile+"_tab" +dtsname + ".tex");
-		tab.writeToPdfFile(outfile+"_tab" +dtsname + ".pdf");
-		std::cout << tab.getTable() <<std::endl;
-		tab=mainfitter.makeSystBreakDownTable(ndts,false); //vis PS
-		tab.writeToFile(outfile+"_tab_simple" +dtsname + ".tex");
-		tab.writeToPdfFile(outfile+"_tab_simple" +dtsname + ".pdf");
-		std::cout << tab.getTable() <<std::endl;
-
-
-
+                if (!mttfit){
+                    tab=mainfitter.makeSystBreakDownTable(ndts);
+                    tab.writeToFile(outfile+"_tab" +dtsname + ".tex");
+                    tab.writeToPdfFile(outfile+"_tab" +dtsname + ".pdf");
+                    std::cout << tab.getTable() <<std::endl;
+                    tab=mainfitter.makeSystBreakDownTable(ndts,false); //vis PS
+                    tab.writeToFile(outfile+"_tab_simple" +dtsname + ".tex");
+                    tab.writeToPdfFile(outfile+"_tab_simple" +dtsname + ".pdf");
+                    std::cout << tab.getTable() <<std::endl;
+                }
+                else{
+                    for (size_t s=0; s<3; ++s){
+                        tab=mainfitter.makeSystBreakDownTable(ndts,true,"",s);
+                        tab.writeToFile(outfile+"_tab" +dtsname +"_"+toString(s)+ ".tex");
+                        tab.writeToPdfFile(outfile+"_tab" +dtsname+"_"+toString(s) + ".pdf");
+                        std::cout << tab.getTable() <<std::endl;
+                        tab=mainfitter.makeSystBreakDownTable(ndts,false,"",s); //vis PS
+                        tab.writeToFile(outfile+"_tab_simple" +dtsname+"_"+toString(s) + ".tex");
+                        tab.writeToPdfFile(outfile+"_tab_simple" +dtsname+"_"+toString(s) + ".pdf");
+                        std::cout << tab.getTable() <<std::endl;
+                    }
+                }
+                
 		//graph out
-		graph resultsgraph=mainfitter.getResultsGraph(ndts,topmass);
-		if(fitsucc)
+                if (!mttfit){
+                    graph resultsgraph=mainfitter.getResultsGraph(ndts,topmass);
+                    if(fitsucc)
 			resultsgraph.writeToFile((outfile+"_graph" +dtsname + ".ztop").Data());
-
+                }
 
 	}
 	if(mainfitter.nDatasets()>1 && fitsucc){
