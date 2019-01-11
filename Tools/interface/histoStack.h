@@ -211,6 +211,7 @@ public:
 	size_t getDataIdx()const;
 
 	histo1D getSignalContainer()const;
+	histo1D getSignalContainer(size_t mttbin)const;
 	histo1D getBackgroundContainer()const;
 	histo1D getDataContainer()const;
 

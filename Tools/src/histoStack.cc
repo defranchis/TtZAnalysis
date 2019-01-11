@@ -1897,6 +1897,31 @@ histo1D histoStack::getSignalContainer()const{
 		throw std::logic_error("histoStack::getSignalContainer: No signal defined!");
 	return out;
 }
+histo1D histoStack::getSignalContainer(size_t mttbin)const{
+	if(mode != dim1 && mode !=unfolddim1){
+		if(debug) std::cout << "histoStack::getSignalContainer: return dummy" <<std::endl;
+		return histo1D();
+	}
+	std::vector<size_t> sidx=getSignalIdxs();
+	if(sidx.size()<1)
+		throw std::logic_error("histoStack::getSignalContainer: No signal defined!");
+
+        if (mttbin >= sidx.size())
+            throw std::runtime_error("histoStack::getSignalContainer: requested signal bin does not exist");
+
+	histo1D out;
+	if(mode==dim1){
+		if(containers_.size()>0){
+			out=containers_.at(0);
+			out.setAllZero();
+		}
+                out = getContainer(sidx.at(mttbin));
+	}
+	else if(mode==unfolddim1){
+            out=getContainer1DUnfold(sidx.at(mttbin)).getRecoContainer();
+	}
+	return out;
+}
 histo1D histoStack::getBackgroundContainer()const{
 	if(mode != dim1 && mode !=unfolddim1){
 		throw std::logic_error("histoStack::getBackgroundContainer: only defined for 1D stacks");
