@@ -1084,6 +1084,8 @@ double ttbarXsecFitter::getVisXsec(size_t datasetidx)const{
 double ttbarXsecFitter::getXsec(size_t datasetidx, size_t mttbin)const{
 	if(datasetidx>=datasets_.size())
 		throw std::out_of_range("ttbarXsecFitter::getXsec: dataset index out of range");
+	if(mttbin>=datasets_.at(datasetidx).xsecIdxs().size())
+		throw std::out_of_range("ttbarXsecFitter::getXsec: mttbin index out of range");
 	if(!fitsucc_)
 		throw std::out_of_range("ttbarXsecFitter::getXsec: first perform successful fit");
 	double fitted= fitter_.getParameters()->at(datasets_.at(datasetidx).xsecIdxs().at(mttbin))+datasets_.at(datasetidx).xsecOffset();
@@ -1489,7 +1491,8 @@ histoStack ttbarXsecFitter::applyParametersToStack(const histoStack& stack, size
 		std::cout << "ttbarXsecFitter::applyParametersToStack: normalization" << std::endl;
 
 	double multi = 1;
-        std::vector<double> multi_v; multi_v.resize(n_signal,1.);
+        std::vector<double> multi_v;
+
 	if(fitted){
             if (!mttfit_) multi = cpdts.lumi() * getXsec(datasetidx);
             else{
@@ -1502,6 +1505,7 @@ histoStack ttbarXsecFitter::applyParametersToStack(const histoStack& stack, size
 	else{
             if (!mttfit_) multi = cpdts.lumi() * datasets_.at(datasetidx).xsecOffset();
             else{
+                multi_v.resize(n_signal);
                 for (size_t s=0; s<n_signal; ++s){
                     multi_v.at(s)=cpdts.lumi() * datasets_.at(datasetidx).xsecOffset();
                 }
@@ -1537,6 +1541,7 @@ histoStack ttbarXsecFitter::applyParametersToStack(const histoStack& stack, size
             sigcontint=datasets_.at(datasetidx).getSignalCont()->at(bjetcat).getIntegralBin(true);
         }
         else{
+            subpart_v.resize(n_signal);
             sigintstack_v.resize(n_signal);
             sigcontint_v.resize(n_signal);
             for (size_t s=0; s<n_signal; ++s){
@@ -1610,12 +1615,14 @@ histoStack ttbarXsecFitter::applyParametersToStack(const histoStack& stack, size
             }
         }
 
+
         if (!mttfit_){
             signal=tmpvar.exportContainer(fittedparas,constr,names );
             signal.setYAxisName(stack.getSignalContainer().getYAxisName());
             signal.setXAxisName(stack.getSignalContainer().getXAxisName());
         }
         else{
+            signal_v.resize(n_signal);
             for (size_t s=0; s<n_signal; ++s){
                 signal_v.at(s)=tmpvar_v.at(s).exportContainer(fittedparas,constr,names );
                 signal_v.at(s).setYAxisName(stack.getSignalContainer(s).getYAxisName());
@@ -1636,7 +1643,7 @@ histoStack ttbarXsecFitter::applyParametersToStack(const histoStack& stack, size
             if (!mttfit_) out.push_back(signal,"Signal",633,1,70);
             else{
                 for (size_t s=0; s<n_signal; ++s){
-                    out.push_back(signal_v.at(s),"Signal"+toString(s+1),633+2*s,1,signal_v.size()-s);
+                    out.push_back(signal_v.at(s),"Signal"+toString(s+1),633+2*s,1,signal_v.size()-s+50);
                 }
             }
         }
