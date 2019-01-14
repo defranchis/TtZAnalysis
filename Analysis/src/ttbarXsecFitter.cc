@@ -2439,7 +2439,11 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
                             }
                         }
 
-			for(size_t bin=0;bin<set->signalshape(nbjet).getNBins();bin++){
+                        size_t nbins;
+                        if (!mttfit_) nbins = set->signalshape(nbjet).getNBins();
+                        else nbins = set->signalshape(0,nbjet).getNBins();
+
+			for(size_t bin=0;bin<nbins;bin++){
 				//std::cout << bin << "/"<< signalshape_nbjet_.at(nbjet).getNBins()<<" " << nbjet << " " << std::endl;
 				
                                 double signal = 0;
