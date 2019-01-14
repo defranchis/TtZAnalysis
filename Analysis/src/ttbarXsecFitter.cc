@@ -1849,8 +1849,9 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 	if(datasetidx>=datasets_.size())
 		throw std::out_of_range("ttbarXsecFitter::createSystematicsBreakdown: dataset index out of range");
 	//size_t xsecidx=datasets_.at(datasetidx).xsecIdx();
-	std::cout << "creating systematics breakdowns for " << datasets_.at(datasetidx).getName() <<std::endl;
-        if (mttbin!=9999) std::cout << " mttbin n. " << mttbin <<std::endl;
+	std::cout << "creating systematics breakdowns for " << datasets_.at(datasetidx).getName();
+        if (mttbin!=9999) std::cout << " (mttbin n. " << mttbin<<")";
+        std::cout<<std::endl;
 
 	formatter fmt;
 	TString cmsswbase=getenv("CMSSW_BASE");
