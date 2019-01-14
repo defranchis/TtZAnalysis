@@ -394,10 +394,12 @@ void ttbarXsecFitter::createContinuousDependencies(){
 	if (!mttfit_) parameternames_=datasets_.at(0).signalshape(0).getSystNames();
         else parameternames_=datasets_.at(0).signalshape(0,0).getSystNames();
 
-	if(debug)
+	if(debug){
 		for(size_t i=0;i<parameternames_.size();i++){
 			std::cout << "\t"<< parameternames_.at(i) <<std::endl;
 		}
+                std::cout << "ttbarXsecFitter::createContinuousDependencies: done" <<std::endl;
+        }
 }
 void ttbarXsecFitter::dataset::createContinuousDependencies(){
 	if(debug)
@@ -408,13 +410,15 @@ void ttbarXsecFitter::dataset::createContinuousDependencies(){
 	signalshape_nbjet_.clear();
 	data_nbjet_.clear();
 	background_nbjet_.clear();
-	bool useMConly=parent_->useMConly_;
-        size_t size = std::max(signalconts_nbjets_.size(),signalconts_nbjets_v_.size());
-        signalshape_nbjet_v_.resize(signalconts_nbjets_v_.size());
         for (size_t s=0; s<signalshape_nbjet_v_.size(); ++s)
             signalshape_nbjet_v_.at(s).clear();
-        
-
+	bool useMConly=parent_->useMConly_;
+        size_t size;
+        if (!parent_->mttfit_) size=signalconts_nbjets_.size();
+        else {
+            size=signalconts_nbjets_v_.at(0).size();
+            signalshape_nbjet_v_.resize(signalconts_nbjets_v_.size());
+        }
 	for(size_t it=0;it<size;it++){
                 if (!parent_->mttfit_)
                     signalshape_nbjet_.push_back(createLeptonJetAcceptance(signalconts_nbjets_,signalpsmigconts_nbjets_,signalvisgenconts_nbjets_, bjetcount));
@@ -824,6 +828,7 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 			fitter_.setParameterUpperLimit(i,1);
 		}
 	}
+
 	//set lower limit for xsecs (=> 0)
 	for(size_t i=0;i<datasets_.size();i++){
             if (!mttfit_) fitter_.setParameterLowerLimit(datasets_.at(i).xsecIdx(),-datasets_.at(i).xsecOffset());
@@ -856,6 +861,7 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 		fitter_.setStrategy(2);
 		fitter_.setTolerance(0.1);
 	}
+
 	size_t masspos=std::find(parameternames_.begin(),parameternames_.end(),"TOPMASS")-parameternames_.begin();
 	if(!nominos_){
                 for(size_t i=0;i<datasets_.size();i++){
@@ -880,7 +886,6 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 		simpleFitter::printlevel=simpleFitter::pl_silent;
 
 	//feed back
-
 
 	if(!silent_){
 		for(size_t i=0;i<datasets_.size();i++){
@@ -916,6 +921,7 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 					"-" << fitter_.getParameterErrDown()->at(masspos)<<
 					std::endl;
 			for(size_t i=0;i<datasets_.size();i++){
+                            if (mttfit_) break;
 				std::cout << "Corr coeff to xsec " << datasets_.at(i).getName() << " " <<
 						fitter_.getCorrelationCoefficient(datasets_.at(i).xsecIdx(),masspos) << std::endl;
 			}
@@ -994,7 +1000,7 @@ int ttbarXsecFitter::fit(){
 		throw std::out_of_range("ttbarXsecFitter::getCb: dataset index out of range");
 
         if (mttfit_ && mttbin==9999)
-            throw std::logic_error("ttbarXsecFitter::createLeptonJetAcceptance: choose a proper mtt bin");
+            throw std::logic_error("ttbarXsecFitter::getCb: choose a proper mtt bin");
 
 	//if(eighttev) return container_c_b_.at(0); else return container_c_b_.at(1);
 	variateHisto1D temp;
@@ -1012,7 +1018,7 @@ int ttbarXsecFitter::fit(){
 		throw std::out_of_range("ttbarXsecFitter::getEps: dataset index out of range");
 
         if (mttfit_ && mttbin==9999)
-            throw std::logic_error("ttbarXsecFitter::createLeptonJetAcceptance: choose a proper mtt bin");
+            throw std::logic_error("ttbarXsecFitter::getEps: choose a proper mtt bin");
 
 	//{if(eighttev) return container_eps_b_.at(0); else return container_eps_b_.at(1);}
 	variateHisto1D temp;
@@ -1030,7 +1036,7 @@ int ttbarXsecFitter::fit(){
 		throw std::out_of_range("ttbarXsecFitter::getEps: dataset index out of range");
 
         if (mttfit_ && mttbin==9999)
-            throw std::logic_error("ttbarXsecFitter::createLeptonJetAcceptance: choose a proper mtt bin");
+            throw std::logic_error("ttbarXsecFitter::getEps_emu: choose a proper mtt bin");
 
 	//{if(eighttev) return container_eps_b_.at(0); else return container_eps_b_.at(1);}
 	const extendedVariable* temp;
@@ -1837,7 +1843,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		throw std::out_of_range("ttbarXsecFitter::createSystematicsBreakdown: dataset index out of range");
 	//size_t xsecidx=datasets_.at(datasetidx).xsecIdx();
 	std::cout << "creating systematics breakdowns for " << datasets_.at(datasetidx).getName() <<std::endl;
-
+        if (mttbin!=9999) std::cout << " mttbin n. " << mttbin <<std::endl;
 
 	formatter fmt;
 	TString cmsswbase=getenv("CMSSW_BASE");
@@ -1880,7 +1886,6 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 	std::vector<std::pair< TString , std::vector<size_t> > > mergeasso;
 	//std::vector<size_t> allcrosscorr;
 
-
 	//first merge dataset dependend contributions
 	std::vector< std::pair <TString , std::vector<TString> > > plannedmerges;
 	for(size_t i=0;i<fr.nLines();i++){
@@ -1917,7 +1922,6 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		}
 	}
 
-
 	//create index equivalents
 	std::vector< std::pair <TString , std::vector<size_t> > > plannedmergesindx;
 	for(size_t i=0;i<plannedmerges.size();i++){
@@ -1952,7 +1956,6 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		plannedmergesindx.push_back(std::pair<TString , std::vector<size_t> > (mergedname, indicies ));
 	}
 
-
 	//for consistency, add remaining ones
 	plannedmergesindx<<datasetdepmerges;
 	std::vector<size_t> alltobemerged;
@@ -1977,8 +1980,6 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		}
 	}
 	std::cout << "creating simplified breakdown table for " << datasets_.at(datasetidx).getName()<<" "<< paraname<<std::endl;
-
-
 
 	for(size_t i=0;i<plannedmergesindx.size();i++){
 		if(!debug)
@@ -2009,8 +2010,6 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		datasets_.at(datasetidx).postFitSystematicsFullSimple().push_back(tmpunc);
 	}
 
-
-
 	//make fast individual contributions table
 
 	for(size_t i=0;i<getNParameters();i++){
@@ -2030,7 +2029,6 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		tmpunc.pull= fittedparas_.at(i);//fitter_.getParameters()->at(i);
 		datasets_.at(datasetidx).postFitSystematicsFull().push_back(tmpunc);
 	}
-
 
 	dataset::systematic_unc tmpunc;
 
@@ -2068,7 +2066,6 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 
 	datasets_.at(datasetidx).postFitSystematicsFull().push_back(tmpunc);
 	datasets_.at(datasetidx).postFitSystematicsFullSimple().push_back(tmpunc);
-
 
 	std::vector<double> fulladdtoerrup2,fulladdtoerrdown2;
 
@@ -2122,7 +2119,6 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		}
 
 	}
-
 
 	for(size_t i=0;i<fulladdtoerrup2.size();i++)
 		fullrelxsecerrup=sqrt(fullrelxsecerrup*fullrelxsecerrup+fulladdtoerrup2.at(i));
@@ -2211,10 +2207,12 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 
         size_t xsecidx;
         if (!mttfit_) xsecidx=datasets_.at(datasetidx).xsecIdx();
-        else xsecidx=datasets_.at(datasetidx).xsecIdxs().at(mttbin);
+        else if (mttbin!=9999) xsecidx=datasets_.at(datasetidx).xsecIdxs().at(mttbin);
+        else xsecidx=0; //fromhere
         double visxsec;
 	if (!mttfit_) visxsec=getVisXsec(datasetidx);
-        else visxsec=getVisXsec(datasetidx,mttbin);
+        else if (mttbin!=9999) visxsec=getVisXsec(datasetidx,mttbin);
+        else visxsec=0;
 
         for(size_t i=0;i<unc->size();i++){
 		dataset::systematic_unc * sys=&unc->at(i);
@@ -2589,6 +2587,19 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
 	}
 	return out;
 }
+
+bool ttbarXsecFitter::dataset::readyForFit()const{
+    if (!parent_->mttfit_) return signalshape_nbjet_.size()>0;
+    else{
+        for (size_t s=0; s<signalshape_nbjet_v_.size(); ++s){
+            if (signalshape_nbjet_v_.at(s).size()<1){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
 void ttbarXsecFitter::checkSizes()const{
 	if(debug)
 		std::cout << "ttbarXsecFitter::checkSizes" <<std::endl;
@@ -2653,7 +2664,6 @@ void ttbarXsecFitter::dataset::checkSizes()const{
             if(signalshape_nbjet_v_.size() < 1){
                 throw std::logic_error("ttbarXsecFitter::checkSizes: no input");
             }
-
             for (size_t s=0; s<signalshape_nbjet_v_.size(); ++s){
                 if(signalshape_nbjet_v_.at(s).size() < 1){
                     throw std::logic_error("ttbarXsecFitter::checkSizes: no input");
@@ -2662,13 +2672,11 @@ void ttbarXsecFitter::dataset::checkSizes()const{
                     throw std::logic_error("ttbarXsecFitter::checkSizes: leptonacceptance_nbjet_.size() != background_nbjet_.size()");
                 if(signalshape_nbjet_v_.at(s).size() != data_nbjet_.size())
                     throw std::logic_error("ttbarXsecFitter::checkSizes: leptonacceptance_nbjet_.size() != data_nbjet.size()");
-
-
                 for(size_t i=0;i<signalshape_nbjet_v_.at(s).size() ;i++){
                     if(signalshape_nbjet_v_.at(s).at(i).getBins() != background_nbjet_.at(i).getBins())
-			throw std::logic_error("leptonacceptance_nbjet_.at(i).getBins() != background_nbjet_.at(i).getBins()");
+		        throw std::logic_error("leptonacceptance_nbjet_.at(i).getBins() != background_nbjet_.at(i).getBins()");
                     if(signalshape_nbjet_v_.at(s).at(i).getBins() != data_nbjet_.at(i).getBins())
-			throw std::logic_error("leptonacceptance_nbjet_.at(i).getBins() != data_nbjet.at(i).getBins()");
+		        throw std::logic_error("leptonacceptance_nbjet_.at(i).getBins() != data_nbjet.at(i).getBins()");
                 }
                 if(signalshape_nbjet_v_.at(s).at(0).getNDependencies() != background_nbjet_.at(0).getNDependencies())
                     throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
@@ -2676,7 +2684,6 @@ void ttbarXsecFitter::dataset::checkSizes()const{
                     throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
                 if(signalshape_nbjet_v_.at(s).at(0).getNDependencies() != omega_nbjet_v_.at(s).at(0).getNDependencies())
                     throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
-
             }
         }
 
@@ -3119,9 +3126,14 @@ void ttbarXsecFitter::dataset::readStackVec(std::vector<histoStack> & in,size_t 
             signalpsmigconts_nbjets_.resize(maxnbjetcat);
         }
         else{
-            signalconts_nbjets_v_.resize(maxnbjetcat);
-            signalvisgenconts_nbjets_v_.resize(maxnbjetcat);
-            signalpsmigconts_nbjets_v_.resize(maxnbjetcat);
+            signalconts_nbjets_v_.resize(3); //hardcoded
+            signalvisgenconts_nbjets_v_.resize(3); //hardcoded
+            signalpsmigconts_nbjets_v_.resize(3); //hardcoded
+            for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s){
+                signalconts_nbjets_v_.at(s).resize(maxnbjetcat);
+                signalvisgenconts_nbjets_v_.at(s).resize(maxnbjetcat);
+                signalpsmigconts_nbjets_v_.at(s).resize(maxnbjetcat);
+            }
         }
 	backgroundconts_nbjets_.resize(maxnbjetcat);
 	dataconts_nbjets_.resize(maxnbjetcat);
@@ -3215,9 +3227,11 @@ void ttbarXsecFitter::dataset::readStackVec(std::vector<histoStack> & in,size_t 
             signalpsmigconts_nbjets_.at(nbjet)=signpsmig;
         }
         else{
-            signalconts_nbjets_v_.at(nbjet) = sign_v;
-            signalvisgenconts_nbjets_v_.at(nbjet)=signvisps_v;
-            signalpsmigconts_nbjets_v_.at(nbjet)=signpsmig_v;            
+            for (size_t s=0; s<sign_v.size(); ++s){
+                signalconts_nbjets_v_.at(s).at(nbjet) = sign_v.at(s);
+                signalvisgenconts_nbjets_v_.at(s).at(nbjet)=signvisps_v.at(s);
+                signalpsmigconts_nbjets_v_.at(s).at(nbjet)=signpsmig_v.at(s);            
+            }
         }
 	backgroundconts_nbjets_.at(nbjet) = backgr;
 	dataconts_nbjets_.at(nbjet)=data;

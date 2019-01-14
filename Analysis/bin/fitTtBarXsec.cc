@@ -60,7 +60,7 @@ invokeApplication(){
 	const bool likelihoodscan =  parser->getOpt<bool>("-scan",false,"Maps the likelihood around the minimum as a function of the cross section(s). Needs a lot of CPU time!");
 
 	const bool mlbCrossCheck = parser->getOpt<bool>("-mlbCrossCheck",false,"cross check with only one mlb distribution");
-	const bool mttfit = parser->getOpt<int>("-mttfit",false,"differential mtt analysis");
+	const bool mttfit = parser->getOpt<bool>("-mttfit",false,"differential mtt analysis");
 
 	TString outfile;
 

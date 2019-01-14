@@ -327,7 +327,7 @@ private:
 		}
 
 		void checkSizes()const;
-		bool readyForFit()const{return signalshape_nbjet_.size()>0;}
+		bool readyForFit()const;
 
 		static const size_t nBjetCat(){return 3;} //to avoid duplication
 
