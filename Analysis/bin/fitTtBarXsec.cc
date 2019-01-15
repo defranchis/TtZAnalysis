@@ -611,7 +611,8 @@ invokeApplication(){
 			dir+=mainfitter.datasetName(ndts).Data();
 			system(("mkdir -p "+dir).data());
 			dir+="/";
-                        if (!mlbCrossCheck) mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots.txt",dir);
+                        if (mttfit) mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots_mtt.txt",dir);
+                        else if (!mlbCrossCheck) mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots.txt",dir);
                         else mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots_mlb.txt",dir);
 		}
                 if (!onlyemu){
