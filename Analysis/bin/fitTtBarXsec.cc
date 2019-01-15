@@ -541,12 +541,12 @@ invokeApplication(){
                 else{
                     for (size_t s=0; s<3; ++s){
                         tab=mainfitter.makeSystBreakDownTable(ndts,true,"",s);
-                        tab.writeToFile(outfile+"_tab" +dtsname +"_"+toString(s)+ ".tex");
-                        tab.writeToPdfFile(outfile+"_tab" +dtsname+"_"+toString(s) + ".pdf");
+                        tab.writeToFile(outfile+"_tab" +dtsname +"_mtt"+toString(s+1)+ ".tex");
+                        tab.writeToPdfFile(outfile+"_tab" +dtsname+"_mtt"+toString(s+1) + ".pdf");
                         std::cout << tab.getTable() <<std::endl;
                         tab=mainfitter.makeSystBreakDownTable(ndts,false,"",s); //vis PS
-                        tab.writeToFile(outfile+"_tab_simple" +dtsname+"_"+toString(s) + ".tex");
-                        tab.writeToPdfFile(outfile+"_tab_simple" +dtsname+"_"+toString(s) + ".pdf");
+                        tab.writeToFile(outfile+"_tab_simple" +dtsname+"_mtt"+toString(s+1) + ".tex");
+                        tab.writeToPdfFile(outfile+"_tab_simple" +dtsname+"_mtt"+toString(s+1) + ".pdf");
                         std::cout << tab.getTable() <<std::endl;
                     }
                 }

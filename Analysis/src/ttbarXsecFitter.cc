@@ -2155,10 +2155,10 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		throw std::out_of_range("ttbarXsecFitter::makeSystBreakdown: dataset index out of range");
 
 
-	if((datasets_.at(datasetidx).postFitSystematicsFull().size()<1) ){
-            if (!mttfit_ || paraname.Length()>0) createSystematicsBreakdown(datasetidx,paraname);
-            else createSystematicsBreakdown(datasetidx,paraname,mttbin);
+        if (!mttfit_ || paraname.Length()>0) {
+            if((datasets_.at(datasetidx).postFitSystematicsFull().size()<1) ) createSystematicsBreakdown(datasetidx,paraname);                
         }
+        else createSystematicsBreakdown(datasetidx,paraname,mttbin);
 
 
 
