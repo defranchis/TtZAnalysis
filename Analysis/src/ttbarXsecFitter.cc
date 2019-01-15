@@ -537,6 +537,7 @@ void ttbarXsecFitter::addFullExtrapolError(const TString& sysname, const float &
 
 void  ttbarXsecFitter::printControlStack(bool fittedvalues,size_t bjetcat,size_t datasetidx,
 		const std::string& prependToOutput)const{
+        if (mttfit_) return;
 	if(debug)
 		std::cout << "ttbarXsecFitter::printControlStack" << std::endl;
 	if(datasetidx>=datasets_.size())
@@ -1771,10 +1772,10 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
                 else if (poststack.getName() == "second jet pt 0,2 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,50,120,200});
                 else if (poststack.getName() == "third jet pt 0,3 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,60,200});
                 else if (poststack.getName() == "m_lb min step 8_postfit") poststack = poststack.rebinXToBinning({20,50,75,105,130,160});
-                else if (poststack.getName() == "last jet pt 2 b-jets step 8") poststack = poststack.rebinXToBinning({30,40,50,60,70,80,90,100,120,140,200});
-                else if (poststack.getName() == "last jet pt 2 b-jets mtt1 step 8") poststack = poststack.rebinXToBinning({30,40,60,200});
-                else if (poststack.getName() == "last jet pt 2 b-jets mtt2 step 8") poststack = poststack.rebinXToBinning({30,50,70,100,200});
-                else if (poststack.getName() == "last jet pt 2 b-jets mtt3 step 8") poststack = poststack.rebinXToBinning({30,50,70,120,200});
+                else if (poststack.getName() == "last jet pt 2 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,40,50,60,70,80,90,100,120,140,200});
+                else if (poststack.getName() == "last jet pt 2 b-jets mtt1 step 8_postfit") poststack = poststack.rebinXToBinning({30,40,60,200});
+                else if (poststack.getName() == "last jet pt 2 b-jets mtt2 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,70,100,200});
+                else if (poststack.getName() == "last jet pt 2 b-jets mtt3 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,70,120,200});
 
 
 		TString name=stack.getName();
