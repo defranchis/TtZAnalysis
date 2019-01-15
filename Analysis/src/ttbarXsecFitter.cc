@@ -3306,10 +3306,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 
 	std::vector<TString> excludefromglobal;
 	//excludefromglobal.push_back("t#bar{t}V");
-        if (!parent_->mttfit_){
-            excludefromglobal.push_back("DY");
-            excludefromglobal.push_back("Wjets");
-        }
+        excludefromglobal.push_back("DY");
 
 	if(parent_->topontop_){
 		stack->setLegendOrder("t#bar{t}",90);
@@ -3336,8 +3333,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 		std::cout << "ttbarXsecFitter::addUncertainties: merged variations" <<std::endl;
 
         //more sophisticated approaches can be chosen here - like DY float etc
-	if (!parent_->mttfit_) stack->addRelErrorToBackgrounds(0.3,false,"BG",excludefromglobal);
-        else stack->addRelErrorToBackgrounds(0.1,false,"BG",excludefromglobal);
+        stack->addRelErrorToBackgrounds(0.3,false,"BG",excludefromglobal);
 
 
 	if(getName().Contains("7TeV"))
@@ -3348,9 +3344,8 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	if(debug)
 		std::cout << "ttbarXsecFitter::addUncertainties: added t#bar{t}V var" <<std::endl;
 
-        if (!parent_->mttfit_){
-            stack->addRelErrorToContribution(0.3,"Wjets","BG_");
-        }
+        // stack->addRelErrorToContribution(0.3,"Wjets","BG_");
+
 	float dy0bjetserr=0,dy1bjetserr=0,dy2bjetserr=0;
 	if(nbjets==0)
 		dy0bjetserr=0.3;
@@ -3399,11 +3394,9 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 		}
 	}
 
-        if (!parent_->mttfit_){
-            stack->addRelErrorToContribution(dy0bjetserr,"DY","BG_0_bjets_");
-            stack->addRelErrorToContribution(dy1bjetserr,"DY","BG_1_bjets_");
-            stack->addRelErrorToContribution(dy2bjetserr,"DY","BG_2_bjets_");
-        }
+        stack->addRelErrorToContribution(dy0bjetserr,"DY","BG_0_bjets_");
+        stack->addRelErrorToContribution(dy1bjetserr,"DY","BG_1_bjets_");
+        stack->addRelErrorToContribution(dy2bjetserr,"DY","BG_2_bjets_");
 
         if (naddjets>=0 && !parent_->mttfit_){
             stack->addRelErrorToContribution(dy0jetserr,"DY","BG_0_addjets_");
@@ -3420,7 +3413,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	float addlumiunc=0;
 	addlumiunc=unclumi_/100;
 	if(!getName().Contains("13TeV"))stack->addGlobalRelMCError("Lumi" ,addlumiunc);
-	// stack->addGlobalRelMCError("Lumi" ,addlumiunc);
+	stack->addGlobalRelMCError("Lumi" ,addlumiunc);
 	// stack->addGlobalRelBGError("Lumi_BG" ,addlumiunc);
 
 
