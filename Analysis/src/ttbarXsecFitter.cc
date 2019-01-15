@@ -226,9 +226,16 @@ void ttbarXsecFitter::dataset::createToysFromSyst(histo1D::pseudodatamodes mode)
 
         datacontsorig_nbjets_=dataconts_nbjets_; //safe originals
         backgroundcontsorig_nbjets_=backgroundconts_nbjets_; //safe originals
-        signalcontsorig_nbjets_=signalconts_nbjets_; //safe originals
-        signalpsmigcontsorig_nbjets_=signalpsmigconts_nbjets_; //safe originals
-        signalvisgencontsorig_nbjets_=signalvisgenconts_nbjets_; //safe originals
+        if (!parent_->mttfit_){
+            signalcontsorig_nbjets_=signalconts_nbjets_; //safe originals
+            signalpsmigcontsorig_nbjets_=signalpsmigconts_nbjets_; //safe originals
+            signalvisgencontsorig_nbjets_=signalvisgenconts_nbjets_; //safe originals
+        }
+        else{
+            signalcontsorig_nbjets_v_=signalconts_nbjets_v_; //safe originals
+            signalpsmigcontsorig_nbjets_v_=signalpsmigconts_nbjets_v_; //safe originals
+            signalvisgencontsorig_nbjets_v_=signalvisgenconts_nbjets_v_; //safe originals
+        }
 
         std::cout << "Preparing toy syst experiments mode for dataset " << name_  <<std::endl;
         if(!debug)simpleFitter::printlevel=-1;
@@ -245,10 +252,19 @@ void ttbarXsecFitter::dataset::createToysFromSyst(histo1D::pseudodatamodes mode)
 
 
         // // performing toys on nominal
-        signalconts_nbjets_.at(i)=signalcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
-        signalpsmigconts_nbjets_.at(i)=signalpsmigcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
-        signalvisgenconts_nbjets_.at(i)=signalvisgencontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
-        // backgroundconts_nbjets_.at(i)=backgroundcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
+        if (!parent_->mttfit_){
+            signalconts_nbjets_.at(i)=signalcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
+            signalpsmigconts_nbjets_.at(i)=signalpsmigcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
+            signalvisgenconts_nbjets_.at(i)=signalvisgencontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
+            // backgroundconts_nbjets_.at(i)=backgroundcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
+        }
+        else{
+            for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s){
+                signalconts_nbjets_v_.at(s).at(i)=signalcontsorig_nbjets_v_.at(s).at(i).createPseudoExperiment(random_,0,mode,-1);
+                signalpsmigconts_nbjets_v_.at(s).at(i)=signalpsmigcontsorig_nbjets_v_.at(s).at(i).createPseudoExperiment(random_,0,mode,-1);
+                signalvisgenconts_nbjets_v_.at(s).at(i)=signalvisgencontsorig_nbjets_v_.at(s).at(i).createPseudoExperiment(random_,0,mode,-1);
+            }
+        }
 
         std::vector<histo1D> bgs = backgroundconts_split_nbjets_.at(i);
 
@@ -258,19 +274,38 @@ void ttbarXsecFitter::dataset::createToysFromSyst(histo1D::pseudodatamodes mode)
         }
 
         // // getting relative variations from originals
-        signalconts_nbjets_.at(i).getRelSystematicsFrom(signalcontsorig_nbjets_.at(i));
-        signalpsmigconts_nbjets_.at(i).getRelSystematicsFrom(signalpsmigcontsorig_nbjets_.at(i));
-        signalvisgenconts_nbjets_.at(i).getRelSystematicsFrom(signalvisgencontsorig_nbjets_.at(i));
-        // backgroundconts_nbjets_.at(i).getRelSystematicsFrom(backgroundcontsorig_nbjets_.at(i));
+        if (!parent_->mttfit_){
+            signalconts_nbjets_.at(i).getRelSystematicsFrom(signalcontsorig_nbjets_.at(i));
+            signalpsmigconts_nbjets_.at(i).getRelSystematicsFrom(signalpsmigcontsorig_nbjets_.at(i));
+            signalvisgenconts_nbjets_.at(i).getRelSystematicsFrom(signalvisgencontsorig_nbjets_.at(i));
+            // backgroundconts_nbjets_.at(i).getRelSystematicsFrom(backgroundcontsorig_nbjets_.at(i));
+        }
+        else{
+            for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s){
+                signalconts_nbjets_v_.at(s).at(i).getRelSystematicsFrom(signalcontsorig_nbjets_v_.at(s).at(i));
+                signalpsmigconts_nbjets_v_.at(s).at(i).getRelSystematicsFrom(signalpsmigcontsorig_nbjets_v_.at(s).at(i));
+                signalvisgenconts_nbjets_v_.at(s).at(i).getRelSystematicsFrom(signalvisgencontsorig_nbjets_v_.at(s).at(i));
+            }
+        }
 
         for (auto var : parent_->var_for_toys_){
             if (var.BeginsWith("TT_") || var.Contains("TOPMASS")){
 
-                size_t index = signalcontsorig_nbjets_.at(i).getSystErrorIndex(var);
-                histo1D toy  = signalcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,index);
-                
-                signalconts_nbjets_.at(i).removeError(var);
-                signalconts_nbjets_.at(i).addErrorContainer(var,toy);
+                if (!parent_->mttfit_) {
+                    size_t index = signalcontsorig_nbjets_.at(i).getSystErrorIndex(var);
+                    histo1D toy = signalcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,index);
+                    signalconts_nbjets_.at(i).removeError(var);
+                    signalconts_nbjets_.at(i).addErrorContainer(var,toy);
+
+                }
+                else {
+                    for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s){
+                        size_t index = signalcontsorig_nbjets_v_.at(s).at(i).getSystErrorIndex(var);
+                        histo1D toy = signalcontsorig_nbjets_v_.at(s).at(i).createPseudoExperiment(random_,0,mode,index);
+                        signalconts_nbjets_v_.at(s).at(i).removeError(var);
+                        signalconts_nbjets_v_.at(s).at(i).addErrorContainer(var,toy);
+                    }
+                }
 
                 for (size_t t=0; t<bgs.size(); ++t){
                     if (!backgroundlegends_.at(t).Contains("bg")) continue;
@@ -304,15 +339,21 @@ void ttbarXsecFitter::dataset::createToysFromSyst(histo1D::pseudodatamodes mode)
             backgroundconts_nbjets_.at(i) += bg;
         }
 
-        signalconts_nbjets_.at(i).equalizeSystematicsIdxs(signalcontsorig_nbjets_.at(i));
+        if (!parent_->mttfit_) signalconts_nbjets_.at(i).equalizeSystematicsIdxs(signalcontsorig_nbjets_.at(i));
+        else{
+            for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s)
+                signalconts_nbjets_v_.at(s).at(i).equalizeSystematicsIdxs(signalcontsorig_nbjets_v_.at(s).at(i));
+        }
         backgroundconts_nbjets_.at(i).equalizeSystematicsIdxs(backgroundcontsorig_nbjets_.at(i));
 
     }
-    signalshape_nbjet_.clear();
+    if (!parent_->mttfit_) signalshape_nbjet_.clear();
+    else{
+        for (size_t s=0; s<signalshape_nbjet_v_.size(); ++s)
+            signalshape_nbjet_v_.at(s).clear();
+    }
     data_nbjet_.clear();
     background_nbjet_.clear();
-    for (size_t s=0; s<signalshape_nbjet_v_.size(); ++s)
-        signalshape_nbjet_v_.at(s).clear();
 
     if(debug)
         std::cout << "ttbarXsecFitter::dataset::createToysFromSyst: new toy created" <<std::endl;

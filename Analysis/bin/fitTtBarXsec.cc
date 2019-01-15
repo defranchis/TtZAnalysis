@@ -37,7 +37,7 @@ invokeApplication(){
 	}
 	const bool exclude0bjetbin  = parser->getOpt<bool>("-exclude0bjet",false,"Excludes 0,3+ bjet bin from the fit");
 	const int npseudoexp = parser->getOpt<int>("p",0,"number of pseudo experiments");
-	const int nToys = parser->getOpt<int>("-nToys",0,"number of toys");
+	const unsigned int nToys = parser->getOpt<int>("-nToys",0,"number of toys");
 	const unsigned int seed = parser->getOpt<int>("-seed",0,"RNG seed for toys");
 	const bool debug = parser->getOpt<bool>("d",false,"switches on debug output");
 	const TString pseudoOpts = parser->getOpt<TString>("-pdopts","",
@@ -128,7 +128,7 @@ invokeApplication(){
             mainfitter.setDoToys(true);
         }
 
-        std::cout<<nToys<<" toys with seed "<<seed<<std::endl;
+        if (nToys) std::cout<<nToys<<" toys with seed "<<seed<<std::endl;
 	//simpleFitter::printlevel=1;
 
 	mainfitter.readInput((fullcfgpath+inputconfig).Data());

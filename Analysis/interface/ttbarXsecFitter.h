@@ -410,6 +410,10 @@ private:
 		std::vector<std::vector<histo1D>> signalvisgenconts_nbjets_v_;
 		std::vector<std::vector<histo1D>> signalpsmigconts_nbjets_v_;
 
+		std::vector<std::vector<histo1D>> signalcontsorig_nbjets_v_;
+		std::vector<std::vector<histo1D>> signalvisgencontsorig_nbjets_v_;
+		std::vector<std::vector<histo1D>> signalpsmigcontsorig_nbjets_v_;
+
 		std::vector<histo1D> dataconts_nbjets_;
 		std::vector<histo1D> datacontsorig_nbjets_;
 		std::vector<histo1D> backgroundconts_nbjets_;
