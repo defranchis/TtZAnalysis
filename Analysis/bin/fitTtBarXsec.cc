@@ -178,8 +178,8 @@ invokeApplication(){
 		}
 
 		std::string specialplotsfile=cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_controlplots.txt";
-
-
+                if (mttfit) specialplotsfile=cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_controlplots_mtt.txt";
+                
 		//get files
 
 		for(size_t file=0;file<filestoprocess.size();file++){
