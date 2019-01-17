@@ -232,7 +232,11 @@ private:
 			double errup;
 			double errdown;
 
-			void symmetrize(){
+			void symmetrize(bool noinf=false){
+                                if (noinf){
+                                    if (isinf(errup)) errup=errdown;
+                                    if (isinf(errdown)) errdown=errup;
+                                }
 				errup=std::max(fabs(errup),fabs(errdown));
 				errdown=-errup;
 			}

@@ -2258,7 +2258,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
         size_t xsecidx;
         if (!mttfit_) xsecidx=datasets_.at(datasetidx).xsecIdx();
         else if (mttbin!=9999) xsecidx=datasets_.at(datasetidx).xsecIdxs().at(mttbin);
-        else xsecidx=0; //fromhere
+        else xsecidx=0;
         double visxsec;
 	if (!mttfit_) visxsec=getVisXsec(datasetidx);
         else if (mttbin!=9999) visxsec=getVisXsec(datasetidx,mttbin);
@@ -2269,7 +2269,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 
 		if(symmetrize && !(sys->name == "Total" || sys->name == "Total fitted")
 				&& !(sys->name.Contains("(extr)")))
-			sys->symmetrize();
+			sys->symmetrize(paraname=="TOPMASS");
 
 		bool anticorr=false;
 		getMaxVar(true,sys->errup,sys->errdown,anticorr);
