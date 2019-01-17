@@ -7,13 +7,16 @@ from ROOT import *
 gStyle.SetOptStat(0000)
 gStyle.SetErrorX(0)
 
-f1 = open('xsecFit_tab13TeV.tex','r')
+massFit = True
+preliminary = False
+
+
+if not massFit: f1 = open('xsecFit_tab13TeV.tex','r')
+else: f1 = open('xsecFit_tab_TOPMASS.tex','r')
 l1 = f1.read().splitlines()
 
 inFile = ROOT.TFile('toys.root','READ')
 
-massFit = True
-preliminary = False
 
 # h = inFile.FindObjectAny('top mass _pull')
 # print h.GetMean(), h.GetRMS()
@@ -23,7 +26,7 @@ for i in range(0,3): del l1[0]
 l1_short = []
 
 for line in l1:
-    if '(13TeV)' in line: break
+    if '13TeV' in line: break
     l1_short.append(line)
 
 name_all = []
