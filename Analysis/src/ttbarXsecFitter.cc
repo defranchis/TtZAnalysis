@@ -876,7 +876,7 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
             if (!mttfit_) fitter_.setParameterLowerLimit(datasets_.at(i).xsecIdx(),-datasets_.at(i).xsecOffset());
             else{
                 for (size_t s=0; s<datasets_.at(i).xsecIdxs().size(); ++s)
-                    fitter_.setParameterLowerLimit(datasets_.at(i).xsecIdxs().at(s),-datasets_.at(i).xsecOffset());
+                    fitter_.setParameterLowerLimit(datasets_.at(i).xsecIdxs().at(s),-datasets_.at(i).xsecOffset(s));
             }
 	}
 
@@ -947,8 +947,8 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
                     }
                     else{
                         std::vector<size_t> xsecidxs=datasets_.at(i).xsecIdxs();
-			double xsecoff=datasets_.at(i).xsecOffset();
                         for (size_t s=0; s<datasets_.at(i).xsecIdxs().size(); ++s){
+                            double xsecoff=datasets_.at(i).xsecOffset(s);
                             std::cout << "fitted xsecs: "<< datasets_.at(i).getName()<<" mttbin n."<<toString(s+1)<< ": "<<fitter_.getParameters()->at(xsecidxs.at(s))+xsecoff <<
                                 "+" << fitter_.getParameterErrUp()->at(xsecidxs.at(s)) *100/(fitter_.getParameters()->at(xsecidxs.at(s))+xsecoff) <<
                                 "-" << fitter_.getParameterErrDown()->at(xsecidxs.at(s)) *100/(fitter_.getParameters()->at(xsecidxs.at(s))+xsecoff) <<
@@ -1130,7 +1130,7 @@ double ttbarXsecFitter::getXsec(size_t datasetidx, size_t mttbin)const{
 		throw std::out_of_range("ttbarXsecFitter::getXsec: mttbin index out of range");
 	if(!fitsucc_)
 		throw std::out_of_range("ttbarXsecFitter::getXsec: first perform successful fit");
-	double fitted= fitter_.getParameters()->at(datasets_.at(datasetidx).xsecIdxs().at(mttbin))+datasets_.at(datasetidx).xsecOffset();
+	double fitted= fitter_.getParameters()->at(datasets_.at(datasetidx).xsecIdxs().at(mttbin))+datasets_.at(datasetidx).xsecOffset(mttbin);
 	double acceptancecorr=datasets_.at(datasetidx).acceptance(mttbin).getValue(fittedparas_)/
 			datasets_.at(datasetidx).acceptance_extr(mttbin).getValue(fittedparas_);
 	return fitted*acceptancecorr;
@@ -1141,7 +1141,7 @@ double ttbarXsecFitter::getVisXsec(size_t datasetidx, size_t mttbin)const{
 		throw std::out_of_range("ttbarXsecFitter::getXsec: dataset index out of range");
 	if(!fitsucc_)
 		throw std::out_of_range("ttbarXsecFitter::getXsec: first perform successful fit");
-	double fitted= fitter_.getParameters()->at(datasets_.at(datasetidx).xsecIdxs().at(mttbin))+datasets_.at(datasetidx).xsecOffset();
+	double fitted= fitter_.getParameters()->at(datasets_.at(datasetidx).xsecIdxs().at(mttbin))+datasets_.at(datasetidx).xsecOffset(mttbin);
 	double acceptance=datasets_.at(datasetidx).acceptance(mttbin).getValue(fittedparas_);
 	return fitted*acceptance;
 }
@@ -1314,10 +1314,10 @@ void ttbarXsecFitter::dataset::cutAndCountSelfCheck(const std::vector<std::pair<
 	 */
 }
 
-double ttbarXsecFitter::getXsecOffset(size_t datasetidx)const{
+double ttbarXsecFitter::getXsecOffset(size_t datasetidx, size_t mttbin)const{
 	if(datasetidx>=datasets_.size())
 		throw std::out_of_range("ttbarXsecFitter::getXsecOffset: dataset index out of range");
-	return datasets_.at(datasetidx).xsecOffset();
+	return datasets_.at(datasetidx).xsecOffset(mttbin);
 }
 
 
@@ -1549,7 +1549,7 @@ histoStack ttbarXsecFitter::applyParametersToStack(const histoStack& stack, size
             else{
                 multi_v.resize(n_signal);
                 for (size_t s=0; s<n_signal; ++s){
-                    multi_v.at(s)=cpdts.lumi() * datasets_.at(datasetidx).xsecOffset();
+                    multi_v.at(s)=cpdts.lumi() * datasets_.at(datasetidx).xsecOffset(s);
                 }
             }
         }
@@ -2499,7 +2499,7 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
                                 }
                                 else{
                                     for (size_t s=0; s<shapeintegral_v.size(); ++s){
-                                        double lumi_xsec = set->lumi() * (variations[set->xsecIdxs().at(s)] +set->xsecOffset());
+                                        double lumi_xsec = set->lumi() * (variations[set->xsecIdxs().at(s)] +set->xsecOffset(s));
                                         signal+=lumi_xsec* acceptance_v.at(s) * eps_emu_v.at(s)* omega_b_v.at(s) * set->signalshape(s,nbjet).getBin(bin)->getValue(variations) / shapeintegral_v.at(s);
                                     }
                                 }
@@ -2821,7 +2821,7 @@ variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::ve
 
 
 
-	float gennorm = 1/(lumi_*xsecoff_);
+	float gennorm = 1/(lumi_*xsecOffset(mttbin));
 
 	//unused	size_t bjet0bin=minbjetbin;
 	size_t bjet1bin=minbjetbin+1;
@@ -2966,7 +2966,6 @@ variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::ve
 		std::cout << "ttbarXsecFitter::dataset::createLeptonJetAcceptance: done " << std::endl;
 	return out;
 }
-
 
 const size_t & ttbarXsecFitter::dataset::xsecIdx()const{
 	if(xsecidx_==9999){
