@@ -12,6 +12,7 @@
 
 #include <TtZAnalysis/Analysis/interface/top_analyzer_run2.h>
 #include "../../DataFormats/interface/NTJES.h"
+#include <TtZAnalysis/Analysis/interface/ttbarGenPlots.h>
 
 /*
  * Running on the samples is parallelized.
@@ -360,10 +361,12 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	//setup everything for control plots
 
 	ttbarControlPlots plots;//for the Z part just make another class (or add a boolian)..
+        // ttbarGenPlots genplots;
 	////FIX!!
 	//plots.limitToStep(8);
 	ZControlPlots zplots;
 	plots.linkEvent(evt);
+	// genplots.linkEvent(evt);
 	zplots.linkEvent(evt);
 	ttXsecPlots xsecplots;
 	xsecplots.enable(true);
@@ -371,6 +374,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	xsecplots.limitToStep(8);
 	xsecplots.initSteps(8);
 	plots.initSteps(8);
+	// genplots.initSteps(0);
 	zplots.initSteps(8);
 	mlbmtplots_step8.setEvent(evt);
 	if (doKinReco_) kinrecoplots_step8.setEvent(evt);
@@ -744,6 +748,13 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 			//}
 			if(!fakedata){
+                               //split into gen mtt bins
+                                if (signal_ && doKinReco_){
+                                    if (gentops.size()<2) continue;
+                                    float gen_mtt = (gentops.at(0)->p4() + gentops.at(1)->p4()).M();
+                                    setMttCategories(gen_mtt,legendname_);
+                                    if ((int)gen_mttcategory != (int)leg_mttcategory) continue;
+                                }
 				/*
 				 * fill gen info here
 				 */
@@ -751,6 +762,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 				mlbmtplots_step8.fillPlotsGen();
 				xsecfitplots_step8.fillPlotsGen();
                                 if(doKinReco_) kinrecoplots_step8.fillPlotsGen();
+                                // genplots.makeControlPlots(0);
 			}
 		} /// isMC ends
 
@@ -759,13 +771,6 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		if (b_emu_ && *b_AnalyseEvent.content()!=1) continue;
                 if ( isMC && *b_MetFilter.content() == 1) continue;
 
-                //split into gen mtt bins
-                if (isMC && signal_ && doKinReco_){
-                    if (gentops.size()<2) continue;
-                    float gen_mtt = (gentops.at(0)->p4() + gentops.at(1)->p4()).M();
-                    setMttCategories(gen_mtt,legendname_);
-                    if ((int)gen_mttcategory != (int)leg_mttcategory) continue;
-                }
 
 
 		/////////////////////////////////////////////////////////////
