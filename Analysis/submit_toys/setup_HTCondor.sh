@@ -5,7 +5,7 @@
 massfit=true
 mttfit=true
 
-input_dir=20181115_1621_mtt_bins/output
+input_dir=20190123_1807_genSplit/output
 
 
 if [ "$massfit" == true ]; then
