@@ -19,6 +19,8 @@
 #include "TtZAnalysis/Tools/interface/texTabler.h"
 #include "limits.h"
 
+size_t n_signals = 3; //hardcoded
+
 namespace ztop{
 
 bool ttbarXsecFitter::debug=false;
@@ -213,7 +215,7 @@ void ttbarXsecFitter::dataset::createToysFromSyst(histo1D::pseudodatamodes mode)
             if(debug) std::cout << "invoked new random" <<std::endl;
 
         }
-        // careful: hard coded!!! always check
+        // careful: hardcoded!!! always check
         parent_->var_for_toys_ = {"TT_ISRSCALE_down","TT_ISRSCALE_up","TT_FSRSCALE_down","TT_FSRSCALE_up",
                                   "ST_ISRSCALE_down","ST_ISRSCALE_up","ST_FSRSCALE_down","ST_FSRSCALE_up",
                                   "TT_MATCH_down","TT_MATCH_up","TT_TTTUNE_down","TT_TTTUNE_up","TT_FRAG_PETERSON_up",
@@ -2487,7 +2489,7 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
                             eps_emu=set->eps_emu().getValue(variations);
                         }
                         else{
-                            for (size_t s=0; s<3; ++s){ //hardcoded
+                            for (size_t s=0; s<n_signals; ++s){ //hardcoded
                                 shapeintegral_v.push_back(set->signalshape(s,nbjet).getIntegral(variations));
                                 omega_b_v.push_back(set->omega_b(s,nbjet).getValue(variations));
                                 acceptance_v.push_back(set->acceptance(s).getValue(variations));
@@ -2676,7 +2678,7 @@ void ttbarXsecFitter::checkSizes()const{
 		datasets_.at(i).checkSizes();
 		//sizes ok, check for parameter consistency
 		for(size_t b=0;b<dataset::nBjetCat();b++){
-                    size_t s_max = 3;
+                    size_t s_max = n_signals; //hardcoded
                     if (!mttfit_) s_max=1;
                     for (size_t s=0;s<s_max;s++){
 			if(chkv.size()>0){
@@ -3193,9 +3195,9 @@ void ttbarXsecFitter::dataset::readStackVec(std::vector<histoStack> & in,size_t 
             signalpsmigconts_nbjets_.resize(maxnbjetcat);
         }
         else{
-            signalconts_nbjets_v_.resize(3); //hardcoded
-            signalvisgenconts_nbjets_v_.resize(3); //hardcoded
-            signalpsmigconts_nbjets_v_.resize(3); //hardcoded
+            signalconts_nbjets_v_.resize(n_signals); //hardcoded
+            signalvisgenconts_nbjets_v_.resize(n_signals); //hardcoded
+            signalpsmigconts_nbjets_v_.resize(n_signals); //hardcoded
             for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s){
                 signalconts_nbjets_v_.at(s).resize(maxnbjetcat);
                 signalvisgenconts_nbjets_v_.at(s).resize(maxnbjetcat);
@@ -3215,7 +3217,7 @@ void ttbarXsecFitter::dataset::readStackVec(std::vector<histoStack> & in,size_t 
 	for(size_t j=0;j<in.size();j++){
             std::vector<TString> signals;
             if (parent_->mttfit_){
-                for (size_t s=1; s<=3; ++s) signals.push_back((TString)"t#bar{t}mtt"+toString(s));
+                for (size_t s=1; s<=n_signals; ++s) signals.push_back((TString)"t#bar{t}mtt"+toString(s)); //hardcoded
                 in.at(j).setsignals(signals);
             }
             // if (parent_->mttfit_) in.at(j).setsignal((TString)"t#bar{t}mtt"+toString(parent_->mttbin_));
@@ -3509,7 +3511,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	//fake uncertainty
 	if (!parent_->mttfit_) stack->addGlobalRelMCError("Xsec_"+name_,0);
         else {
-            for (size_t s=1; s<=3; ++s)
+            for (size_t s=1; s<=n_signals; ++s) //hardcoded
                 stack->addGlobalRelMCError("Xsec_"+name_+toString(s),0);
         }
 	if(debug)
