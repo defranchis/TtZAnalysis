@@ -18,7 +18,8 @@ public:
 
         top_analyzer_run2():topAnalyzer(),
         bin_1_(420),
-        bin_2_(550)
+        bin_2_(550),
+        bin_3_(810)
         {}
 
 
@@ -50,6 +51,7 @@ private:
 
         float bin_1_; // 420 (mtt> 345 by construction)
         float bin_2_; // 550
+        float bin_3_; // 810
 
 
 };

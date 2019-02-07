@@ -1890,13 +1890,15 @@ void top_analyzer_run2::setMttCategories(float gen_mtt, TString legendname){
     
     if (gen_mtt < bin_1_) gen_mttcategory = cat_mtt1_gen;
     else if (gen_mtt < bin_2_) gen_mttcategory = cat_mtt2_gen;
-    else gen_mttcategory = cat_mtt3_gen;
+    else if (gen_mtt < bin_3_) gen_mttcategory = cat_mtt3_gen;
+    else gen_mttcategory = cat_mttmax_gen;
 
     legendname.ReplaceAll(" ","");
     
     if (legendname.EndsWith("mtt1")) leg_mttcategory = cat_mtt1_leg;
     else if (legendname.EndsWith("mtt2")) leg_mttcategory = cat_mtt2_leg;
     else if (legendname.EndsWith("mtt3")) leg_mttcategory = cat_mtt3_leg;
+    else if (legendname.EndsWith("mtt4")) leg_mttcategory = cat_mttmax_leg;
     else 
         throw std::runtime_error((std::string)"top_analyzer_run2:::setMttCategories: category for legend "+legendname+" not found");
 

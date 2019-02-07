@@ -14,6 +14,7 @@ $ inputfile,                       legend entry,        color,   xsection,   leg
    tree_13TeV_emuttbar.root,          t#bar{t}mtt1,		633,      831.76,	  50,      true
    tree_13TeV_emuttbar.root,          t#bar{t}mtt2,		635,      831.76,	  51,      true
    tree_13TeV_emuttbar.root,          t#bar{t}mtt3,		637,      831.76,	  52,      true
+   tree_13TeV_emuttbar.root,          t#bar{t}mtt4,		920,      831.76,	  53,      true
 
    tree_13TeV_tW_ext.root,                tW/#bar{t}W,	   	616,	  35.85,	          4
    tree_13TeV_tbarW_ext.root,	           tW/#bar{t}W,	   	616,	  35.85,	          4

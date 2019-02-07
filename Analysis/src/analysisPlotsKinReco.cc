@@ -66,12 +66,10 @@ namespace ztop{
     }
 
     void analysisPlotsKinReco::setRecoMttCategory(float reco_mtt){
-        if ((int)cat_mttmax_reco != (int)cat_mttmax_reco)
-            throw std::logic_error("analysisPlotsKinReco::setMttCategory: gen and reco mtt bins must be the same");
-
         if (reco_mtt < bin_1_) reco_mttcategory = cat_mtt1_reco;
         else if (reco_mtt < bin_2_) reco_mttcategory = cat_mtt2_reco;
-        else reco_mttcategory = cat_mtt3_reco;
+        else if (reco_mtt < bin_3_) reco_mttcategory = cat_mtt3_reco;
+        else reco_mttcategory = cat_mtt4_reco;
     }
 
     void analysisPlotsKinReco::bookPlots(){
@@ -99,7 +97,7 @@ namespace ztop{
         pt_bins<<2000;
         mtt_bins<<5000;
 
-        mtt_bins_fine << 300 << 420 << 550 << 2000 ;
+        mtt_bins_fine << 300 << 420 << 550 << 810 << 2000 ;
 
         mtt=addPlot(mtt_bins,mtt_bins,"m_tt kin reco","m_{t#bar{t}} [GeV]", "Events/GeV");
         mtt_coarse=addPlot(mtt_bins_fine,mtt_bins_fine,"m_tt kin reco coarse","m_{t#bar{t}} [GeV]", "Events/GeV");

@@ -25,6 +25,7 @@ namespace ztop{
             eta_ttbar(0),
             bin_1_(420),
             bin_2_(550),
+            bin_3_(810),
             mlbcombthresh_(165)
             {
                 m_mub_3_.resize(cat_bjetmax,0);
@@ -66,7 +67,7 @@ namespace ztop{
 	bjetcategory;
 
 	enum reco_mttcategories{
-            cat_mtt1_reco, cat_mtt2_reco, cat_mtt3_reco, cat_mttmax_reco}
+            cat_mtt1_reco, cat_mtt2_reco, cat_mtt3_reco, cat_mtt4_reco, cat_mttmax_reco}
 	reco_mttcategory;
 	enum gen_mttcategories{
             cat_mtt1_gen, cat_mtt2_gen, cat_mtt3_gen, cat_mttmax_gen}
@@ -100,6 +101,7 @@ namespace ztop{
 
         float bin_1_; // 420 (mtt> 345 by construction)
         float bin_2_; // 550
+        float bin_3_; // 810
 	float mlbcombthresh_;
 
     };
