@@ -900,8 +900,14 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 	if(!silent_)
 		std::cout << "First rough fit done" <<std::endl;
 	if(!onlychecks){
-		fitter_.setStrategy(2);
-		fitter_.setTolerance(0.1);
+		if (!mttfit_){
+                    fitter_.setStrategy(2);
+                    fitter_.setTolerance(0.1);
+                }
+                else {
+                    fitter_.setStrategy(1);
+                    fitter_.setTolerance(0.3);
+                }
 	}
 
 	size_t masspos=std::find(parameternames_.begin(),parameternames_.end(),"TOPMASS")-parameternames_.begin();
@@ -1843,26 +1849,34 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
 
 
 
-void ttbarXsecFitter::printXsecScan(size_t datasetidx, const std::string & outname){//const{
+void ttbarXsecFitter::printXsecScan(size_t datasetidx, const std::string & outname, const size_t mttbin){//const{
 	if(datasetidx>=datasets_.size())
 		throw std::out_of_range("ttbarXsecFitter::printXsecScan: dataset index out of range");
 
 	//simpleFitter newfitter(fitter_);
-	size_t xscidx=datasets_.at(datasetidx).xsecIdx();
+	size_t xscidx=9999;
+        if (!mttfit_) xscidx=datasets_.at(datasetidx).xsecIdx();
+        else xscidx=datasets_.at(datasetidx).xsecIdxs().at(mttbin);
+
 	double xsecerrdo=fitter_.getParameterErrDown()->at(xscidx);
 	double xsecerrup=fitter_.getParameterErrUp()->at(xscidx);
 	//double xsec=getXsec(datasetidx);
-	double priorxsec=datasets_.at(datasetidx).xsecOffset();
+	double priorxsec=0;
+        if (!mttfit_) priorxsec=datasets_.at(datasetidx).xsecOffset();
+        else priorxsec=datasets_.at(datasetidx).xsecOffset(mttbin);
+
 	double xsecparashift=fitter_.getParameter(xscidx);
 	graph g=fitter_.scan( xscidx, xsecparashift + 3* xsecerrdo, xsecparashift+ 3*xsecerrup ,12);
 	g.shiftAllXCoordinates(priorxsec);
 
 	g.setXAxisName("#sigma_{t#bar{t}} ("+datasets_.at(datasetidx).getName()+") [pb]");
+        if (mttfit_) g.setXAxisName("#sigma_{t#bar{t}} mtt"+toString(mttbin+1)+" ("+datasets_.at(datasetidx).getName()+") [pb]");
 	g.setYAxisName("-2 ln(L)");
 
 	std::string outfile=outname;
 	outfile+="_LHScan_";
 	outfile+=datasets_.at(datasetidx).getName().Data();
+        if (mttfit_) outfile+="_mtt"+toString(mttbin+1);
 
 	TFile f((TString)outfile.data()+".root","RECREATE");
 	TCanvas cv;

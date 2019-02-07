@@ -486,9 +486,13 @@ invokeApplication(){
 		if(debug)
 			std::cout << "printing pre/postfit fit-distributions" << std::endl;
 		for(size_t ndts=0;ndts<mainfitter.nDatasets();ndts++){
-			if(likelihoodscan)
-				mainfitter.printXsecScan(ndts,outfile.Data());
-
+                    if(likelihoodscan){
+                        if (!mttfit) mainfitter.printXsecScan(ndts,outfile.Data());
+                        else {
+                            for (size_t mttbin=0; mttbin<3; ++mttbin)
+                                mainfitter.printXsecScan(ndts,outfile.Data(),mttbin);
+                        }
+                    }
 			TString dir=outfile+"_vars/";
 			system( ("mkdir -p "+dir).Data());
 			for(size_t nbjet=0;nbjet<3;nbjet++){
