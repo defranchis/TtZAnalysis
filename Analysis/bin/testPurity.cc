@@ -46,21 +46,21 @@ invokeApplication(){
     TH1D * gen_0 = stack_0.getSignalContainer().getTH1D("gen_0",false,false,false);
     gen_0->Write();
 
-    histoStack stack_1 = csv->getStack("gen m_ttbar mtt1 step 0");
-    TH1D * gen_1 = stack_1.getSignalContainer().getTH1D("gen_1",false,false,false);
-    gen_1->Write();
+    // histoStack stack_1 = csv->getStack("gen m_ttbar mtt1 step 0");
+    // TH1D * gen_1 = stack_1.getSignalContainer().getTH1D("gen_1",false,false,false);
+    // gen_1->Write();
 
-    histoStack stack_2 = csv->getStack("gen m_ttbar mtt2 step 0");
-    TH1D * gen_2 = stack_2.getSignalContainer().getTH1D("gen_2",false,false,false);
-    gen_2->Write();
+    // histoStack stack_2 = csv->getStack("gen m_ttbar mtt2 step 0");
+    // TH1D * gen_2 = stack_2.getSignalContainer().getTH1D("gen_2",false,false,false);
+    // gen_2->Write();
 
-    histoStack stack_3 = csv->getStack("gen m_ttbar mtt3 step 0");
-    TH1D * gen_3 = stack_3.getSignalContainer().getTH1D("gen_3",false,false,false);
-    gen_3->Write();
+    // histoStack stack_3 = csv->getStack("gen m_ttbar mtt3 step 0");
+    // TH1D * gen_3 = stack_3.getSignalContainer().getTH1D("gen_3",false,false,false);
+    // gen_3->Write();
 
-    histoStack stack_4 = csv->getStack("gen m_ttbar mtt3 step 0");
-    TH1D * gen_4 = stack_4.getSignalContainer().getTH1D("gen_4",false,false,false);
-    gen_4->Write();
+    // histoStack stack_4 = csv->getStack("gen m_ttbar mtt4 step 0");
+    // TH1D * gen_4 = stack_4.getSignalContainer().getTH1D("gen_4",false,false,false);
+    // gen_4->Write();
 
     histoStack stack_5 = csv->getStack("gen m_ttbar fine step 0");
     TH1D * gen_5 = stack_5.getSignalContainer().getTH1D("gen_5",false,false,false);
