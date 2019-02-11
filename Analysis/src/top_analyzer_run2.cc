@@ -51,6 +51,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	if(!isMC || !signal_)
 		getPdfReweighter()->switchOff(true);
 
+        if (doGenPlotsOnly_ && doKinReco_ && !legendname_.Contains("mtt1")) return;
+
 	//some mode options
 	/* implement here not to overload MainAnalyzer class with private members
 	 *  they are even allowed to overwrite existing configuration
@@ -361,12 +363,12 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	//setup everything for control plots
 
 	ttbarControlPlots plots;//for the Z part just make another class (or add a boolian)..
-        // ttbarGenPlots genplots;
+        ttbarGenPlots genplots;
 	////FIX!!
 	//plots.limitToStep(8);
 	ZControlPlots zplots;
 	plots.linkEvent(evt);
-	// genplots.linkEvent(evt);
+	if (doGenPlotsOnly_) genplots.linkEvent(evt);
 	zplots.linkEvent(evt);
 	ttXsecPlots xsecplots;
 	xsecplots.enable(true);
@@ -374,7 +376,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	xsecplots.limitToStep(8);
 	xsecplots.initSteps(8);
 	plots.initSteps(8);
-	// genplots.initSteps(0);
+	if (doGenPlotsOnly_) genplots.initSteps(0);
 	zplots.initSteps(8);
 	mlbmtplots_step8.setEvent(evt);
 	if (doKinReco_) kinrecoplots_step8.setEvent(evt);
@@ -749,7 +751,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			//}
 			if(!fakedata){
                                //split into gen mtt bins
-                                if (signal_ && doKinReco_){
+                                if (signal_ && doKinReco_ && !doGenPlotsOnly_){
                                     if (gentops.size()<2) continue;
                                     float gen_mtt = (gentops.at(0)->p4() + gentops.at(1)->p4()).M();
                                     setMttCategories(gen_mtt,legendname_);
@@ -762,7 +764,10 @@ void  top_analyzer_run2::analyze(size_t anaid){
 				mlbmtplots_step8.fillPlotsGen();
 				xsecfitplots_step8.fillPlotsGen();
                                 if(doKinReco_) kinrecoplots_step8.fillPlotsGen();
-                                // genplots.makeControlPlots(0);
+                                if (doGenPlotsOnly_) {
+                                    genplots.makeControlPlots(0);
+                                    continue;
+                                }
 			}
 		} /// isMC ends
 

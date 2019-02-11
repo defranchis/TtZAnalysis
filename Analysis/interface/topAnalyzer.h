@@ -179,6 +179,7 @@ public:
 	void setIsSignalMerged(bool isMerged){isSignalMerged_=isMerged;}
 
         void setDoKinReco(bool doKinReco){doKinReco_=doKinReco;}
+        void setDoGenPlotsOnly(bool doGenPlotsOnly){doGenPlotsOnly_=doGenPlotsOnly;}
         void setKinReco(KinematicReconstruction * kinReco, KinematicReconstructionScaleFactors * kinRecoSF);
 
 	int start();
@@ -276,7 +277,7 @@ protected:
 
 	float fakedata_startentries_;
 
-        bool doKinReco_;
+        bool doKinReco_, doGenPlotsOnly_;
         KinematicReconstruction * kinReco_;
         KinematicReconstructionScaleFactors * kinRecoSF_;
 

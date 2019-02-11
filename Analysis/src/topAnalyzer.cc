@@ -72,6 +72,7 @@ topAnalyzer::topAnalyzer():basicAnalyzer(){
 	pdfweighter_.switchOff(true); //switch off as default
 	fakedata_startentries_=0.9;
         doKinReco_ = false;
+        doGenPlotsOnly_ = false;
         kinReco_ = 0;
         kinRecoSF_ = 0;
 }

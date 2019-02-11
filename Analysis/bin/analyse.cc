@@ -51,6 +51,7 @@ invokeApplication(){
 	float fakedatastartentries = parser->getOpt<float>    ("-startdiv",0.9,"point to start fake data entries wrt to to evts");
 
 	const bool doKinReco = parser->getOpt<bool>      ("-kinReco",false,"perform kinematic reconstruction");        
+	const bool doGenPlotsOnly = parser->getOpt<bool>      ("-genplots",false,"do gen plots for kinematic reconstruction");        
 
 	bool createLH=false;
 	if(discrfile.length()<1)
@@ -240,6 +241,7 @@ invokeApplication(){
             kinRecoSF->prepareChannel(Channel::convert(channel));
             ana->setKinReco(kinReco, kinRecoSF);
         }
+        ana->setDoGenPlotsOnly(doGenPlotsOnly);
 
 	if(elecEnsffile.EndsWith("DEFFILEWILDCARDDONTREMOVE")){
 		if(energy == "7TeV" || energy == "8TeV")
