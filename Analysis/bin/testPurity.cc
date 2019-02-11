@@ -58,9 +58,13 @@ invokeApplication(){
     TH1D * gen_3 = stack_3.getSignalContainer().getTH1D("gen_3",false,false,false);
     gen_3->Write();
 
-    histoStack stack_4 = csv->getStack("gen m_ttbar fine step 0");
+    histoStack stack_4 = csv->getStack("gen m_ttbar mtt3 step 0");
     TH1D * gen_4 = stack_4.getSignalContainer().getTH1D("gen_4",false,false,false);
     gen_4->Write();
+
+    histoStack stack_5 = csv->getStack("gen m_ttbar fine step 0");
+    TH1D * gen_5 = stack_5.getSignalContainer().getTH1D("gen_5",false,false,false);
+    gen_5->Write();
 
 
     f->Close();
