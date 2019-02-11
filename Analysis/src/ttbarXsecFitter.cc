@@ -19,7 +19,7 @@
 #include "TtZAnalysis/Tools/interface/texTabler.h"
 #include "limits.h"
 
-size_t n_signals = 3; //hardcoded
+size_t n_signals = 4; //hardcoded
 
 namespace ztop{
 

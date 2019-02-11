@@ -246,9 +246,10 @@ private:
 			lumi_(lumi),xsecoff_(xsecin),unclumi_(lumiunc),
                         lumiidx_(9999),xsecidx_(9999),massidx_(9999),name_(name),totalvisgencontsread_(0),firstpseudoexp_(true),firstToy_(true),parent_(par)
 		{
-                    xsecoff_mtt1_ = xsecin * 0.300861743251;
-                    xsecoff_mtt2_ = xsecin * 0.394185860153;
-                    xsecoff_mtt3_ = xsecin * 0.304952396596;                    
+                    xsecoff_mtt1_ = xsecin * 0.300921232044;
+                    xsecoff_mtt2_ = xsecin * 0.394263801738;
+                    xsecoff_mtt3_ = xsecin * 0.23802330301;                    
+                    xsecoff_mtt4_ = xsecin * 0.066791663208;                    
                 }
 
 		extendedVariable& eps_emu(){return eps_emu_;}
@@ -300,6 +301,7 @@ private:
                     if (mttbin==0) return xsecoff_mtt1_;
                     else if (mttbin==1) return xsecoff_mtt2_;
                     else if (mttbin==2) return xsecoff_mtt3_;
+                    else if (mttbin==3) return xsecoff_mtt4_;
                     else return xsecoff_;
                 }
 		const size_t & xsecIdx()const;
@@ -374,7 +376,7 @@ private:
                 dataset():totalvisgencontsread_(0),firstpseudoexp_(true),firstToy_(true){}
 
 		double lumi_,xsecoff_;
-                double xsecoff_mtt1_,xsecoff_mtt2_,xsecoff_mtt3_;
+                double xsecoff_mtt1_,xsecoff_mtt2_,xsecoff_mtt3_,xsecoff_mtt4_;
 		double unclumi_;
 		size_t lumiidx_,xsecidx_,massidx_;
                 std::vector<size_t> xsecidxs_;
