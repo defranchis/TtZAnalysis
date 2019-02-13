@@ -1688,22 +1688,24 @@ histoStack ttbarXsecFitter::applyParametersToStack(const histoStack& stack, size
 	out=histoStack();
 	out.setDataLegend("Data");
 	out.push_back(data,"Data",1,1,99);
-	out.push_back(background,"Background",kGreen-9,1,50);
-	if(topontop_){
-            if (!mttfit_) out.push_back(signal,"Signal",633,1,70);
-            else{
-                for (size_t s=0; s<n_signal; ++s){
+
+        if (mttfit_){
+            out.push_back(background,"Background",kGreen-9,1,50);
+            if(topontop_){
+                for (size_t s=0; s<n_signal; ++s)
                     out.push_back(signal_v.at(s),"Signal"+toString(s+1),633+2*s,1,signal_v.size()-s+50);
-                }
+            }
+            else{
+                for (size_t s=0; s<n_signal; ++s)
+                    out.push_back(signal_v.at(s),"Signal"+toString(s+1),633+2*s,1,1+s);
             }
         }
-	else{
-            if (!mttfit_) out.push_back(signal,"Signal",633,1,1);
-            else{
-                for (size_t s=0; s<n_signal; ++s){
-                    out.push_back(signal_v.at(s),"Signal"+toString(s+1),633+2*s,1,1+s);
-                }
-            }
+        else{
+            out.push_back(background,"Background",kGreen-9,1,2);
+            if(topontop_)
+		out.push_back(signal,"Signal",628,1,3);
+            else
+		out.push_back(signal,"Signal",628,1,1);
         }
 
 	out.setName(stack.getName() + "_" + datasets_.at(datasetidx).getName());

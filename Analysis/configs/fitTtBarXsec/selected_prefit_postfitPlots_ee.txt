@@ -215,7 +215,7 @@ $
        [end - textBoxes]
        [plotStyle - Upper]
                  xaxis.ndiv        = 000
-                 yaxis.max         = 2200
+                 yaxis.max         = 800
                  yaxis.name = Event yield
       [end plotStyle]
        [plotStyle - Ratio]
@@ -230,6 +230,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVee01
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -242,6 +245,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVee02
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -253,6 +259,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVee03
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -264,9 +273,10 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVee11
        [end - textBoxes]
-      [plotStyle - Upper]
+       [plotStyle - Upper]
                  yaxis.max      = 1150
-      [end plotStyle]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -278,6 +288,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVee12
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -289,6 +302,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVee13
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -300,6 +316,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVee21
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -311,6 +330,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVee22
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -322,12 +344,13 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVee23
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.max      = 70
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
-      [plotStyle - Upper]
-                 yaxis.max      = 70
-      [end plotStyle]
 [end - controlplot]
 
 

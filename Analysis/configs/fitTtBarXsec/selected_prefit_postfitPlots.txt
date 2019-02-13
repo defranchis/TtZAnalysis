@@ -230,6 +230,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVemu01
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -242,6 +245,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVemu02
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -253,6 +259,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVemu03
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -264,9 +273,10 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVemu11
        [end - textBoxes]
-      [plotStyle - Upper]
+       [plotStyle - Upper]
                  yaxis.max      = 1150
-      [end plotStyle]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -278,6 +288,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVemu12
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -289,6 +302,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVemu13
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -300,6 +316,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVemu21
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -311,6 +330,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVemu22
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
@@ -322,12 +344,13 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVemu23
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.max      = 70
+                 yaxis.name = Events / GeV
+       [end plotStyle]
        [plotStyle - Ratio]
                  xaxis.name = Additional jet p_{T} [GeV]
        [end plotStyle]
-      [plotStyle - Upper]
-                 yaxis.max      = 70
-      [end plotStyle]
 [end - controlplot]
 
 
@@ -353,6 +376,9 @@ $
                 columnSeparator = 0.01
 
         [end legendStyle]
+        [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+        [end plotStyle]
         [plotStyle - Ratio]
                 xaxis.name = m_{l\:\mathrm{b}}^{\mathrm{min}} \: [\mathrm{GeV}]
         [end plotStyle]
@@ -382,6 +408,9 @@ $
                 columnSeparator = 0.01
 
         [end legendStyle]
+        [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+        [end plotStyle]
         [plotStyle - Ratio]
                 xaxis.name = m_{l\:\mathrm{b}}^{\mathrm{min}} \: [\mathrm{GeV}]
         [end plotStyle]
@@ -412,6 +441,9 @@ $
                 columnSeparator = 0.01
 
         [end legendStyle]
+        [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+        [end plotStyle]
         [plotStyle - Ratio]
                 xaxis.name = m_{l\:\mathrm{b}}^{\mathrm{min}} \: [\mathrm{GeV}]
         [end plotStyle]
@@ -428,6 +460,9 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVemu21
        [end - textBoxes]
+       [plotStyle - Upper]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
         [plotStyle - Ratio]
                 xaxis.name = m_{l\:\mathrm{b}}^{\mathrm{min}} \: [\mathrm{GeV}]
         [end plotStyle]
@@ -443,12 +478,13 @@ $
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
           externalMarker = CMSPaperSplit03Left13TeVemu22
        [end - textBoxes]
-      [plotStyle - Upper]
+       [plotStyle - Upper]
                  yaxis.max      = 48
-      [end plotStyle]
-        [plotStyle - Ratio]
+                 yaxis.name = Events / GeV
+       [end plotStyle]
+       [plotStyle - Ratio]
                 xaxis.name = m_{l\:\mathrm{b}}^{\mathrm{min}} \: [\mathrm{GeV}]
-        [end plotStyle]
+       [end plotStyle]
 [end - controlplot]
 
 [plot - m_lb min step 8]
