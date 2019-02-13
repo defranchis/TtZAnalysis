@@ -1393,9 +1393,9 @@ histoStack ttbarXsecFitter::applyParametersToStack(const histoStack& stack, size
 	out.push_back(data,"Data",1,1,99);
 	out.push_back(background,"Background",kGreen-9,1,2);
 	if(topontop_)
-		out.push_back(signal,"Signal",633,1,3);
+		out.push_back(signal,"Signal",628,1,3);
 	else
-		out.push_back(signal,"Signal",633,1,1);
+		out.push_back(signal,"Signal",628,1,1);
 
 	out.setName(stack.getName() + "_" + datasets_.at(datasetidx).getName());
 

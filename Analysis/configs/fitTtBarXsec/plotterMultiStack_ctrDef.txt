@@ -193,7 +193,7 @@
     
     xaxis.titleSize   = 0.07
     xaxis.labelSize   = 0.06
-    xaxis.titleOffset = 0.85
+    xaxis.titleOffset = 0.9
     xaxis.labelOffset = 0.005
     xaxis.tickLength  = 0.03
     xaxis.ndiv        = 510
@@ -207,10 +207,10 @@
     yaxis.titleOffset = 0.95
     yaxis.labelOffset = 0.005
     yaxis.tickLength  = 0.03
-    yaxis.ndiv        = 505
+    yaxis.ndiv        = 305
     yaxis.max         = 1.35
     yaxis.log         = false
     yaxis.min         = 0.65
-    yaxis.name        = #frac{obs.}{pred.}
+    yaxis.name        = #frac{Data}{Pred.}
     
 [end plotStyle]

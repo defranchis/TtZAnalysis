@@ -196,8 +196,10 @@ void histoStack::mergeLegends(const std::vector<TString>& tobemerged,const TStri
 		if(std::find(tobemerged.begin(),tobemerged.end(), dataleg_ ) != tobemerged.end()){
 			setDataLegend(mergedname);
 		}
-		else if(idxstbm.size()>0)
+		else if(idxstbm.size()>0){
 			legends_.at(idxstbm.at(0)) = mergedname;
+			colors_.at(idxstbm.at(0)) = mergedColor;
+                }
 		return;
 	}
 	size_t inidx=idxstbm.at(0);
