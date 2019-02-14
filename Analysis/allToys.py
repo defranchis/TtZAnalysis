@@ -25,9 +25,10 @@ mttFit = True
 if not mttFit:
     h_xsec= ROOT.TH1F('h_xsec','h_xsec',500,730,930)
 else:
-    h_xsec_1= ROOT.TH1F('h_xsec_1','h_xsec_1',500,730,930)
-    h_xsec_2= ROOT.TH1F('h_xsec_2','h_xsec_2',500,730,930)
-    h_xsec_3= ROOT.TH1F('h_xsec_3','h_xsec_3',500,730,930)
+    h_xsec_1= ROOT.TH1F('h_xsec_1','h_xsec_1',250,200,300)
+    h_xsec_2= ROOT.TH1F('h_xsec_2','h_xsec_2',250,280,380)
+    h_xsec_3= ROOT.TH1F('h_xsec_3','h_xsec_3',250,150,250)
+    h_xsec_4= ROOT.TH1F('h_xsec_4','h_xsec_4',250,0,100)
 
 for texfile in filelist:
     if not texfile.endswith('.tex'): continue
@@ -109,12 +110,13 @@ for texfile in filelist:
             h_mass.Fill(mass_pull)
 
         if '13TeV' in name:
-            xsec_pull = 831.76+float(pull)
+            xsec_pull = float(pull)
             if not mttFit: h_xsec.Fill(xsec_pull)
             else:
-                if   '13TeV1' in name: h_xsec_1.Fill(xsec_pull)
-                elif '13TeV2' in name: h_xsec_2.Fill(xsec_pull)
-                elif '13TeV3' in name: h_xsec_3.Fill(xsec_pull)
+                if   '13TeV1' in name: h_xsec_1.Fill(250.29+xsec_pull)
+                elif '13TeV2' in name: h_xsec_2.Fill(327.93+xsec_pull)
+                elif '13TeV3' in name: h_xsec_3.Fill(197.98+xsec_pull)
+                elif '13TeV4' in name: h_xsec_4.Fill(55.55+xsec_pull)
 
     if firstfile:
         firstfile = False
