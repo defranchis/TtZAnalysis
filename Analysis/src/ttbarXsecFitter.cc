@@ -19,7 +19,6 @@
 #include "TtZAnalysis/Tools/interface/texTabler.h"
 #include "limits.h"
 
-size_t n_signals = 4; //hardcoded
 
 namespace ztop{
 
@@ -459,10 +458,10 @@ void ttbarXsecFitter::dataset::createContinuousDependencies(){
         size_t size;
         if (!parent_->mttfit_) size=signalconts_nbjets_.size();
         else {
-            size=signalconts_nbjets_v_.at(0).size();
-            signalshape_nbjet_v_.resize(signalconts_nbjets_v_.size());
+            size=signalconts_nbjets_v_.size();
+            signalshape_nbjet_v_.resize(size);
         }
-	for(size_t it=0;it<size;it++){
+	for(size_t it=0;it<signalconts_nbjets_v_.at(0).size();it++){
                 if (!parent_->mttfit_)
                     signalshape_nbjet_.push_back(createLeptonJetAcceptance(signalconts_nbjets_,signalpsmigconts_nbjets_,signalvisgenconts_nbjets_, bjetcount));
                 else{
@@ -906,9 +905,9 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
                     fitter_.setStrategy(2);
                     fitter_.setTolerance(0.1);
                 }
-                else {
-                    fitter_.setStrategy(1);
-                    fitter_.setTolerance(0.3);
+                else { //to be adjusted
+                    fitter_.setStrategy(2);
+                    fitter_.setTolerance(0.1);
                 }
 	}
 
@@ -2491,7 +2490,7 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
                             eps_emu=set->eps_emu().getValue(variations);
                         }
                         else{
-                            for (size_t s=0; s<n_signals; ++s){ //hardcoded
+                            for (size_t s=0; s<n_signals_; ++s){ 
                                 shapeintegral_v.push_back(set->signalshape(s,nbjet).getIntegral(variations));
                                 omega_b_v.push_back(set->omega_b(s,nbjet).getValue(variations));
                                 acceptance_v.push_back(set->acceptance(s).getValue(variations));
@@ -2680,7 +2679,7 @@ void ttbarXsecFitter::checkSizes()const{
 		datasets_.at(i).checkSizes();
 		//sizes ok, check for parameter consistency
 		for(size_t b=0;b<dataset::nBjetCat();b++){
-                    size_t s_max = n_signals; //hardcoded
+                    size_t s_max = n_signals_; 
                     if (!mttfit_) s_max=1;
                     for (size_t s=0;s<s_max;s++){
 			if(chkv.size()>0){
@@ -3197,9 +3196,9 @@ void ttbarXsecFitter::dataset::readStackVec(std::vector<histoStack> & in,size_t 
             signalpsmigconts_nbjets_.resize(maxnbjetcat);
         }
         else{
-            signalconts_nbjets_v_.resize(n_signals); //hardcoded
-            signalvisgenconts_nbjets_v_.resize(n_signals); //hardcoded
-            signalpsmigconts_nbjets_v_.resize(n_signals); //hardcoded
+            signalconts_nbjets_v_.resize(parent_->n_signals_); 
+            signalvisgenconts_nbjets_v_.resize(parent_->n_signals_); 
+            signalpsmigconts_nbjets_v_.resize(parent_->n_signals_); 
             for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s){
                 signalconts_nbjets_v_.at(s).resize(maxnbjetcat);
                 signalvisgenconts_nbjets_v_.at(s).resize(maxnbjetcat);
@@ -3219,7 +3218,7 @@ void ttbarXsecFitter::dataset::readStackVec(std::vector<histoStack> & in,size_t 
 	for(size_t j=0;j<in.size();j++){
             std::vector<TString> signals;
             if (parent_->mttfit_){
-                for (size_t s=1; s<=n_signals; ++s) signals.push_back((TString)"t#bar{t}mtt"+toString(s)); //hardcoded
+                for (size_t s=1; s<=parent_->n_signals_; ++s) signals.push_back((TString)"t#bar{t}mtt"+toString(s)); 
                 in.at(j).setsignals(signals);
             }
             // if (parent_->mttfit_) in.at(j).setsignal((TString)"t#bar{t}mtt"+toString(parent_->mttbin_));
@@ -3513,7 +3512,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	//fake uncertainty
 	if (!parent_->mttfit_) stack->addGlobalRelMCError("Xsec_"+name_,0);
         else {
-            for (size_t s=1; s<=n_signals; ++s) //hardcoded
+            for (size_t s=1; s<=parent_->n_signals_; ++s) 
                 stack->addGlobalRelMCError("Xsec_"+name_+toString(s),0);
         }
 	if(debug)

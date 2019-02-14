@@ -61,6 +61,7 @@ invokeApplication(){
 
 	const bool mlbCrossCheck = parser->getOpt<bool>("-mlbCrossCheck",false,"cross check with only one mlb distribution");
 	const bool mttfit = parser->getOpt<bool>("-mttfit",false,"differential mtt analysis");
+	const unsigned int n_mttbins = parser->getOpt<int>("-mttbins",4,"number of mtt bins");
 
 	TString outfile;
 
@@ -88,7 +89,9 @@ invokeApplication(){
 	mainfitter.setTopOnTop(topontop);
 	mainfitter.setDummyFit(dummyrun);
         mainfitter.setMassFit(tmpcheck);
-        mainfitter.setDoMttFit(mttfit); 
+        mainfitter.setDoMttFit(mttfit, n_mttbins); 
+
+        if (mttfit) std::cout<<"number of mtt bins (signals) = "<<n_mttbins<<std::endl;
 
 	if(lhmode=="chi2datamc")
 		mainfitter.setLikelihoodMode(ttbarXsecFitter::lhm_chi2datamcstat);
@@ -489,7 +492,7 @@ invokeApplication(){
                     if(likelihoodscan){
                         if (!mttfit) mainfitter.printXsecScan(ndts,outfile.Data());
                         else {
-                            for (size_t mttbin=0; mttbin<3; ++mttbin)
+                            for (size_t mttbin=0; mttbin<n_mttbins; ++mttbin) //hardcoded
                                 mainfitter.printXsecScan(ndts,outfile.Data(),mttbin);
                         }
                     }
@@ -543,7 +546,7 @@ invokeApplication(){
                     std::cout << tab.getTable() <<std::endl;
                 }
                 else{
-                    for (size_t s=0; s<3; ++s){
+                    for (size_t s=0; s<n_mttbins; ++s){ //hardcoded
                         tab=mainfitter.makeSystBreakDownTable(ndts,true,"",s);
                         tab.writeToFile(outfile+"_tab" +dtsname +"_mtt"+toString(s+1)+ ".tex");
                         tab.writeToPdfFile(outfile+"_tab" +dtsname+"_mtt"+toString(s+1) + ".pdf");

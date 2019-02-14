@@ -43,7 +43,8 @@ public:
                 nosystbd_(false),silent_(false),nopriors_(false),doToys_(false),massFit_(false),topmassrepl_(-100),mlbCrossCheck_(false),pseudodatarun_(false),
 		wjetsrescalefactor_(1),
                 topontop_(false),
-                mttfit_(false)
+                mttfit_(false),
+                n_signals_(4)
 	{
 	} //one for each energy
 
@@ -113,7 +114,10 @@ public:
 
 	void setDummyFit(bool set){fitter_.setOnlyRunDummy(set);}
 
-	void setDoMttFit(bool mttfit){mttfit_=mttfit;}
+	void setDoMttFit(bool mttfit, size_t n_mttbins){
+            mttfit_=mttfit;
+            n_signals_=n_mttbins;
+        }
 
 	/**
 	 * creates all variate containers
@@ -529,6 +533,7 @@ private:
 	//std::string textboxesfile_;
 	bool topontop_;
 	int mttfit_;
+        size_t n_signals_;
 };
 
 }
