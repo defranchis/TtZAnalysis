@@ -61,7 +61,7 @@ for texfile in filelist:
         if not mttFit: 
             if '13TeV' in line: break
         else : 
-            if '13TeV3' in line: break
+            if '13TeV4' in line: break
 
     name_all = []
     pull_all = []
@@ -169,6 +169,11 @@ else:
     h_xsec_3.DrawNormalized()
     c.Print('xsec_3.png','png')
 
+    c.Clear()
+    h_xsec_4.SetTitle('effect of MC stats on ttbar cross section;#sigma_{t#bar{t}} mtt4 [pb];a.u.')
+    h_xsec_4.DrawNormalized()
+    c.Print('xsec_4.png','png')
+
 
 rootfile = ROOT.TFile('toys.root','recreate')
 h_mass.Write()
@@ -177,6 +182,7 @@ else:
     h_xsec_1.Write()
     h_xsec_2.Write()
     h_xsec_3.Write()
+    h_xsec_4.Write()
 
 
 for h in h_pull: h.Write()
