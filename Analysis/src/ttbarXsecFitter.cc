@@ -1691,12 +1691,16 @@ histoStack ttbarXsecFitter::applyParametersToStack(const histoStack& stack, size
         if (mttfit_){
             out.push_back(background,"Background",kGreen-9,1,50);
             if(topontop_){
-                for (size_t s=0; s<n_signal; ++s)
-                    out.push_back(signal_v.at(s),"Signal"+toString(s+1),633+2*s,1,signal_v.size()-s+50);
+                for (size_t s=0; s<n_signal; ++s){
+                    if (s==3) out.push_back(signal_v.at(s),"Signal"+toString(s+1),920,1,signal_v.size()-s+50);
+                    else out.push_back(signal_v.at(s),"Signal"+toString(s+1),633+2*s,1,signal_v.size()-s+50);
+                }
             }
             else{
-                for (size_t s=0; s<n_signal; ++s)
-                    out.push_back(signal_v.at(s),"Signal"+toString(s+1),633+2*s,1,1+s);
+                for (size_t s=0; s<n_signal; ++s){
+                    if (s==3) out.push_back(signal_v.at(s),"Signal"+toString(s+1),920,1,1+s);
+                    else out.push_back(signal_v.at(s),"Signal"+toString(s+1),633+2*s,1,1+s);
+                }
             }
         }
         else{
