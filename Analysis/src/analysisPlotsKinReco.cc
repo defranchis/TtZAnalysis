@@ -114,6 +114,15 @@ namespace ztop{
             m_mub_7_.at(nbjet)=addPlot(finebins,finebins,"m_mub fine "+toTString(nbjet)+" b-jets","m_{#mub} [GeV]", "Events/GeV");
             m_mub_10_.at(nbjet)=addPlot(veryfinebins,veryfinebins,"m_mub very fine "+toTString(nbjet)+" b-jets","m_{#mub} [GeV]", "Events/GeV");
             last_jet_pt_.at(nbjet)=addPlot(bins,bins,"last jet pt "+toTString(nbjet)+" b-jets","p_{T} [GeV]","Events/GeV");
+
+            mtt_bjet_.at(nbjet)=addPlot(mtt_bins,mtt_bins,"m_tt kin reco "+toString(nbjet)+" b-jets","m_{t#bar{t}} [GeV]", "Events/GeV");
+            pt_top_bjet_.at(nbjet)=addPlot(pt_bins,pt_bins,"top pt kin reco "+toString(nbjet)+" b-jets","top p_{T} [GeV]", "Events/GeV");
+            eta_top_bjet_.at(nbjet)=addPlot(eta_bins,eta_bins,"top eta kin reco "+toString(nbjet)+" b-jets","top #eta", "Events");
+            pt_antitop_bjet_.at(nbjet)=addPlot(pt_bins,pt_bins,"antitop pt kin reco "+toString(nbjet)+" b-jets","antitop p_{T} [GeV]", "Events/GeV");
+            eta_antitop_bjet_.at(nbjet)=addPlot(eta_bins,eta_bins,"antitop eta kin reco "+toString(nbjet)+" b-jets","antitop #eta", "Events");
+            pt_ttbar_bjet_.at(nbjet)=addPlot(pt_bins,pt_bins,"ttbar pt kin reco "+toString(nbjet)+" b-jets","t#bar{t} p_{T} [GeV]", "Events/GeV");
+            eta_ttbar_bjet_.at(nbjet)=addPlot(eta_bins,eta_bins,"ttbar eta kin reco "+toString(nbjet)+" b-jets","t#bar{t} #eta", "Events");
+
             for(size_t mtt_cat=0; mtt_cat<cat_mttmax_reco; mtt_cat++){
                 total_mtt_bjet_.at(mtt_cat).at(nbjet)=addPlot(nobins,nobins,"total "+toTString(nbjet)+" b-jets mtt"+toTString((int)mtt_cat+1),"", "Event yield");
                 last_jet_pt_mtt_bjet_.at(mtt_cat).at(nbjet)=addPlot(bins,bins,"last jet pt "+toTString(nbjet)+" b-jets mtt"+toTString((int)mtt_cat+1),"p_{T} [GeV]", "Events/GeV");
@@ -147,6 +156,14 @@ namespace ztop{
             m_mub_7_.at(i)->fillGen(20.5,puweight());
             m_mub_10_.at(i)->fillGen(20.5,puweight());
             last_jet_pt_.at(i)->fillGen(30.5,puweight());
+
+            mtt_bjet_.at(i)->fillGen(400.,puweight());
+            pt_top_bjet_.at(i)->fillGen(100.,puweight());
+            eta_top_bjet_.at(i)->fillGen(0.,puweight());
+            pt_antitop_bjet_.at(i)->fillGen(100.,puweight());
+            eta_antitop_bjet_.at(i)->fillGen(0.,puweight());
+            pt_ttbar_bjet_.at(i)->fillGen(100.,puweight());
+            eta_ttbar_bjet_.at(i)->fillGen(0.,puweight());
 
             for(size_t j=0;j<cat_mttmax_reco;j++){
                 total_mtt_bjet_.at(j).at(i)->fillGen(.5,puweight());
@@ -203,6 +220,15 @@ namespace ztop{
         m_mub_5_.at(bjetcategory)->fillReco(*event()->m_mub,puweight());
         m_mub_7_.at(bjetcategory)->fillReco(*event()->m_mub,puweight());
         m_mub_10_.at(bjetcategory)->fillReco(*event()->m_mub,puweight());
+
+        mtt_bjet_.at(bjetcategory)->fillReco(*event()->mtt,puweight());
+        pt_top_bjet_.at(bjetcategory)->fillReco(*event()->pt_top,puweight());
+        eta_top_bjet_.at(bjetcategory)->fillReco(*event()->eta_top,puweight());
+        pt_antitop_bjet_.at(bjetcategory)->fillReco(*event()->pt_antitop,puweight());
+        eta_antitop_bjet_.at(bjetcategory)->fillReco(*event()->eta_antitop,puweight());
+        pt_ttbar_bjet_.at(bjetcategory)->fillReco(*event()->pt_ttbar,puweight());
+        eta_ttbar_bjet_.at(bjetcategory)->fillReco(*event()->eta_ttbar,puweight());
+
 
         if (event()->selectedjets->size()>0){
             float last_jet_pt = event()->selectedjets->at(event()->selectedjets->size()-1)->pt();
