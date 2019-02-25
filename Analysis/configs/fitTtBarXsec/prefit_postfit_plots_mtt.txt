@@ -49,3 +49,27 @@
 2 :m_lb min coarse 2 b-jets mtt1 step 8 = m_lb min coarse 2 b-jets mtt1 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 2 :m_lb min coarse 2 b-jets mtt2 step 8 = m_lb min coarse 2 b-jets mtt2 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 2 :m_lb min coarse 2 b-jets mtt3 step 8 = m_lb min coarse 2 b-jets mtt3 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+
+
+0 : m_tt kin reco 0 b-jets step 8
+1 : m_tt kin reco 1 b-jets step 8
+2 : m_tt kin reco 2 b-jets step 8
+
+0 : m_tt kin reco all b-jets step 8 = m_tt kin reco 0 b-jets step 8 + m_tt kin reco 1 b-jets step 8 + m_tt kin reco 2 b-jets step 8
+
+
+0 : top pt kin reco 0 b-jets step 8
+0 : antitop pt kin reco 0 b-jets step 8
+0 : ttbar pt kin reco 0 b-jets step 8
+
+1 : top pt kin reco 1 b-jets step 8
+1 : antitop pt kin reco 1 b-jets step 8
+1 : ttbar pt kin reco 1 b-jets step 8
+
+2 : top pt kin reco 2 b-jets step 8
+2 : antitop pt kin reco 2 b-jets step 8
+2 : ttbar pt kin reco 2 b-jets step 8
+
+0 : top pt kin reco all b-jets step 8 = top pt kin reco 0 b-jets step 8 + top pt kin reco 1 b-jets step 8 + top pt kin reco 2 b-jets step 8
+0 : antitop pt kin reco all b-jets step 8 = antitop pt kin reco 0 b-jets step 8 + antitop pt kin reco 1 b-jets step 8 + antitop pt kin reco 2 b-jets step 8
+0 : ttbar pt kin reco all b-jets step 8 = ttbar pt kin reco 0 b-jets step 8 + ttbar pt kin reco 1 b-jets step 8 + ttbar pt kin reco 2 b-jets step 8
