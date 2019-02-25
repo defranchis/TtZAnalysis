@@ -1819,6 +1819,9 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
                 else if (stack.getName() == "last jet pt 2 b-jets mtt2 step 8") stack = stack.rebinXToBinning({30,50,70,100,200});
                 else if (stack.getName() == "last jet pt 2 b-jets mtt3 step 8") stack = stack.rebinXToBinning({30,50,70,120,200});
 
+                if (stack.getName().BeginsWith("m_tt kin reco")) stack=stack.cutRight(2000.);
+                else if (stack.getName().Contains("pt kin reco")) stack=stack.cutRight(700.);
+
 
                 if (poststack.getName() == "m_lb min 1,1 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({20,48,76,104,132,160});
                 else if (poststack.getName() == "m_lb min 1,2 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({20,48,76,104,132,160});
@@ -1830,6 +1833,10 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
                 else if (poststack.getName() == "last jet pt 2 b-jets mtt1 step 8_postfit") poststack = poststack.rebinXToBinning({30,40,60,200});
                 else if (poststack.getName() == "last jet pt 2 b-jets mtt2 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,70,100,200});
                 else if (poststack.getName() == "last jet pt 2 b-jets mtt3 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,70,120,200});
+
+
+                if (poststack.getName().BeginsWith("m_tt kin reco")) poststack=poststack.cutRight(2000.);
+                else if (poststack.getName().Contains("pt kin reco")) poststack=poststack.cutRight(700.);
 
 
 		TString name=stack.getName();
