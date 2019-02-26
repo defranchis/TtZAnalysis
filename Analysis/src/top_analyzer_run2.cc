@@ -1635,6 +1635,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		///////////////////// btag cut STEP 8 (and kinematic reconstruction) //////////////////////////
 		step++;
 
+                float mtt, m_mub, pt_top, eta_top, pt_antitop, eta_antitop, pt_ttbar, eta_ttbar;
+
                 KinematicReconstructionSolutions kinRecoSols;
                 if (doKinReco_){
 
@@ -1685,8 +1687,6 @@ void  top_analyzer_run2::analyze(size_t anaid){
                     TLorentzVector antitop_sol = common::LVtoTLV(solution.antiTop());
                     TLorentzVector ttbar_sol = common::LVtoTLV(solution.ttbar());
                     // int n_bTags = solution.numberOfBtags();
-
-                    float mtt, m_mub, pt_top, eta_top, pt_antitop, eta_antitop, pt_ttbar, eta_ttbar;
 
                     mtt = ttbar_sol.M();
                     pt_top = top_sol.Pt();
