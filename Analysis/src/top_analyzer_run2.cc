@@ -405,6 +405,15 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 	btagefffile_+="_"+inputfile_;
 	btageffreffile_+="_"+originputfile_;
+        if (legendname_.BeginsWith("t#bar{t}mtt")){
+            TString toadd = legendname_;
+            toadd.ReplaceAll("t#bar{t}","");
+            btagefffile_.ReplaceAll(".root","");
+            btageffreffile_.ReplaceAll(".root","");
+            btagefffile_+="_"+toadd+".root";
+            btageffreffile_+="_"+toadd+".root";
+        }
+        
 	getBTagSF()->setIsMC(isMC);
 	if(!getBTagSF()->getMakeEff()){
 		getBTagSF()->readFromFile(btagefffile_.Data());
