@@ -50,12 +50,12 @@ l1_short = []
 l2_short = []
 
 for line in l1:
-    if '(13TeV)' in line:
+    if '13TeV' in line:
         break
     l1_short.append(line)
 
 for line in l2:
-    if '(13TeV)' in line:
+    if '13TeV' in line:
         break
     l2_short.append(line)
 
