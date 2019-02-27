@@ -30,8 +30,11 @@ def printXsecErrs(mttbin) :
     extr_up = []
     extr_down = []
 
+    extr_name = []
+
     for line in lextr:
         extr = line.split('&')[3]
+        name = line.split('&')[0]
         mp = False
         if '\mp' in line: mp=True
         extr = TString(extr)
@@ -49,6 +52,15 @@ def printXsecErrs(mttbin) :
         extr_up.append(extr[0])
         extr_down.append(extr[1])
 
+        name = TString(name)
+        name.ReplaceAll(' (extr) ','')
+        name.ReplaceAll('$t\\bar{t}$ ','')
+        name.ReplaceAll('Top','top')
+        name.ReplaceAll('$p_{T}$','pt')
+        name.ReplaceAll('$m_{t}^{MC}$','mt')
+        name.ReplaceAll(' ','_')
+        name = '\''+str(name)+'\''
+        extr_name.append(name)
 
     tot_vis = tot_vis.split('&')[3]
     tot_vis = TString(tot_vis)
@@ -83,6 +95,11 @@ def printXsecErrs(mttbin) :
     print ']'
     print 'err_xsec_toys_'+str(mttbin)+' =', round(h.GetRMS(),3)
     print
+    if mttbin == 1 :
+        print 'extr_name = [',
+        for name in extr_name: print name,',',
+        print ']'
+        
     
     return
 
