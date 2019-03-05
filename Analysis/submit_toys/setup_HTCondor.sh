@@ -5,7 +5,7 @@
 massfit=true
 mttfit=true
 
-input_dir=20190213_1021_4bins/output
+input_dir=last/output
 
 
 if [ "$massfit" == true ]; then
