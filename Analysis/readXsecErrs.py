@@ -27,6 +27,64 @@ def printXsecErrs(mttbin) :
         if 'Xsec\\_13TeV'+str(mttbin) in line and '\\hline' in line:
             xsec = line
 
+    for i in range(0,3): del l[0]
+    l_short = []
+
+    for line in l:
+        if '13TeV' in line: break
+        l_short.append(line)
+
+    name_all = []
+    contribution_all = []
+
+    for line in l_short:
+        name, pull, constrain, contribution = line.split('&')
+        name = str( TString(name).ReplaceAll('\\_',' ') )
+        name = str( TString(name).ReplaceAll('$t\\bar{t}$','ttbar') )
+        name = str( TString(name).ReplaceAll('$p_{T}$','pT') )
+        name = str( TString(name).ReplaceAll('$p_T$','pT') )
+        name = str( TString(name).ReplaceAll('$\eta$','eta') )
+        name = str( TString(name).ReplaceAll('bar{t}','tbar') )
+        name = str( TString(name).ReplaceAll('Electron energy resolution','Electron ER') )
+        name = str( TString(name).ReplaceAll('DY background','DY bg') )
+        name = str( TString(name).ReplaceAll(' response','') )
+        name = str( TString(name).ReplaceAll('PDF','PDF ') )
+        name = str( TString(name).ReplaceAll('$m_{t}^{MC}$','top mass') )
+        if 'b-tag' in name:
+            name = str( TString(name).ReplaceAll('fragmentation','fragm') )
+            name = str( TString(name).ReplaceAll('correction','corr') )
+            name = str( TString(name).ReplaceAll('template','templ') )
+            name = str( TString(name).ReplaceAll('$D \to \mu X$','D to mu') )
+            name = str( TString(name).ReplaceAll('splitting','split') )
+            name = str( TString(name).ReplaceAll('production','prod') )
+            name = str( TString(name).ReplaceAll('light to c','l/c') )
+            name = str( TString(name).ReplaceAll('dependence','dep') )
+            name = str( TString(name).ReplaceAll('statistical','stat') )
+            name = str( TString(name).ReplaceAll('$','') )
+            name = str( TString(name).ReplaceAll('\\','#') )
+            name = str( TString(name).ReplaceAll('#to','tp') )
+            name = str( TString(name).ReplaceAll('K_s^0','Ks0') )
+
+        contribution = str( TString(contribution).ReplaceAll('\\','') )
+        contribution = str( TString(contribution).ReplaceAll('$','') )
+        contribution = str( TString(contribution).ReplaceAll('{','') )
+        contribution = str( TString(contribution).ReplaceAll('}','') )
+
+        name = TString(name).ReplaceAll(' ','_')
+        name.ReplaceAll(':_','_')
+        name.ReplaceAll('#DeltaR','DR')
+        name.ReplaceAll('#mu','mu')
+        name.ReplaceAll('(#Lambda)','Lambda')
+        name.ReplaceAll('_-_','_')
+        name.ReplaceAll('_/_','_')
+        name.ReplaceAll('fragm.','fragm')
+        name.ReplaceAll('_(','_')
+        name.ReplaceAll(')','')
+        if name.EndsWith('_') : name = str(name)[0:len(str(name))-1]
+        name_all.append('\''+str(name)+'\'')
+        contribution_all.append(float(contribution))
+
+
     extr_up = []
     extr_down = []
 
@@ -99,6 +157,28 @@ def printXsecErrs(mttbin) :
         print 'extr_name = [',
         for name in extr_name: print name,',',
         print ']'
+        print
+        counter = 0
+        print 'syst_names = [',
+        for name in name_all: 
+            counter +=1
+            if counter < 5: print name,',',
+            else:
+                print name,','
+                counter = 0
+        print ']'
+        print
+
+    counter = 0
+    print 'contribs_'+str(mttbin)+' = [',    
+    for contrib in contribution_all:
+        counter+=1
+        if counter<10 : print contrib,',',
+        else :
+            print contrib,','
+            counter=0
+    print ']'
+
         
     
     return
