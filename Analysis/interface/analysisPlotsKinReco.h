@@ -48,6 +48,10 @@ namespace ztop{
                 resizeVec(m_mub_5_mtt_bjet_,cat_mttmax_reco,cat_bjetmax);
                 resizeVec(last_jet_pt_mtt_bjet_,cat_mttmax_reco,cat_bjetmax);
 
+                resizeVec(top_pt_mtt_bjet_,cat_mttmax_reco,cat_bjetmax);
+                resizeVec(antitop_pt_mtt_bjet_,cat_mttmax_reco,cat_bjetmax);
+                resizeVec(ttbar_pt_mtt_bjet_,cat_mttmax_reco,cat_bjetmax);
+
             }
   	~analysisPlotsKinReco(){ /* destruction is handled in base class! */
 	}
@@ -95,6 +99,10 @@ namespace ztop{
         std::vector<std::vector<histo1DUnfold*>> m_lb_5_mtt_bjet_;
         std::vector<std::vector<histo1DUnfold*>> m_mub_5_mtt_bjet_;
         std::vector<std::vector<histo1DUnfold*>> last_jet_pt_mtt_bjet_;
+
+        std::vector<std::vector<histo1DUnfold*>> top_pt_mtt_bjet_;
+        std::vector<std::vector<histo1DUnfold*>> antitop_pt_mtt_bjet_;
+        std::vector<std::vector<histo1DUnfold*>> ttbar_pt_mtt_bjet_;
 
         histo1DUnfold  
             * mtt,

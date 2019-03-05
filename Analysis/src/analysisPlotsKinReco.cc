@@ -89,6 +89,7 @@ namespace ztop{
 	std::vector<float> nobins=histo1D::createBinning(1,0,1);
 	std::vector<float> bins=histo1D::createBinning(1,0,1); bins.clear();
         bins << 30 << 35 << 40<< 45 << 50 << 55 << 60 << 70 << 80 << 90 << 100 << 120 << 140 << 160 << 200;
+	std::vector<float> ptbins=histo1D::createBinning(100,0,1000);
 
 	for(float i=0;i<=700;i+=20){
             pt_bins<<i;	}	
@@ -130,6 +131,9 @@ namespace ztop{
                 m_mub_5_mtt_bjet_.at(mtt_cat).at(nbjet)=addPlot(coarsebins,coarsebins,"m_mub coarse "+toTString(nbjet)+" b-jets mtt"+toTString((int)mtt_cat+1),"m_{#mub} [GeV]", "Events/GeV");
                 m_lb_5_mtt_bjet_.at(mtt_cat).at(nbjet)=addPlot(coarsebins,coarsebins,"m_lb min coarse "+toTString(nbjet)+" b-jets mtt"+toTString((int)mtt_cat+1),"m_{lb}^{min} [GeV]", "Events/GeV");
                 m_lb_3_mtt_bjet_.at(mtt_cat).at(nbjet)=addPlot(verycoarsebins,verycoarsebins,"m_lb min very coarse "+toTString(nbjet)+" b-jets mtt"+toTString((int)mtt_cat+1),"m_{lb}^{min} [GeV]", "Events/GeV");            
+                top_pt_mtt_bjet_.at(mtt_cat).at(nbjet)=addPlot(ptbins,ptbins,"top pt "+toTString(nbjet)+" b-jets mtt"+toTString((int)mtt_cat+1),"p_{T} [GeV]", "Events/GeV");
+                antitop_pt_mtt_bjet_.at(mtt_cat).at(nbjet)=addPlot(ptbins,ptbins,"antitop pt "+toTString(nbjet)+" b-jets mtt"+toTString((int)mtt_cat+1),"p_{T} [GeV]", "Events/GeV");
+                ttbar_pt_mtt_bjet_.at(mtt_cat).at(nbjet)=addPlot(ptbins,ptbins,"ttbar pt "+toTString(nbjet)+" b-jets mtt"+toTString((int)mtt_cat+1),"p_{T} [GeV]", "Events/GeV");
             }
         }
 
@@ -172,7 +176,9 @@ namespace ztop{
                 m_lb_5_mtt_bjet_.at(j).at(i)->fillGen(20.5,puweight());
                 m_mub_3_mtt_bjet_.at(j).at(i)->fillGen(20.5,puweight());
                 m_mub_5_mtt_bjet_.at(j).at(i)->fillGen(20.5,puweight());
-            }
+                top_pt_mtt_bjet_.at(j).at(i)->fillGen(0.5,puweight());
+                antitop_pt_mtt_bjet_.at(j).at(i)->fillGen(0.5,puweight());
+                ttbar_pt_mtt_bjet_.at(j).at(i)->fillGen(0.5,puweight());            }
         }
 
         if (!event()->gentops) return;
@@ -235,6 +241,11 @@ namespace ztop{
             last_jet_pt_.at(bjetcategory)->fillReco( last_jet_pt , puweight());
             last_jet_pt_mtt_bjet_.at(reco_mttcategory).at(bjetcategory)->fillReco( last_jet_pt , puweight());
         }
+
+
+        top_pt_mtt_bjet_.at(reco_mttcategory).at(bjetcategory)->fillReco( *event()->pt_top , puweight());
+        antitop_pt_mtt_bjet_.at(reco_mttcategory).at(bjetcategory)->fillReco( *event()->pt_antitop , puweight());
+        ttbar_pt_mtt_bjet_.at(reco_mttcategory).at(bjetcategory)->fillReco( *event()->pt_ttbar , puweight());
 
         total_mtt_bjet_.at(reco_mttcategory).at(bjetcategory)->fillReco(.5,puweight());
         m_mub_3_mtt_bjet_.at(reco_mttcategory).at(bjetcategory)->fillReco( *event()->m_mub , puweight());                
