@@ -664,33 +664,11 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 		//reports current status to parent
 		reportStatus(entry,nEntries);
-                double randomNum = random->Uniform();
-		float puweight=1;
-                if (isMC) { 
-                    if(randomNum<0.548) puweight = getPUReweighterBtoF()->getPUweight(b_Event.content()->truePU());
-                    else puweight = getPUReweighterGH()->getPUweight(b_Event.content()->truePU());
-                }
-		//agrohsje
-		pusum+=puweight;
-		if(apllweightsone) puweight=1;
+
+
 		if(testmode_ && entry==0)
 			std::cout << "testmode("<< anaid << "): got first event entry" << std::endl;
 
-		evt.puweight=&puweight;
-
-		getPdfReweighter()->setNTEvent(b_Event.content());
-		getPdfReweighter()->reWeight(puweight);
-		if(apllweightsone) puweight=1;
-		//agrohsje loop over additional weightbranches 
-		for(size_t i=0;i<weightbranches.size();i++){
-			//puweight*=weightbranches.at(i)->content()->getWeight();
-			//std::cout<<"check weight for " << additionalweights_.at(i)<<":"
-			//<<weightbranches.at(i)->content()->getWeight() <<std::endl;
-			mcreweighters.at(i).setNewWeight(weightbranches.at(i)->content()->getWeight());
-			mcreweighters.at(i).reWeight(puweight);
-			if(apllweightsone) puweight=1;
-		}
-		mcwsum += weightbranches.at(0)->content()->getWeight();
 		/////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////////
 		/////////////////// Generator Information////////////////////
@@ -714,21 +692,20 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		evt.genleptons3=&genleptons3;
 		evt.genjets=&genjets;
 
-
+                double randomNum = random->Uniform();
+		float puweight=1;
+                evt.puweight=&puweight;
 
 		if(isMC){
 			if(testmode_ && entry==0)
 				std::cout << "testmode("<< anaid << "): got first MC gen entry" << std::endl;
 
-			//if(b_GenLeptons3.content()->size()>1){ //gen info there
+                        if(b_GenTops.content()->size()>1){ //ttbar sample
+                            gentops.push_back(&b_GenTops.content()->at(0));
+                            gentops.push_back(&b_GenTops.content()->at(1));
+                        }
 
-			///////////////TOPPT REWEIGHTING////////
-			if(b_GenTops.content()->size()>1){ //ttbar sample
-				getTopPtReweighter()->reWeight(b_GenTops.content()->at(0).pt(),b_GenTops.content()->at(1).pt() ,puweight);
-				if(apllweightsone) puweight=1;
-				gentops.push_back(&b_GenTops.content()->at(0));
-				gentops.push_back(&b_GenTops.content()->at(1));
-			}
+			//if(b_GenLeptons3.content()->size()>1){ //gen info there
 
 			//recreate dependencies
 			genbs=produceCollection(b_GenBs.content(), &gentops);
@@ -766,6 +743,38 @@ void  top_analyzer_run2::analyze(size_t anaid){
                                     setMttCategories(gen_mtt,legendname_);
                                     if ((int)gen_mttcategory != (int)leg_mttcategory) continue;
                                 }
+                                /*reweightings*/
+                                
+                                if(randomNum<0.548) puweight = getPUReweighterBtoF()->getPUweight(b_Event.content()->truePU());
+                                else puweight = getPUReweighterGH()->getPUweight(b_Event.content()->truePU());
+
+                                if(apllweightsone) puweight=1;
+                                //agrohsje
+                                pusum+=puweight;
+
+                                getPdfReweighter()->setNTEvent(b_Event.content());
+                                getPdfReweighter()->reWeight(puweight);
+
+                                if(apllweightsone) puweight=1;
+
+                                //agrohsje loop over additional weightbranches 
+                                for(size_t i=0;i<weightbranches.size();i++){
+                                    //puweight*=weightbranches.at(i)->content()->getWeight();
+                                    //std::cout<<"check weight for " << additionalweights_.at(i)<<":"
+                                    //<<weightbranches.at(i)->content()->getWeight() <<std::endl;
+                                    mcreweighters.at(i).setNewWeight(weightbranches.at(i)->content()->getWeight());
+                                    mcreweighters.at(i).reWeight(puweight);
+                                    if(apllweightsone) puweight=1;
+                                }
+                                mcwsum += weightbranches.at(0)->content()->getWeight();
+
+                                ///////////////TOPPT REWEIGHTING////////
+
+                                if(b_GenTops.content()->size()>1){ //ttbar sample
+                                    getTopPtReweighter()->reWeight(b_GenTops.content()->at(0).pt(),b_GenTops.content()->at(1).pt() ,puweight);
+                                    if(apllweightsone) puweight=1;
+                                }
+                        
 				/*
 				 * fill gen info here
 				 */
@@ -778,7 +787,9 @@ void  top_analyzer_run2::analyze(size_t anaid){
                                     continue;
                                 }
 			}
+
 		} /// isMC ends
+
 
 		//agrohsje : check if event fails preselection and should be skipped
 		//std::cout<<" agrohsje check flag " << *b_AnalyseEvent.content()<<std::endl;
