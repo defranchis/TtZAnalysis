@@ -906,7 +906,7 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
                     fitter_.setTolerance(0.1);
                 }
                 else { //to be adjusted
-                    fitter_.setStrategy(2);
+                    fitter_.setStrategy(1);
                     fitter_.setTolerance(0.1);
                 }
 	}
@@ -965,9 +965,9 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
                     }
 		}
 		if(masspos < parameternames_.size()){
-			std::cout << "fitted mass: "<<fitter_.getParameters()->at(masspos) <<
-					"+" << fitter_.getParameterErrUp()->at(masspos) <<
-					"-" << fitter_.getParameterErrDown()->at(masspos)<<
+			std::cout << "fitted mass: "<<172.5+3*fitter_.getParameters()->at(masspos) <<
+					"+" << 3*fitter_.getParameterErrUp()->at(masspos) <<
+					"-" << 3*fitter_.getParameterErrDown()->at(masspos)<<
 					std::endl;
 			for(size_t i=0;i<datasets_.size();i++){
                             if (mttfit_) break;
