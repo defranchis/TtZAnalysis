@@ -73,3 +73,49 @@
 0 : top pt kin reco all b-jets step 8 = top pt kin reco 0 b-jets step 8 + top pt kin reco 1 b-jets step 8 + top pt kin reco 2 b-jets step 8
 0 : antitop pt kin reco all b-jets step 8 = antitop pt kin reco 0 b-jets step 8 + antitop pt kin reco 1 b-jets step 8 + antitop pt kin reco 2 b-jets step 8
 0 : ttbar pt kin reco all b-jets step 8 = ttbar pt kin reco 0 b-jets step 8 + ttbar pt kin reco 1 b-jets step 8 + ttbar pt kin reco 2 b-jets step 8
+
+0 : top pt 0 b-jets mtt1 step 8
+0 : top pt 0 b-jets mtt2 step 8
+0 : top pt 0 b-jets mtt3 step 8
+0 : top pt 0 b-jets mtt4 step 8
+
+1 : top pt 1 b-jets mtt1 step 8
+1 : top pt 1 b-jets mtt2 step 8
+1 : top pt 1 b-jets mtt3 step 8
+1 : top pt 1 b-jets mtt4 step 8
+
+2 : top pt 2 b-jets mtt1 step 8
+2 : top pt 2 b-jets mtt2 step 8
+2 : top pt 2 b-jets mtt3 step 8
+2 : top pt 2 b-jets mtt4 step 8
+
+0 : antitop pt 0 b-jets mtt1 step 8
+0 : antitop pt 0 b-jets mtt2 step 8
+0 : antitop pt 0 b-jets mtt3 step 8
+0 : antitop pt 0 b-jets mtt4 step 8
+
+1 : antitop pt 1 b-jets mtt1 step 8
+1 : antitop pt 1 b-jets mtt2 step 8
+1 : antitop pt 1 b-jets mtt3 step 8
+1 : antitop pt 1 b-jets mtt4 step 8
+
+2 : antitop pt 2 b-jets mtt1 step 8
+2 : antitop pt 2 b-jets mtt2 step 8
+2 : antitop pt 2 b-jets mtt3 step 8
+2 : antitop pt 2 b-jets mtt4 step 8
+
+0 : ttbar pt 0 b-jets mtt1 step 8
+0 : ttbar pt 0 b-jets mtt2 step 8
+0 : ttbar pt 0 b-jets mtt3 step 8
+0 : ttbar pt 0 b-jets mtt4 step 8
+
+1 : ttbar pt 1 b-jets mtt1 step 8
+1 : ttbar pt 1 b-jets mtt2 step 8
+1 : ttbar pt 1 b-jets mtt3 step 8
+1 : ttbar pt 1 b-jets mtt4 step 8
+
+2 : ttbar pt 2 b-jets mtt1 step 8
+2 : ttbar pt 2 b-jets mtt2 step 8
+2 : ttbar pt 2 b-jets mtt3 step 8
+2 : ttbar pt 2 b-jets mtt4 step 8
+
