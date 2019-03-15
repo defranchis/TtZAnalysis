@@ -1818,6 +1818,9 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
                 else if (stack.getName() == "last jet pt 2 b-jets mtt1 step 8") stack = stack.rebinXToBinning({30,40,60,200});
                 else if (stack.getName() == "last jet pt 2 b-jets mtt2 step 8") stack = stack.rebinXToBinning({30,50,70,100,200});
                 else if (stack.getName() == "last jet pt 2 b-jets mtt3 step 8") stack = stack.rebinXToBinning({30,50,70,120,200});
+                else if (stack.getName() == "last jet pt 1 b-jets mtt1 step 8") stack = stack.rebinXToBinning({30,35,50,70,200});
+                else if (stack.getName() == "last jet pt 1 b-jets mtt2 step 8") stack = stack.rebinXToBinning({30,50,70,100,200});
+                else if (stack.getName() == "last jet pt 1 b-jets mtt3 step 8") stack = stack.rebinXToBinning({30,50,70,120,200});
                 else if (stack.getName() == "top pt 2 b-jets mtt1 step 8") stack = stack.rebinXToBinning({0,50,100,200});
                 else if (stack.getName() == "top pt 2 b-jets mtt2 step 8") stack = stack.rebinXToBinning({0,100,200,400});
                 else if (stack.getName() == "top pt 2 b-jets mtt3 step 8") stack = stack.rebinXToBinning({0,180,300,500});
@@ -1836,6 +1839,9 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
                 else if (poststack.getName() == "last jet pt 2 b-jets mtt1 step 8_postfit") poststack = poststack.rebinXToBinning({30,40,60,200});
                 else if (poststack.getName() == "last jet pt 2 b-jets mtt2 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,70,100,200});
                 else if (poststack.getName() == "last jet pt 2 b-jets mtt3 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,70,120,200});
+                else if (poststack.getName() == "last jet pt 1 b-jets mtt1 step 8_postfit") poststack = poststack.rebinXToBinning({30,35,50,70,200});
+                else if (poststack.getName() == "last jet pt 1 b-jets mtt2 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,70,100,200});
+                else if (poststack.getName() == "last jet pt 1 b-jets mtt3 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,70,120,200});
                 else if (poststack.getName() == "top pt 2 b-jets mtt1 step 8_postfit") poststack = poststack.rebinXToBinning({0,50,100,200});
                 else if (poststack.getName() == "top pt 2 b-jets mtt2 step 8_postfit") poststack = poststack.rebinXToBinning({0,100,200,400});
                 else if (poststack.getName() == "top pt 2 b-jets mtt3 step 8_postfit") poststack = poststack.rebinXToBinning({0,180,300,500});
@@ -3159,6 +3165,9 @@ void  ttbarXsecFitter::dataset::readStacks(const std::string configfilename,cons
                         else if (plotname == "last jet pt 2 b-jets mtt1 step 8") tmpstack = tmpstack.rebinXToBinning({30,40,60,200});
                         else if (plotname == "last jet pt 2 b-jets mtt2 step 8") tmpstack = tmpstack.rebinXToBinning({30,50,70,100,200});
                         else if (plotname == "last jet pt 2 b-jets mtt3 step 8") tmpstack = tmpstack.rebinXToBinning({30,50,70,120,200});
+                        else if (plotname == "last jet pt 1 b-jets mtt1 step 8") tmpstack = tmpstack.rebinXToBinning({30,35,50,70,200});
+                        else if (plotname == "last jet pt 1 b-jets mtt2 step 8") tmpstack = tmpstack.rebinXToBinning({30,50,70,100,200});
+                        else if (plotname == "last jet pt 1 b-jets mtt3 step 8") tmpstack = tmpstack.rebinXToBinning({30,50,70,120,200});
 
                         else if (plotname == "top pt 2 b-jets mtt1 step 8") tmpstack = tmpstack.rebinXToBinning({0,50,100,200});
                         else if (plotname == "top pt 2 b-jets mtt2 step 8") tmpstack = tmpstack.rebinXToBinning({0,100,200,400});
