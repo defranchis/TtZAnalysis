@@ -907,7 +907,7 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
                 }
                 else { //to be adjusted
                     fitter_.setStrategy(1);
-                    fitter_.setTolerance(0.1);
+                    fitter_.setTolerance(0.3);
                 }
 	}
 
