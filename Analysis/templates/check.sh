@@ -143,28 +143,25 @@ done
 #echo "for merging of systematics of successful jobs do (in output dir):"
 #echo "mergeSyst ${jdone[@]}"
 
-if [ ${JOBSONBATCH} ]
+if [[ "${option}" == "resubmit" ]]
 then
-    if [[ "${option}" == "resubmit" ]]
-    then
-	echo "resubmitting ${#tresubmit[@]} jobs: ${tresubmit[@]}"
-	eval `echo "${rmfiles[@]}"`
-	cd ../batch
-	for (( i=1;i<=${#tresubmit[@]};i++)); do
-	    if [ "${tresubmit[${i}]}" ]
-	    then
-	
-		 qsub ${tresubmit[${i}]}
-	    fi
-	done
-    else
-	if [[ ${#tresubmit[@]} > 0 ]]
+    echo "resubmitting ${#tresubmit[@]} jobs: ${tresubmit[@]}"
+    eval `echo "${rmfiles[@]}"`
+    cd ../batch
+    for (( i=1;i<=${#tresubmit[@]};i++)); do
+	if [ "${tresubmit[${i}]}" ]
 	then
-	    echo "to resubmit aborted/died jobs run check.sh resubmit!"
-	    #echo "${tresubmit[@]}"
+	    
+	    condor_submit ${tresubmit[${i}]}
 	fi
-
+    done
+else
+    if [[ ${#tresubmit[@]} > 0 ]]
+    then
+	echo "to resubmit aborted/died jobs run check.sh resubmit!"
+	    #echo "${tresubmit[@]}"
     fi
+
 fi
 
 
