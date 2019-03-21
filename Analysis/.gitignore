@@ -1,1 +1,10 @@
 ./output
+workdir
+*.png
+toys_workdir
+data/analyse/all_btags
+zz_*
+submit_toys/job_HTCondor.sh
+submit_toys/outputHTCondor/
+submit_toys/submit_HTCondor.submit
+toys.root
