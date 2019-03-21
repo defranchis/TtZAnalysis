@@ -158,4 +158,10 @@ BG_3_addjets_DY, DY background (3 add. jets)
 Xsec_8TeV, $\sigma_{t\bar{t}}$(8 TeV)
 Xsec_7TeV, $\sigma_{t\bar{t}}$(7 TeV)
 Xsec_13TeV, $\sigma_{t\bar{t}}$(13 TeV)
+
+Xsec_13TeV1, $\sigma_{t\bar{t}}^{(\mu_1)}$
+Xsec_13TeV2, $\sigma_{t\bar{t}}^{(\mu_2)}$
+Xsec_13TeV3, $\sigma_{t\bar{t}}^{(\mu_3)}$
+Xsec_13TeV4, $\sigma_{t\bar{t}}^{(\mu_4)}$
+
 [end-syst names]
