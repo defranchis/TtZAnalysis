@@ -906,8 +906,8 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
                     fitter_.setTolerance(0.1);
                 }
                 else { //to be adjusted
-                    fitter_.setStrategy(1);
-                    fitter_.setTolerance(0.3);
+                    fitter_.setStrategy(2);
+                    fitter_.setTolerance(0.1);
                 }
 	}
 
@@ -1816,8 +1816,8 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
                 else if (stack.getName() == "m_lb min step 8") stack = stack.rebinXToBinning({20,50,75,105,130,160});
                 else if (stack.getName() == "last jet pt 2 b-jets step 8") stack = stack.rebinXToBinning({30,40,50,60,70,80,90,100,120,140,200});                
                 else if (stack.getName() == "last jet pt 2 b-jets mtt1 step 8") stack = stack.rebinXToBinning({30,40,60,200});
-                else if (stack.getName() == "last jet pt 2 b-jets mtt2 step 8") stack = stack.rebinXToBinning({30,50,70,100,200});
-                else if (stack.getName() == "last jet pt 2 b-jets mtt3 step 8") stack = stack.rebinXToBinning({30,50,70,120,200});
+                else if (stack.getName() == "last jet pt 2 b-jets mtt2 step 8") stack = stack.rebinXToBinning({30,50,80,200});
+                else if (stack.getName() == "last jet pt 2 b-jets mtt3 step 8") stack = stack.rebinXToBinning({30,50,80,200});
                 else if (stack.getName() == "last jet pt 1 b-jets mtt1 step 8") stack = stack.rebinXToBinning({30,35,50,70,200});
                 else if (stack.getName() == "last jet pt 1 b-jets mtt2 step 8") stack = stack.rebinXToBinning({30,50,70,100,200});
                 else if (stack.getName() == "last jet pt 1 b-jets mtt3 step 8") stack = stack.rebinXToBinning({30,50,70,120,200});
@@ -1837,8 +1837,8 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
                 else if (poststack.getName() == "m_lb min step 8_postfit") poststack = poststack.rebinXToBinning({20,50,75,105,130,160});
                 else if (poststack.getName() == "last jet pt 2 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,40,50,60,70,80,90,100,120,140,200});
                 else if (poststack.getName() == "last jet pt 2 b-jets mtt1 step 8_postfit") poststack = poststack.rebinXToBinning({30,40,60,200});
-                else if (poststack.getName() == "last jet pt 2 b-jets mtt2 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,70,100,200});
-                else if (poststack.getName() == "last jet pt 2 b-jets mtt3 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,70,120,200});
+                else if (poststack.getName() == "last jet pt 2 b-jets mtt2 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,80,200});
+                else if (poststack.getName() == "last jet pt 2 b-jets mtt3 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,80,200});
                 else if (poststack.getName() == "last jet pt 1 b-jets mtt1 step 8_postfit") poststack = poststack.rebinXToBinning({30,35,50,70,200});
                 else if (poststack.getName() == "last jet pt 1 b-jets mtt2 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,70,100,200});
                 else if (poststack.getName() == "last jet pt 1 b-jets mtt3 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,70,120,200});
@@ -3163,8 +3163,8 @@ void  ttbarXsecFitter::dataset::readStacks(const std::string configfilename,cons
                         else if (plotname == "m_lb min test step 8") tmpstack = tmpstack.rebinXToBinning({20,50,75,105,130,160});
                         else if (plotname == "last jet pt 2 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,40,50,60,70,80,90,100,120,140,200});
                         else if (plotname == "last jet pt 2 b-jets mtt1 step 8") tmpstack = tmpstack.rebinXToBinning({30,40,60,200});
-                        else if (plotname == "last jet pt 2 b-jets mtt2 step 8") tmpstack = tmpstack.rebinXToBinning({30,50,70,100,200});
-                        else if (plotname == "last jet pt 2 b-jets mtt3 step 8") tmpstack = tmpstack.rebinXToBinning({30,50,70,120,200});
+                        else if (plotname == "last jet pt 2 b-jets mtt2 step 8") tmpstack = tmpstack.rebinXToBinning({30,50,80,200});
+                        else if (plotname == "last jet pt 2 b-jets mtt3 step 8") tmpstack = tmpstack.rebinXToBinning({30,50,80,200});
                         else if (plotname == "last jet pt 1 b-jets mtt1 step 8") tmpstack = tmpstack.rebinXToBinning({30,35,50,70,200});
                         else if (plotname == "last jet pt 1 b-jets mtt2 step 8") tmpstack = tmpstack.rebinXToBinning({30,50,70,100,200});
                         else if (plotname == "last jet pt 1 b-jets mtt3 step 8") tmpstack = tmpstack.rebinXToBinning({30,50,70,120,200});
