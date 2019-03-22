@@ -109,14 +109,16 @@ for texfile in filelist:
             mass_pull = 172.5+float(pull)*3.
             h_mass.Fill(mass_pull)
 
-        if '13TeV' in name:
+        if not mttFit: 
+            if '13TeV' in name:
+                xsec_pull = float(pull)
+                h_xsec.Fill(xsec_pull)
+        elif '\\sigma_' in name:
             xsec_pull = float(pull)
-            if not mttFit: h_xsec.Fill(xsec_pull)
-            else:
-                if   '(\\mu_1)' in name: h_xsec_1.Fill(250.29+xsec_pull)
-                elif '(\\mu_2)' in name: h_xsec_2.Fill(327.93+xsec_pull)
-                elif '(\\mu_3)' in name: h_xsec_3.Fill(197.98+xsec_pull)
-                elif '(\\mu_4)' in name: h_xsec_4.Fill(55.55+xsec_pull)
+            if   '(\\mu_1)' in name: h_xsec_1.Fill(250.29+xsec_pull)
+            elif '(\\mu_2)' in name: h_xsec_2.Fill(327.93+xsec_pull)
+            elif '(\\mu_3)' in name: h_xsec_3.Fill(197.98+xsec_pull)
+            elif '(\\mu_4)' in name: h_xsec_4.Fill(55.55+xsec_pull)
 
     if firstfile:
         firstfile = False
