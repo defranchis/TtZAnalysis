@@ -2,7 +2,7 @@ import ROOT
 from ROOT import TString, TFile, TGraph, TGraphAsymmErrors, TCanvas
 
 th_xsec = [258.3, 304.5, 176.8, 50.2]
-bins = [0,420,550,810,2000]
+bins = [345,420,550,810,2000]
 scales = [384.0, 476.2, 644.3, 1023.6]
 
 rFile = TFile('toys.root')
