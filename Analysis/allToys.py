@@ -61,7 +61,7 @@ for texfile in filelist:
         if not mttFit: 
             if '13TeV' in line: break
         else : 
-            if '13TeV4' in line: break
+            if '(\\mu_4)' in line: break
 
     name_all = []
     pull_all = []
@@ -113,10 +113,10 @@ for texfile in filelist:
             xsec_pull = float(pull)
             if not mttFit: h_xsec.Fill(xsec_pull)
             else:
-                if   '13TeV1' in name: h_xsec_1.Fill(250.29+xsec_pull)
-                elif '13TeV2' in name: h_xsec_2.Fill(327.93+xsec_pull)
-                elif '13TeV3' in name: h_xsec_3.Fill(197.98+xsec_pull)
-                elif '13TeV4' in name: h_xsec_4.Fill(55.55+xsec_pull)
+                if   '(\\mu_1)' in name: h_xsec_1.Fill(250.29+xsec_pull)
+                elif '(\\mu_2)' in name: h_xsec_2.Fill(327.93+xsec_pull)
+                elif '(\\mu_3)' in name: h_xsec_3.Fill(197.98+xsec_pull)
+                elif '(\\mu_4)' in name: h_xsec_4.Fill(55.55+xsec_pull)
 
     if firstfile:
         firstfile = False
