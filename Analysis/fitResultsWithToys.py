@@ -8,6 +8,7 @@ gStyle.SetOptStat(0000)
 gStyle.SetErrorX(0)
 
 massFit = True
+mttFit = True
 preliminary = False
 
 
@@ -112,7 +113,7 @@ for line in l1_short:
     contribution = str( TString(contribution).ReplaceAll('{','') )
     contribution = str( TString(contribution).ReplaceAll('}','') )
     if 'mass' in name: continue
-    if not massFit: 
+    if not massFit or mttFit: 
         if 'NLO'  in name: continue
     tmpname = TString(name);
     tmpname.ReplaceAll('#','')
