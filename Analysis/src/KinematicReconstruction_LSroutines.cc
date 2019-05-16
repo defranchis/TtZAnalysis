@@ -40,10 +40,10 @@ KinematicReconstruction_LSroutines::KinematicReconstruction_LSroutines()
 
 
 
-KinematicReconstruction_LSroutines::KinematicReconstruction_LSroutines(const double& mass_Wp, const double& mass_Wm)
+KinematicReconstruction_LSroutines::KinematicReconstruction_LSroutines(const double& mass_Wp, const double& mass_Wm, const double& topMass)
 {
-    mt_    = TopMASS;
-    mtbar_ = TopMASS;
+    mt_    = topMass;
+    mtbar_ = topMass;
     mb_    = 4.8;
     mbbar_ = 4.8;
     mw_    = mass_Wp;
@@ -52,6 +52,7 @@ KinematicReconstruction_LSroutines::KinematicReconstruction_LSroutines(const dou
     mal_    = 0.;
     mv_=0;
     mav_=0;
+
 }
 
 

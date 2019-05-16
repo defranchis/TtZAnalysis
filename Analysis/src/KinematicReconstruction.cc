@@ -24,7 +24,7 @@
 
 
 
-constexpr double TopMASS = 172.5;
+// constexpr double TopMASS = 172.5;
 
 
 
@@ -106,11 +106,12 @@ void KinematicReconstruction::angle_rot(const double& alpha, const double& e, co
 
 
 
-KinematicReconstruction::KinematicReconstruction(const Era::Era era, const int minNumberOfBtags, const bool preferBtags, const bool massLoop):
+KinematicReconstruction::KinematicReconstruction(const Era::Era era, const int minNumberOfBtags, const bool preferBtags, const bool massLoop, const double topMass):
 era_(era),
 minNumberOfBtags_(minNumberOfBtags),
 preferBtags_(preferBtags),
 massLoop_(massLoop),
+TopMASS_(topMass),
 nSol_(0),
 h_wmass_(0),
 h_jetAngleRes_(0),
@@ -252,7 +253,7 @@ std::vector<KinematicReconstructionSolution> KinematicReconstruction::solutionsP
         }
     }
     else{
-        KinematicReconstruction_MeanSol meanSolution(TopMASS);
+        KinematicReconstruction_MeanSol meanSolution(TopMASS_);
         const bool hasSolution(this->solutionSmearing(meanSolution, lepton, antiLepton, jet1, jet2, met));
         if(hasSolution){
             LV top;
@@ -264,14 +265,14 @@ std::vector<KinematicReconstructionSolution> KinematicReconstruction::solutionsP
             std::map<KinematicReconstructionSolution::WeightType, double> m_weight;
             m_weight[KinematicReconstructionSolution::defaultForMethod] = weight;
             m_weight[KinematicReconstructionSolution::averagedSumSmearings_mlb] = weight;
-            KinematicReconstruction_LSroutines tp_NOsm(80.4, 80.4);
+            KinematicReconstruction_LSroutines tp_NOsm(80.4, 80.4, TopMASS_);
             tp_NOsm.setConstraints(antiLepton, lepton, jet1, jet2, met.px(), met.py());
             bool isNoSmearSol = false;
             if(tp_NOsm.getNsol()>0)isNoSmearSol  = true;
             const KinematicReconstructionSolution solution(&allLeptons, &allJets,
                                                            leptonIndex, antiLeptonIndex, jetIndex1, jetIndex2,
                                                            top, antiTop, neutrino, antiNeutrino,
-                                                           TopMASS, numberOfBtags, m_weight, isNoSmearSol);
+                                                           TopMASS_, numberOfBtags, m_weight, isNoSmearSol);
             result.push_back(solution);
         }
     }
@@ -295,7 +296,7 @@ void KinematicReconstruction::kinReco(const LV& leptonMinus, const LV& leptonPlu
     this->inputNoJetMerging(b1_id, b2_id, nb_tag, *btags);
     if(b1_id.size() < 2)return;     
 
-    KinematicReconstruction_MeanSol meanSolution(TopMASS);
+    KinematicReconstruction_MeanSol meanSolution(TopMASS_);
     for(int ib = 0; ib < (int)b1_id.size(); ++ib){
         const int bjetIndex = b1_id.at(ib);
         const int antiBjetIndex = b2_id.at(ib);
@@ -378,7 +379,7 @@ bool KinematicReconstruction::solutionSmearing(KinematicReconstruction_MeanSol& 
             TVector3 metV3_sm= -b_sm.Vect()-bbar_sm.Vect()-l_sm.Vect()-al_sm.Vect()-vX_reco;
                 met_sm.SetXYZM(metV3_sm.Px(),metV3_sm.Py(),0,0);
             
-            KinematicReconstruction_LSroutines tp_sm(h_wmass_->GetRandom(),h_wmass_->GetRandom());
+            KinematicReconstruction_LSroutines tp_sm(h_wmass_->GetRandom(),h_wmass_->GetRandom(), TopMASS_);
                 tp_sm.setConstraints(al_sm, l_sm, b_sm, bbar_sm, met_sm.Px(), met_sm.Py());
 
             if(tp_sm.getNsol()>0)

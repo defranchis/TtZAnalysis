@@ -236,7 +236,10 @@ invokeApplication(){
         ana->setDoKinReco(doKinReco);
         if (doKinReco){
             std::vector<TString> channels {channel};
-            KinematicReconstruction * kinReco = new KinematicReconstruction(Era::run2_13tev_2016_25ns, 0, true); // era, min b-tags, prefer b-tags
+            double topMass = 172.5;
+            if (Syst=="TOPMASS_up") topMass += 3; // HARDCODED
+            else if (Syst=="TOPMASS_down") topMass -= 3; //HARDCODED
+            KinematicReconstruction * kinReco = new KinematicReconstruction(Era::run2_13tev_2016_25ns, 0, true, false, topMass); // era, min b-tags, prefer b-tags, massloop, topmass
             KinematicReconstructionScaleFactors * kinRecoSF = new KinematicReconstructionScaleFactors(Era::run2_13tev_2016_25ns,Channel::convert(channels),Systematic::Systematic(Syst));
             kinRecoSF->prepareChannel(Channel::convert(channel));
             ana->setKinReco(kinReco, kinRecoSF);

@@ -19,7 +19,7 @@ class KinematicReconstruction_LSroutines{
 
 public:
     KinematicReconstruction_LSroutines();
-    KinematicReconstruction_LSroutines(const double& mass_Wp, const double& mass_Wm);
+    KinematicReconstruction_LSroutines(const double& mass_Wp, const double& mass_Wm, const double& topMass = 172.5);
     KinematicReconstruction_LSroutines(const double& mass_top, const double& mass_topbar, 
                                        const double& mass_b, const double& mass_bbar, 
                                        const double& mass_w, const double& mass_wbar, 

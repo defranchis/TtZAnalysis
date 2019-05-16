@@ -42,7 +42,7 @@ class KinematicReconstruction{
     
 public:
     
-    KinematicReconstruction(const Era::Era era, const int minNumberOfBtags, const bool preferBtags, const bool massLoop =false);
+    KinematicReconstruction(const Era::Era era, const int minNumberOfBtags, const bool preferBtags, const bool massLoop =false, const double topMass = 172.5);
     ~KinematicReconstruction(){}
     
     int getNSol()const;
@@ -86,7 +86,7 @@ private:
     /// Whether to run mass loop for top mass, instead of smearings according to uncertainties
     const bool massLoop_;
     
-    
+    const double TopMASS_;
     
     // FIXME: temporary helper variables for cleanup
     void setSolutions();
@@ -123,6 +123,7 @@ private:
     
 // mbl
     TH1* h_mbl_w_;
+
 };
 
 
