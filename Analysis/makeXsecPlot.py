@@ -1,7 +1,10 @@
 import ROOT
 from ROOT import TString, TFile, TGraph, TGraphAsymmErrors, TCanvas
 
-th_xsec = [258.3, 304.5, 176.8, 50.2]
+th_xsec_164 = [261.4, 304.4, 177.3, 46.6]
+th_xsec_162 = [294.1, 314.8, 181.0, 47.3]
+th_xsec_166 = [231.4, 294.7, 173.3, 46.2]
+
 bins = [345,420,550,810,2000]
 scales = [384.0, 476.2, 644.3, 1023.6]
 
@@ -14,7 +17,7 @@ def getXsec(mttbin):
     xsec = ''
     total = ''
     for line in l:
-        if 'Xsec\\_13TeV'+str(mttbin) in line and '\\hline' in line:
+        if '$\\sigma_{t\\bar{t}}^{(\\mu_'+str(mttbin) in line and '\\hline' in line:
             xsec = line
         if 'Total' in line and not 'vis' in line:
             total=line
@@ -51,22 +54,38 @@ def getXsec(mttbin):
     return [xsec, err_up, err_down]
 
 
-g_th = TGraphAsymmErrors()
+g_th_164 = TGraphAsymmErrors()
+g_th_162 = TGraphAsymmErrors()
+g_th_166 = TGraphAsymmErrors()
 g_exp = TGraphAsymmErrors()
 
 for bin in range(1,5):
-    g_th.SetPoint(bin-1, scales[bin-1], th_xsec[bin-1])
-    g_th.SetPointError(bin-1,scales[bin-1]-bins[bin-1], bins[bin]-scales[bin-1], 0, 0)
+    g_th_164.SetPoint(bin-1, scales[bin-1], th_xsec_164[bin-1])
+    g_th_164.SetPointError(bin-1,scales[bin-1]-bins[bin-1], bins[bin]-scales[bin-1], 0, 0)
+    g_th_162.SetPoint(bin-1, scales[bin-1], th_xsec_162[bin-1])
+    g_th_162.SetPointError(bin-1,scales[bin-1]-bins[bin-1], bins[bin]-scales[bin-1], 0, 0)
+    g_th_166.SetPoint(bin-1, scales[bin-1], th_xsec_166[bin-1])
+    g_th_166.SetPointError(bin-1,scales[bin-1]-bins[bin-1], bins[bin]-scales[bin-1], 0, 0)
+
     xsec_err = getXsec(bin)
     g_exp.SetPoint(bin-1, scales[bin-1], xsec_err[0])
     g_exp.SetPointError(bin-1,scales[bin-1]-bins[bin-1], bins[bin]-scales[bin-1], xsec_err[2], xsec_err[1])
 
 
-g_th.SetMarkerStyle(7)
-g_th.SetMarkerColor(ROOT.kRed)
-g_th.SetLineColor(ROOT.kRed)
+g_th_164.SetMarkerStyle(0)
+g_th_164.SetMarkerColor(ROOT.kRed)
+g_th_164.SetLineColor(ROOT.kRed)
+
+g_th_162.SetMarkerStyle(0)
+g_th_162.SetMarkerColor(ROOT.kBlue)
+g_th_162.SetLineColor(ROOT.kBlue)
+
+g_th_166.SetMarkerStyle(0)
+g_th_166.SetMarkerColor(ROOT.kGreen+2)
+g_th_166.SetLineColor(ROOT.kGreen+2)
 
 g_exp.SetMarkerStyle(8)
+g_exp.SetLineWidth(1)
 
 
 latexLabel1 = ROOT.TLatex()
@@ -78,9 +97,12 @@ latexLabel2.SetTextSize(0.04)
 latexLabel2.SetTextFont(42)
 latexLabel2.SetNDC()
 
-leg = ROOT.TLegend(.35,.73,.89,.85)
+leg = ROOT.TLegend(.30,.65,.89,.85)
+leg.SetBorderSize(0)
 leg.AddEntry(g_exp,'unfolded differential cross section','ple')
-leg.AddEntry(g_th,'MCFM-6.8, m_{t}(m_{t})=164GeV, ABMP16_5_nlo','pl')
+leg.AddEntry(g_th_162,'NLO prediction, m_{t}(m_{t})=162GeV, ABMP16_5_nlo','pl')
+leg.AddEntry(g_th_164,'NLO prediction, m_{t}(m_{t})=164GeV, ABMP16_5_nlo','pl')
+leg.AddEntry(g_th_166,'NLO prediction, m_{t}(m_{t})=166GeV, ABMP16_5_nlo','pl')
 
 c = TCanvas()
 g_exp.GetXaxis().SetTitle('m_{t#bar{t}} [GeV]')
@@ -88,7 +110,10 @@ g_exp.GetYaxis().SetTitle('#frac{d#sigma}{dm_{t#bar{t}}} #Deltam_{t#bar{t}} [pb]
 g_exp.GetYaxis().SetTitleOffset(1.25)
 g_exp.GetXaxis().SetTitleSize(0.045)
 g_exp.Draw('ap')
-g_th.Draw('psame')
+g_th_164.Draw('psame')
+g_th_162.Draw('psame')
+g_th_166.Draw('psame')
+g_exp.Draw('psame')
 leg.Draw('same')
 
 latexLabel1.DrawLatex(0.11, 0.92, "CMS")
