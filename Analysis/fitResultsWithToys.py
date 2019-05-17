@@ -27,7 +27,7 @@ for i in range(0,3): del l1[0]
 l1_short = []
 
 for line in l1:
-    if '13TeV' in line: break
+    if '\\sigma_{t\\bar{t}}' in line: break
     l1_short.append(line)
 
 name_all = []
