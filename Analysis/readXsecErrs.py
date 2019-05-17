@@ -24,14 +24,14 @@ def printXsecErrs(mttbin) :
             lextr.append(line)
         if 'Total vis' in line:
             tot_vis=line
-        if 'Xsec\\_13TeV'+str(mttbin) in line and '\\hline' in line:
+        if '\\sigma_{t\\bar{t}}^{(\\mu_'+str(mttbin) in line and '\\hline' in line:
             xsec = line
 
     for i in range(0,3): del l[0]
     l_short = []
 
     for line in l:
-        if '13TeV' in line: break
+        if '\\sigma_{t\\bar{t}}' in line: break
         l_short.append(line)
 
     name_all = []
@@ -189,7 +189,7 @@ def printCorrelations():
     l = inFile.read().splitlines()
     corrs = []
     for line in l:
-        if 'Xsec\\_13TeV' in line and not '13TeV1' in line:
+        if '\\sigma_{t\\bar{t}}' in line and not '{(\\mu_1)}' in line:
             corrs.append(line)
 
     corr_12 = corrs[0].split('&')
