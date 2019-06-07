@@ -16,7 +16,7 @@
 namespace Era{
     
     /// All analysis eras as needed
-    enum Era{run1_8tev, run2_13tev_50ns, run2_13tev_25ns, run2_13tev_2015_25ns, run2_13tev_2016_25ns, run2_13tev_25ns_74X, undefined};
+    enum Era{run1_8tev, run2_13tev_50ns, run2_13tev_25ns, run2_13tev_2015_25ns, run2_13tev_2016_25ns, run2_13tev_25ns_74X, run2_13tev_2016, run2_13tev_2017, run2_13tev_2018, undefined};
     
     /// Convert an era from string to enum
     Era convert(const TString& era);
