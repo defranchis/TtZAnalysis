@@ -257,6 +257,17 @@ KinematicReconstructionSolutions topAnalyzer::getKinRecoSolutions(const int lept
 }
 
 
+LooseKinRecoSolution topAnalyzer::getLooseKinRecoSolutions(const int leptonIndex, const int antiLeptonIndex,
+                                                           const std::vector<int>& jetIndices, const std::vector<int>& bjetIndices,
+                                                           const VLV& allLeptons, const VLV& jets, const LV& met)const
+{
+    if(!looseKinReco_) return LooseKinRecoSolution();   
+    return looseKinReco_->solution({leptonIndex}, {antiLeptonIndex}, jetIndices, bjetIndices,
+                                   allLeptons, jets, met);
+}
+
+
+
 fileForker::fileforker_status topAnalyzer::writeOutput(){
 	writeHistos();
 	if(btagsf_.makesEff()){

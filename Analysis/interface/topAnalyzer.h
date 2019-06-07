@@ -217,11 +217,15 @@ public:
 
 	void setPathToConfigFile(const TString & path){pathtoconffile_=path;}
 
+
         KinematicReconstructionSolutions getKinRecoSolutions(const int leptonIndex, const int antiLeptonIndex,
                                                              const std::vector<int>& jetIndices, const std::vector<int>& bjetIndices,
                                                              const VLV& allLeptons, const VLV& jets,
                                                              const std::vector<double>& jetBtags, const LV& met)const;
 
+        LooseKinRecoSolution getLooseKinRecoSolutions(const int leptonIndex, const int antiLeptonIndex,
+                                                      const std::vector<int>& jetIndices, const std::vector<int>& bjetIndices,
+                                                      const VLV& allLeptons, const VLV& jets, const LV& met)const;
 
 protected:
 
