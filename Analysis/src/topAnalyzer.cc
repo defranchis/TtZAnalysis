@@ -76,6 +76,8 @@ topAnalyzer::topAnalyzer():basicAnalyzer(){
         doGenPlotsOnly_ = false;
         kinReco_ = 0;
         kinRecoSF_ = 0;
+        looseKinReco_ = 0;
+        looseKinRecoSF_ = 0;
 }
 /**
  * takes care of not already deleted containers etc
