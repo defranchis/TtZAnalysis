@@ -70,6 +70,8 @@
 #include "basicAnalyzer.h"
 #include "../interface/KinematicReconstruction.h"
 #include "../interface/KinematicReconstructionSolution.h"
+#include "../interface/LooseKinReco.h"
+#include "../interface/LooseKinRecoSolution.h"
 
 namespace ztop{class NTEvent;}
 
@@ -179,8 +181,10 @@ public:
 	void setIsSignalMerged(bool isMerged){isSignalMerged_=isMerged;}
 
         void setDoKinReco(bool doKinReco){doKinReco_=doKinReco;}
+        void setDoLooseKinReco(bool doLooseKinReco){doLooseKinReco_=doLooseKinReco;}
         void setDoGenPlotsOnly(bool doGenPlotsOnly){doGenPlotsOnly_=doGenPlotsOnly;}
         void setKinReco(KinematicReconstruction * kinReco, KinematicReconstructionScaleFactors * kinRecoSF);
+        void setLooseKinReco(LooseKinReco * looseKinReco, LooseKinRecoScaleFactors * looseKinRecoSF);
 
 	int start();
 	//  void start(TString);
@@ -277,9 +281,12 @@ protected:
 
 	float fakedata_startentries_;
 
-        bool doKinReco_, doGenPlotsOnly_;
+        bool doKinReco_, doLooseKinReco_, doGenPlotsOnly_;
         KinematicReconstruction * kinReco_;
         KinematicReconstructionScaleFactors * kinRecoSF_;
+
+        LooseKinReco * looseKinReco_;
+        LooseKinRecoScaleFactors * looseKinRecoSF_;
 
 };
 }

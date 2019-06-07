@@ -72,6 +72,7 @@ topAnalyzer::topAnalyzer():basicAnalyzer(){
 	pdfweighter_.switchOff(true); //switch off as default
 	fakedata_startentries_=0.9;
         doKinReco_ = false;
+        doLooseKinReco_ = false;
         doGenPlotsOnly_ = false;
         kinReco_ = 0;
         kinRecoSF_ = 0;
@@ -237,6 +238,10 @@ float topAnalyzer::createNormalizationInfo(TFile *f, bool isMC,size_t anaid,bool
 void topAnalyzer::setKinReco(KinematicReconstruction * kinReco, KinematicReconstructionScaleFactors * kinRecoSF){
     kinReco_ = kinReco;
     kinRecoSF_ = kinRecoSF;
+}
+void topAnalyzer::setLooseKinReco(LooseKinReco * looseKinReco, LooseKinRecoScaleFactors * looseKinRecoSF){
+    looseKinReco_ = looseKinReco;
+    looseKinRecoSF_ = looseKinRecoSF;
 }
 
 KinematicReconstructionSolutions topAnalyzer::getKinRecoSolutions(const int leptonIndex, const int antiLeptonIndex,
