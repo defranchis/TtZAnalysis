@@ -12,6 +12,7 @@
 #include "../interface/analysisUtils.h"
 #include "../interface/analysisPlotsTtbarXsecFitSingleLep.h"
 #include "../interface/analysisPlotsKinReco.h"
+#include "../interface/analysisPlotsLooseKinReco.h"
 
 class top_analyzer_run2 : public ztop::topAnalyzer{
 public:

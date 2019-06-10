@@ -51,7 +51,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	if(!isMC || !signal_)
 		getPdfReweighter()->switchOff(true);
 
-        if (doGenPlotsOnly_ && doKinReco_ && !legendname_.Contains("mtt1")) return;
+        if (doGenPlotsOnly_ && (doKinReco_ || doLooseKinReco_) && !legendname_.Contains("mtt1")) return;
 
 	//some mode options
 	/* implement here not to overload MainAnalyzer class with private members
@@ -338,19 +338,28 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	analysisPlotsTtbarXsecFit xsecfitplots_step8(8);
         analysisPlotsTtbarXsecFitSingleLep singlelepplots_step8(8);
 	analysisPlotsKinReco kinrecoplots_step8(8);
+	analysisPlotsLooseKinReco loosekinrecoplots_step8(8);
 
 	xsecfitplots_step8.enable();
 	mlbmtplots_step8.enable();
 	mlbmtplots_step8.bookPlots();
 	xsecfitplots_step8.enable();
 	xsecfitplots_step8.bookPlots();
+        if (doKinReco_ || doLooseKinReco_){
+            xsecfitplots_step8.setKinRecoPS(true);
+            mlbmtplots_step8.setKinRecoPS(true);
+        }
         if (doKinReco_){
             kinrecoplots_step8.enable();
             kinrecoplots_step8.bookPlots();
             kinrecoplots_step8.setKinRecoPS(true);
-            xsecfitplots_step8.setKinRecoPS(true);
-            mlbmtplots_step8.setKinRecoPS(true);
         }
+        if (doLooseKinReco_){
+            loosekinrecoplots_step8.enable();
+            loosekinrecoplots_step8.bookPlots();
+            loosekinrecoplots_step8.setKinRecoPS(true);
+        }
+
         singlelepplots_step8.enable();
         singlelepplots_step8.bookPlots();
 
@@ -380,6 +389,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	zplots.initSteps(8);
 	mlbmtplots_step8.setEvent(evt);
 	if (doKinReco_) kinrecoplots_step8.setEvent(evt);
+	if (doLooseKinReco_) loosekinrecoplots_step8.setEvent(evt);
 	xsecfitplots_step8.setEvent(evt);
         singlelepplots_step8.setEvent(evt);
 
@@ -737,7 +747,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			//}
 			if(!fakedata){
                                //split into gen mtt bins
-                                if (signal_ && doKinReco_ && !doGenPlotsOnly_){
+                                if (signal_ && (doKinReco_ || doLooseKinReco_) && !doGenPlotsOnly_){
                                     if (gentops.size()<2) continue;
                                     float gen_mtt = (gentops.at(0)->p4() + gentops.at(1)->p4()).M();
                                     setMttCategories(gen_mtt,legendname_);
@@ -782,6 +792,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 				mlbmtplots_step8.fillPlotsGen();
 				xsecfitplots_step8.fillPlotsGen();
                                 if(doKinReco_) kinrecoplots_step8.fillPlotsGen();
+                                if(doLooseKinReco_) loosekinrecoplots_step8.fillPlotsGen();
                                 if (doGenPlotsOnly_) {
                                     genplots.makeControlPlots(0);
                                     continue;
@@ -1387,7 +1398,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		for(size_t i=0;i<hardjets.size();i++){
 
                         TLorentzVector jetTLV; 
-                        if (doKinReco_){
+                        if (doKinReco_ || doLooseKinReco_){
                             jetTLV.SetPtEtaPhiE(selectedjets->at(i)->pt(),selectedjets->at(i)->eta(),selectedjets->at(i)->phi(),selectedjets->at(i)->e());
                             jetVLV.push_back(common::TLVtoLV(jetTLV));
                         }
@@ -1398,7 +1409,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 				continue;
 			}
 			selectedbjets.push_back(selectedjets->at(i));
-                        if (doKinReco_) bjet_indices.push_back(i);
+                        if (doKinReco_ || doLooseKinReco_) bjet_indices.push_back(i);
                         
 		}
 
@@ -1557,7 +1568,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		if(!zerojet && selectedjets->size() < 1) continue;
 
                 // need 2 jets for kinematic reconstruction
-                if(doKinReco_ && selectedjets->size() < 2) continue;
+                if((doKinReco_ || doLooseKinReco_) && selectedjets->size() < 2) continue;
 
 		if(getBTagSF()->getMode() == NTBTagSF::shapereweighting_mode){
 			throw std::runtime_error("NTBTagSF::shapereweighting_mode: not impl");
@@ -1658,11 +1669,15 @@ void  top_analyzer_run2::analyze(size_t anaid){
                 float mtt, m_mub, pt_top, eta_top, pt_antitop, eta_antitop, pt_ttbar, eta_ttbar;
 
                 KinematicReconstructionSolutions kinRecoSols;
-                if (doKinReco_){
+                LooseKinRecoSolution looseKinRecoSol;
+
+                if (doKinReco_ || doLooseKinReco_){
 
                     if (leadingptlep->q()*secleadingptlep->q()>0) continue;
-                    if (signal_) puweight *= kinRecoSF_->getSF();
-
+                    if (signal_){
+                        if (doKinReco_) puweight *= kinRecoSF_->getSF();
+                        else if (doLooseKinReco_) puweight *= looseKinRecoSF_->getSF();
+                    }
                     bool isAntiMuon = false;
                     LV muon_lv;
 
@@ -1697,37 +1712,53 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
                     for (unsigned int i=0; i<selectedjets->size(); ++i) jet_indices.push_back(i);
 
-                    kinRecoSols = this->getKinRecoSolutions(leptonIndex, antileptonIndex, jet_indices, bjet_indices, leptonsVLV, jetVLV, dummy, METLV);
+                    if (doKinReco_) kinRecoSols = this->getKinRecoSolutions(leptonIndex, antileptonIndex, jet_indices, bjet_indices, leptonsVLV, jetVLV, dummy, METLV);
+                    //fromhere!
+                    else if (doLooseKinReco_) looseKinRecoSol = this->getLooseKinRecoSolution(leptonIndex, antileptonIndex, jet_indices, bjet_indices, leptonsVLV, jetVLV, METLV);
 
-                    if (kinRecoSols.numberOfSolutions()<1) continue;
+                    if (doKinReco_){
+                        if (kinRecoSols.numberOfSolutions()<1) continue;}
+                    else if (doLooseKinReco_){
+                        if (!looseKinRecoSol.hasSolution()) continue;}
 
-                    const KinematicReconstructionSolution solution = kinRecoSols.solution();
+                    if (doKinReco_){
+                        const KinematicReconstructionSolution solution = kinRecoSols.solution();
 
-                    TLorentzVector top_sol = common::LVtoTLV(solution.top());
-                    TLorentzVector antitop_sol = common::LVtoTLV(solution.antiTop());
-                    TLorentzVector ttbar_sol = common::LVtoTLV(solution.ttbar());
-                    // int n_bTags = solution.numberOfBtags();
+                        TLorentzVector top_sol = common::LVtoTLV(solution.top());
+                        TLorentzVector antitop_sol = common::LVtoTLV(solution.antiTop());
+                        TLorentzVector ttbar_sol = common::LVtoTLV(solution.ttbar());
+                        // int n_bTags = solution.numberOfBtags();
 
-                    mtt = ttbar_sol.M();
-                    pt_top = top_sol.Pt();
-                    eta_top = top_sol.Eta();
-                    pt_antitop = antitop_sol.Pt();
-                    eta_antitop = antitop_sol.Eta();
-                    pt_ttbar = ttbar_sol.Pt();
-                    eta_ttbar = ttbar_sol.Eta();
+                        mtt = ttbar_sol.M();
+                        pt_top = top_sol.Pt();
+                        eta_top = top_sol.Eta();
+                        pt_antitop = antitop_sol.Pt();
+                        eta_antitop = antitop_sol.Eta();
+                        pt_ttbar = ttbar_sol.Pt();
+                        eta_ttbar = ttbar_sol.Eta();
 
-                    int bjet_index = solution.antiBjetIndex();
-                    if (isAntiMuon) bjet_index = solution.bjetIndex();
-                    m_mub = (muon_lv+jetVLV.at(bjet_index)).M();
+                        int bjet_index = solution.antiBjetIndex();
+                        if (isAntiMuon) bjet_index = solution.bjetIndex();
+                        m_mub = (muon_lv+jetVLV.at(bjet_index)).M();
 
-                    evt.mtt = &mtt;
-                    evt.m_mub = &m_mub;
-                    evt.pt_top = &pt_top;
-                    evt.eta_top = &eta_top;
-                    evt.pt_antitop = &pt_antitop;
-                    evt.eta_antitop = &eta_antitop;
-                    evt.pt_ttbar = &pt_ttbar;
-                    evt.eta_ttbar = &eta_ttbar;
+                        evt.mtt = &mtt;
+                        evt.m_mub = &m_mub;
+                        evt.pt_top = &pt_top;
+                        evt.eta_top = &eta_top;
+                        evt.pt_antitop = &pt_antitop;
+                        evt.eta_antitop = &eta_antitop;
+                        evt.pt_ttbar = &pt_ttbar;
+                        evt.eta_ttbar = &eta_ttbar;
+                    }
+                    else if (doLooseKinReco_){
+                        mtt = looseKinRecoSol.TTbar().M();
+                        pt_ttbar = looseKinRecoSol.TTbar().Pt();
+                        eta_ttbar = looseKinRecoSol.TTbar().Eta();
+                        evt.mtt = &mtt;
+                        evt.pt_ttbar = &pt_ttbar;
+                        evt.eta_ttbar = &eta_ttbar;
+
+                    }
 
                 }
 
@@ -1776,6 +1807,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 			mlbmtplots_step8.fillPlotsReco();
 			xsecfitplots_step8.fillPlotsReco();
 			if (doKinReco_) kinrecoplots_step8.fillPlotsReco();
+			if (doLooseKinReco_) loosekinrecoplots_step8.fillPlotsReco();
 
 		}
 		if(isZrange){
