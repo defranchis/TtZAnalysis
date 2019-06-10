@@ -1668,9 +1668,6 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
                 float mtt, m_mub, pt_top, eta_top, pt_antitop, eta_antitop, pt_ttbar, eta_ttbar;
 
-                KinematicReconstructionSolutions kinRecoSols;
-                LooseKinRecoSolution looseKinRecoSol;
-
                 if (doKinReco_ || doLooseKinReco_){
 
                     if (leadingptlep->q()*secleadingptlep->q()>0) continue;
@@ -1712,16 +1709,12 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
                     for (unsigned int i=0; i<selectedjets->size(); ++i) jet_indices.push_back(i);
 
-                    if (doKinReco_) kinRecoSols = this->getKinRecoSolutions(leptonIndex, antileptonIndex, jet_indices, bjet_indices, leptonsVLV, jetVLV, dummy, METLV);
-                    //fromhere!
-                    else if (doLooseKinReco_) looseKinRecoSol = this->getLooseKinRecoSolution(leptonIndex, antileptonIndex, jet_indices, bjet_indices, leptonsVLV, jetVLV, METLV);
-
                     if (doKinReco_){
-                        if (kinRecoSols.numberOfSolutions()<1) continue;}
-                    else if (doLooseKinReco_){
-                        if (!looseKinRecoSol.hasSolution()) continue;}
 
-                    if (doKinReco_){
+                        KinematicReconstructionSolutions kinRecoSols = this->getKinRecoSolutions(leptonIndex, antileptonIndex, jet_indices,
+                                                                                                 bjet_indices, leptonsVLV, jetVLV, dummy, METLV);
+                        if (kinRecoSols.numberOfSolutions()<1) continue;
+
                         const KinematicReconstructionSolution solution = kinRecoSols.solution();
 
                         TLorentzVector top_sol = common::LVtoTLV(solution.top());
@@ -1751,6 +1744,12 @@ void  top_analyzer_run2::analyze(size_t anaid){
                         evt.eta_ttbar = &eta_ttbar;
                     }
                     else if (doLooseKinReco_){
+
+                        LooseKinRecoSolution looseKinRecoSol(this->getLooseKinRecoSolution(leptonIndex, antileptonIndex, jet_indices,
+                                                                                           bjet_indices, leptonsVLV, jetVLV, METLV));
+
+                        if (!looseKinRecoSol.hasSolution()) continue;
+
                         mtt = looseKinRecoSol.TTbar().M();
                         pt_ttbar = looseKinRecoSol.TTbar().Pt();
                         eta_ttbar = looseKinRecoSol.TTbar().Eta();
