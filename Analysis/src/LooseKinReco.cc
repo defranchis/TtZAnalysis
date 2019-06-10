@@ -87,7 +87,7 @@ std::vector<std::vector<std::pair<TLorentzVector, TLorentzVector> > > LooseKinRe
       vJetsBTagged.push_back(jetBTagged);
     }
 
-  assert(vJetsBTagged.size() >= 1);
+  // assert(vJetsBTagged.size() >= 1);
   assert((vJetsBTagged.size() + vJetsNonBTagged.size()) >= 2);
 
   // sort jets in pT
@@ -138,8 +138,22 @@ std::vector<std::vector<std::pair<TLorentzVector, TLorentzVector> > > LooseKinRe
     if(res.back().size() == 0)
       res.pop_back();
   }
-  else
-    throw std::logic_error("LooseKinReco::GetCandidatesBBbar() should not be here");
+  else{
+    res.resize(res.size() + 1);
+    for(size_t i = 0; i < vJetsNonBTagged.size(); i++)
+      for(size_t ii = i + 1; ii < vJetsNonBTagged.size(); ii++)
+      {
+        const TLorentzVector j1 = common::LVtoTLV(vJetsNonBTagged[i]);
+        const TLorentzVector j2 = common::LVtoTLV(vJetsNonBTagged[ii]);
+        if(CheckMlb(l, lbar, j1, j2, mlbMax))
+          res.back().push_back(std::pair<TLorentzVector, TLorentzVector>(j1, j2));
+      }
+    // remove last vector if it is empty
+    if(res.back().size() == 0)
+      res.pop_back();
+      
+  }
+    // throw std::logic_error("LooseKinReco::GetCandidatesBBbar() should not be here");
 
   return res;
 }
