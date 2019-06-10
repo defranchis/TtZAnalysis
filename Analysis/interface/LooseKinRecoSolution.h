@@ -20,6 +20,8 @@ public:
     /// Destructor
     ~LooseKinRecoSolution(){}
 
+    const LooseKinRecoSolution& operator=(const LooseKinRecoSolution& rhs){return rhs;}
+
     const float& getMinMlb()const{return minmlbKR_;}
     const float& getWWmass()const{return mwwKR_;}
     const std::pair<TLorentzVector, TLorentzVector>& getLVBBbar()const{return lvBBbar_;}
