@@ -257,7 +257,7 @@ KinematicReconstructionSolutions topAnalyzer::getKinRecoSolutions(const int lept
 }
 
 
-LooseKinRecoSolution topAnalyzer::getLooseKinRecoSolutions(const int leptonIndex, const int antiLeptonIndex,
+LooseKinRecoSolution topAnalyzer::getLooseKinRecoSolution(const int leptonIndex, const int antiLeptonIndex,
                                                            const std::vector<int>& jetIndices, const std::vector<int>& bjetIndices,
                                                            const VLV& allLeptons, const VLV& jets, const LV& met)const
 {
