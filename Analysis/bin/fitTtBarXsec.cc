@@ -59,6 +59,8 @@ invokeApplication(){
 	const bool topontop =  parser->getOpt<bool>("-topontop",false,"plots ttbar signal on top");
 	const bool likelihoodscan =  parser->getOpt<bool>("-scan",false,"Maps the likelihood around the minimum as a function of the cross section(s). Needs a lot of CPU time!");
 
+	const TString scanParameter =  parser->getOpt<TString>("-scanParameter","","scans specified parameter");
+
 	const bool mlbCrossCheck = parser->getOpt<bool>("-mlbCrossCheck",false,"cross check with only one mlb distribution");
 	const bool mttfit = parser->getOpt<bool>("-mttfit",false,"differential mtt analysis");
 	const unsigned int n_mttbins = parser->getOpt<int>("-mttbins",4,"number of mtt bins");
@@ -495,6 +497,9 @@ invokeApplication(){
                             for (size_t mttbin=0; mttbin<n_mttbins; ++mttbin) //hardcoded
                                 mainfitter.printXsecScan(ndts,outfile.Data(),mttbin);
                         }
+                    }
+                    if (scanParameter!=""){
+                        mainfitter.printScan(ndts,outfile.Data(),scanParameter);
                     }
 			TString dir=outfile+"_vars/";
 			system( ("mkdir -p "+dir).Data());
