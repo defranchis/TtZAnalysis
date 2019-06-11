@@ -1917,6 +1917,44 @@ void ttbarXsecFitter::printXsecScan(size_t datasetidx, const std::string & outna
 
 }
 
+void ttbarXsecFitter::printScan(size_t datasetidx, const std::string & outname, const TString par){
+	if(datasetidx>=datasets_.size())
+		throw std::out_of_range("ttbarXsecFitter::printXsecScan: dataset index out of range");
+
+	size_t xscidx=std::find(parameternames_.begin(),parameternames_.end(),par)-parameternames_.begin();
+        if (xscidx==parameternames_.size()){
+            std::cout<<"ttbarXsecFitter::printScan: parameter "<<par<<" not found. Returning..."<<std::endl;
+            return;
+        }
+
+	double xsecerrdo=fitter_.getParameterErrDown()->at(xscidx);
+	double xsecerrup=fitter_.getParameterErrUp()->at(xscidx);
+
+	double xsecparashift=fitter_.getParameter(xscidx);
+	graph g=fitter_.scan( xscidx, xsecparashift + 3* xsecerrdo, xsecparashift+ 3*xsecerrup ,12);
+
+
+	g.setXAxisName(par);
+	g.setYAxisName("-2 ln(L)");
+
+	std::string outfile=outname;
+	outfile+="_LHScan_";
+	outfile+=datasets_.at(datasetidx).getName().Data();
+        if (mttfit_) outfile+=par;
+
+	TFile f((TString)outfile.data()+".root","RECREATE");
+	TCanvas cv;
+	plotterMultiplePlots pl;
+	pl.usePad(&cv);
+	pl.addPlot(&g);
+	pl.setLastNoLegend();
+	pl.draw();
+	cv.Write();
+
+	pl.printToPdf(outfile);
+
+}
+
 
 void ttbarXsecFitter::createSystematicsBreakdowns(const TString& paraname, const size_t mttbin){
         if (mttfit_ && mttbin==9999) 
