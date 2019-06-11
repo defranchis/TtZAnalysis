@@ -54,6 +54,8 @@ invokeApplication(){
 	const bool doLooseKinReco = parser->getOpt<bool>      ("-looseKinReco",false,"perform loose kinematic reconstruction");        
 	const bool doGenPlotsOnly = parser->getOpt<bool>      ("-genplots",false,"do gen plots for kinematic reconstruction");        
 
+	const unsigned int nCores = parser->getOpt<int>("-nCores",6,"number of cores");
+
 	bool createLH=false;
 	if(discrfile.length()<1)
 		createLH=true;
@@ -187,7 +189,7 @@ invokeApplication(){
 	///some checks
 
 
-	ana->setMaxChilds(6);
+	ana->setMaxChilds(nCores);
 	if(testmode)
 		ana->setMaxChilds(1);
 	if(interactive || tickonce)
