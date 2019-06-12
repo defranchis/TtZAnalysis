@@ -1931,7 +1931,7 @@ void ttbarXsecFitter::printScan(size_t datasetidx, const std::string & outname, 
 	double xsecerrup=fitter_.getParameterErrUp()->at(xscidx);
 
 	double xsecparashift=fitter_.getParameter(xscidx);
-	graph g=fitter_.scan( xscidx, xsecparashift + 3* xsecerrdo, xsecparashift+ 3*xsecerrup ,12);
+	graph g=fitter_.scan( xscidx, xsecparashift + 2* xsecerrdo, xsecparashift+ 2*xsecerrup ,40);
 
 
 	g.setXAxisName(par);
@@ -1950,6 +1950,10 @@ void ttbarXsecFitter::printScan(size_t datasetidx, const std::string & outname, 
 	pl.setLastNoLegend();
 	pl.draw();
 	cv.Write();
+
+        TGraph * tg = g.getTGraph();
+        tg->SetName("scan_"+par);
+        tg->Write();
 
 	pl.printToPdf(outfile);
 
