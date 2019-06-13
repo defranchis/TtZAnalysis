@@ -29,7 +29,7 @@ namespace ztop{
                 pt_ttbar_bjet_.resize(cat_bjetmax,0);
                 eta_ttbar_bjet_.resize(cat_bjetmax,0);
 
-                resizeVec(total_mtt_bjet_,cat_mttmax_reco,cat_bjetmax);
+                resizeVec(total_mtt_bjet_,cat_mttmax_reco+1,cat_bjetmax);
                 resizeVec(m_lb_3_mtt_bjet_,cat_mttmax_reco,cat_bjetmax);
                 resizeVec(m_lb_5_mtt_bjet_,cat_mttmax_reco,cat_bjetmax);
                 resizeVec(last_jet_pt_mtt_bjet_,cat_mttmax_reco,cat_bjetmax);
