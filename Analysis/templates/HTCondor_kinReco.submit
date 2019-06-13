@@ -7,8 +7,8 @@ log                 = ##WORKDIR##/logs/#CHANNEL#_#ENERGY#_#TOPMASS#_#SYST#.log
 
 Requirements = OpSysAndVer == "SL6"
 RequestMemory = 3700M
-RequestCpus = 6
-+RequestRuntime = 36000
+RequestCpus = 3
++RequestRuntime = 54000
 
 JobBatchName = #BATCHNAME#
 
