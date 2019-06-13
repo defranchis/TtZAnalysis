@@ -66,7 +66,8 @@ namespace ztop{
     }
 
     void analysisPlotsKinReco::setRecoMttCategory(float reco_mtt){
-        if (reco_mtt < bin_1_) reco_mttcategory = cat_mtt1_reco;
+        if (event()->selectedjets->size()<2) reco_mttcategory = cat_mttmax_reco;
+        else if (reco_mtt < bin_1_) reco_mttcategory = cat_mtt1_reco;
         else if (reco_mtt < bin_2_) reco_mttcategory = cat_mtt2_reco;
         else if (reco_mtt < bin_3_) reco_mttcategory = cat_mtt3_reco;
         else reco_mttcategory = cat_mtt4_reco;
@@ -135,6 +136,7 @@ namespace ztop{
                 antitop_pt_mtt_bjet_.at(mtt_cat).at(nbjet)=addPlot(ptbins,ptbins,"antitop pt "+toTString(nbjet)+" b-jets mtt"+toTString((int)mtt_cat+1),"p_{T} [GeV]", "Events/GeV");
                 ttbar_pt_mtt_bjet_.at(mtt_cat).at(nbjet)=addPlot(ptbins,ptbins,"ttbar pt "+toTString(nbjet)+" b-jets mtt"+toTString((int)mtt_cat+1),"p_{T} [GeV]", "Events/GeV");
             }
+            if (nbjet < 2) total_mtt_bjet_.at(cat_mttmax_reco).at(nbjet)=addPlot(nobins,nobins,"total "+toTString(nbjet)+" b-jets mtt0","", "Event yield");
         }
 
     }
@@ -150,9 +152,8 @@ namespace ztop{
 	std::vector<NTGenJet*> genvisjets=produceCollection(event()->genjets,30,2.4);
 
 	if(!requireNumber(2,genvisleptons1)) return;
-        if(!requireNumber(2,genvisjets)) return;
+        if(useKinRecoPS() && !requireNumber(2,genvisjets)) return;
         if(genvisleptons1.at(0)->pt()<25 && genvisleptons1.at(1)->pt()<25) return;
-
 
         for(size_t i=0;i<cat_bjetmax;i++){
             m_mub_3_.at(i)->fillGen(20.5,puweight());
@@ -178,7 +179,10 @@ namespace ztop{
                 m_mub_5_mtt_bjet_.at(j).at(i)->fillGen(20.5,puweight());
                 top_pt_mtt_bjet_.at(j).at(i)->fillGen(0.5,puweight());
                 antitop_pt_mtt_bjet_.at(j).at(i)->fillGen(0.5,puweight());
-                ttbar_pt_mtt_bjet_.at(j).at(i)->fillGen(0.5,puweight());            }
+                ttbar_pt_mtt_bjet_.at(j).at(i)->fillGen(0.5,puweight());
+            }
+            if (i<2) total_mtt_bjet_.at(cat_mttmax_reco).at(i)->fillGen(0.5,puweight());
+
         }
 
         if (!event()->gentops) return;
@@ -211,6 +215,11 @@ namespace ztop{
 		nbjets=event()->selectedbjets->size();
 		setBJetCategory(nbjets);
 	}
+        if(event()->selectedbjets->size()<2){
+            total_mtt_bjet_.at(cat_mttmax_reco).at(bjetcategory)->fillReco(.5,puweight());
+            return;
+        } 
+
         setRecoMttCategory(*event()->mtt);
 
         mtt->fillReco(*event()->mtt,puweight());
