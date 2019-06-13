@@ -345,19 +345,19 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	mlbmtplots_step8.bookPlots();
 	xsecfitplots_step8.enable();
 	xsecfitplots_step8.bookPlots();
-        if (doKinReco_ || doLooseKinReco_){
+        if ((doKinReco_ || doLooseKinReco_) && !fullPS_){
             xsecfitplots_step8.setKinRecoPS(true);
             mlbmtplots_step8.setKinRecoPS(true);
         }
         if (doKinReco_){
             kinrecoplots_step8.enable();
             kinrecoplots_step8.bookPlots();
-            kinrecoplots_step8.setKinRecoPS(true);
+            if (!fullPS_) kinrecoplots_step8.setKinRecoPS(true);
         }
         if (doLooseKinReco_){
             loosekinrecoplots_step8.enable();
             loosekinrecoplots_step8.bookPlots();
-            loosekinrecoplots_step8.setKinRecoPS(true);
+            if (!fullPS_) loosekinrecoplots_step8.setKinRecoPS(true);
         }
 
         singlelepplots_step8.enable();
@@ -1568,7 +1568,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		if(!zerojet && selectedjets->size() < 1) continue;
 
                 // need 2 jets for kinematic reconstruction
-                if((doKinReco_ || doLooseKinReco_) && selectedjets->size() < 2) continue;
+                if((doKinReco_ || doLooseKinReco_) && !fullPS_ && (selectedjets->size()<2) ) continue;
 
 		if(getBTagSF()->getMode() == NTBTagSF::shapereweighting_mode){
 			throw std::runtime_error("NTBTagSF::shapereweighting_mode: not impl");
@@ -1668,7 +1668,7 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
                 float mtt, m_mub, pt_top, eta_top, pt_antitop, eta_antitop, pt_ttbar, eta_ttbar;
 
-                if (doKinReco_ || doLooseKinReco_){
+                if ((doKinReco_ || doLooseKinReco_) && (selectedjets->size()>1)){
 
                     if (leadingptlep->q()*secleadingptlep->q()>0) continue;
                     if (signal_){
