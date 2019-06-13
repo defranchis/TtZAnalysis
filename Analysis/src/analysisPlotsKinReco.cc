@@ -215,7 +215,7 @@ namespace ztop{
 		nbjets=event()->selectedbjets->size();
 		setBJetCategory(nbjets);
 	}
-        if(event()->selectedbjets->size()<2){
+        if(event()->selectedjets->size()<2){
             total_mtt_bjet_.at(cat_mttmax_reco).at(bjetcategory)->fillReco(.5,puweight());
             return;
         } 
