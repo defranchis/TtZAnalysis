@@ -94,12 +94,12 @@ namespace ztop{
 
 	for(float i=0;i<=700;i+=20){
             pt_bins<<i;	}	
-	for(float i=300;i<=2000;i+=50){
+	for(float i=0;i<=2000;i+=50){
             mtt_bins<<i; }
         pt_bins<<2000;
         mtt_bins<<5000;
 
-        mtt_bins_fine << 200 << 420 << 550 << 810 << 2000 ;
+        mtt_bins_fine << 0 << 420 << 550 << 810 << 2000 ;
 
         mtt=addPlot(mtt_bins,mtt_bins,"m_tt kin reco","m_{t#bar{t}} [GeV]", "Events/GeV");
         mtt_coarse=addPlot(mtt_bins_fine,mtt_bins_fine,"m_tt kin reco coarse","m_{t#bar{t}} [GeV]", "Events/GeV");
