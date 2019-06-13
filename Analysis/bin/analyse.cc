@@ -53,6 +53,7 @@ invokeApplication(){
 	const bool doKinReco = parser->getOpt<bool>      ("-kinReco",false,"perform kinematic reconstruction");        
 	const bool doLooseKinReco = parser->getOpt<bool>      ("-looseKinReco",false,"perform loose kinematic reconstruction");        
 	const bool doGenPlotsOnly = parser->getOpt<bool>      ("-genplots",false,"do gen plots for kinematic reconstruction");        
+	const bool fullPS = parser->getOpt<bool> ("-fullPS",false,"do not reqire jets in visible PS (option for kin reco)");        
 
 	const unsigned int nCores = parser->getOpt<int>("-nCores",6,"number of cores");
 
@@ -239,6 +240,7 @@ invokeApplication(){
 
         ana->setDoKinReco(doKinReco);
         ana->setDoLooseKinReco(doLooseKinReco);
+        ana->setFullPS(fullPS);
         if (doKinReco){
             std::vector<TString> channels {channel};
             double topMass = 172.5;

@@ -74,6 +74,7 @@ topAnalyzer::topAnalyzer():basicAnalyzer(){
         doKinReco_ = false;
         doLooseKinReco_ = false;
         doGenPlotsOnly_ = false;
+        fullPS_ = false;
         kinReco_ = 0;
         kinRecoSF_ = 0;
         looseKinReco_ = 0;

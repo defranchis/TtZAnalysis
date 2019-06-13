@@ -182,6 +182,7 @@ public:
 
         void setDoKinReco(bool doKinReco){doKinReco_=doKinReco;}
         void setDoLooseKinReco(bool doLooseKinReco){doLooseKinReco_=doLooseKinReco;}
+        void setFullPS(bool fullPS){fullPS_=fullPS;}
         void setDoGenPlotsOnly(bool doGenPlotsOnly){doGenPlotsOnly_=doGenPlotsOnly;}
         void setKinReco(KinematicReconstruction * kinReco, KinematicReconstructionScaleFactors * kinRecoSF);
         void setLooseKinReco(LooseKinReco * looseKinReco, LooseKinRecoScaleFactors * looseKinRecoSF);
@@ -286,6 +287,7 @@ protected:
 	float fakedata_startentries_;
 
         bool doKinReco_, doLooseKinReco_, doGenPlotsOnly_;
+        bool fullPS_;
         KinematicReconstruction * kinReco_;
         KinematicReconstructionScaleFactors * kinRecoSF_;
 
