@@ -105,10 +105,13 @@ def printXsecErrs(mttbin) :
         extr = extr.split()
         extr[0] = float(extr[0])
         extr[1] = float(extr[1])
-        if (mp) : extr[0] *= -1
-        else :  extr[1] *= -1
-        extr_up.append(extr[0])
-        extr_down.append(extr[1])
+        extr[1] *= -1
+        if (mp) :
+            extr_up.append(extr[1])
+            extr_down.append(extr[0])
+        else : 
+            extr_up.append(extr[0])
+            extr_down.append(extr[1])
 
         name = TString(name)
         name.ReplaceAll(' (extr) ','')
