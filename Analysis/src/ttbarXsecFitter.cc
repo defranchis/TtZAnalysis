@@ -3435,7 +3435,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 
 	std::vector<TString> excludefromglobal;
 	//excludefromglobal.push_back("t#bar{t}V");
-        excludefromglobal.push_back("DY");
+        if (!parent_->mttfit_) excludefromglobal.push_back("DY");
 
 	if(parent_->topontop_){
 		stack->setLegendOrder("t#bar{t}",90);
@@ -3462,7 +3462,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 		std::cout << "ttbarXsecFitter::addUncertainties: merged variations" <<std::endl;
 
         //more sophisticated approaches can be chosen here - like DY float etc
-        stack->addRelErrorToBackgrounds(0.3,false,"BG",excludefromglobal);
+        if (!parent_->mttfit_ ) stack->addRelErrorToBackgrounds(0.3,false,"BG",excludefromglobal);
 
 
 	if(getName().Contains("7TeV"))
@@ -3475,66 +3475,53 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 
         // stack->addRelErrorToContribution(0.3,"Wjets","BG_");
 
-	float dy0bjetserr=0,dy1bjetserr=0,dy2bjetserr=0;
-	if(nbjets==0)
-		dy0bjetserr=0.3;
-	else if(nbjets==1)
-		dy1bjetserr=0.3;
-	else if(nbjets==2)
-		dy2bjetserr=0.3;
-
-        int naddjets = -1;
         TString stackName = stack->getName();
-        if (stackName.Contains(",0 b-jets")) naddjets=0;
-        else if (stackName.Contains(",1 b-jets")) naddjets=1;
-        else if (stackName.Contains(",2 b-jets")) naddjets=2;
-        else if (stackName.Contains(",3 b-jets")) naddjets=3;
-        else std::cerr<<"WARNING: undefined number of additional jets"<<std::endl;
 
-	float dy0jetserr=0, dy1jetserr=0, dy2jetserr=0, dy3jetserr=0;
+        if (!parent_->mttfit_){
+            float dy0bjetserr=0,dy1bjetserr=0,dy2bjetserr=0;
+            if(nbjets==0) dy0bjetserr=0.3;
+            else if(nbjets==1) dy1bjetserr=0.3;
+            else if(nbjets==2) dy2bjetserr=0.3;
 
-        if (nbjets==0){
-            if      (naddjets==0) dy0jetserr=0.05;
-            else if (naddjets==1) dy1jetserr=0.1;
-            else if (naddjets==2) dy2jetserr=0.3;
-            else if (naddjets==3) dy3jetserr=0.5;
+            int naddjets = -1;
+            if (stackName.Contains(",0 b-jets")) naddjets=0;
+            else if (stackName.Contains(",1 b-jets")) naddjets=1;
+            else if (stackName.Contains(",2 b-jets")) naddjets=2;
+            else if (stackName.Contains(",3 b-jets")) naddjets=3;
+            else std::cerr<<"WARNING: undefined number of additional jets"<<std::endl;
+
+            float dy0jetserr=0, dy1jetserr=0, dy2jetserr=0, dy3jetserr=0;
+
+            if (nbjets==0){
+                if      (naddjets==0) dy0jetserr=0.05;
+                else if (naddjets==1) dy1jetserr=0.1;
+                else if (naddjets==2) dy2jetserr=0.3;
+                else if (naddjets==3) dy3jetserr=0.5;
+            }
+            else if (nbjets==1){
+                if      (naddjets==0) dy0jetserr=0.1;
+                else if (naddjets==1) dy1jetserr=0.3;
+                else if (naddjets==2) dy2jetserr=0.5;
+                else if (naddjets==3) dy3jetserr=0.5;
+            }
+            else if (nbjets==2){
+                if      (naddjets==0) dy0jetserr=0.3;
+                else if (naddjets==1) dy1jetserr=0.5;
+                else if (naddjets==2) dy2jetserr=0.5;
+                else if (naddjets==3) dy3jetserr=0.5;
+            }
+            stack->addRelErrorToContribution(dy0bjetserr,"DY","BG_0_bjets_");
+            stack->addRelErrorToContribution(dy1bjetserr,"DY","BG_1_bjets_");
+            stack->addRelErrorToContribution(dy2bjetserr,"DY","BG_2_bjets_");
+
+            if (naddjets>=0 && !parent_->mttfit_){
+                stack->addRelErrorToContribution(dy0jetserr,"DY","BG_0_addjets_");
+                stack->addRelErrorToContribution(dy1jetserr,"DY","BG_1_addjets_");
+                stack->addRelErrorToContribution(dy2jetserr,"DY","BG_2_addjets_");
+                stack->addRelErrorToContribution(dy3jetserr,"DY","BG_3_addjets_");
+            }
         }
-        else if (nbjets==1){
-            if      (naddjets==0) dy0jetserr=0.1;
-            else if (naddjets==1) dy1jetserr=0.3;
-            else if (naddjets==2) dy2jetserr=0.5;
-            else if (naddjets==3) dy3jetserr=0.5;
-        }
-        else if (nbjets==2){
-            if      (naddjets==0) dy0jetserr=0.3;
-            else if (naddjets==1) dy1jetserr=0.5;
-            else if (naddjets==2) dy2jetserr=0.5;
-            else if (naddjets==3) dy3jetserr=0.5;
-        }
-
-	//hardcoded scaling of QCD/Wjets....
-	try{
-		int wjetsqcdidx=stack->getContributionIdx("QCD/Wjets");
-		stack->multiplyNorm(wjetsqcdidx,parent_->wjetsrescalefactor_);
-	}
-	catch(...){
-		if(parent_->wjetsrescalefactor_!=(float)1.){
-			std::cout << "Warning. wjetsrescalefactor!=1 but no QCD/Wjets contribution found" <<std::endl;
-		}
-	}
-
-        stack->addRelErrorToContribution(dy0bjetserr,"DY","BG_0_bjets_");
-        stack->addRelErrorToContribution(dy1bjetserr,"DY","BG_1_bjets_");
-        stack->addRelErrorToContribution(dy2bjetserr,"DY","BG_2_bjets_");
-
-        if (naddjets>=0 && !parent_->mttfit_){
-            stack->addRelErrorToContribution(dy0jetserr,"DY","BG_0_addjets_");
-            stack->addRelErrorToContribution(dy1jetserr,"DY","BG_1_addjets_");
-            stack->addRelErrorToContribution(dy2jetserr,"DY","BG_2_addjets_");
-            stack->addRelErrorToContribution(dy3jetserr,"DY","BG_3_addjets_");
-        }
-
-        if (parent_->mttfit_){
+        else{
             float uncert = .007;
             float uncert_0b = .01;
             for (unsigned int k=1; k<parent_->n_signals_+1; ++k){
@@ -3551,7 +3538,45 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
             stack->addGlobalRelSignalError("KinReco_0btags", kinreco0bjetserr);
             stack->addGlobalRelSignalError("KinReco_1btags", kinreco1bjetserr);
             stack->addGlobalRelSignalError("KinReco_2btags", kinreco2bjetserr);
+            
+            float bgmtt1err=0, bgmtt2err=0, bgmtt3err=0, bgmtt4err=0;
+            if(stackName.Contains("mtt1")) bgmtt1err=0.03;
+            else if(stackName.Contains("mtt2")) bgmtt2err=0.03;
+            else if(stackName.Contains("mtt3")) bgmtt3err=0.03;
+            else if(stackName.Contains("mtt4")) bgmtt4err=0.03;
+
+            stack->addGlobalRelBGError("BG_mtt1", bgmtt1err);
+            stack->addGlobalRelBGError("BG_mtt2", bgmtt2err);
+            stack->addGlobalRelBGError("BG_mtt3", bgmtt3err);
+            stack->addGlobalRelBGError("BG_mtt4", bgmtt4err);
+
+            float bg0bjetserr=0,bg1bjetserr=0,bg2bjetserr=0;
+            if(nbjets==0) bg0bjetserr=0.3;
+            else if(nbjets==1) bg1bjetserr=0.3;
+            else if(nbjets==2) bg2bjetserr=0.3;
+
+            stack->addRelErrorToContribution(bg0bjetserr,"DY","BG_0_bjets_");
+            stack->addRelErrorToContribution(bg1bjetserr,"DY","BG_1_bjets_");
+            stack->addRelErrorToContribution(bg2bjetserr,"DY","BG_2_bjets_");
+
+            excludefromglobal.push_back("DY");
+            stack->addRelErrorToBackgrounds(0.3,false,"BG_",excludefromglobal);
+
+
         }
+
+	//hardcoded scaling of QCD/Wjets....
+	try{
+		int wjetsqcdidx=stack->getContributionIdx("QCD/Wjets");
+		stack->multiplyNorm(wjetsqcdidx,parent_->wjetsrescalefactor_);
+	}
+	catch(...){
+		if(parent_->wjetsrescalefactor_!=(float)1.){
+			std::cout << "Warning. wjetsrescalefactor!=1 but no QCD/Wjets contribution found" <<std::endl;
+		}
+	}
+
+
 
 	if(debug)
 		std::cout << "ttbarXsecFitter::addUncertainties: added DY var" <<std::endl;
