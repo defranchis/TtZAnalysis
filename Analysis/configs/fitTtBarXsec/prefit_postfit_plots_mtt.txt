@@ -23,11 +23,13 @@
 0 :total 0 b-jets mtt2 step 8 = total 0 b-jets mtt2 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 0 :total 0 b-jets mtt3 step 8 = total 0 b-jets mtt3 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 0 :total 0 b-jets mtt4 step 8 = total 0 b-jets mtt4 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+0 :total 0 b-jets mtt0 step 8 = total 0 b-jets mtt0 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 
 1 :total 1 b-jets mtt1 step 8 = total 1 b-jets mtt1 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 1 :total 1 b-jets mtt2 step 8 = total 1 b-jets mtt2 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 1 :total 1 b-jets mtt3 step 8 = total 1 b-jets mtt3 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 1 :total 1 b-jets mtt4 step 8 = total 1 b-jets mtt4 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+1 :total 1 b-jets mtt0 step 8 = total 1 b-jets mtt0 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 
 2 :total 2 b-jets mtt1 step 8 = total 2 b-jets mtt1 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 2 :total 2 b-jets mtt2 step 8 = total 2 b-jets mtt2 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
