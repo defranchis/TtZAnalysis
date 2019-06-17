@@ -609,6 +609,21 @@ void histoStack::addGlobalRelBGError(TString sysname,double error){
         else containers1DUnfold_[i].addGlobalRelError(sysname,0);
     }
 }
+void histoStack::addGlobalRelSignalError(TString sysname,double error){
+    std::vector<size_t> include = getSignalIdxs();
+    for(unsigned int i=0;i<containers_.size();i++){
+        if(legends_[i]!=dataleg_ && (std::find(include.begin(),include.end(),i)==include.end())) containers_[i].addGlobalRelError(sysname,0);
+        else containers_[i].addGlobalRelError(sysname,error);
+    }
+    for(unsigned int i=0;i<containers2D_.size();i++){
+        if(legends_[i]!=dataleg_ && (std::find(include.begin(),include.end(),i)==include.end())) containers2D_[i].addGlobalRelError(sysname,0);
+        else containers2D_[i].addGlobalRelError(sysname,error);
+    }
+    for(unsigned int i=0;i<containers1DUnfold_.size();i++){
+        if(legends_[i]!=dataleg_ && (std::find(include.begin(),include.end(),i)==include.end())) containers1DUnfold_[i].addGlobalRelError(sysname,0);
+        else containers1DUnfold_[i].addGlobalRelError(sysname,error);
+    }
+}
 
 void histoStack::addRelErrorToContribution(double err, const TString& contributionname, TString nameprefix, bool lognormal){
 	if(debug)
