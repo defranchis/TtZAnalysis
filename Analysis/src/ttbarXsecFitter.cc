@@ -3534,6 +3534,25 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
             stack->addRelErrorToContribution(dy3jetserr,"DY","BG_3_addjets_");
         }
 
+        if (parent_->mttfit_){
+            float uncert = .007;
+            float uncert_0b = .01;
+            for (unsigned int k=1; k<parent_->n_signals_+1; ++k){
+                if (!stackName.Contains("mtt0")) stack->addRelErrorToContribution(uncert,"t#bar{t}mtt"+toString(k),"KinReco_");
+                else stack->addRelErrorToContribution(0,"t#bar{t}mtt"+toString(k),"KinReco_");
+            }
+
+            float kinreco0bjetserr=0,kinreco1bjetserr=0,kinreco2bjetserr=0;
+            if (!stackName.Contains("mtt0")){
+                if(nbjets==0) kinreco0bjetserr=uncert_0b; 
+                else if(nbjets==1) kinreco1bjetserr=uncert;
+                else if(nbjets==2) kinreco2bjetserr=uncert;
+            }
+            stack->addGlobalRelSignalError("KinReco_0btags", kinreco0bjetserr);
+            stack->addGlobalRelSignalError("KinReco_1btags", kinreco1bjetserr);
+            stack->addGlobalRelSignalError("KinReco_2btags", kinreco2bjetserr);
+        }
+
 	if(debug)
 		std::cout << "ttbarXsecFitter::addUncertainties: added DY var" <<std::endl;
 
