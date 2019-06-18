@@ -106,7 +106,7 @@ JES_PileUpPtBB , JES: Pileup $p_T$ BB
 JES_PileUpPtEC , JES: Pileup $p_T$ EC
 JES_PileUpPtHF , JES: Pileup $p_T$ HF
 JES_RelativeJEREC1 , JES: Relative JER EC1
-JES_RelativeJEREC2 , JES: Relative JER EC2
+bJES_RelativeJEREC2 , JES: Relative JER EC2
 JES_RelativeJERHF , JES: Relative JER HF
 JES_RelativePtBB , JES: Relative $p_T$ BB
 JES_RelativePtEC1 , JES: Relative $p_T$ EC1
@@ -153,6 +153,22 @@ BG_1_addjets_DY, DY background (1 add. jets)
 BG_2_addjets_DY, DY background (2 add. jets)
 BG_3_addjets_DY, DY background (3 add. jets)
 
+KinReco_mtt1, Kin Reco ($\mu_1$)
+KinReco_mtt2, Kin Reco ($\mu_2$)
+KinReco_mtt3, Kin Reco ($\mu_3$)
+KinReco_mtt4, Kin Reco ($\mu_4$)
+
+KinReco_0btags, Kin Reco 0 b-jets
+KinReco_1btags, Kin Reco 1 b-jets
+KinReco_2btags, Kin Reco 2 b-jets
+
+BG_mtt1, Kin Reco bkg mtt reco bin 1
+BG_mtt2, Kin Reco bkg mtt reco bin 2
+BG_mtt3, Kin Reco bkg mtt reco bin 3
+BG_mtt4, Kin Reco bkg mtt reco bin 4
+
+KIN_RECO_SIG, Kinematic reconstruction signals
+KIN_RECO_BG, Kinematic reconstruction backgrounds
 
 
 Xsec_8TeV, $\sigma_{t\bar{t}}$(8 TeV)
