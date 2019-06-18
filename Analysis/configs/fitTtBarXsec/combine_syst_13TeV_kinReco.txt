@@ -50,6 +50,9 @@ BTAG_TOT = BTAGL + BTAGH_bfragmentation + BTAGH_btempcorr + BTAGH_cb + BTAGH_cfr
 
 TT_CR_ALL = TT_CRERD + TT_CRGLUON + TT_CRQCD
 
+KIN_RECO_SIG = KinReco_0btags + KinReco_1btags + KinReco_2btags + KinReco_mtt1 + KinReco_mtt2 + KinReco_mtt3 + KinReco_mtt4
+KIN_RECO_BG = BG_mtt1 + BG_mtt2 + BG_mtt3 + BG_mtt4
+
 % ELECSF_ALL = ELECSF + ELECBGSF
 % MUONSF_ALL = MUONSF + MUONBGSF
 % TRIGGERSF = TRIGGER + TRIGGERBGSF
