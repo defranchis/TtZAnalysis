@@ -652,37 +652,48 @@ void histoStack::addRelErrorToContributions(double err, const std::vector<size_t
 		if(std::find(contribidxs.begin(),contribidxs.end(),i) == contribidxs.end()) continue;
 		//add error to all of them
 
+                TString label = legends_.at(i);
+                if (label.Contains("t#bar{t}mtt")) label.ReplaceAll("t#bar{t}mtt","mtt");
+
 		for(size_t j=0;j<containers_.size();j++){
 			if(j==i){
-				containers_.at(j).addGlobalRelErrorUp(nameprefix+legends_.at(i),err);
-				containers_.at(j).addGlobalRelErrorDown(nameprefix+legends_.at(i),errinv);
+				containers_.at(j).addGlobalRelErrorUp(nameprefix+label,err);
+				containers_.at(j).addGlobalRelErrorDown(nameprefix+label,errinv);
 			}
 			else
-				containers_.at(j).addGlobalRelError(nameprefix+legends_.at(i),0);
+				containers_.at(j).addGlobalRelError(nameprefix+label,0);
 		}
 	}
 
 	for(size_t i=0;i<legends_.size();i++){
 		if(std::find(contribidxs.begin(),contribidxs.end(),i) == contribidxs.end()) continue;
+
+                TString label = legends_.at(i);
+                if (label.Contains("t#bar{t}mtt")) label.ReplaceAll("t#bar{t}mtt","mtt");
+
 		for(size_t j=0;j<containers2D_.size();j++){
 			if(j==i){
-				containers2D_.at(j).addGlobalRelErrorUp(nameprefix+legends_.at(i),err);
-				containers2D_.at(j).addGlobalRelErrorDown(nameprefix+legends_.at(i),errinv);
+				containers2D_.at(j).addGlobalRelErrorUp(nameprefix+label,err);
+				containers2D_.at(j).addGlobalRelErrorDown(nameprefix+label,errinv);
 			}
 			else
-				containers2D_.at(j).addGlobalRelError(nameprefix+legends_.at(i),0);
+				containers2D_.at(j).addGlobalRelError(nameprefix+label,0);
 		}
 	}
 
 	for(size_t i=0;i<legends_.size();i++){
 		if(std::find(contribidxs.begin(),contribidxs.end(),i) == contribidxs.end()) continue;
+
+                TString label = legends_.at(i);
+                if (label.Contains("t#bar{t}mtt")) label.ReplaceAll("t#bar{t}mtt","mtt");
+
 		for(size_t j=0;j<containers1DUnfold_.size();j++){
 			if(j==i){
-				containers1DUnfold_.at(j).addGlobalRelErrorUp(nameprefix+legends_.at(i),err);
-				containers1DUnfold_.at(j).addGlobalRelErrorDown(nameprefix+legends_.at(i),errinv);
+				containers1DUnfold_.at(j).addGlobalRelErrorUp(nameprefix+label,err);
+				containers1DUnfold_.at(j).addGlobalRelErrorDown(nameprefix+label,errinv);
 			}
 			else
-				containers1DUnfold_.at(j).addGlobalRelError(nameprefix+legends_.at(i),0);
+				containers1DUnfold_.at(j).addGlobalRelError(nameprefix+label,0);
 		}
 	}
 
