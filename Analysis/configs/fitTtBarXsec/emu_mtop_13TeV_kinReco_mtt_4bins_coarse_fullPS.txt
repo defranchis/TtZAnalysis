@@ -85,7 +85,7 @@ $    ELECES = fixed
     TT_TTTUNE
     PDF*,-0.741,0.741
     TOPPT,0,1
-    TOPMASS,-0.233,0.233
+    TOPMASS,-0.333,0.333
 
 [ end - full extrapolation ]
 
