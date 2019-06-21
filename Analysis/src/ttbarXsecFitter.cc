@@ -3522,8 +3522,8 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
             }
         }
         else{
-            float uncert = .007;
-            float uncert_0b = .01;
+            float uncert = .002;
+            float uncert_0b = .005;
             for (unsigned int k=1; k<parent_->n_signals_+1; ++k){
                 if (!stackName.Contains("mtt0")) stack->addRelErrorToContribution(uncert,"t#bar{t}mtt"+toString(k),"KinReco_");
                 else stack->addRelErrorToContribution(0,"t#bar{t}mtt"+toString(k),"KinReco_");
@@ -3540,10 +3540,10 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
             stack->addGlobalRelSignalError("KinReco_2btags", kinreco2bjetserr);
             
             float bgmtt1err=0, bgmtt2err=0, bgmtt3err=0, bgmtt4err=0;
-            if(stackName.Contains("mtt1")) bgmtt1err=0.03;
-            else if(stackName.Contains("mtt2")) bgmtt2err=0.03;
-            else if(stackName.Contains("mtt3")) bgmtt3err=0.03;
-            else if(stackName.Contains("mtt4")) bgmtt4err=0.03;
+            if(stackName.Contains("mtt1")) bgmtt1err=0.01;
+            else if(stackName.Contains("mtt2")) bgmtt2err=0.01;
+            else if(stackName.Contains("mtt3")) bgmtt3err=0.01;
+            else if(stackName.Contains("mtt4")) bgmtt4err=0.01;
 
             stack->addGlobalRelBGError("BG_mtt1", bgmtt1err);
             stack->addGlobalRelBGError("BG_mtt2", bgmtt2err);
