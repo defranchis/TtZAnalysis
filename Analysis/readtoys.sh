@@ -1,2 +1,2 @@
-python -m py_compile allToys.py
-python allToys.pyc -b
+python -m py_compile pyscripts/allToys.py
+python pyscripts/allToys.pyc -b

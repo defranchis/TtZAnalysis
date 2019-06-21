@@ -144,40 +144,46 @@ else:
     print round(h_xsec_3.GetMean(),1), round(h_xsec_3.GetRMS(),1), round(h_xsec_3.GetRMS()/h_xsec_3.GetMean()*100.,2), '%'
 print
 
+
+outdir = 'plotsToys/'
+if not os.path.exists(outdir):
+    os.makedirs(outdir)
+
+
 c = ROOT.TCanvas('c','c')
 h_mass.SetTitle('effect of MC stats on top MC mass;m_{t}^{MC} [GeV];a.u.')
 h_mass.DrawNormalized()
-c.Print('mass.png','png')
+c.Print(outdir+'mass.png','png')
 
 if not mttFit:
     c.Clear()
     h_xsec.SetTitle('effect of MC stats on ttbar cross section;#sigma_{t#bar{t}} [pb];a.u.')
     h_xsec.DrawNormalized()
-    c.Print('xsec.png','png')
+    c.Print(outdir+'xsec.png','png')
 
 else:
     c.Clear()
     h_xsec_1.SetTitle('effect of MC stats on ttbar cross section;#sigma_{t#bar{t}} mtt1 [pb];a.u.')
     h_xsec_1.DrawNormalized()
-    c.Print('xsec_1.png','png')
+    c.Print(outdir+'xsec_1.png','png')
 
     c.Clear()
     h_xsec_2.SetTitle('effect of MC stats on ttbar cross section;#sigma_{t#bar{t}} mtt2 [pb];a.u.')
     h_xsec_2.DrawNormalized()
-    c.Print('xsec_2.png','png')
+    c.Print(outdir+'xsec_2.png','png')
 
     c.Clear()
     h_xsec_3.SetTitle('effect of MC stats on ttbar cross section;#sigma_{t#bar{t}} mtt3 [pb];a.u.')
     h_xsec_3.DrawNormalized()
-    c.Print('xsec_3.png','png')
+    c.Print(outdir+'xsec_3.png','png')
 
     c.Clear()
     h_xsec_4.SetTitle('effect of MC stats on ttbar cross section;#sigma_{t#bar{t}} mtt4 [pb];a.u.')
     h_xsec_4.DrawNormalized()
-    c.Print('xsec_4.png','png')
+    c.Print(outdir+'xsec_4.png','png')
 
 
-rootfile = ROOT.TFile('toys.root','recreate')
+rootfile = ROOT.TFile(outdir+'toys.root','recreate')
 h_mass.Write()
 if not mttFit: h_xsec.Write()
 else:
