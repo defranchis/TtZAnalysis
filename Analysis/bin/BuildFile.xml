@@ -37,6 +37,7 @@
 
 <bin name="testPrefire" file="testPrefire.cc" />
 <bin name="testPurity" file="testPurity.cc" />
+<bin name="genPlotsTest" file="genPlotsTest.cc" />
 
 <bin name="extractMtFromInclXsec" file="extractMtFromInclXsec.cc" />
 <Flags CXXFLAGS="-lXMLParser -lunfold -fopenmp"/>
