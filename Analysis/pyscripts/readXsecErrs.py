@@ -207,6 +207,12 @@ def printCorrelations():
     corr_42 = corrs[2].split('&')
     corr_42 = corr_42[len(corr_42)-3]
 
+    corr_41 = corrs[2].split('&')
+    corr_41 = corr_41[len(corr_41)-4]
+
+    corr_43 = corrs[2].split('&')
+    corr_43 = corr_43[len(corr_43)-2]
+
     corr_12 = TString(corr_12)
     corr_12.ReplaceAll('\\textbf{','')
     corr_12.ReplaceAll('}','')
@@ -226,12 +232,24 @@ def printCorrelations():
     corr_42.ReplaceAll('\\textbf{','')
     corr_42.ReplaceAll('}','')
     corr_42 = float(str(corr_42))
+
+    corr_41 = TString(corr_41)
+    corr_41.ReplaceAll('\\textbf{','')
+    corr_41.ReplaceAll('}','')
+    corr_41 = float(str(corr_41))
     
+    corr_43 = TString(corr_43)
+    corr_43.ReplaceAll('\\textbf{','')
+    corr_43.ReplaceAll('}','')
+    corr_43 = float(str(corr_43))
+
     print
     print 'corr_1_2 =',corr_12
     print 'corr_3_2 =',corr_32
     print 'corr_1_3 =',corr_13
     print 'corr_4_2 =',corr_42
+    print 'corr_4_1 =',corr_41
+    print 'corr_4_3 =',corr_43
     print
 
     return

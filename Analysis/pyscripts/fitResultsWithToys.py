@@ -178,17 +178,24 @@ histo_central_mod = ROOT.TH1F('histo_central_mod','histo_central_mod',len(name_m
 
 
 for i in range(0,len(name_all)):
+
+    temp_name=name_all[i]
+    if 'Kin Reco' in temp_name:
+        temp_name = str( TString(temp_name).ReplaceAll('$','') )
+        temp_name = str( TString(temp_name).ReplaceAll('\mu_','signal ') )
+
     histo_all.Fill(i,pull_all[i])
-    histo_all.GetXaxis().SetBinLabel(i+1,name_all[i])
+    histo_all.GetXaxis().SetBinLabel(i+1,temp_name)
     histo_all.SetBinError(i+1,constraint_all[i])
 
     histo_stat_all.Fill(i,pull_all[i])
-    histo_stat_all.GetXaxis().SetBinLabel(i+1,name_all[i])
+    histo_stat_all.GetXaxis().SetBinLabel(i+1,temp_name)
     histo_stat_all.SetBinError(i+1,(constraint_all[i]**2+stat_toys_all[i]**2)**.5)
 
     histo_central_all.Fill(i,central_toys_all[i])
-    histo_central_all.GetXaxis().SetBinLabel(i+1,name_all[i])
+    histo_central_all.GetXaxis().SetBinLabel(i+1,temp_name)
     histo_central_all.SetBinError(i+1,0.)
+
 
 
 for i in range(0,len(name_pdf)):
