@@ -1742,6 +1742,17 @@ void  top_analyzer_run2::analyze(size_t anaid){
                         evt.eta_antitop = &eta_antitop;
                         evt.pt_ttbar = &pt_ttbar;
                         evt.eta_ttbar = &eta_ttbar;
+
+                        // event display
+                        // if (bjet_indices.size()==2 && jet_indices.size()==2 && METv2.Mod()>50){
+                        //     std::cout<<std::endl;
+                        //     std::cout<<"event number = "<< *b_EventNumber.content() <<std::endl;
+                        //     std::cout<<"run number = "<< *b_RunNumber.content() <<std::endl;
+                        //     std::cout<<"lumi block = "<< *b_LumiBlock.content() <<std::endl;
+                        //     std::cout<<std::endl;
+                        // }
+
+
                     }
                     else if (doLooseKinReco_){
 
