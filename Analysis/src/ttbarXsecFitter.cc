@@ -1692,14 +1692,18 @@ histoStack ttbarXsecFitter::applyParametersToStack(const histoStack& stack, size
             out.push_back(background,"Background",kGreen-9,1,50);
             if(topontop_){
                 for (size_t s=0; s<n_signal; ++s){
-                    if (s==3) out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",920,1,signal_v.size()-s+50);
-                    else out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",633+2*s,1,signal_v.size()-s+50);
+                    if (s==3) out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",921,1,signal_v.size()-s+50);
+                    else if (s==2) out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",637,1,signal_v.size()-s+50);
+                    else if (s==1) out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",634,1,signal_v.size()-s+50);
+                    else out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",628,1,signal_v.size()-s+50);
                 }
             }
             else{
                 for (size_t s=0; s<n_signal; ++s){
-                    if (s==3) out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",920,1,1+s);
-                    else out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",633+2*s,1,1+s);
+                    if (s==3) out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",921,1,1+s);
+                    else if (s==2) out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",637,1,1+s);
+                    else if (s==1) out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",634,1,1+s);
+                    else out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",628,1,1+s);
                 }
             }
         }
