@@ -12,12 +12,12 @@ $?cfg
 
 [legendStyle]
 
-        x0  =  0.30
+        x0  =  0.20
 	y0  =  0.68
 	x1  =  0.88
 	y1  =  0.88
 	
-	nColumns        = 3
+	nColumns        = 4
 	columnSeparator = 0.01
 
 [end legendStyle]

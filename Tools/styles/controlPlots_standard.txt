@@ -20,11 +20,10 @@ $ [end - textBoxes]
 
  [legendStyle]
 
-    x0  =  0.62
+        x0  =  0.62
 	y0  =  0.22
 	x1  =  0.86
 	y1  =  0.88
-
 	
 	nColumns        = 1
 	columnSeparator = 0.1
