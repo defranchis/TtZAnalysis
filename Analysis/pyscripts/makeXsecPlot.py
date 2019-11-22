@@ -1,6 +1,6 @@
 import ROOT
 from ROOT import TString, TFile, TGraph, TGraphAsymmErrors, TCanvas
-
+import os
 
 preliminary = False
 
@@ -109,7 +109,7 @@ latexLabel3.SetNDC()
 
 leg1 = ROOT.TLegend(.40,.75,.89,.85)
 leg1.SetBorderSize(0)
-leg1.AddEntry(g_exp,'data unfolded to parton level','pe')
+leg1.AddEntry(g_exp,'Data unfolded to parton level','pe')
 leg2 = ROOT.TLegend(.52,.33,.89,.48)
 leg2.SetBorderSize(0)
 leg2.AddEntry(g_th_162,'m_{t}(m_{t}) = 162 GeV','pl')
@@ -122,7 +122,7 @@ c.SetBottomMargin(0.14)
 c.SetRightMargin(0.03)
 c.SetTopMargin(0.08)
 g_th_162.GetXaxis().SetTitle('m_{t#bar{t}} [GeV]')
-g_th_162.GetYaxis().SetTitle('#frac{d#sigma}{dm_{t#bar{t}}} #Deltam_{t#bar{t}} [pb]')
+g_th_162.GetYaxis().SetTitle('d#sigma_{t#bar{t}} / dm_{t#bar{t}} #Deltam_{t#bar{t}} [pb]')
 g_th_162.GetYaxis().SetTitleSize(0.05)
 g_th_162.GetYaxis().SetTitleOffset(1.2)
 g_th_162.GetXaxis().SetTitleSize(0.06)
@@ -146,12 +146,19 @@ latexLabel2.DrawLatex(0.76, 0.94, "35.9 fb^{-1} (13 TeV)")
 if preliminary: latexLabel3.DrawLatex(0.215, 0.92 , "#it{Preliminary}")
 
 latexLabel3.DrawLatex(.52, 0.67, "NLO predictions in #bar{MS} scheme")
-latexLabel3.DrawLatex(.52, 0.62, "#mu_{r} = #mu_{f} = m_{t}(m_{t})")
+latexLabel3.DrawLatex(.52, 0.62, "#mu_{r} = #mu_{f} = m_{t}")
 latexLabel3.DrawLatex(.52, 0.54, "ABMP16_5_nlo PDF set")
 
-c.SaveAs('diffXsec.png')
-c.SaveAs('diffXsec.pdf')
-c.SaveAs('diffXsec.root')
+outdir = 'xsec_plots'
+
+if not os.path.exists(outdir):
+    os.makedirs(outdir)
+
+
+
+c.SaveAs(outdir+'/diffXsec.png')
+c.SaveAs(outdir+'/diffXsec.pdf')
+c.SaveAs(outdir+'/diffXsec.root')
 
 
 g_th_164.Clear()
@@ -182,6 +189,6 @@ g_th_166.Draw('psame')
 g_exp.Draw('psame')
 leg1.Draw('same')
 leg2.Draw('same')
-c.SaveAs('diffXsec_norm.png')
-c.SaveAs('diffXsec_norm.pdf')
-c.SaveAs('diffXsec_norm.root')
+c.SaveAs(outdir+'/diffXsec_norm.png')
+c.SaveAs(outdir+'/diffXsec_norm.pdf')
+c.SaveAs(outdir+'/diffXsec_norm.root')
