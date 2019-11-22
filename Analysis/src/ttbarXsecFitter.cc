@@ -1770,7 +1770,7 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
 		if(plotnames.at(i).size()<1)continue;
 		plotterControlPlot pl;
                 TString tmp_name = (TString) plotnames.at(i).at(0);
-                if (plotnames.at(i).at(0) != "m_tt kin reco coarse all b-jets step 8")
+                if (!tmp_name.BeginsWith("m_tt kin reco coarse all b-jets step 8"))
                     pl.readStyleFromFileInCMSSW("src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_standard.txt");
                 else
                     pl.readStyleFromFileInCMSSW("src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_noratio.txt");

@@ -18,6 +18,7 @@ $
        [end - textBoxes]
        [plotStyle - Upper]
                   yaxis.max = 550
+                  yaxis.min = 0
                   yaxis.name = Events / GeV
                   xaxis.name = m_{t#bar{t}}^{reco} [GeV] 
        [end plotStyle]
@@ -28,6 +29,41 @@ $
                  yaxis.ndiv         = 304
        [end plotStyle]
 [end - controlplot]
+
+[controlplot - m_tt kin reco coarse all b-jets step 8 log]
+       [plotterControlPlot]
+       noratio = true
+       [end - plotterControlPlot]
+       [legendStyle]
+
+         x0  =  0.41
+         y0  =  0.55
+         x1  =  0.88
+         y1  =  0.88
+
+        nColumns        = 2
+        columnSeparator = 0.01
+
+       [end legendStyle] 
+       [textBoxes - boxes]
+          externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
+          externalMarker = CMSPaperSplit03Left13TeVrun
+       [end - textBoxes]
+       [plotStyle - Upper]
+                  yaxis.max = 3000
+                  yaxis.min = 0.2
+                  yaxis.log = true
+                  yaxis.name = Events / GeV
+                  xaxis.name = m_{t#bar{t}}^{reco} [GeV] 
+       [end plotStyle]
+       [plotStyle - Ratio]
+                 xaxis.name = m_{t#bar{t}}^{reco} [GeV]
+                 yaxis.max         = 1.125
+                 yaxis.min         = 0.875
+                 yaxis.ndiv         = 304
+       [end plotStyle]
+[end - controlplot]
+
 
 [controlplot - m_tt kin reco coarse 0 b-jets step 8]
        [textBoxes - boxes]
