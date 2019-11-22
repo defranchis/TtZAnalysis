@@ -1769,7 +1769,11 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
 	for(size_t i=0;i<nbjets.size();i++){
 		if(plotnames.at(i).size()<1)continue;
 		plotterControlPlot pl;
-                pl.readStyleFromFileInCMSSW("src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_standard.txt");
+                TString tmp_name = (TString) plotnames.at(i).at(0);
+                if (plotnames.at(i).at(0) != "m_tt kin reco coarse all b-jets step 8")
+                    pl.readStyleFromFileInCMSSW("src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_standard.txt");
+                else
+                    pl.readStyleFromFileInCMSSW("src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_noratio.txt");
                 pl.addStyleFromFile(stylefiles.at(i),"[controlplot - "+ plotnames.at(i).at(0)+ "]","[end - controlplot]");                 
 		if( inputfile.find("8TeV")!=std::string::npos)
 			pl.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/general/noCMS_boxes.txt","CMSSplit03Left");
@@ -1870,6 +1874,7 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
 			pl.setStack(&poststack);
 			pl.associateCorrelationMatrix(correlations);
 			pl.printToPdf(prependToOutput+textFormatter::makeCompatibleFileName(poststack.getName().Data()));
+			pl.printToPng(prependToOutput+textFormatter::makeCompatibleFileName(poststack.getName().Data()));
 			pl.draw();
 			cv.Write();
 		}
