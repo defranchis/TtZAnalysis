@@ -18,9 +18,6 @@
 # keep in mind that bjet category 0 also includes 3+ bjets
 #  
 
-0 : m_tt kin reco coarse 0 b-jets step 8 = m_tt kin reco coarse 0 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
-1 : m_tt kin reco coarse 1 b-jets step 8 = m_tt kin reco coarse 1 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
-2 : m_tt kin reco coarse 2 b-jets step 8 = m_tt kin reco coarse 2 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 
 0 : m_tt kin reco coarse all b-jets step 8 = m_tt kin reco coarse 0 b-jets step 8 + m_tt kin reco coarse 1 b-jets step 8 + m_tt kin reco coarse 2 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 
@@ -30,24 +27,40 @@
 0 :total 0 b-jets mtt4 step 8 = total 0 b-jets mtt4 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 0 :total 0 b-jets mtt0 step 8 = total 0 b-jets mtt0 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 
+
+1 :total 1 b-jets mtt4 step 8 = total 1 b-jets mtt4 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+1 :total 1 b-jets mtt0 step 8 = total 1 b-jets mtt0 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+
+2 :total 2 b-jets mtt4 step 8 = total 2 b-jets mtt4 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+
+2 :last jet pt 2 b-jets mtt1 step 8 = last jet pt 2 b-jets mtt1 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+2 :last jet pt 2 b-jets mtt2 step 8 = last jet pt 2 b-jets mtt2 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+2 :last jet pt 2 b-jets mtt3 step 8 = last jet pt 2 b-jets mtt3 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+
+
+1 :m_lb min very coarse 1 b-jets mtt1 step 8 = m_lb min very coarse 1 b-jets mtt1 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+1 :m_lb min very coarse 1 b-jets mtt2 step 8 = m_lb min very coarse 1 b-jets mtt2 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+1 :m_lb min very coarse 1 b-jets mtt3 step 8 = m_lb min very coarse 1 b-jets mtt3 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+
+
+0 : m_tt kin reco coarse 0 b-jets step 8 = m_tt kin reco coarse 0 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+1 : m_tt kin reco coarse 1 b-jets step 8 = m_tt kin reco coarse 1 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+2 : m_tt kin reco coarse 2 b-jets step 8 = m_tt kin reco coarse 2 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+
+
 1 :total 1 b-jets mtt1 step 8 = total 1 b-jets mtt1 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 1 :total 1 b-jets mtt2 step 8 = total 1 b-jets mtt2 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 1 :total 1 b-jets mtt3 step 8 = total 1 b-jets mtt3 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
-1 :total 1 b-jets mtt4 step 8 = total 1 b-jets mtt4 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
-1 :total 1 b-jets mtt0 step 8 = total 1 b-jets mtt0 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 
 2 :total 2 b-jets mtt1 step 8 = total 2 b-jets mtt1 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 2 :total 2 b-jets mtt2 step 8 = total 2 b-jets mtt2 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 2 :total 2 b-jets mtt3 step 8 = total 2 b-jets mtt3 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
-2 :total 2 b-jets mtt4 step 8 = total 2 b-jets mtt4 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
+
 
 1 :last jet pt 1 b-jets mtt1 step 8 = last jet pt 1 b-jets mtt1 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 1 :last jet pt 1 b-jets mtt2 step 8 = last jet pt 1 b-jets mtt2 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 1 :last jet pt 1 b-jets mtt3 step 8 = last jet pt 1 b-jets mtt3 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 
-2 :last jet pt 2 b-jets mtt1 step 8 = last jet pt 2 b-jets mtt1 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
-2 :last jet pt 2 b-jets mtt2 step 8 = last jet pt 2 b-jets mtt2 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
-2 :last jet pt 2 b-jets mtt3 step 8 = last jet pt 2 b-jets mtt3 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 
 1 :m_lb min coarse 1 b-jets mtt1 step 8 = m_lb min coarse 1 b-jets mtt1 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 1 :m_lb min coarse 1 b-jets mtt2 step 8 = m_lb min coarse 1 b-jets mtt2 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
@@ -57,9 +70,6 @@
 2 :m_lb min coarse 2 b-jets mtt2 step 8 = m_lb min coarse 2 b-jets mtt2 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 2 :m_lb min coarse 2 b-jets mtt3 step 8 = m_lb min coarse 2 b-jets mtt3 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 
-1 :m_lb min very coarse 1 b-jets mtt1 step 8 = m_lb min very coarse 1 b-jets mtt1 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
-1 :m_lb min very coarse 1 b-jets mtt2 step 8 = m_lb min very coarse 1 b-jets mtt2 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
-1 :m_lb min very coarse 1 b-jets mtt3 step 8 = m_lb min very coarse 1 b-jets mtt3 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 
 2 :m_lb min very coarse 2 b-jets mtt1 step 8 = m_lb min very coarse 2 b-jets mtt1 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
 2 :m_lb min very coarse 2 b-jets mtt2 step 8 = m_lb min very coarse 2 b-jets mtt2 step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots_mtt.txt
