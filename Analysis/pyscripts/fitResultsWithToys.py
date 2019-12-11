@@ -10,6 +10,7 @@ gStyle.SetErrorX(0)
 massFit = True
 mttFit = True
 preliminary = False
+suppl = True
 
 
 if not massFit: f1 = open('xsecFit_tab13TeV.tex','r')
@@ -531,6 +532,10 @@ histo_mod.Draw('psameE1')
 
 latexLabel1.DrawLatex(0.095, 0.92, "CMS")
 if preliminary: latexLabel3.DrawLatex(0.2, 0.92 , "#it{Preliminary}")
+elif suppl:
+    latexLabel3.DrawLatex(0.18, 0.92 , "#it{Supplementary}")
+    latexLabel2.DrawLatex(0.35, 0.92, "arXiv:1909.09193")
+
 latexLabel2.DrawLatex(0.765, 0.92, "35.9 fb^{-1} (13 TeV)")
 # latexLabel2.DrawLatex(0.62, 0.83, "modelling uncertainties")
 latexLabel2.SetTextSize(0.045)
