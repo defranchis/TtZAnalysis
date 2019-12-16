@@ -159,6 +159,7 @@ if not os.path.exists('summaryPlots'):
 
 c1 = ROOT.TCanvas('c1','c1')
 c1.SetGrid()
+c1.SetBottomMargin(.15)
 
 line_up_all = ROOT.TLine(histo_all.GetBinLowEdge(1),1.,histo_all.GetBinLowEdge(histo_all.GetNbinsX())+histo_all.GetBinWidth(1),1.)
 line_down_all = ROOT.TLine(histo_all.GetBinLowEdge(1),-1.,histo_all.GetBinLowEdge(histo_all.GetNbinsX())+histo_all.GetBinWidth(1),-1.)
@@ -196,7 +197,7 @@ line_up_mod.SetLineWidth(2)
 line_down_mod.SetLineWidth(2)
 
 
-histo_all.SetTitle('fit summary - EXP')
+histo_all.SetTitle('experimental uncertainties')
 histo_all.SetMaximum(3.5)
 histo_all.SetMinimum(-3.5)
 histo_all.SetMarkerStyle(8)
@@ -213,7 +214,7 @@ c1.Clear()
 
 ###
 
-histo_pdf.SetTitle('fit summary - PDFs')
+histo_pdf.SetTitle('PDF uncertainties')
 histo_pdf.SetMaximum(1.3)
 histo_pdf.SetMinimum(-1.3)
 histo_pdf.SetMarkerStyle(8)
@@ -231,7 +232,7 @@ c1.Clear()
 
 ###
 
-histo_jes.SetTitle('fit summary - JES')
+histo_jes.SetTitle('JES uncertainties')
 histo_jes.SetMaximum(1.7)
 histo_jes.SetMinimum(-1.7)
 histo_jes.SetMarkerStyle(8)
@@ -249,7 +250,7 @@ c1.Clear()
 
 ###
 
-histo_btag.SetTitle('fit summary - BTAG')
+histo_btag.SetTitle('b tagging uncertainties')
 histo_btag.SetMaximum(1.7)
 histo_btag.SetMinimum(-1.7)
 histo_btag.SetMarkerStyle(8)
@@ -267,7 +268,7 @@ c1.Clear()
 
 ###
 
-histo_mod.SetTitle('fit summary - MOD')
+histo_mod.SetTitle('modelling uncertainties')
 histo_mod.SetMaximum(1.7)
 histo_mod.SetMinimum(-1.7)
 histo_mod.SetMarkerStyle(8)

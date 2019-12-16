@@ -326,7 +326,7 @@ line_up_all.Draw('same')
 line_down_all.Draw('same')
 histo_all.Draw('psameE1')
 
-latexLabel1.DrawLatex(0.11, 0.92, "CMS")
+# latexLabel1.DrawLatex(0.11, 0.92, "CMS")
 latexLabel2.DrawLatex(0.70, 0.92, "35.9 fb^{-1} (13 TeV)")
 latexLabel2.DrawLatex(0.59, 0.84, "experimental uncertainties")
 
@@ -370,7 +370,7 @@ line_up_pdf.Draw('same')
 line_down_pdf.Draw('same')
 histo_pdf.Draw('psameE1')
 
-latexLabel1.DrawLatex(0.11, 0.92, "CMS")
+# latexLabel1.DrawLatex(0.11, 0.92, "CMS")
 latexLabel2.DrawLatex(0.70, 0.92, "35.9 fb^{-1} (13 TeV)")
 latexLabel2.DrawLatex(0.68, 0.84, "PDF uncertainties")
 
@@ -415,7 +415,7 @@ line_up_jes.Draw('same')
 line_down_jes.Draw('same')
 histo_jes.Draw('psameE1')
 
-latexLabel1.DrawLatex(0.11, 0.92, "CMS")
+# latexLabel1.DrawLatex(0.11, 0.92, "CMS")
 latexLabel2.DrawLatex(0.70, 0.92, "35.9 fb^{-1} (13 TeV)")
 latexLabel2.DrawLatex(0.69, 0.82, "JES uncertainties")
 
@@ -460,9 +460,9 @@ line_up_btag.Draw('same')
 line_down_btag.Draw('same')
 histo_btag.Draw('psameE1')
 
-latexLabel1.DrawLatex(0.11, 0.92, "CMS")
+# latexLabel1.DrawLatex(0.11, 0.92, "CMS")
 latexLabel2.DrawLatex(0.70, 0.92, "35.9 fb^{-1} (13 TeV)")
-latexLabel2.DrawLatex(0.13, 0.83, "b-tagging uncertainties")
+latexLabel2.DrawLatex(0.13, 0.83, "b tagging uncertainties")
 
 
 c1.SaveAs('summaryPlotsToys/btag_fitSummary.pdf','pdf')
