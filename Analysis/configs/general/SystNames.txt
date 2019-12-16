@@ -169,6 +169,7 @@ BG_mtt4, Kin Reco bkg mtt reco bin 4
 
 KIN_RECO_SIG, Kinematic reconstruction signals
 KIN_RECO_BG, Kinematic reconstruction backgrounds
+KIN_RECO, Kinematic reconstruction
 
 
 Xsec_8TeV, $\sigma_{t\bar{t}}$(8 TeV)
