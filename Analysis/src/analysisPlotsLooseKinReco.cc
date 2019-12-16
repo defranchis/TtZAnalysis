@@ -85,7 +85,7 @@ namespace ztop{
 
         vector<float> eta_bins=histo1D::createBinning(60,-3.,3.);        
         vector<float> mtt_bins, pt_bins;
-        vector<float> mtt_bins_fine;
+        vector<float> mtt_bins_coarse;
 
 	std::vector<float> nobins=histo1D::createBinning(1,0,1);
 	std::vector<float> bins=histo1D::createBinning(1,0,1); bins.clear();
@@ -99,10 +99,10 @@ namespace ztop{
         pt_bins<<2000;
         mtt_bins<<5000;
 
-        mtt_bins_fine << 0 << 420 << 550 << 810 << 2000 ;
+        mtt_bins_coarse << 300 << 420 << 550 << 810 << 2000 ;
 
         mtt=addPlot(mtt_bins,mtt_bins,"m_tt kin reco","m_{t#bar{t}} [GeV]", "Events/GeV");
-        mtt_coarse=addPlot(mtt_bins_fine,mtt_bins_fine,"m_tt kin reco coarse","m_{t#bar{t}} [GeV]", "Events/GeV");
+        mtt_coarse=addPlot(mtt_bins_coarse,mtt_bins_coarse,"m_tt kin reco coarse","m_{t#bar{t}} [GeV]", "Events/GeV");
         pt_ttbar=addPlot(pt_bins,pt_bins,"ttbar pt kin reco","t#bar{t} p_{T} [GeV]", "Events/GeV");
         eta_ttbar=addPlot(eta_bins,eta_bins,"ttbar eta kin reco","t#bar{t} #eta", "Events");
 
@@ -110,6 +110,7 @@ namespace ztop{
             last_jet_pt_.at(nbjet)=addPlot(bins,bins,"last jet pt "+toTString(nbjet)+" b-jets","p_{T} [GeV]","Events/GeV");
 
             mtt_bjet_.at(nbjet)=addPlot(mtt_bins,mtt_bins,"m_tt kin reco "+toString(nbjet)+" b-jets","m_{t#bar{t}} [GeV]", "Events/GeV");
+            mtt_coarse_bjet_.at(nbjet)=addPlot(mtt_bins_coarse,mtt_bins_coarse,"m_tt kin reco coarse "+toString(nbjet)+" b-jets","m_{t#bar{t}} [GeV]", "Events/GeV");
             pt_ttbar_bjet_.at(nbjet)=addPlot(pt_bins,pt_bins,"ttbar pt kin reco "+toString(nbjet)+" b-jets","t#bar{t} p_{T} [GeV]", "Events/GeV");
             eta_ttbar_bjet_.at(nbjet)=addPlot(eta_bins,eta_bins,"ttbar eta kin reco "+toString(nbjet)+" b-jets","t#bar{t} #eta", "Events");
 
@@ -144,6 +145,7 @@ namespace ztop{
 
             last_jet_pt_.at(i)->fillGen(30.5,puweight());
             mtt_bjet_.at(i)->fillGen(400.,puweight());
+            mtt_coarse_bjet_.at(i)->fillGen(400.,puweight());
             pt_ttbar_bjet_.at(i)->fillGen(100.,puweight());
             eta_ttbar_bjet_.at(i)->fillGen(0.,puweight());
 
@@ -192,6 +194,7 @@ namespace ztop{
         eta_ttbar->fillReco(*event()->eta_ttbar,puweight());
 
         mtt_bjet_.at(bjetcategory)->fillReco(*event()->mtt,puweight());
+        mtt_coarse_bjet_.at(bjetcategory)->fillReco(*event()->mtt,puweight());
         pt_ttbar_bjet_.at(bjetcategory)->fillReco(*event()->pt_ttbar,puweight());
         eta_ttbar_bjet_.at(bjetcategory)->fillReco(*event()->eta_ttbar,puweight());
 

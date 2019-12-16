@@ -26,6 +26,7 @@ namespace ztop{
             {
                 last_jet_pt_.resize(cat_bjetmax,0);
                 mtt_bjet_.resize(cat_bjetmax,0);
+                mtt_coarse_bjet_.resize(cat_bjetmax,0);
                 pt_ttbar_bjet_.resize(cat_bjetmax,0);
                 eta_ttbar_bjet_.resize(cat_bjetmax,0);
 
@@ -74,7 +75,7 @@ namespace ztop{
 	void setRecoMttCategory(float reco_mtt);
 
         std::vector<histo1DUnfold*> m_mub_3_, m_mub_5_, m_mub_7_, m_mub_10_;
-        std::vector<histo1DUnfold*> last_jet_pt_, mtt_bjet_, pt_top_bjet_, eta_top_bjet_, pt_antitop_bjet_, eta_antitop_bjet_, pt_ttbar_bjet_, eta_ttbar_bjet_;
+        std::vector<histo1DUnfold*> last_jet_pt_, mtt_bjet_, mtt_coarse_bjet_, pt_top_bjet_, eta_top_bjet_, pt_antitop_bjet_, eta_antitop_bjet_, pt_ttbar_bjet_, eta_ttbar_bjet_;
 
         std::vector<std::vector<histo1DUnfold*>> total_mtt_bjet_;
         std::vector<std::vector<histo1DUnfold*>> m_lb_3_mtt_bjet_;
