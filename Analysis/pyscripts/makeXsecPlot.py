@@ -129,6 +129,7 @@ g_th_162.GetXaxis().SetTitleSize(0.06)
 g_th_162.GetXaxis().SetTitleOffset(1)
 g_th_162.GetYaxis().SetLabelSize(0.05)
 g_th_162.GetXaxis().SetLabelSize(0.05)
+g_th_162.GetXaxis().SetRangeUser(bins[0],bins[len(bins)-1])
 g_th_162.SetMaximum(360)
 
 
@@ -142,7 +143,7 @@ leg2.Draw('same')
 
 
 latexLabel1.DrawLatex(0.16, 0.94, "CMS")
-latexLabel2.DrawLatex(0.76, 0.94, "35.9 fb^{-1} (13 TeV)")
+latexLabel2.DrawLatex(0.77, 0.94, "35.9 fb^{-1} (13 TeV)")
 if preliminary: latexLabel3.DrawLatex(0.215, 0.92 , "#it{Preliminary}")
 
 latexLabel3.DrawLatex(.52, 0.67, "NLO predictions in #bar{MS} scheme")
