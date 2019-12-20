@@ -3,6 +3,7 @@ from ROOT import TString, TFile, TGraph, TGraphAsymmErrors, TCanvas
 import os
 
 preliminary = False
+cms = True
 
 th_xsec_164 = [261.4, 304.4, 177.3, 46.6]
 th_xsec_162 = [294.1, 314.8, 181.0, 47.3]
@@ -142,7 +143,7 @@ leg1.Draw('same')
 leg2.Draw('same')
 
 
-latexLabel1.DrawLatex(0.16, 0.94, "CMS")
+if cms: latexLabel1.DrawLatex(0.16, 0.94, "CMS")
 latexLabel2.DrawLatex(0.77, 0.94, "35.9 fb^{-1} (13 TeV)")
 if preliminary: latexLabel3.DrawLatex(0.215, 0.92 , "#it{Preliminary}")
 
