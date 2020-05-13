@@ -20,7 +20,7 @@ for histokey in histolist:
     name = histokey.GetName()
     histo = rootFile.FindObjectAny(name)
     c.Clear()
-    histo.Draw()
+    histo.DrawNormalized()
     outname = TString(name).ReplaceAll(' ','')
     outname.ReplaceAll('\\','')
     outname.ReplaceAll('/','')
@@ -31,8 +31,9 @@ for histokey in histolist:
     outname.ReplaceAll('{','')
     outname.ReplaceAll('}','')
     if outname.EndsWith('_constr'): histo.Rebin()
-    outfilename = TString(outdir+'/'+str(outname)+'.pdf')
-    c.SaveAs(str(outfilename),'pdf')
+    outfilename = TString(outdir+'/'+str(outname))
+    c.SaveAs(str(outfilename)+'.pdf','pdf')
+    c.SaveAs(str(outfilename)+'.png','png')
 
     if outname.EndsWith('_pull'):
         title = outname.ReplaceAll('_pull','')
