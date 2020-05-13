@@ -42,7 +42,9 @@ public:
                 parameterwriteback_(true),
                 nosystbd_(false),silent_(false),nopriors_(false),doToys_(false),massFit_(false),topmassrepl_(-100),mlbCrossCheck_(false),pseudodatarun_(false),
 		wjetsrescalefactor_(1),
-		topontop_(false)
+                topontop_(false),
+                mttfit_(false),
+                n_signals_(4)
 	{
 	} //one for each energy
 
@@ -112,6 +114,11 @@ public:
 
 	void setDummyFit(bool set){fitter_.setOnlyRunDummy(set);}
 
+	void setDoMttFit(bool mttfit, size_t n_mttbins){
+            mttfit_=mttfit;
+            n_signals_=n_mttbins;
+        }
+
 	/**
 	 * creates all variate containers
 	 * adds lumi uncertainty and "xsec" as syst
@@ -130,16 +137,19 @@ public:
 	std::vector<double> getParameters()const{return *fitter_.getParameters();}
 
 
-	histo1D getCb (bool fittedvalues,size_t datasetidx)const; //{if(eighttev) return container_c_b_.at(0); else return container_c_b_.at(1);}
-	histo1D getEps(bool fittedvalues,size_t datasetidx)const;
-	float getEps_emu(bool fittedvalues,size_t datasetidx)const;
+	histo1D getCb (bool fittedvalues,size_t datasetidx, size_t mttbin=9999)const; //{if(eighttev) return container_c_b_.at(0); else return container_c_b_.at(1);}
+	histo1D getEps(bool fittedvalues,size_t datasetidx, size_t mttbin=9999)const;
+	float getEps_emu(bool fittedvalues,size_t datasetidx, size_t mttbin=9999)const;
 
 	histo2D getCorrelations()const;
 
 
 	double getXsec(size_t datasetidx)const;
-	double getXsecOffset(size_t datasetidx)const;
+	double getXsecOffset(size_t datasetidx, size_t mttbin=9999)const;
 	double getVisXsec(size_t datasetidx)const;
+
+	double getXsec(size_t datasetidx, size_t mttbin)const;
+	double getVisXsec(size_t datasetidx, size_t mttbin)const;
 
 	void cutAndCountSelfCheck(size_t datasetidx)const;
 
@@ -154,10 +164,10 @@ public:
 	 */
 	void getParaErrorContributionToXsec(int idx, size_t  datasetidx,double& up,double&down,bool& anticorr);
 
-	void createSystematicsBreakdowns( const TString& paraname="");
+	void createSystematicsBreakdowns( const TString& paraname="", const size_t mttbin =9999);
 	void createSystematicsBreakdownsMerged();
 
-	texTabler makeSystBreakDownTable(size_t datasetidx,bool detailed=true,const TString& para="");
+	texTabler makeSystBreakDownTable(size_t datasetidx,bool detailed=true,const TString& para="", const size_t mttbin =9999);
 
 	texTabler makeCorrTable() const;
 
@@ -186,7 +196,8 @@ public:
 
 	void printAdditionalControlplots(const std::string& inputfile, const std::string & configfile,const std::string& prependToOutput)const;
 
-	void printXsecScan(size_t datasetidx, const std::string & outname);//const;
+	void printXsecScan(size_t datasetidx, const std::string & outname, const size_t mttbin=9999);//const;
+	void printScan(size_t datasetidx, const std::string & outname, const TString par);//const;
 
 	/**
 	 * just append all in one
@@ -198,7 +209,7 @@ public:
 
 
 	std::vector<float> tempdata;
-	void createSystematicsBreakdown(size_t datasetidx, const TString& paraname="");
+	void createSystematicsBreakdown(size_t datasetidx, const TString& paraname="", const size_t mttbin=9999);
 
 
 private:
@@ -226,7 +237,11 @@ private:
 			double errup;
 			double errdown;
 
-			void symmetrize(){
+			void symmetrize(bool noinf=false){
+                                if (noinf){
+                                    if (isinf(errup)) errup=errdown;
+                                    if (isinf(errdown)) errdown=errup;
+                                }
 				errup=std::max(fabs(errup),fabs(errdown));
 				errdown=-errup;
 			}
@@ -235,7 +250,12 @@ private:
 		dataset(double lumi,double lumiunc, double xsecin, TString name, ttbarXsecFitter* par):
 			lumi_(lumi),xsecoff_(xsecin),unclumi_(lumiunc),
                         lumiidx_(9999),xsecidx_(9999),massidx_(9999),name_(name),totalvisgencontsread_(0),firstpseudoexp_(true),firstToy_(true),parent_(par)
-		{}
+		{
+                    xsecoff_mtt1_ = xsecin * 0.300921232044;
+                    xsecoff_mtt2_ = xsecin * 0.394263801738;
+                    xsecoff_mtt3_ = xsecin * 0.23802330301;                    
+                    xsecoff_mtt4_ = xsecin * 0.066791663208;                    
+                }
 
 		extendedVariable& eps_emu(){return eps_emu_;}
 		extendedVariable& acceptance_extr(){return acceptance_extr_;}
@@ -244,8 +264,19 @@ private:
 		const extendedVariable& acceptance_extr()const{return acceptance_extr_;}
 		const extendedVariable& acceptance()const{return acceptance_;}
 
+		extendedVariable& eps_emu(size_t mttbin){return eps_emu_v_.at(mttbin);}
+		extendedVariable& acceptance_extr(size_t mttbin){return acceptance_extr_v_.at(mttbin);}
+		extendedVariable& acceptance(size_t mttbin){return acceptance_v_.at(mttbin);}       
+                const extendedVariable& eps_emu(size_t mttbin)const {return eps_emu_v_.at(mttbin);}
+		const extendedVariable& acceptance_extr(size_t mttbin)const {return acceptance_extr_v_.at(mttbin);}
+		const extendedVariable& acceptance(size_t mttbin)const {return acceptance_v_.at(mttbin);}
+
+
 		extendedVariable& omega_b(size_t nbjet){return omega_nbjet_.at(nbjet);}
 		const extendedVariable& omega_b(size_t nbjet)const {return omega_nbjet_.at(nbjet);}
+
+		extendedVariable& omega_b(size_t mttbin, size_t nbjet){return omega_nbjet_v_.at(mttbin).at(nbjet);}
+		const extendedVariable& omega_b(size_t mttbin, size_t nbjet)const {return omega_nbjet_v_.at(mttbin).at(nbjet);}
 
 		variateHisto1D& signalshape(size_t nbjet){return signalshape_nbjet_.at(nbjet);}
 		const variateHisto1D& signalshape(size_t nbjet)const {return signalshape_nbjet_.at(nbjet);}
@@ -253,6 +284,8 @@ private:
 		const variateHisto1D& background(size_t nbjet)const {return background_nbjet_.at(nbjet);}
 		variateHisto1D& data(size_t nbjet){return data_nbjet_.at(nbjet);}
 		const variateHisto1D& data(size_t nbjet)const {return data_nbjet_.at(nbjet);}
+		variateHisto1D& signalshape(size_t mttbin, size_t nbjet){return signalshape_nbjet_v_.at(mttbin).at(nbjet);}
+		const variateHisto1D& signalshape(size_t mttbin, size_t nbjet)const {return signalshape_nbjet_v_.at(mttbin).at(nbjet);}
 
 
 
@@ -261,17 +294,30 @@ private:
 		variateHisto1D& container_eps_b(){return container_eps_b_;}
 		const variateHisto1D& container_eps_b()const {return container_eps_b_;}
 
+		variateHisto1D& container_c_b(size_t mttbin){return container_c_b_v_.at(mttbin);}
+		const variateHisto1D& container_c_b(size_t mttbin)const {return container_c_b_v_.at(mttbin);}
+		variateHisto1D& container_eps_b(size_t mttbin){return container_eps_b_v_.at(mttbin);}
+		const variateHisto1D& container_eps_b(size_t mttbin)const {return container_eps_b_v_.at(mttbin);}
+
 
 		const TString & getName()const{return name_;}
 		const double & lumi()const{return lumi_;}
-		const double & xsecOffset()const{return xsecoff_;}
+		const double & xsecOffset(size_t mttbin=9999)const{
+                    if (mttbin==0) return xsecoff_mtt1_;
+                    else if (mttbin==1) return xsecoff_mtt2_;
+                    else if (mttbin==2) return xsecoff_mtt3_;
+                    else if (mttbin==3) return xsecoff_mtt4_;
+                    else return xsecoff_;
+                }
 		const size_t & xsecIdx()const;
 		const size_t & massIdx()const;
+		const std::vector<size_t> & xsecIdxs()const;
 		void createXsecIdx();
 		void createMassIdx();
+		void createXsecIdxs();
 
 		void readStack(const histoStack& stack, size_t nbjet);
-		void readStackVec(const std::vector<histoStack>& stacks, size_t nbjet);
+		void readStackVec(std::vector<histoStack>& stacks, size_t nbjet);
 
 		void readStacks(const std::string  configfilename,const std::pair<TString,TString>&,bool,std::vector<std::pair<TString, double> >&);
 		//also takes care of proper asso to lumiidx,xsecidx
@@ -288,13 +334,20 @@ private:
 		void createContinuousDependencies();
 
 		std::vector<TString> getSystNames()const{
+                    if (!parent_->mttfit_){
 			if(signalconts_nbjets_.size()<1)
 				throw std::logic_error("ttbarXsecFitter::datasets::getSystNames: nothing read in yet");
 			return signalconts_nbjets_.at(0).getSystNameList();
+                    }
+                    else{
+			if(signalconts_nbjets_v_.size()<1)
+				throw std::logic_error("ttbarXsecFitter::datasets::getSystNames: nothing read in yet");
+			return signalconts_nbjets_v_.at(0).at(0).getSystNameList();                        
+                    }
 		}
 
 		void checkSizes()const;
-		bool readyForFit()const{return signalshape_nbjet_.size()>0;}
+		bool readyForFit()const;
 
 		static const size_t nBjetCat(){return 3;} //to avoid duplication
 
@@ -309,44 +362,56 @@ private:
 		void addUncertainties(histoStack * stack,size_t nbjets,bool removesyst,const std::vector<std::pair<TString, double> >& )const;
 
 		double signalIntegral(size_t nbjets) const{return signalintegral_.at(nbjets);}
+		double signalIntegral(size_t mttbin, size_t nbjets) const{return signalintegrals_.at(mttbin).at(nbjets);}
+                const size_t numberOfSignals() const {return signalshape_nbjet_v_.size();}
 
 		const std::vector<histoStack>& getOriginalInputStacks(const size_t & nbjet)const;
 
 
 		const std::vector<histo1D>* getSignalCont()const{return &signalconts_nbjets_;}
+		const std::vector<histo1D>* getSignalCont(size_t mttbin)const{return &signalconts_nbjets_v_.at(mttbin);}
 
 	private:
 
 		variateHisto1D createLeptonJetAcceptance(const std::vector<histo1D>& signals,
 				const std::vector<histo1D>& signalpsmig,
 				const std::vector<histo1D>& signalvisPSgen,
-				size_t bjetcategory);
+                                size_t bjetcategory, size_t mttbin=9999);
 
                 dataset():totalvisgencontsread_(0),firstpseudoexp_(true),firstToy_(true){}
 
 		double lumi_,xsecoff_;
+                double xsecoff_mtt1_,xsecoff_mtt2_,xsecoff_mtt3_,xsecoff_mtt4_;
 		double unclumi_;
 		size_t lumiidx_,xsecidx_,massidx_;
+                std::vector<size_t> xsecidxs_;
 		TString name_;
 
 		//global per dataset dependence on extrapolation unc are set to 0 here
 		extendedVariable eps_emu_;
+                std::vector<extendedVariable> eps_emu_v_;
 		//global per dataset dependence on extrapolation unc (and all others) are implemented here
 		extendedVariable acceptance_,acceptance_extr_;
+                std::vector<extendedVariable> acceptance_v_,acceptance_extr_v_;
 
 		//per bjet_cat
 		std::vector<extendedVariable> omega_nbjet_;
+		std::vector<std::vector<extendedVariable>> omega_nbjet_v_;
 		//per b-jet cat (includes jet categories)
 		std::vector<variateHisto1D>  signalshape_nbjet_;
 		std::vector<variateHisto1D>  background_nbjet_;
 		std::vector<variateHisto1D>  data_nbjet_;
+		std::vector<std::vector<variateHisto1D>>  signalshape_nbjet_v_;
 
 		//for later use. BEFORE fit!
 		std::vector<double> signalintegral_;
+                std::vector<std::vector<double>> signalintegrals_;
 
 		///for checks
 		variateHisto1D container_c_b_;
 		variateHisto1D container_eps_b_;
+                std::vector<variateHisto1D> container_c_b_v_;
+                std::vector<variateHisto1D> container_eps_b_v_;
 
 		/*
 		 * includes events from PS migrations
@@ -361,6 +426,14 @@ private:
 
 		std::vector<histo1D> signalpsmigconts_nbjets_;
 		std::vector<histo1D> signalpsmigcontsorig_nbjets_;
+
+		std::vector<std::vector<histo1D>> signalconts_nbjets_v_;
+		std::vector<std::vector<histo1D>> signalvisgenconts_nbjets_v_;
+		std::vector<std::vector<histo1D>> signalpsmigconts_nbjets_v_;
+
+		std::vector<std::vector<histo1D>> signalcontsorig_nbjets_v_;
+		std::vector<std::vector<histo1D>> signalvisgencontsorig_nbjets_v_;
+		std::vector<std::vector<histo1D>> signalpsmigcontsorig_nbjets_v_;
 
 		std::vector<histo1D> dataconts_nbjets_;
 		std::vector<histo1D> datacontsorig_nbjets_;
@@ -422,7 +495,7 @@ private:
 	//just a safety check. Should be redundant as soon as class works and is tested
 	void checkSizes()const;
 
-	double getExtrapolationError(size_t datasetidx, size_t paraidx, bool up, const float& min=-1,const float& max=1);
+	double getExtrapolationError(size_t datasetidx, size_t paraidx, bool up, const float& min=-1,const float& max=1, const size_t mttbin=9999);
 
 	//can be more sophisticated
 
@@ -460,6 +533,8 @@ private:
 	std::string mergesystfile_;
 	//std::string textboxesfile_;
 	bool topontop_;
+	int mttfit_;
+        size_t n_signals_;
 };
 
 }

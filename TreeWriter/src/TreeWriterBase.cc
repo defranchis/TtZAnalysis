@@ -129,6 +129,7 @@ TreeWriterBase::TreeWriterBase(const edm::ParameterSet& iConfig)
         }
         std::cout << std::endl;
     }
+    bFragWeighter.Init(iConfig.getParameter<std::string>("bFragWeightFile"));
 
     //set trigger bools
     setTriggers();
@@ -205,6 +206,8 @@ TreeWriterBase::TreeWriterBase(const edm::ParameterSet& iConfig)
             consumeTemplate<double>(edm::InputTag(weightnames_.at(i)));
         }
     }
+
+   
 
 
 
@@ -306,6 +309,13 @@ TreeWriterBase::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     for(size_t i=0;i<weights_.size();i++)
         weights_.at(i) = NTWeight(1);
 
+    weightFragUp_= NTWeight(1);
+    weightFragDown_= NTWeight(1);
+    weightFragCentral_= NTWeight(1);
+    weightFragPeterson_= NTWeight(1);
+    weightBranchUp_= NTWeight(1);
+    weightBranchDown_= NTWeight(1);
+
     ztop::NTTrigger clear;
     nttrigger=clear;
 
@@ -315,8 +325,10 @@ TreeWriterBase::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     bool IsRealData = false;
     edm::Handle <reco::GenParticleCollection> genParticles;
+    edm::Handle<reco::GenJetCollection> genJets;
     try {
         iEvent.getByLabel(genparticles_, genParticles);
+        iEvent.getByLabel(genjets_, genJets);
         IsRealData = false;
     }
     catch(...) {
@@ -548,8 +560,6 @@ TreeWriterBase::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         //leptonic part finished, add jet part
         ///////////// GEN JETS AND HADRONS
 
-        edm::Handle<reco::GenJetCollection> genJets;
-        iEvent.getByLabel(genjets_, genJets);
 
         /*  edm::Handle<std::vector<int> > BHadJetIndex;
      edm::Handle<std::vector<int> > AntiBHadJetIndex;
@@ -625,9 +635,39 @@ TreeWriterBase::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             }
             ntgenjets << tempjet;
         }
-
+        
         if(debugmode) std::cout <<"includegen left" << std::endl;
     }//isMC and includegen end
+
+    if(!IsRealData &&  genMode_ == gm_top){
+
+        std::vector<ztop::BFragInfo> bfrag = bFragWeighter.GetBFragInfo(genParticles, genJets);
+        double fragUpWeight        = 1.;
+        double fragCentralWeight   = 1.;
+        double fragDownWeight      = 1.;
+        double fragPetersonWeight  = 1.;
+        double semilepbrUpWeight   = 1.;
+        double semilepbrDownWeight = 1.;
+
+        for(unsigned int b = 0; b < bfrag.size(); b++){
+            fragUpWeight        *= bfrag[b].weight_upFrag;
+            fragCentralWeight   *= bfrag[b].weight_centralFrag;
+            fragDownWeight      *= bfrag[b].weight_downFrag;
+            fragPetersonWeight  *= bfrag[b].weight_PetersonFrag;
+            semilepbrUpWeight   *= bfrag[b].weight_semilepbrUp;
+            semilepbrDownWeight *= bfrag[b].weight_semilepbrDown;
+        }
+
+        weightFragUp_.setWeight(fragUpWeight);
+        weightFragDown_.setWeight(fragDownWeight);
+        weightFragCentral_.setWeight(fragCentralWeight);
+        weightFragPeterson_.setWeight(fragPetersonWeight);
+        weightBranchUp_.setWeight(semilepbrUpWeight);
+        weightBranchDown_.setWeight(semilepbrDownWeight);
+
+
+    }
+
 
     if(debugmode){
         std::cout <<"One full decay path for bs: " << std::endl;
@@ -649,6 +689,7 @@ TreeWriterBase::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             }
         }
     }
+
 
     //////////starting RECO part
 
@@ -786,6 +827,7 @@ TreeWriterBase::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         for(size_t i=0;i<muons->size();i++){
             ztop::NTMuon tempmuon;
             tempmuon=makeNTMuon(muons->at(i));
+
 
             int genidx=-1;
 
@@ -1197,6 +1239,14 @@ TreeWriterBase::beginJob()
     for(size_t i=0;i<weightnames_.size();i++){
         Ntuple->Branch("NTWeight_"+(TString)weightnames_.at(i), "ztop::NTWeight", &weights_.at(i));
     }
+    //if(includegen_){
+        Ntuple->Branch("NTWeight_FragUp", "ztop::NTWeight",&weightFragUp_ );
+        Ntuple->Branch("NTWeight_FragDown", "ztop::NTWeight",&weightFragDown_ );
+        Ntuple->Branch("NTWeight_FragCentral", "ztop::NTWeight",&weightFragCentral_ );
+        Ntuple->Branch("NTWeight_FragPeterson", "ztop::NTWeight",&weightFragPeterson_ );
+        Ntuple->Branch("NTWeight_BranchUp", "ztop::NTWeight",&weightBranchUp_ );
+        Ntuple->Branch("NTWeight_BranchDown", "ztop::NTWeight",&weightBranchDown_ );
+    //}
 
 
 
@@ -1389,7 +1439,7 @@ void TreeWriterBase::setTriggers(){
 
     //Dilepton DZ Triggers, 2016 RunH
     triggers_.push_back("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v");
-    triggers_.push_back("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v*");
+    triggers_.push_back("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v");
 
     //triggers_.push_back("");
 

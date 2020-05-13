@@ -22,7 +22,10 @@ void analysisPlotsTtbarXsecFit::bookPlots(){
 
 	std::vector<float> bins=histo1D::createBinning(1,0,1);
 	//leadjetpt_plots, secjetpt_plots, thirdjetpt_plots, total_plots;
-	total_0bjets = addPlot(bins,bins,"total 0 b-jets","","Events");
+	total_plots_bjetcat.at(cat_0bjet) = addPlot(bins,bins,"total 0 b-jets","","Events");
+	total_plots_bjetcat.at(cat_1bjet) = addPlot(bins,bins,"total 1 b-jets","","Events");
+	total_plots_bjetcat.at(cat_2bjet) = addPlot(bins,bins,"total 2 b-jets","","Events");
+
 	total_plots.at(cat_0bjet0jet) = addPlot(bins,bins,"total 0,0 b-jets","","Events");
 	total_plots.at(cat_0bjet1jet) = addPlot(bins,bins,"total 0,1 b-jets","","Events");
 	total_plots.at(cat_0bjet2jet) = addPlot(bins,bins,"total 0,2 b-jets","","Events");
@@ -176,12 +179,15 @@ void analysisPlotsTtbarXsecFit::fillPlotsGen(){
 	 */
 
 	std::vector<NTGenParticle*> genvisleptons1=produceCollection(event()->genleptons1,20,2.4);
+	std::vector<NTGenJet*> genvisjets=produceCollection(event()->genjets,30,2.4);
 	totevts_++;
 	totevtsw_+=puweight();
 	//only fill one bin in some visible part of the histogram to get the total
 	// n_gen and a nice display of PS migrations
 	if(genvisleptons1.size()>1 && (genvisleptons1.at(0)->pt() > 25 || genvisleptons1.at(1)->pt() > 25  )){
-                total_0bjets->fillGen(0.5,puweight());
+                if(useKinRecoPS())
+                 if(!requireNumber(2,genvisjets)) return;
+                
                 leadFwdJetPt->fillGen(30.5,puweight());
                 FwdJetMulti->fillGen(0,puweight());
 
@@ -199,6 +205,9 @@ void analysisPlotsTtbarXsecFit::fillPlotsGen(){
                 for(size_t i=0;i<mll_plots.size();i++){
                     mll_plots.at(i)->fillGen(50.5,puweight());
                     dxi_plots.at(i)->fillGen(50.5,puweight());
+                }
+                for(size_t i=0;i<total_plots_bjetcat.size();i++){
+                    total_plots_bjetcat.at(i)->fillGen(0.5,puweight());
                 }
 		vispsevts_++;
 		vispsevtsw_+=puweight();
@@ -221,7 +230,7 @@ void analysisPlotsTtbarXsecFit::fillPlotsReco(){
 		setJetCategory(nbjets,naddjets);
 		//agrohsje 
 		//if(naddjets==0)
-		if (nbjets==0) total_0bjets->fillReco(0.5,puweight());
+		total_plots_bjetcat.at(bjetcategory)->fillReco(0.5,puweight());
                 FwdJetMulti->fillReco(event()->selectedFwdJets->size(),puweight());
                 if (event()->selectedFwdJets->size() > 0)
                     leadFwdJetPt->fillReco(event()->selectedFwdJets->at(0)->pt(),puweight());

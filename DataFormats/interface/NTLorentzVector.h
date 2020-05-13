@@ -46,6 +46,10 @@ public:
     const T & eta()const{return eta_;}
     const T & phi()const{return phi_;}
     const T & m()const{return m_;}
+    const T rapidity()const{
+        T y = 0.5*log( (E()+Pz()) / (E()-Pz()) );
+        return y;
+    }
 
     //some root-like style
     const T & Pt()const{return pt_;}

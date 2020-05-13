@@ -609,6 +609,21 @@ void histoStack::addGlobalRelBGError(TString sysname,double error){
         else containers1DUnfold_[i].addGlobalRelError(sysname,0);
     }
 }
+void histoStack::addGlobalRelSignalError(TString sysname,double error){
+    std::vector<size_t> include = getSignalIdxs();
+    for(unsigned int i=0;i<containers_.size();i++){
+        if(legends_[i]==dataleg_ || (std::find(include.begin(),include.end(),i)==include.end())) containers_[i].addGlobalRelError(sysname,0);
+        else containers_[i].addGlobalRelError(sysname,error);
+    }
+    for(unsigned int i=0;i<containers2D_.size();i++){
+        if(legends_[i]==dataleg_ || (std::find(include.begin(),include.end(),i)==include.end())) containers2D_[i].addGlobalRelError(sysname,0);
+        else containers2D_[i].addGlobalRelError(sysname,error);
+    }
+    for(unsigned int i=0;i<containers1DUnfold_.size();i++){
+        if(legends_[i]==dataleg_ || (std::find(include.begin(),include.end(),i)==include.end())) containers1DUnfold_[i].addGlobalRelError(sysname,0);
+        else containers1DUnfold_[i].addGlobalRelError(sysname,error);
+    }
+}
 
 void histoStack::addRelErrorToContribution(double err, const TString& contributionname, TString nameprefix, bool lognormal){
 	if(debug)
@@ -637,37 +652,48 @@ void histoStack::addRelErrorToContributions(double err, const std::vector<size_t
 		if(std::find(contribidxs.begin(),contribidxs.end(),i) == contribidxs.end()) continue;
 		//add error to all of them
 
+                TString label = legends_.at(i);
+                if (label.Contains("t#bar{t}mtt")) label.ReplaceAll("t#bar{t}mtt","mtt");
+
 		for(size_t j=0;j<containers_.size();j++){
 			if(j==i){
-				containers_.at(j).addGlobalRelErrorUp(nameprefix+legends_.at(i),err);
-				containers_.at(j).addGlobalRelErrorDown(nameprefix+legends_.at(i),errinv);
+				containers_.at(j).addGlobalRelErrorUp(nameprefix+label,err);
+				containers_.at(j).addGlobalRelErrorDown(nameprefix+label,errinv);
 			}
 			else
-				containers_.at(j).addGlobalRelError(nameprefix+legends_.at(i),0);
+				containers_.at(j).addGlobalRelError(nameprefix+label,0);
 		}
 	}
 
 	for(size_t i=0;i<legends_.size();i++){
 		if(std::find(contribidxs.begin(),contribidxs.end(),i) == contribidxs.end()) continue;
+
+                TString label = legends_.at(i);
+                if (label.Contains("t#bar{t}mtt")) label.ReplaceAll("t#bar{t}mtt","mtt");
+
 		for(size_t j=0;j<containers2D_.size();j++){
 			if(j==i){
-				containers2D_.at(j).addGlobalRelErrorUp(nameprefix+legends_.at(i),err);
-				containers2D_.at(j).addGlobalRelErrorDown(nameprefix+legends_.at(i),errinv);
+				containers2D_.at(j).addGlobalRelErrorUp(nameprefix+label,err);
+				containers2D_.at(j).addGlobalRelErrorDown(nameprefix+label,errinv);
 			}
 			else
-				containers2D_.at(j).addGlobalRelError(nameprefix+legends_.at(i),0);
+				containers2D_.at(j).addGlobalRelError(nameprefix+label,0);
 		}
 	}
 
 	for(size_t i=0;i<legends_.size();i++){
 		if(std::find(contribidxs.begin(),contribidxs.end(),i) == contribidxs.end()) continue;
+
+                TString label = legends_.at(i);
+                if (label.Contains("t#bar{t}mtt")) label.ReplaceAll("t#bar{t}mtt","mtt");
+
 		for(size_t j=0;j<containers1DUnfold_.size();j++){
 			if(j==i){
-				containers1DUnfold_.at(j).addGlobalRelErrorUp(nameprefix+legends_.at(i),err);
-				containers1DUnfold_.at(j).addGlobalRelErrorDown(nameprefix+legends_.at(i),errinv);
+				containers1DUnfold_.at(j).addGlobalRelErrorUp(nameprefix+label,err);
+				containers1DUnfold_.at(j).addGlobalRelErrorDown(nameprefix+label,errinv);
 			}
 			else
-				containers1DUnfold_.at(j).addGlobalRelError(nameprefix+legends_.at(i),0);
+				containers1DUnfold_.at(j).addGlobalRelError(nameprefix+label,0);
 		}
 	}
 
@@ -1897,6 +1923,31 @@ histo1D histoStack::getSignalContainer()const{
 	}
 	if(sidx.size()<1)
 		throw std::logic_error("histoStack::getSignalContainer: No signal defined!");
+	return out;
+}
+histo1D histoStack::getSignalContainer(size_t mttbin)const{
+	if(mode != dim1 && mode !=unfolddim1){
+		if(debug) std::cout << "histoStack::getSignalContainer: return dummy" <<std::endl;
+		return histo1D();
+	}
+	std::vector<size_t> sidx=getSignalIdxs();
+	if(sidx.size()<1)
+		throw std::logic_error("histoStack::getSignalContainer: No signal defined!");
+
+        if (mttbin >= sidx.size())
+            throw std::runtime_error("histoStack::getSignalContainer: requested signal bin does not exist");
+
+	histo1D out;
+	if(mode==dim1){
+		if(containers_.size()>0){
+			out=containers_.at(0);
+			out.setAllZero();
+		}
+                out = getContainer(sidx.at(mttbin));
+	}
+	else if(mode==unfolddim1){
+            out=getContainer1DUnfold(sidx.at(mttbin)).getRecoContainer();
+	}
 	return out;
 }
 histo1D histoStack::getBackgroundContainer()const{

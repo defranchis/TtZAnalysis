@@ -28,7 +28,7 @@ public:
 	mlbcombthresh_(165),
 	rightassocounter_(0),totalcounter_(0)
 {extraplots_.resize(cat_bjetjetmax,0);extraplots2_.resize(cat_bjetjetmax,0);extraplots3_.resize(cat_bjetjetmax,0);
- mlb_3_.resize(cat_bjetjetmax-1,0); mlb_5_.resize(cat_bjetjetmax-1,0); mlb_7_.resize(cat_bjetjetmax-1,0); mlb_10_.resize(cat_bjetjetmax-1,0);
+    mlb_3_.resize(cat_bjetmax,0); mlb_5_.resize(cat_bjetmax,0); mlb_7_.resize(cat_bjetmax,0); mlb_10_.resize(cat_bjetmax,0);
 }
 
 	~analysisPlotsMlbMt(){/* destruction is handled in base class! */
@@ -51,6 +51,10 @@ private:
 		cat_1bjet0jet,cat_1bjet1jet,cat_1bjet2jet,cat_1bjet3jet,
 		cat_2bjet0jet,cat_2bjet1jet,cat_2bjet2jet,cat_2bjet3jet,cat_bjetjetmax}
 	jetcategory;
+
+	enum bjetcategories{
+            cat_0bjet, cat_1bjet, cat_2bjet, cat_bjetmax}
+	bjetcategory;
 
 	void setJetCategory(size_t nbjets,size_t njets);
 

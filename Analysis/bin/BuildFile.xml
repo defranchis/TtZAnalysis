@@ -33,9 +33,17 @@
 <bin name="mtFromXsec2" file="mtFromXsec2.cc" />
 <bin name="wExtractA7" file="wExtractA7.cc" />
 
-<bin name="compareContributions" file="compareContributions.cc" />
+<!-- <bin name="compareContributions" file="compareContributions.cc" /> -->
+<bin name="convertFromDiffXsFwk" file="convertFromDiffXsFwk.cc" />
+<bin name="makeControlPlotsFromDiffXsFwk" file="makeControlPlotsFromDiffXsFwk.cc" />
+<bin name="printSyst" file="printSyst.cc" />
+<bin name="testFit" file="testFit.cc" />
+<bin name="testCombinedFit" file="testCombinedFit.cc" />
+<bin name="testCombinedPseudoDataFit" file="testCombinedPseudoDataFit.cc" />
 
 <bin name="testPrefire" file="testPrefire.cc" />
+<bin name="testPurity" file="testPurity.cc" />
+<bin name="genPlotsTest" file="genPlotsTest.cc" />
 
 <bin name="extractMtFromInclXsec" file="extractMtFromInclXsec.cc" />
 <Flags CXXFLAGS="-lXMLParser -lunfold -fopenmp"/>

@@ -1,0 +1,39 @@
+
+INSTRUCTIONS on how to convert histograms starting from output distributions obtained with the differential cross section framework. 
+
+The *_topmass.root files must be stored in a *SOMEPATH*/Plots directory
+
+- set environment variables with setenv.sh every time a clean shell is used
+
+- to convert histograms from the differential cross section framework you need to
+  1. set the link to the diLepton directory (or other path where the Plot directory is located) in configs/diffXsFwk/diffXsDirPath.txt
+  2. create a symbolic link to the Plots directory with scripts/lnDiffXsPlots.sh
+  3. run the script scripts/findHistosInDiffXsFwk.py and move the output file (distribsFromDiffXsFwk.txt) to configs/diffXsFwk/
+  4. create a list of variations you are interested in, in configs/diffXsFwk/listOfSystFromDiffXsFwk.txt
+     ls -1 diffXsPlots | grep -v Nominal | grep -v FinalResults > configs/diffXsFwk/listOfSystFromDiffXsFwk.txt
+
+IMPORTANT: point 4. don't forget to remove possible variations you're not interested in and be aware that for all systematics, except MCATNLO and POWHEG, both an _UP and a _DOWN variations are needed. The Nominal directory is also mandatory. If you need something different you should consider editing bin/convertFromDiffXsFwk.cc.
+
+You are now ready to run convertFromDiffXsFwk, which will create a histo1D containing all systematic variations for each distribution and for each process. The output are stores in .ztop format in the ztopFiles/rawHistos directory and its sub-directories. With such outputs you can run makeControlPlotsFromDiffXsFwk to produce control plots, which you will later use in your fit.
+
+ 5. run convertFromDiffXsFwk:
+    - use options -c, -d, -p to select a specific channel, distribution or process respectively
+    - all available channels, distributions and processes are run if no option is specified (refer to convertFromDiffXsFwk --help for details)
+
+ 6. run makeControlPlotsFromDiffXsFwk:
+    - use options -c, -d to select a specific channel or distribution respectively
+    - all available channels and distributions are run if no option is specified (refer to makeControlPlotsFromDiffXsFwk --help for details)
+
+Everything should work out of the box. Please contact me if you run into problems.
+
+
+-> Instructions in short:
+
+ source setenv.sh
+ echo /nfs/dust/cms/user/defrancm/store_diLeptonic_8025_dev/V035_1/ > configs/diffXsFwk/diffXsDirPath.txt
+ source scripts/lnDiffXsPlots.sh
+ python scripts/findHistosInDiffXsFwk.py
+ mv distribsFromDiffXsFwk.txt configs/diffXsFwk/
+ ls -1 diffXsPlots | grep -v Nominal | grep -v FinalResults > configs/diffXsFwk/listOfSystFromDiffXsFwk.txt
+ convertFromDiffXsFwk
+ makeControlPlotsFromDiffXsFwk
