@@ -461,7 +461,11 @@ void ttbarXsecFitter::dataset::createContinuousDependencies(){
             size=signalconts_nbjets_v_.size();
             signalshape_nbjet_v_.resize(size);
         }
-	for(size_t it=0;it<signalconts_nbjets_v_.at(0).size();it++){
+        size_t isize;
+        if (!parent_->mttfit_) isize = size;
+        else isize = signalconts_nbjets_v_.at(0).size();
+            
+	for(size_t it=0;it<isize;it++){
                 if (!parent_->mttfit_)
                     signalshape_nbjet_.push_back(createLeptonJetAcceptance(signalconts_nbjets_,signalpsmigconts_nbjets_,signalvisgenconts_nbjets_, bjetcount));
                 else{
@@ -3447,7 +3451,10 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 
 	std::vector<TString> excludefromglobal;
 	//excludefromglobal.push_back("t#bar{t}V");
-        if (!parent_->mttfit_) excludefromglobal.push_back("DY");
+        if (!parent_->mttfit_){
+            excludefromglobal.push_back("DY");
+            excludefromglobal.push_back("Wjets");
+        }
 
 	if(parent_->topontop_){
 		stack->setLegendOrder("t#bar{t}",90);
@@ -3485,7 +3492,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	if(debug)
 		std::cout << "ttbarXsecFitter::addUncertainties: added t#bar{t}V var" <<std::endl;
 
-        // stack->addRelErrorToContribution(0.3,"Wjets","BG_");
+        if (!parent_->mttfit_) stack->addRelErrorToContribution(0.3,"Wjets","BG_");
 
         TString stackName = stack->getName();
 
@@ -3598,7 +3605,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	float addlumiunc=0;
 	addlumiunc=unclumi_/100;
 	if(!getName().Contains("13TeV"))stack->addGlobalRelMCError("Lumi" ,addlumiunc);
-	stack->addGlobalRelMCError("Lumi" ,addlumiunc);
+        if (parent_->mttfit_) stack->addGlobalRelMCError("Lumi" ,addlumiunc);
 	// stack->addGlobalRelBGError("Lumi_BG" ,addlumiunc);
 
 
