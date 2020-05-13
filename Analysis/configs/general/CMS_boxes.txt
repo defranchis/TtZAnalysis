@@ -14,6 +14,10 @@
            0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
 
 [end - textBoxes]
+[textBoxes - CMSPaperSplit03Left13TeVnoCMS]
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
 
 [textBoxes - CMSPaperSplit03Left13TeVemu00]
            0.185,   0.85,   CMS,   0.06, 61, 11

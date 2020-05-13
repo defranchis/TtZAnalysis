@@ -17,11 +17,11 @@ defaultStyle = src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_standa
        [end - plotterControlPlot]
        [textBoxes - boxes]
           externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
-          externalMarker = CMSPaperSplit03Left13TeVemunoCMS
+          externalMarker = CMSPaperSplit03Left13TeVnoCMS
        [end - textBoxes]
-        $ [plotStyle - Ratio]
-        $         xaxis.name = m_{l\:\mathrm{b}}^{\mathrm{min}} \: [\mathrm{GeV}]
-        $ [end plotStyle]
+       [plotStyle - Upper]
+        yaxis.name = Events/GeV
+       [end plotStyle]
 
 
 [plot - lead lepton eta step 8]
