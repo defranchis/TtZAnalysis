@@ -68,6 +68,10 @@
 #include "../interface/tBranchHandler.h"
 
 #include "basicAnalyzer.h"
+#include "../interface/KinematicReconstruction.h"
+#include "../interface/KinematicReconstructionSolution.h"
+#include "../interface/LooseKinReco.h"
+#include "../interface/LooseKinRecoSolution.h"
 
 namespace ztop{class NTEvent;}
 
@@ -176,7 +180,12 @@ public:
 
 	void setIsSignalMerged(bool isMerged){isSignalMerged_=isMerged;}
 
-
+        void setDoKinReco(bool doKinReco){doKinReco_=doKinReco;}
+        void setDoLooseKinReco(bool doLooseKinReco){doLooseKinReco_=doLooseKinReco;}
+        void setFullPS(bool fullPS){fullPS_=fullPS;}
+        void setDoGenPlotsOnly(bool doGenPlotsOnly){doGenPlotsOnly_=doGenPlotsOnly;}
+        void setKinReco(KinematicReconstruction * kinReco, KinematicReconstructionScaleFactors * kinRecoSF);
+        void setLooseKinReco(LooseKinReco * looseKinReco, LooseKinRecoScaleFactors * looseKinRecoSF);
 
 	int start();
 	//  void start(TString);
@@ -208,6 +217,16 @@ public:
 	 */
 
 	void setPathToConfigFile(const TString & path){pathtoconffile_=path;}
+
+
+        KinematicReconstructionSolutions getKinRecoSolutions(const int leptonIndex, const int antiLeptonIndex,
+                                                             const std::vector<int>& jetIndices, const std::vector<int>& bjetIndices,
+                                                             const VLV& allLeptons, const VLV& jets,
+                                                             const std::vector<double>& jetBtags, const LV& met)const;
+
+        LooseKinRecoSolution getLooseKinRecoSolution(const int leptonIndex, const int antiLeptonIndex,
+                                                      const std::vector<int>& jetIndices, const std::vector<int>& bjetIndices,
+                                                      const VLV& allLeptons, const VLV& jets, const LV& met)const;
 
 protected:
 
@@ -267,7 +286,13 @@ protected:
 
 	float fakedata_startentries_;
 
+        bool doKinReco_, doLooseKinReco_, doGenPlotsOnly_;
+        bool fullPS_;
+        KinematicReconstruction * kinReco_;
+        KinematicReconstructionScaleFactors * kinRecoSF_;
 
+        LooseKinReco * looseKinReco_;
+        LooseKinRecoScaleFactors * looseKinRecoSF_;
 
 };
 }

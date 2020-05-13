@@ -262,6 +262,14 @@ templatesDir=$CMSSW_BASE/src/TtZAnalysis/Analysis/templates
 
 ########add pdf variations#######
 
+if [[ "${addParameters}" == *"-B"* ]]
+then
+    pdfeigenvectors=0
+    echo
+    echo "not running PDF variations when btag SF are derived"
+    echo
+fi
+
 if [[ $pdfeigenvectors != "0" ]] && [[ $pdfeigenvectors ]]
 then
     systs=( "${systs[@]}" "PDF_sysnominal" );
@@ -337,16 +345,21 @@ cd $workdir
 echo copying data files...
 rsync -a $analysisDir/data/analyse data/ --exclude *_btags
 cd $analysisDir/data/analyse
-for d in *_btags
-do
-    tar czf $workdir/data/analyse/$d.tar.gz $d &
-done
-wait
-cd $workdir/data/analyse
-for f in *_btags.tar.gz #maybe there are even more
-do
-    tar xzf $f &
-done
+
+if [[ "${addParameters}" == *"-B"* ]]; then
+    echo "not copying b-tagging eff. files"
+else
+    for d in *_btags
+    do
+        tar czf $workdir/data/analyse/$d.tar.gz $d &
+    done
+    wait
+    cd $workdir/data/analyse
+    for f in *_btags.tar.gz #maybe there are even more
+    do
+        tar xzf $f &
+    done
+fi
 # do other stuff in the meantime...
 
 
@@ -426,7 +439,6 @@ for (( i=0;i<${#channels[@]};i++)); do
 		then
 		    cd $BATCHDIR
 		    condor_submit $workdir/jobscripts/${outname}
-                    # sleep 1
 		    cd $workdir
 		else
 		    all=`ps ax | grep -E 'analyse' | wc -l`

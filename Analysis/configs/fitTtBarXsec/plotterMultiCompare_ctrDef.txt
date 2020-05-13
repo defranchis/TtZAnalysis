@@ -288,8 +288,8 @@
     yaxis.labelOffset = 0.005
     yaxis.tickLength  = 0.03
     yaxis.ndiv        = 505
-    yaxis.max         = 1.075
-    yaxis.min         = 0.925
+    yaxis.max         = 1.125
+    yaxis.min         = 0.875
     yaxis.log         = false
     yaxis.name        = Ratio
     

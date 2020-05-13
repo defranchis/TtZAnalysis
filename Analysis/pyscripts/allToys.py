@@ -9,7 +9,6 @@ base_dir = 'toys_workdir'
 filelist = os.listdir(base_dir)
 
 h_mass = ROOT.TH1F('h_mass','h_mass',700,160.,185.)
-h_xsec = ROOT.TH1F('h_xsec','h_xsec',500,730,930)
 
 firstfile = True
 nfile = 0
@@ -21,6 +20,15 @@ h_contrib = []
 maxToys=-1
 
 massFit = True
+mttFit = True
+
+if not mttFit:
+    h_xsec= ROOT.TH1F('h_xsec','h_xsec',500,730,930)
+else:
+    h_xsec_1= ROOT.TH1F('h_xsec_1','h_xsec_1',250,200,300)
+    h_xsec_2= ROOT.TH1F('h_xsec_2','h_xsec_2',250,280,380)
+    h_xsec_3= ROOT.TH1F('h_xsec_3','h_xsec_3',250,150,250)
+    h_xsec_4= ROOT.TH1F('h_xsec_4','h_xsec_4',250,0,100)
 
 for texfile in filelist:
     if not texfile.endswith('.tex'): continue
@@ -50,7 +58,10 @@ for texfile in filelist:
 
     for line in l1:
         l1_short.append(line)
-        if '(13TeV)' in line: break
+        if not mttFit: 
+            if '13TeV' in line: break
+        else : 
+            if '(\\mu_4)' in line: break
 
     name_all = []
     pull_all = []
@@ -98,10 +109,16 @@ for texfile in filelist:
             mass_pull = 172.5+float(pull)*3.
             h_mass.Fill(mass_pull)
 
-        if '(13TeV)' in name:
-            xsec_pull = 831.76+float(pull)
-            h_xsec.Fill(xsec_pull)
-
+        if not mttFit: 
+            if '13TeV' in name:
+                xsec_pull = float(pull)
+                h_xsec.Fill(xsec_pull)
+        elif '\\sigma_' in name:
+            xsec_pull = float(pull)
+            if   '(\\mu_1)' in name: h_xsec_1.Fill(250.29+xsec_pull)
+            elif '(\\mu_2)' in name: h_xsec_2.Fill(327.93+xsec_pull)
+            elif '(\\mu_3)' in name: h_xsec_3.Fill(197.98+xsec_pull)
+            elif '(\\mu_4)' in name: h_xsec_4.Fill(55.55+xsec_pull)
 
     if firstfile:
         firstfile = False
@@ -120,25 +137,68 @@ for texfile in filelist:
 
 print
 print round(h_mass.GetMean(),2), round(h_mass.GetRMS(),2)
-print round(h_xsec.GetMean(),1), round(h_xsec.GetRMS(),1), round(h_xsec.GetRMS()/h_xsec.GetMean()*100.,2), '%'
+if not mttFit: print round(h_xsec.GetMean(),1), round(h_xsec.GetRMS(),1), round(h_xsec.GetRMS()/h_xsec.GetMean()*100.,2), '%'
+else:
+    print round(h_xsec_1.GetMean(),1), round(h_xsec_1.GetRMS(),1), round(h_xsec_1.GetRMS()/h_xsec_1.GetMean()*100.,2), '%'
+    print round(h_xsec_2.GetMean(),1), round(h_xsec_2.GetRMS(),1), round(h_xsec_2.GetRMS()/h_xsec_2.GetMean()*100.,2), '%'
+    print round(h_xsec_3.GetMean(),1), round(h_xsec_3.GetRMS(),1), round(h_xsec_3.GetRMS()/h_xsec_3.GetMean()*100.,2), '%'
 print
+
+
+outdir = 'plotsToys/'
+if not os.path.exists(outdir):
+    os.makedirs(outdir)
+
 
 c = ROOT.TCanvas('c','c')
 h_mass.SetTitle('effect of MC stats on top MC mass;m_{t}^{MC} [GeV];a.u.')
 h_mass.DrawNormalized()
-c.Print('mass.png','png')
+c.Print(outdir+'mass.png','png')
 
-c.Clear()
-h_xsec.SetTitle('effect of MC stats on ttbar cross section;#sigma_{t#bar{t}} [pb];a.u.')
-h_xsec.DrawNormalized()
-c.Print('xsec.png','png')
+if not mttFit:
+    c.Clear()
+    h_xsec.SetTitle('effect of MC stats on ttbar cross section;#sigma_{t#bar{t}} [pb];a.u.')
+    h_xsec.DrawNormalized()
+    c.Print(outdir+'xsec.png','png')
 
-rootfile = ROOT.TFile('toys.root','recreate')
+else:
+    c.Clear()
+    h_xsec_1.SetTitle('effect of MC stats on ttbar cross section;#sigma_{t#bar{t}} mtt1 [pb];a.u.')
+    h_xsec_1.DrawNormalized()
+    c.Print(outdir+'xsec_1.png','png')
+
+    c.Clear()
+    h_xsec_2.SetTitle('effect of MC stats on ttbar cross section;#sigma_{t#bar{t}} mtt2 [pb];a.u.')
+    h_xsec_2.DrawNormalized()
+    c.Print(outdir+'xsec_2.png','png')
+
+    c.Clear()
+    h_xsec_3.SetTitle('effect of MC stats on ttbar cross section;#sigma_{t#bar{t}} mtt3 [pb];a.u.')
+    h_xsec_3.DrawNormalized()
+    c.Print(outdir+'xsec_3.png','png')
+
+    c.Clear()
+    h_xsec_4.SetTitle('effect of MC stats on ttbar cross section;#sigma_{t#bar{t}} mtt4 [pb];a.u.')
+    h_xsec_4.DrawNormalized()
+    c.Print(outdir+'xsec_4.png','png')
+
+
+rootfile = ROOT.TFile(outdir+'toys.root','recreate')
 h_mass.Write()
-h_xsec.Write()
+if not mttFit: h_xsec.Write()
+else:
+    h_xsec_1.Write()
+    h_xsec_2.Write()
+    h_xsec_3.Write()
+    h_xsec_4.Write()
+
 
 for h in h_pull: h.Write()
 for h in h_constr: h.Write()
 for h in h_contrib: h.Write()
 
 rootfile.Close()
+
+print
+print nfile, 'toys analyzed'
+print

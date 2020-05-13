@@ -3,16 +3,17 @@
 ############### SETUP ##################
 
 massfit=true
+mttfit=true
 
-input_dir=20180802_1156_tW_norm/output
+input_dir=last/output
 
 
 if [ "$massfit" == true ]; then
-    config=emu_mtop_13TeV_preapp_rebin_mlb_more.txt
+    config=emu_mtop_13TeV_kinReco_mtt_4bins_coarse_fullPS.txt
     input_dir_pre=/nfs/dust/cms/user/defrancm/MassExtraction2016/Till/CMSSW_8_0_26_patch2/src/TtZAnalysis/Analysis/workdir
     inputfiles=emu_13TeV_172.5_nominal_syst.ztop
-    nToys=150
-    nJobs=250
+    nToys=100
+    nJobs=350
 elif [ "$massfit" == false ]; then
     config=datasets_13_TeV.txt
     input_dir_pre=/nfs/dust/cms/user/tarndt/AnalysisWorkdir
@@ -31,6 +32,7 @@ echo
 echo "running $nJobs jobs with $nToys toys each"
 echo
 echo "mass fit = $massfit"
+echo "mtt fit = $mttfit"
 echo "fit config file: $config"
 echo
 echo "input directory: $input_dir_pre/$input_dir"
@@ -50,6 +52,7 @@ sed -i "s/#NTOYS#/$nToys/"      submit_HTCondor.submit
 sed -i "s/#NJOBS#/$nJobs/"      submit_HTCondor.submit
 sed -i "s/#CONFIG#/$config/"    submit_HTCondor.submit
 sed -i "s/#MASSFIT#/$massfit/"  submit_HTCondor.submit
+sed -i "s/#MTTFIT#/$mttfit/"    submit_HTCondor.submit
 
 if [ -f *~ ]; then
     rm *~

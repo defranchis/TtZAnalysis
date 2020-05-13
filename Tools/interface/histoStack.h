@@ -113,6 +113,7 @@ public:
 	void multiplyAllMCNorms(float);
 	void addGlobalRelMCError(TString,double);   //! adds a global systematic variation to the systematics stored (e.g. lumi) is o+err
 	void addGlobalRelBGError(TString,double);   //! adds a global systematic variation to the systematics stored (e.g. lumi) is o+err
+	void addGlobalRelSignalError(TString,double);
 
 	void addRelErrorToContribution(double err, const TString& contributionname, TString nameprefix="BG", bool lognormal=false);
 	void addRelErrorToContributions(double err, const std::vector<size_t> contribidxs, TString nameprefix="BG", bool lognormal=false);
@@ -211,6 +212,7 @@ public:
 	size_t getDataIdx()const;
 
 	histo1D getSignalContainer()const;
+	histo1D getSignalContainer(size_t mttbin)const;
 	histo1D getBackgroundContainer()const;
 	histo1D getDataContainer()const;
 

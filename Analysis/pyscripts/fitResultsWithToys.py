@@ -7,13 +7,18 @@ from ROOT import *
 gStyle.SetOptStat(0000)
 gStyle.SetErrorX(0)
 
-f1 = open('xsecFit_tab13TeV.tex','r')
+massFit = True
+mttFit = True
+preliminary = False
+suppl = True
+cms = True
+
+if not massFit: f1 = open('xsecFit_tab13TeV.tex','r')
+else: f1 = open('xsecFit_tab_TOPMASS.tex','r')
 l1 = f1.read().splitlines()
 
 inFile = ROOT.TFile('toys.root','READ')
 
-massFit = True
-preliminary = False
 
 # h = inFile.FindObjectAny('top mass _pull')
 # print h.GetMean(), h.GetRMS()
@@ -23,7 +28,7 @@ for i in range(0,3): del l1[0]
 l1_short = []
 
 for line in l1:
-    if '(13TeV)' in line: break
+    if '\\sigma_{t\\bar{t}}' in line: break
     l1_short.append(line)
 
 name_all = []
@@ -32,6 +37,13 @@ constraint_all = []
 contribution_all = []
 stat_toys_all = []
 central_toys_all = []
+
+name_kin = []
+pull_kin = []
+constraint_kin = []
+contribution_kin = []
+stat_toys_kin = []
+central_toys_kin = []
 
 name_pdf = []
 pull_pdf = []
@@ -109,7 +121,7 @@ for line in l1_short:
     contribution = str( TString(contribution).ReplaceAll('{','') )
     contribution = str( TString(contribution).ReplaceAll('}','') )
     if 'mass' in name: continue
-    if not massFit: 
+    if not massFit or mttFit: 
         if 'NLO'  in name: continue
     tmpname = TString(name);
     tmpname.ReplaceAll('#','')
@@ -146,6 +158,13 @@ for line in l1_short:
         contribution_mod.append(float(contribution))
         stat_toys_mod.append(h.GetRMS())
         central_toys_mod.append(h.GetMean())
+    elif 'Kin' in name:
+        name_kin.append(name)
+        pull_kin.append(float(pull))
+        constraint_kin.append(float(constrain))
+        contribution_kin.append(float(contribution))
+        stat_toys_kin.append(h.GetRMS())
+        central_toys_kin.append(h.GetMean())
     else:
         name_all.append(name)
         pull_all.append(float(pull))
@@ -155,18 +174,21 @@ for line in l1_short:
         central_toys_all.append(h.GetMean())
 
 histo_all = ROOT.TH1F('histo_all','histo_all',len(name_all),-.5,-.5+len(name_all))
+histo_kin = ROOT.TH1F('histo_kin','histo_kin',len(name_kin),-.5,-.5+len(name_kin))
 histo_pdf = ROOT.TH1F('histo_pdf','histo_pdf',len(name_pdf),-.5,-.5+len(name_pdf))
 histo_jes = ROOT.TH1F('histo_jes','histo_jes',len(name_jes),-.5,-.5+len(name_jes))
 histo_btag = ROOT.TH1F('histo_btag','histo_btag',len(name_btag),-.5,-.5+len(name_btag))
 histo_mod = ROOT.TH1F('histo_mod','histo_mod',len(name_mod),-.5,-.5+len(name_mod))
 
 histo_stat_all = ROOT.TH1F('histo_stat_all','histo_stat_all',len(name_all),-.5,-.5+len(name_all))
+histo_stat_kin = ROOT.TH1F('histo_stat_kin','histo_stat_kin',len(name_kin),-.5,-.5+len(name_kin))
 histo_stat_pdf = ROOT.TH1F('histo_stat_pdf','histo_stat_pdf',len(name_pdf),-.5,-.5+len(name_pdf))
 histo_stat_jes = ROOT.TH1F('histo_stat_jes','histo_stat_jes',len(name_jes),-.5,-.5+len(name_jes))
 histo_stat_btag = ROOT.TH1F('histo_stat_btag','histo_stat_btag',len(name_btag),-.5,-.5+len(name_btag))
 histo_stat_mod = ROOT.TH1F('histo_stat_mod','histo_stat_mod',len(name_mod),-.5,-.5+len(name_mod))
 
 histo_central_all = ROOT.TH1F('histo_central_all','histo_central_all',len(name_all),-.5,-.5+len(name_all))
+histo_central_kin = ROOT.TH1F('histo_central_kin','histo_central_kin',len(name_kin),-.5,-.5+len(name_kin))
 histo_central_pdf = ROOT.TH1F('histo_central_pdf','histo_central_pdf',len(name_pdf),-.5,-.5+len(name_pdf))
 histo_central_jes = ROOT.TH1F('histo_central_jes','histo_central_jes',len(name_jes),-.5,-.5+len(name_jes))
 histo_central_btag = ROOT.TH1F('histo_central_btag','histo_central_btag',len(name_btag),-.5,-.5+len(name_btag))
@@ -174,6 +196,7 @@ histo_central_mod = ROOT.TH1F('histo_central_mod','histo_central_mod',len(name_m
 
 
 for i in range(0,len(name_all)):
+
     histo_all.Fill(i,pull_all[i])
     histo_all.GetXaxis().SetBinLabel(i+1,name_all[i])
     histo_all.SetBinError(i+1,constraint_all[i])
@@ -185,6 +208,26 @@ for i in range(0,len(name_all)):
     histo_central_all.Fill(i,central_toys_all[i])
     histo_central_all.GetXaxis().SetBinLabel(i+1,name_all[i])
     histo_central_all.SetBinError(i+1,0.)
+
+for i in range(0,len(name_kin)):
+
+    temp_name=name_kin[i]
+    temp_name = str( TString(temp_name).ReplaceAll('$','') )
+    temp_name = str( TString(temp_name).ReplaceAll('\mu_','signal ') )
+    temp_name = str( TString(temp_name).ReplaceAll('mtt reco bin','bin') )
+
+    histo_kin.Fill(i,pull_kin[i])
+    histo_kin.GetXaxis().SetBinLabel(i+1,temp_name)
+    histo_kin.SetBinError(i+1,constraint_kin[i])
+
+    histo_stat_kin.Fill(i,pull_kin[i])
+    histo_stat_kin.GetXaxis().SetBinLabel(i+1,temp_name)
+    histo_stat_kin.SetBinError(i+1,(constraint_kin[i]**2+stat_toys_kin[i]**2)**.5)
+
+    histo_central_kin.Fill(i,central_toys_kin[i])
+    histo_central_kin.GetXaxis().SetBinLabel(i+1,temp_name)
+    histo_central_kin.SetBinError(i+1,0.)
+
 
 
 for i in range(0,len(name_pdf)):
@@ -263,6 +306,14 @@ line_down_all.SetLineColor(kGreen+2)
 line_up_all.SetLineWidth(2)
 line_down_all.SetLineWidth(2)
 
+line_up_kin = ROOT.TLine(histo_kin.GetBinLowEdge(1),1.,histo_kin.GetBinLowEdge(histo_kin.GetNbinsX())+histo_kin.GetBinWidth(1),1.)
+line_down_kin = ROOT.TLine(histo_kin.GetBinLowEdge(1),-1.,histo_kin.GetBinLowEdge(histo_kin.GetNbinsX())+histo_kin.GetBinWidth(1),-1.)
+line_up_kin.SetLineColor(kGreen+2)
+line_down_kin.SetLineColor(kGreen+2)
+line_up_kin.SetLineWidth(2)
+line_down_kin.SetLineWidth(2)
+
+
 line_up_pdf = ROOT.TLine(histo_pdf.GetBinLowEdge(1),1.,histo_pdf.GetBinLowEdge(histo_pdf.GetNbinsX())+histo_pdf.GetBinWidth(1),1.)
 line_down_pdf = ROOT.TLine(histo_pdf.GetBinLowEdge(1),-1.,histo_pdf.GetBinLowEdge(histo_pdf.GetNbinsX())+histo_pdf.GetBinWidth(1),-1.)
 line_up_pdf.SetLineColor(kGreen+2)
@@ -326,12 +377,56 @@ line_up_all.Draw('same')
 line_down_all.Draw('same')
 histo_all.Draw('psameE1')
 
-latexLabel1.DrawLatex(0.11, 0.92, "CMS")
+# latexLabel1.DrawLatex(0.11, 0.92, "CMS")
 latexLabel2.DrawLatex(0.70, 0.92, "35.9 fb^{-1} (13 TeV)")
 latexLabel2.DrawLatex(0.59, 0.84, "experimental uncertainties")
 
 c1.SaveAs('summaryPlotsToys/all_fitSummary.pdf','pdf')
 c1.SaveAs('summaryPlotsToys/all_fitSummary.png','png')
+c1.Clear()
+
+###
+
+histo_kin.SetTitle('')
+histo_kin.GetYaxis().SetTitle('Normalized pull')
+histo_kin.SetMaximum(2.5)
+histo_kin.SetMinimum(-3.0)
+histo_kin.SetMarkerStyle(8)
+histo_kin.SetMarkerColor(kBlue+1)
+histo_kin.SetLineWidth(2)
+histo_kin.SetLineColor(kBlue+1)
+
+histo_stat_kin.SetTitle('')
+histo_stat_kin.GetYaxis().SetTitle('Normalized pull')
+histo_stat_kin.SetMaximum(2.5)
+histo_stat_kin.SetMinimum(-3.0)
+histo_stat_kin.SetMarkerStyle(8)
+histo_stat_kin.SetMarkerColor(kBlue+1)
+histo_stat_kin.SetLineWidth(2)
+histo_stat_kin.SetLineColor(kRed)
+
+histo_central_kin.SetTitle('')
+histo_central_kin.GetYaxis().SetTitle('Normalized pull')
+histo_central_kin.SetMaximum(2.5)
+histo_central_kin.SetMinimum(-3.0)
+histo_central_kin.SetMarkerStyle(1)
+histo_central_kin.SetMarkerColor(kGreen+1)
+histo_central_kin.SetLineWidth(2)
+histo_central_kin.SetLineColor(kRed)
+
+histo_central_kin.Draw('p')
+histo_stat_kin.Draw('psameE1')
+histo_kin.Draw('psameE1')
+line_up_kin.Draw('same')
+line_down_kin.Draw('same')
+histo_kin.Draw('psameE1')
+
+# latexLabel1.DrawLatex(0.11, 0.92, "CMS")
+latexLabel2.DrawLatex(0.70, 0.92, "35.9 fb^{-1} (13 TeV)")
+latexLabel2.DrawLatex(0.59, 0.84, "kin. reco. uncertainties")
+
+c1.SaveAs('summaryPlotsToys/kin_fitSummary.pdf','pdf')
+c1.SaveAs('summaryPlotsToys/kin_fitSummary.png','png')
 c1.Clear()
 
 ###
@@ -370,7 +465,7 @@ line_up_pdf.Draw('same')
 line_down_pdf.Draw('same')
 histo_pdf.Draw('psameE1')
 
-latexLabel1.DrawLatex(0.11, 0.92, "CMS")
+# latexLabel1.DrawLatex(0.11, 0.92, "CMS")
 latexLabel2.DrawLatex(0.70, 0.92, "35.9 fb^{-1} (13 TeV)")
 latexLabel2.DrawLatex(0.68, 0.84, "PDF uncertainties")
 
@@ -383,7 +478,7 @@ c1.Clear()
 
 histo_jes.SetTitle('')
 histo_jes.GetYaxis().SetTitle('Normalized pull')
-histo_jes.SetMaximum(2.1)
+histo_jes.SetMaximum(2.3)
 histo_jes.SetMinimum(-2.0)
 histo_jes.SetMarkerStyle(8)
 histo_jes.SetMarkerColor(kBlue+1)
@@ -392,7 +487,7 @@ histo_jes.SetLineColor(kBlue+1)
 
 histo_stat_jes.SetTitle('')
 histo_stat_jes.GetYaxis().SetTitle('Normalized pull')
-histo_stat_jes.SetMaximum(2.1)
+histo_stat_jes.SetMaximum(2.3)
 histo_stat_jes.SetMinimum(-2.0)
 histo_stat_jes.SetMarkerStyle(8)
 histo_stat_jes.SetMarkerColor(kBlue+1)
@@ -401,7 +496,7 @@ histo_stat_jes.SetLineColor(kRed)
 
 histo_central_jes.SetTitle('')
 histo_central_jes.GetYaxis().SetTitle('Normalized pull')
-histo_central_jes.SetMaximum(2.1)
+histo_central_jes.SetMaximum(2.3)
 histo_central_jes.SetMinimum(-2.0)
 histo_central_jes.SetMarkerStyle(1)
 histo_central_jes.SetMarkerColor(kGreen+1)
@@ -415,7 +510,7 @@ line_up_jes.Draw('same')
 line_down_jes.Draw('same')
 histo_jes.Draw('psameE1')
 
-latexLabel1.DrawLatex(0.11, 0.92, "CMS")
+# latexLabel1.DrawLatex(0.11, 0.92, "CMS")
 latexLabel2.DrawLatex(0.70, 0.92, "35.9 fb^{-1} (13 TeV)")
 latexLabel2.DrawLatex(0.69, 0.82, "JES uncertainties")
 
@@ -448,6 +543,9 @@ histo_central_btag.SetTitle('')
 histo_central_btag.GetYaxis().SetTitle('Normalized pull')
 histo_central_btag.SetMaximum(1.9)
 histo_central_btag.SetMinimum(-1.3)
+if not cms:
+    histo_central_btag.SetMaximum(2.4)
+    histo_central_btag.SetMinimum(-1.4)
 histo_central_btag.SetMarkerStyle(1)
 histo_central_btag.SetMarkerColor(kGreen+1)
 histo_central_btag.SetLineWidth(2)
@@ -460,7 +558,7 @@ line_up_btag.Draw('same')
 line_down_btag.Draw('same')
 histo_btag.Draw('psameE1')
 
-latexLabel1.DrawLatex(0.11, 0.92, "CMS")
+# latexLabel1.DrawLatex(0.11, 0.92, "CMS")
 latexLabel2.DrawLatex(0.70, 0.92, "35.9 fb^{-1} (13 TeV)")
 latexLabel2.DrawLatex(0.13, 0.83, "b-tagging uncertainties")
 
@@ -518,8 +616,13 @@ line_up_mod.Draw('same')
 line_down_mod.Draw('same')
 histo_mod.Draw('psameE1')
 
-latexLabel1.DrawLatex(0.095, 0.92, "CMS")
-if preliminary: latexLabel3.DrawLatex(0.2, 0.92 , "#it{Preliminary}")
+if cms: 
+    latexLabel1.DrawLatex(0.095, 0.92, "CMS")
+    if preliminary: latexLabel3.DrawLatex(0.2, 0.92 , "#it{Preliminary}")
+    elif suppl:
+        latexLabel3.DrawLatex(0.18, 0.92 , "#it{Supplementary}")
+        latexLabel2.DrawLatex(0.35, 0.92, "arXiv:1909.09193")
+
 latexLabel2.DrawLatex(0.765, 0.92, "35.9 fb^{-1} (13 TeV)")
 # latexLabel2.DrawLatex(0.62, 0.83, "modelling uncertainties")
 latexLabel2.SetTextSize(0.045)

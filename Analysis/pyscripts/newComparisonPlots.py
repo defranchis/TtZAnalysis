@@ -6,6 +6,9 @@ from ROOT import *
 
 gStyle.SetOptStat(0000)
 
+mttFit=True
+mttbin=3
+
 if len(sys.argv) < 2:
     print
     print 'ERROR: please provide input directories!'
@@ -30,6 +33,9 @@ if sys.argv[3] == 'mass':
     f1 = open(dir1+'/xsecFit_tab_TOPMASS.tex','r')
     f2 = open(dir2+'/xsecFit_tab_TOPMASS.tex','r')
 
+elif mttFit:
+    f1 = open(dir1+'/xsecFit_tab13TeV_mtt'+str(mttbin)+'.tex','r')
+    f2 = open(dir2+'/xsecFit_tab13TeV_mtt'+str(mttbin)+'.tex','r')
 else:
     f1 = open(dir1+'/xsecFit_tab13TeV.tex','r')
     f2 = open(dir2+'/xsecFit_tab13TeV.tex','r')
@@ -50,13 +56,13 @@ l1_short = []
 l2_short = []
 
 for line in l1:
-    if '(13TeV)' in line:
-        break
+    if mttFit and 'sigma' in line: break
+    if not mttFit and '13TeV' in line: break
     l1_short.append(line)
 
 for line in l2:
-    if '(13TeV)' in line:
-        break
+    if mttFit and 'sigma' in line: break
+    if not mttFit and '13TeV' in line: break
     l2_short.append(line)
 
 
@@ -240,16 +246,16 @@ for i in range(0,len(name1_mod)):
 
 
 histo1_all.SetMarkerStyle(8)
-histo1_all.SetMarkerColor(kRed)
+histo1_all.SetMarkerColor(kBlue)
 
 histo1_jes.SetMarkerStyle(8)
-histo1_jes.SetMarkerColor(kRed)
+histo1_jes.SetMarkerColor(kBlue)
 
 histo1_pdf.SetMarkerStyle(8)
-histo1_pdf.SetMarkerColor(kRed)
+histo1_pdf.SetMarkerColor(kBlue)
 
 histo1_mod.SetMarkerStyle(8)
-histo1_mod.SetMarkerColor(kRed)
+histo1_mod.SetMarkerColor(kBlue)
 
 ###
 
@@ -279,13 +285,13 @@ for i in range(0,len(name2_mod)):
     histo2_mod.SetBinError(i+1,constraint2_mod[i])
 
 histo2_all.SetMarkerStyle(8)
-histo2_all.SetMarkerColor(kBlue)
+histo2_all.SetMarkerColor(kRed)
 histo2_jes.SetMarkerStyle(8)
-histo2_jes.SetMarkerColor(kBlue)
+histo2_jes.SetMarkerColor(kRed)
 histo2_pdf.SetMarkerStyle(8)
-histo2_pdf.SetMarkerColor(kBlue)
+histo2_pdf.SetMarkerColor(kRed)
 histo2_mod.SetMarkerStyle(8)
-histo2_mod.SetMarkerColor(kBlue)
+histo2_mod.SetMarkerColor(kRed)
 
 line_up_all = ROOT.TLine(histo1_all.GetBinLowEdge(1),1.,histo1_all.GetBinLowEdge(histo1_all.GetNbinsX())+histo1_all.GetBinWidth(1),1.)
 line_down_all = ROOT.TLine(histo1_all.GetBinLowEdge(1),-1.,histo1_all.GetBinLowEdge(histo1_all.GetNbinsX())+histo1_all.GetBinWidth(1),-1.)
@@ -648,7 +654,7 @@ c1.SaveAs(outDir+'/pdf_contributions.png','png')
 c1.Clear()
 c1.SetGrid()
 histo1_jes.SetTitle('contributions - JES')
-histo1_jes.SetMaximum(.2)
+histo1_jes.SetMaximum(.9)
 histo1_jes.SetMinimum(-.05)
 histo1_jes.Draw('p')
 histo2_jes.Draw('psame')
@@ -659,7 +665,7 @@ c1.SaveAs(outDir+'/jes_contributions.png','png')
 c1.Clear()
 c1.SetGrid()
 histo1_mod.SetTitle('contributions - MOD')
-histo1_mod.SetMaximum(.2)
+histo1_mod.SetMaximum(1.5)
 histo1_mod.SetMinimum(-.05)
 histo1_mod.Draw('p')
 histo2_mod.Draw('psame')

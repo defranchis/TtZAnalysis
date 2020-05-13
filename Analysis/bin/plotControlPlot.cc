@@ -31,6 +31,8 @@ invokeApplication(){
 
 	const bool printToRoot = parser->getOpt<bool>("-root",false,"creates a root file with a TCanvas instead of a pdf");
 
+	const std::string remove=parser->getOpt<std::string>("-re","","remove systematic uncertainty");
+
 	std::vector<TString> tmpv=parser->getRest<TString>();
 	parser->doneParsing();
 	if(tmpv.size()!=1){
@@ -108,8 +110,10 @@ invokeApplication(){
 			stack.multiplyAllMCNorms(integral_data/integral_mc);
 		}
 
-
-
+                if (remove!=""){
+                    stack.removeError(remove+"_up");
+                    stack.removeError(remove+"_down");
+                }
 
 		TString outname=stack.getFormattedName();
 		outname+=suffix;
