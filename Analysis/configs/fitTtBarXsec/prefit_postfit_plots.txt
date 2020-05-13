@@ -19,7 +19,7 @@
 #  
 
 
-
+0: m_lb min step 8 =  m_lb min 1 b-jets step 8 + m_lb min 2 b-jets step 8: /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots.txt
 
 0 :total 0,0 b-jets step 8 = total 0,0 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots.txt
 0 :total 0,1 b-jets step 8 = total 0,1 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots.txt
@@ -52,7 +52,7 @@
 2 :third jet pt 2,3 b-jets step 8 = third jet pt 2,3 b-jets step 8 : /src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_prefit_postfitPlots.txt
 
 
-1: m_lb min step 8 =  m_lb min 1 b-jets step 8 + m_lb min 2 b-jets step 8
+
 
 
 0: selected b-jet multi step 8 = selected b-jet multi 0 b-jets step 8 + selected b-jet multi 1 b-jets step 8 + selected b-jet multi 2 b-jets step 8

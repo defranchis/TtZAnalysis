@@ -782,7 +782,10 @@ void ttbarXsecFitter::printVariations(size_t bjetcat,size_t datasetidx,const std
 		}
 		plotterMultiCompare pl;
                 if (emuOnly_ || bjetcat==0){
-                    pl.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiCompare_emu.txt");
+                    if (bjetcat==0) pl.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiCompare_emu_0b.txt");
+                    else if (bjetcat==1) pl.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiCompare_emu_1b.txt");
+                    else if (bjetcat==2) pl.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiCompare_emu_2b.txt");
+                    else pl.readStyleFromFileInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiCompare_emu.txt");
                     pl.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/plotterMultiStack_emu.txt",
                                             toString(bjetcat)+"btag"+toString( datasets_.at(datasetidx).getName()));
                 }

@@ -9,6 +9,15 @@
            0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
 
 [end - textBoxes]
+[textBoxes - CMSPaperSplit03Left13TeVemunoCMS]
+           0.42,   0.943,  e^{#pm}#mu^{#mp} channel,   0.05,  42, 31
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
+[textBoxes - CMSPaperSplit03Left13TeVnoCMS]
+           0.9,   0.943,   35.9 fb^{-1} (13 TeV),   0.048,  42, 31
+
+[end - textBoxes]
 
 [textBoxes - CMSPaperSplit03Left13TeVemurun]
            0.185,   0.943,   CMS,   0.06, 61, 11

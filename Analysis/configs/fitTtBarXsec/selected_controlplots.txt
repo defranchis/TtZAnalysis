@@ -10,6 +10,20 @@ $
 
 defaultStyle = src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_standard.txt
 
+[plot - m_lb min step 8]
+
+       [plotterControlPlot]
+       nolegend = false
+       [end - plotterControlPlot]
+       [textBoxes - boxes]
+          externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
+          externalMarker = CMSPaperSplit03Left13TeVnoCMS
+       [end - textBoxes]
+       [plotStyle - Upper]
+        yaxis.name = Events/GeV
+       [end plotStyle]
+
+
 [plot - lead lepton eta step 8]
 
        [textBoxes - boxes]
@@ -564,18 +578,6 @@ defaultStyle = src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_standa
         [end plotStyle]
 
 
-[plot - m_lb min step 8]
-
-       [plotterControlPlot]
-       nolegend = false
-       [end - plotterControlPlot]
-       [textBoxes - boxes]
-          externalFile = CMSSW_BASE/src/TtZAnalysis/Analysis/configs/general/CMS_boxes.txt
-          externalMarker = CMSPaperSplit03Left13TeVemu
-       [end - textBoxes]
-        [plotStyle - Ratio]
-                xaxis.name = m_{l\:\mathrm{b}}^{\mathrm{min}} \: [\mathrm{GeV}]
-        [end plotStyle]
 
 [end - additional plots]
 
