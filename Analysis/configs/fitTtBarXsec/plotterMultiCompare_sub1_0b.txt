@@ -1,0 +1,35 @@
+
+
+[plotStyle - Upper]
+
+    topMargin     = 0.1
+    leftMargin    = 0.15
+    rightMargin   = 0.0
+    yaxis.log         = true
+    
+    
+    yaxis.titleOffset = 1.4
+    yaxis.labelOffset = 0.005
+    yaxis.tickLength  = 0.03
+
+    yaxis.name = Events / GeV
+
+
+[end plotStyle]
+  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+[plotStyle - Ratio]
+    
+    topMargin     = 0.01
+    leftMargin    = 0.15
+    rightMargin   = 0.0
+    
+
+    yaxis.labelSize   = 0.05
+    yaxis.titleOffset = 1.4
+    yaxis.labelOffset = 0.005
+
+    xaxis.name = Additional jet p_{T} [GeV]
+    
+
+[end plotStyle]
+    
