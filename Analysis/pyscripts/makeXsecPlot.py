@@ -9,7 +9,7 @@ th_xsec_164 = [261.4, 304.4, 177.3, 46.6]
 th_xsec_162 = [294.1, 314.8, 181.0, 47.3]
 th_xsec_166 = [231.4, 294.7, 173.3, 46.2]
 
-bins = [340,420,550,810,2000]
+bins = [305,420,550,810,1995]
 scales = [384.0, 476.2, 644.3, 1023.6]
 
 rFile = TFile('toys.root')
@@ -120,7 +120,7 @@ leg2.AddEntry(g_th_166,'m_{t}(m_{t}) = 166 GeV','pl')
 c = TCanvas()
 c.SetLeftMargin(0.14)
 c.SetBottomMargin(0.14)
-c.SetRightMargin(0.03)
+c.SetRightMargin(0.04)
 c.SetTopMargin(0.08)
 g_th_162.GetXaxis().SetTitle('m_{t#bar{t}} [GeV]')
 g_th_162.GetYaxis().SetTitle('d#sigma_{t#bar{t}} / dm_{t#bar{t}} #Deltam_{t#bar{t}} [pb]')
@@ -131,10 +131,12 @@ g_th_162.GetXaxis().SetTitleOffset(1)
 g_th_162.GetYaxis().SetLabelSize(0.05)
 g_th_162.GetXaxis().SetLabelSize(0.05)
 g_th_162.GetXaxis().SetRangeUser(bins[0],bins[len(bins)-1])
+g_th_162.GetXaxis().SetLimits(137,2162)
 g_th_162.SetMaximum(360)
 
 
 g_th_162.Draw('ap')
+g_th_162.Draw('psame')
 g_exp.Draw('psame')
 g_th_164.Draw('psame')
 g_th_166.Draw('psame')
@@ -144,12 +146,12 @@ leg2.Draw('same')
 
 
 if cms: latexLabel1.DrawLatex(0.16, 0.94, "CMS")
-latexLabel2.DrawLatex(0.77, 0.94, "35.9 fb^{-1} (13 TeV)")
+latexLabel2.DrawLatex(0.76, 0.94, "35.9 fb^{-1} (13 TeV)")
 if preliminary: latexLabel3.DrawLatex(0.215, 0.92 , "#it{Preliminary}")
 
-latexLabel3.DrawLatex(.52, 0.67, "NLO predictions in #bar{MS} scheme")
-latexLabel3.DrawLatex(.52, 0.62, "#mu_{r} = #mu_{f} = m_{t}")
-latexLabel3.DrawLatex(.52, 0.54, "ABMP16_5_nlo PDF set")
+latexLabel3.DrawLatex(.523, 0.67, "NLO predictions in #bar{MS} scheme")
+latexLabel3.DrawLatex(.523, 0.62, "#mu_{r} = #mu_{f} = m_{t}")
+latexLabel3.DrawLatex(.523, 0.54, "ABMP16_5_nlo PDF set")
 
 outdir = 'xsec_plots'
 
