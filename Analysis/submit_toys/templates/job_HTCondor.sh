@@ -8,17 +8,14 @@ seed=$1
 nToys=$2
 config=$3
 mass_fit=$4
-mtt_fit=$5
 
 echo "seed -1 =" $1
 echo "ntoys =" $2
 echo "config =" $3
 echo "mass fit =" $4
-echo "mtt fit =" $5
 echo
-if [ "$mtt_fit" == true ]; then
-    fitTtBarXsec -i $config --emu -M --mttfit --noplots --onlytotal --nToys $nToys --seed $((seed+1))
-elif [ "$mass_fit" == true ]; then
+
+if [ "$mass_fit" == true ]; then
     fitTtBarXsec -i $config --emu -M --noplots --onlytotal --nToys $nToys --seed $((seed+1))
 else
     fitTtBarXsec -i $config --noplots --onlytotal --nToys $nToys --seed $((seed+1))

@@ -72,8 +72,7 @@ public:
 	 * Function only works for data-like histos with stat=sqrt(events)
 	 * Uses Poisson likelihood, neglecting MC statistics
 	 */
-
-	simpleFitter fitToConstHisto(const histo1D&, const bool usepriors = false, const bool fitToMC = false );
+	simpleFitter fitToConstHisto(const histo1D&, const bool usepriors = false );
 
         void setAllParameterLimits(simpleFitter&);
 

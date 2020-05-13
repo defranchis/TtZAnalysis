@@ -19,7 +19,6 @@
 #include "TtZAnalysis/Tools/interface/texTabler.h"
 #include "limits.h"
 
-
 namespace ztop{
 
 bool ttbarXsecFitter::debug=false;
@@ -123,9 +122,8 @@ void ttbarXsecFitter::readInput(const std::string & configfilename){
 	}
 	//now idices are fixed
 	for(size_t i=0;i<datasets_.size();i++){
-            if (!mttfit_) datasets_.at(i).createXsecIdx();
-            else datasets_.at(i).createXsecIdxs();
-            datasets_.at(i).createMassIdx();
+		datasets_.at(i).createXsecIdx();
+                datasets_.at(i).createMassIdx();
 
 	}
 	createContinuousDependencies();
@@ -170,15 +168,13 @@ void ttbarXsecFitter::readInput(const std::string & configfilename){
 				throw std::runtime_error(errstr);
 			}
 		}
-                            
 	}
-
 
 	if(!removesyst_){
 		fr.setStartMarker("[ full extrapolation ]");
 		fr.setEndMarker("[ end - full extrapolation ]");
 		fr.setDelimiter(",");
-	fr.readFile(configfilename);
+		fr.readFile(configfilename);
 		for(size_t i=0;i<fr.nLines();i++){
 			if(fr.nEntries(i)<1)
 				continue;
@@ -214,7 +210,7 @@ void ttbarXsecFitter::dataset::createToysFromSyst(histo1D::pseudodatamodes mode)
             if(debug) std::cout << "invoked new random" <<std::endl;
 
         }
-        // careful: hardcoded!!! always check
+        // careful: hard coded!!! always check
         parent_->var_for_toys_ = {"TT_ISRSCALE_down","TT_ISRSCALE_up","TT_FSRSCALE_down","TT_FSRSCALE_up",
                                   "ST_ISRSCALE_down","ST_ISRSCALE_up","ST_FSRSCALE_down","ST_FSRSCALE_up",
                                   "TT_MATCH_down","TT_MATCH_up","TT_TTTUNE_down","TT_TTTUNE_up","TT_FRAG_PETERSON_up",
@@ -227,16 +223,9 @@ void ttbarXsecFitter::dataset::createToysFromSyst(histo1D::pseudodatamodes mode)
 
         datacontsorig_nbjets_=dataconts_nbjets_; //safe originals
         backgroundcontsorig_nbjets_=backgroundconts_nbjets_; //safe originals
-        if (!parent_->mttfit_){
-            signalcontsorig_nbjets_=signalconts_nbjets_; //safe originals
-            signalpsmigcontsorig_nbjets_=signalpsmigconts_nbjets_; //safe originals
-            signalvisgencontsorig_nbjets_=signalvisgenconts_nbjets_; //safe originals
-        }
-        else{
-            signalcontsorig_nbjets_v_=signalconts_nbjets_v_; //safe originals
-            signalpsmigcontsorig_nbjets_v_=signalpsmigconts_nbjets_v_; //safe originals
-            signalvisgencontsorig_nbjets_v_=signalvisgenconts_nbjets_v_; //safe originals
-        }
+        signalcontsorig_nbjets_=signalconts_nbjets_; //safe originals
+        signalpsmigcontsorig_nbjets_=signalpsmigconts_nbjets_; //safe originals
+        signalvisgencontsorig_nbjets_=signalvisgenconts_nbjets_; //safe originals
 
         std::cout << "Preparing toy syst experiments mode for dataset " << name_  <<std::endl;
         if(!debug)simpleFitter::printlevel=-1;
@@ -253,19 +242,10 @@ void ttbarXsecFitter::dataset::createToysFromSyst(histo1D::pseudodatamodes mode)
 
 
         // // performing toys on nominal
-        if (!parent_->mttfit_){
-            signalconts_nbjets_.at(i)=signalcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
-            signalpsmigconts_nbjets_.at(i)=signalpsmigcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
-            signalvisgenconts_nbjets_.at(i)=signalvisgencontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
-            // backgroundconts_nbjets_.at(i)=backgroundcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
-        }
-        else{
-            for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s){
-                signalconts_nbjets_v_.at(s).at(i)=signalcontsorig_nbjets_v_.at(s).at(i).createPseudoExperiment(random_,0,mode,-1);
-                signalpsmigconts_nbjets_v_.at(s).at(i)=signalpsmigcontsorig_nbjets_v_.at(s).at(i).createPseudoExperiment(random_,0,mode,-1);
-                signalvisgenconts_nbjets_v_.at(s).at(i)=signalvisgencontsorig_nbjets_v_.at(s).at(i).createPseudoExperiment(random_,0,mode,-1);
-            }
-        }
+        signalconts_nbjets_.at(i)=signalcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
+        signalpsmigconts_nbjets_.at(i)=signalpsmigcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
+        signalvisgenconts_nbjets_.at(i)=signalvisgencontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
+        // backgroundconts_nbjets_.at(i)=backgroundcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,-1);
 
         std::vector<histo1D> bgs = backgroundconts_split_nbjets_.at(i);
 
@@ -275,38 +255,19 @@ void ttbarXsecFitter::dataset::createToysFromSyst(histo1D::pseudodatamodes mode)
         }
 
         // // getting relative variations from originals
-        if (!parent_->mttfit_){
-            signalconts_nbjets_.at(i).getRelSystematicsFrom(signalcontsorig_nbjets_.at(i));
-            signalpsmigconts_nbjets_.at(i).getRelSystematicsFrom(signalpsmigcontsorig_nbjets_.at(i));
-            signalvisgenconts_nbjets_.at(i).getRelSystematicsFrom(signalvisgencontsorig_nbjets_.at(i));
-            // backgroundconts_nbjets_.at(i).getRelSystematicsFrom(backgroundcontsorig_nbjets_.at(i));
-        }
-        else{
-            for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s){
-                signalconts_nbjets_v_.at(s).at(i).getRelSystematicsFrom(signalcontsorig_nbjets_v_.at(s).at(i));
-                signalpsmigconts_nbjets_v_.at(s).at(i).getRelSystematicsFrom(signalpsmigcontsorig_nbjets_v_.at(s).at(i));
-                signalvisgenconts_nbjets_v_.at(s).at(i).getRelSystematicsFrom(signalvisgencontsorig_nbjets_v_.at(s).at(i));
-            }
-        }
+        signalconts_nbjets_.at(i).getRelSystematicsFrom(signalcontsorig_nbjets_.at(i));
+        signalpsmigconts_nbjets_.at(i).getRelSystematicsFrom(signalpsmigcontsorig_nbjets_.at(i));
+        signalvisgenconts_nbjets_.at(i).getRelSystematicsFrom(signalvisgencontsorig_nbjets_.at(i));
+        // backgroundconts_nbjets_.at(i).getRelSystematicsFrom(backgroundcontsorig_nbjets_.at(i));
 
         for (auto var : parent_->var_for_toys_){
             if (var.BeginsWith("TT_") || var.Contains("TOPMASS")){
 
-                if (!parent_->mttfit_) {
-                    size_t index = signalcontsorig_nbjets_.at(i).getSystErrorIndex(var);
-                    histo1D toy = signalcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,index);
-                    signalconts_nbjets_.at(i).removeError(var);
-                    signalconts_nbjets_.at(i).addErrorContainer(var,toy);
-
-                }
-                else {
-                    for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s){
-                        size_t index = signalcontsorig_nbjets_v_.at(s).at(i).getSystErrorIndex(var);
-                        histo1D toy = signalcontsorig_nbjets_v_.at(s).at(i).createPseudoExperiment(random_,0,mode,index);
-                        signalconts_nbjets_v_.at(s).at(i).removeError(var);
-                        signalconts_nbjets_v_.at(s).at(i).addErrorContainer(var,toy);
-                    }
-                }
+                size_t index = signalcontsorig_nbjets_.at(i).getSystErrorIndex(var);
+                histo1D toy  = signalcontsorig_nbjets_.at(i).createPseudoExperiment(random_,0,mode,index);
+                
+                signalconts_nbjets_.at(i).removeError(var);
+                signalconts_nbjets_.at(i).addErrorContainer(var,toy);
 
                 for (size_t t=0; t<bgs.size(); ++t){
                     if (!backgroundlegends_.at(t).Contains("bg")) continue;
@@ -340,19 +301,11 @@ void ttbarXsecFitter::dataset::createToysFromSyst(histo1D::pseudodatamodes mode)
             backgroundconts_nbjets_.at(i) += bg;
         }
 
-        if (!parent_->mttfit_) signalconts_nbjets_.at(i).equalizeSystematicsIdxs(signalcontsorig_nbjets_.at(i));
-        else{
-            for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s)
-                signalconts_nbjets_v_.at(s).at(i).equalizeSystematicsIdxs(signalcontsorig_nbjets_v_.at(s).at(i));
-        }
+        signalconts_nbjets_.at(i).equalizeSystematicsIdxs(signalcontsorig_nbjets_.at(i));
         backgroundconts_nbjets_.at(i).equalizeSystematicsIdxs(backgroundcontsorig_nbjets_.at(i));
 
     }
-    if (!parent_->mttfit_) signalshape_nbjet_.clear();
-    else{
-        for (size_t s=0; s<signalshape_nbjet_v_.size(); ++s)
-            signalshape_nbjet_v_.at(s).clear();
-    }
+    signalshape_nbjet_.clear();
     data_nbjet_.clear();
     background_nbjet_.clear();
 
@@ -367,8 +320,7 @@ void ttbarXsecFitter::createPseudoDataFromMC(histo1D::pseudodatamodes mode){
 	pseudodatarun_=true;
 	std::vector<size_t> excludefromsyspseudo;
 	for(size_t i=0;i<datasets_.size();i++){
-                if (!mttfit_) excludefromsyspseudo.push_back(datasets_.at(i).xsecIdx());
-                else excludefromsyspseudo = datasets_.at(i).xsecIdxs();
+		excludefromsyspseudo.push_back(datasets_.at(i).xsecIdx());
                 excludefromsyspseudo.push_back(datasets_.at(i).massIdx());
         }
 	for(size_t i=0;i<datasets_.size();i++)
@@ -412,9 +364,6 @@ void ttbarXsecFitter::dataset::createPseudoDataFromMC(histo1D::pseudodatamodes m
 	signalshape_nbjet_.clear();
 	data_nbjet_.clear();
 	background_nbjet_.clear();
-        for (size_t s=0; s<signalshape_nbjet_v_.size(); ++s)
-            signalshape_nbjet_v_.at(s).clear();
-
 	if(debug)
 		std::cout << "ttbarXsecFitter::dataset::createPseudoDataFromMC: new pseudoexp created" <<std::endl;
 
@@ -426,22 +375,18 @@ void ttbarXsecFitter::createContinuousDependencies(){
 	for(size_t i=0;i<datasets_.size();i++)
 		datasets_.at(i).createContinuousDependencies();
 
-	if (!mttfit_) ndependencies_=datasets_.at(0).signalshape(0).getNDependencies();
-        else ndependencies_=datasets_.at(0).signalshape(0,0).getNDependencies();
+	ndependencies_=datasets_.at(0).signalshape(0).getNDependencies();
 	if(debug)
 		std::cout << "ttbarXsecFitter::createContinuousDependencies: created dep: "
 		<< ndependencies_<<std::endl;
 	fittedparas_.resize(ndependencies_,0);
 	priors_.resize(ndependencies_,prior_gauss);
-	if (!mttfit_) parameternames_=datasets_.at(0).signalshape(0).getSystNames();
-        else parameternames_=datasets_.at(0).signalshape(0,0).getSystNames();
+	parameternames_=datasets_.at(0).signalshape(0).getSystNames();
 
-	if(debug){
+	if(debug)
 		for(size_t i=0;i<parameternames_.size();i++){
 			std::cout << "\t"<< parameternames_.at(i) <<std::endl;
 		}
-                std::cout << "ttbarXsecFitter::createContinuousDependencies: done" <<std::endl;
-        }
 }
 void ttbarXsecFitter::dataset::createContinuousDependencies(){
 	if(debug)
@@ -452,39 +397,14 @@ void ttbarXsecFitter::dataset::createContinuousDependencies(){
 	signalshape_nbjet_.clear();
 	data_nbjet_.clear();
 	background_nbjet_.clear();
-        for (size_t s=0; s<signalshape_nbjet_v_.size(); ++s)
-            signalshape_nbjet_v_.at(s).clear();
 	bool useMConly=parent_->useMConly_;
-        size_t size;
-        if (!parent_->mttfit_) size=signalconts_nbjets_.size();
-        else {
-            size=signalconts_nbjets_v_.size();
-            signalshape_nbjet_v_.resize(size);
-        }
-	for(size_t it=0;it<signalconts_nbjets_v_.at(0).size();it++){
-                if (!parent_->mttfit_)
-                    signalshape_nbjet_.push_back(createLeptonJetAcceptance(signalconts_nbjets_,signalpsmigconts_nbjets_,signalvisgenconts_nbjets_, bjetcount));
-                else{
-                        signalintegrals_.resize(size);
-                        acceptance_v_.resize(size);
-                        acceptance_extr_v_.resize(size);
-                        eps_emu_v_.resize(size);
-                        container_c_b_v_.resize(size);
-                        container_eps_b_v_.resize(size);
-                        omega_nbjet_v_.resize(size);
+	for(size_t it=0;it<signalconts_nbjets_.size();it++){
 
-                    for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s){
-                        signalshape_nbjet_v_.at(s).push_back(createLeptonJetAcceptance(signalconts_nbjets_v_.at(s),signalpsmigconts_nbjets_v_.at(s),signalvisgenconts_nbjets_v_.at(s), bjetcount, s));
-                    }
-                }
+                signalshape_nbjet_.push_back(createLeptonJetAcceptance(signalconts_nbjets_,signalpsmigconts_nbjets_,signalvisgenconts_nbjets_, bjetcount));
 		histo1D temp=dataconts_nbjets_.at(it);
 		if(useMConly){
-                    if (!parent_->mttfit_) temp=signalconts_nbjets_.at(it) + backgroundconts_nbjets_.at(it);
-                    else {
-                        temp=backgroundconts_nbjets_.at(it);
-                        for (size_t s=0; s<signalconts_nbjets_v_.size();++s)
-                            temp += signalconts_nbjets_v_.at(s).at(it);
-                    }
+
+                    temp=signalconts_nbjets_.at(it) + backgroundconts_nbjets_.at(it);
                     if (parent_->variationToFit_!=""){
                         size_t var_index = temp.getSystErrorIndex(parent_->variationToFit_);
                         temp = temp.getSystContainer(var_index);
@@ -579,7 +499,6 @@ void ttbarXsecFitter::addFullExtrapolError(const TString& sysname, const float &
 
 void  ttbarXsecFitter::printControlStack(bool fittedvalues,size_t bjetcat,size_t datasetidx,
 		const std::string& prependToOutput)const{
-        if (mttfit_) return;
 	if(debug)
 		std::cout << "ttbarXsecFitter::printControlStack" << std::endl;
 	if(datasetidx>=datasets_.size())
@@ -839,11 +758,7 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 	stepwidths.resize(fittedparas_.size(),0.1);
 
 	for(size_t i=0;i<datasets_.size();i++){
-            if (!mttfit_) stepwidths.at(datasets_.at(i).xsecIdx())=0.5;
-            else{
-                for (size_t s=0; s<datasets_.at(i).xsecIdxs().size(); s++)
-                    stepwidths.at(datasets_.at(i).xsecIdxs().at(s))=0.5;
-            }
+		stepwidths.at(datasets_.at(i).xsecIdx())=0.5;
 	}
 
 	fitter_.setParameters(fittedparas_,stepwidths);
@@ -874,14 +789,9 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 			fitter_.setParameterUpperLimit(i,1);
 		}
 	}
-
 	//set lower limit for xsecs (=> 0)
 	for(size_t i=0;i<datasets_.size();i++){
-            if (!mttfit_) fitter_.setParameterLowerLimit(datasets_.at(i).xsecIdx(),-datasets_.at(i).xsecOffset());
-            else{
-                for (size_t s=0; s<datasets_.at(i).xsecIdxs().size(); ++s)
-                    fitter_.setParameterLowerLimit(datasets_.at(i).xsecIdxs().at(s),-datasets_.at(i).xsecOffset(s));
-            }
+		fitter_.setParameterLowerLimit(datasets_.at(i).xsecIdx(),-datasets_.at(i).xsecOffset());
 	}
 
 	fitter_.setMinimizer(simpleFitter::mm_minuit2);
@@ -904,25 +814,13 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 	if(!silent_)
 		std::cout << "First rough fit done" <<std::endl;
 	if(!onlychecks){
-		if (!mttfit_){
-                    fitter_.setStrategy(2);
-                    fitter_.setTolerance(0.1);
-                }
-                else { //to be adjusted
-                    fitter_.setStrategy(2);
-                    fitter_.setTolerance(0.1);
-                }
+		fitter_.setStrategy(2);
+		fitter_.setTolerance(0.1);
 	}
-
 	size_t masspos=std::find(parameternames_.begin(),parameternames_.end(),"TOPMASS")-parameternames_.begin();
 	if(!nominos_){
-                for(size_t i=0;i<datasets_.size();i++){
-                    if (!mttfit_) fitter_.setAsMinosParameter(datasets_.at(i).xsecIdx());
-                    else{
-                        for (size_t s=0; s<datasets_.at(i).xsecIdxs().size(); ++s)
-                            fitter_.setAsMinosParameter(datasets_.at(i).xsecIdxs().at(s));
-                    }
-                }
+		for(size_t i=0;i<datasets_.size();i++)
+			fitter_.setAsMinosParameter(datasets_.at(i).xsecIdx());
                 if(masspos < parameternames_.size() && priors_.at(masspos)!=prior_parameterfixed ){
                     fitter_.setAsMinosParameter(masspos);
                 }
@@ -939,41 +837,28 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 
 	//feed back
 
+
 	if(!silent_){
 		for(size_t i=0;i<datasets_.size();i++){
-                    if (!mttfit_){
 			size_t xsecidx=datasets_.at(i).xsecIdx();
 			double xsecoff=datasets_.at(i).xsecOffset();
 			std::cout << "fitted xsecs: "<< datasets_.at(i).getName()<< ": "<<fitter_.getParameters()->at(xsecidx)+xsecoff <<
-                            "+" << fitter_.getParameterErrUp()->at(xsecidx) *100/(fitter_.getParameters()->at(xsecidx)+xsecoff) <<
-                            "-" << fitter_.getParameterErrDown()->at(xsecidx) *100/(fitter_.getParameters()->at(xsecidx)+xsecoff) <<
-                            std::endl;
+					"+" << fitter_.getParameterErrUp()->at(xsecidx) *100/(fitter_.getParameters()->at(xsecidx)+xsecoff) <<
+					"-" << fitter_.getParameterErrDown()->at(xsecidx) *100/(fitter_.getParameters()->at(xsecidx)+xsecoff) <<
+					std::endl;
 			for(size_t j=0;j<datasets_.size();j++){
-                            if (i==j) continue;
-                            std::cout << "correlation between " << datasets_.at(i).getName() << " and " <<
-                                datasets_.at(j).getName() << " : " <<
-                                fitter_.getCorrelationCoefficient(xsecidx,datasets_.at(j).xsecIdx()) <<std::endl;
+				if (i==j) continue;
+				std::cout << "correlation between " << datasets_.at(i).getName() << " and " <<
+						datasets_.at(j).getName() << " : " <<
+						fitter_.getCorrelationCoefficient(xsecidx,datasets_.at(j).xsecIdx()) <<std::endl;
 			}
-                    }
-                    else{
-                        std::vector<size_t> xsecidxs=datasets_.at(i).xsecIdxs();
-                        for (size_t s=0; s<datasets_.at(i).xsecIdxs().size(); ++s){
-                            double xsecoff=datasets_.at(i).xsecOffset(s);
-                            std::cout << "fitted xsecs: "<< datasets_.at(i).getName()<<" mttbin n."<<toString(s+1)<< ": "<<fitter_.getParameters()->at(xsecidxs.at(s))+xsecoff <<
-                                "+" << fitter_.getParameterErrUp()->at(xsecidxs.at(s)) *100/(fitter_.getParameters()->at(xsecidxs.at(s))+xsecoff) <<
-                                "-" << fitter_.getParameterErrDown()->at(xsecidxs.at(s)) *100/(fitter_.getParameters()->at(xsecidxs.at(s))+xsecoff) <<
-                                std::endl;
-                        
-                        }
-                    }
 		}
 		if(masspos < parameternames_.size()){
-			std::cout << "fitted mass: "<<172.5+3*fitter_.getParameters()->at(masspos) <<
-					"+" << 3*fitter_.getParameterErrUp()->at(masspos) <<
-					"-" << 3*fitter_.getParameterErrDown()->at(masspos)<<
+			std::cout << "fitted mass: "<<fitter_.getParameters()->at(masspos) <<
+					"+" << fitter_.getParameterErrUp()->at(masspos) <<
+					"-" << fitter_.getParameterErrDown()->at(masspos)<<
 					std::endl;
 			for(size_t i=0;i<datasets_.size();i++){
-                            if (mttfit_) break;
 				std::cout << "Corr coeff to xsec " << datasets_.at(i).getName() << " " <<
 						fitter_.getCorrelationCoefficient(datasets_.at(i).xsecIdx(),masspos) << std::endl;
 			}
@@ -990,47 +875,30 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 		if(parameterwriteback_){
 			fittedparas_ = *fitter_.getParameters();
 		}
-                if (!mttfit_){
-                    xsecs.clear();
-                    errup.clear();
-                    errdown.clear();
-                    for(size_t i=0;i<datasets_.size();i++){
+		xsecs.clear();
+		errup.clear();
+		errdown.clear();
+		for(size_t i=0;i<datasets_.size();i++){
 			size_t xsecidx=datasets_.at(i).xsecIdx();
 			double xsecoff=datasets_.at(i).xsecOffset();
 			xsecs.push_back(fitter_.getParameters()->at(xsecidx)+xsecoff);
 			errup.push_back(fitter_.getParameterErrUp()->at(xsecidx));
 			errdown.push_back(fitter_.getParameterErrDown()->at(xsecidx));
-                    }
-                }
+		}
 		if(!nominos_ && !fitter_.minosWasSuccess()){
 			throw std::runtime_error("ttbarXsecFitter::fit(): Minos error failed!");
 
 		}
 		if(!silent_){
 			for(size_t i=0;i<datasets_.size();i++){
-                            if (!mttfit_){
 				std::cout << "eps_b: " << getEps(false,i).getBin(1).getContent() << " postfit: "
-                                          << getEps(true,i).getBin(1).getContent() << " " << datasets_.at(i).getName()<<std::endl;
+						<< getEps(true,i).getBin(1).getContent() << " " << datasets_.at(i).getName()<<std::endl;
 				std::cout << "C_b:   " << getCb(false,i).getBin(1).getContent() << " postfit: "
-                                          << getCb(true,i).getBin(1).getContent() << " " << datasets_.at(i).getName()<<std::endl;
+						<< getCb(true,i).getBin(1).getContent() << " " << datasets_.at(i).getName()<<std::endl;
 				std::cout << "eps_emu:   " << getEps_emu(false,i)<< " postfit: "
-                                          << getEps_emu(true,i)<< " " << datasets_.at(i).getName()<<std::endl;//acceptance()
+						<< getEps_emu(true,i)<< " " << datasets_.at(i).getName()<<std::endl;//acceptance()
 				std::cout << "acceptance(extr):   " << datasets_.at(i).acceptance_extr().getNominal()<< " postfit: "
-                                          << datasets_.at(i).acceptance_extr().getValue(fittedparas_)<< " " << datasets_.at(i).getName()<<std::endl;
-                            }
-                            else{
-                                for (size_t s=0; s<datasets_.at(i).xsecIdxs().size(); ++s){
-                                    std::cout << "eps_b: " << getEps(false,i,s).getBin(1).getContent() << " postfit: "
-                                              << getEps(true,i,s).getBin(1).getContent() << " " << datasets_.at(i).getName() << "  n."<<toString(s)<<std::endl;
-                                    std::cout << "C_b:   " << getCb(false,i,s).getBin(1).getContent() << " postfit: "
-                                              << getCb(true,i,s).getBin(1).getContent() << " " << datasets_.at(i).getName() << "  n."<<toString(s)<<std::endl;
-                                    std::cout << "eps_emu:   " << getEps_emu(false,i,s)<< " postfit: "
-                                              << getEps_emu(true,i,s)<< " " << datasets_.at(i).getName() << "  n."<<toString(s)<<std::endl;
-                                    std::cout << "acceptance(extr):   " << datasets_.at(i).acceptance_extr(s).getNominal()<< " postfit: "
-                                              << datasets_.at(i).acceptance_extr(s).getValue(fittedparas_)<< " " << datasets_.at(i).getName() << "  n."<<toString(s)<<std::endl;                               
-                                }
-                            }
-
+						<< datasets_.at(i).acceptance_extr().getValue(fittedparas_)<< " " << datasets_.at(i).getName()<<std::endl;
 			}
 		}
 
@@ -1047,17 +915,12 @@ int ttbarXsecFitter::fit(){
 	return fit(dummy,dummy,dummy);
 }
 
-    histo1D ttbarXsecFitter::getCb (bool fittedvalues,size_t datasetidx, size_t mttbin)const{
+histo1D ttbarXsecFitter::getCb (bool fittedvalues,size_t datasetidx)const{
 	if(datasetidx>=datasets_.size())
 		throw std::out_of_range("ttbarXsecFitter::getCb: dataset index out of range");
 
-        if (mttfit_ && mttbin==9999)
-            throw std::logic_error("ttbarXsecFitter::getCb: choose a proper mtt bin");
-
 	//if(eighttev) return container_c_b_.at(0); else return container_c_b_.at(1);
-	variateHisto1D temp;
-        if (!mttfit_) temp=datasets_.at(datasetidx).container_c_b();
-        else temp=datasets_.at(datasetidx).container_c_b(mttbin);
+	variateHisto1D temp=datasets_.at(datasetidx).container_c_b();
 
 	if(fittedvalues)
 		return temp.exportContainer(fittedparas_);
@@ -1065,17 +928,12 @@ int ttbarXsecFitter::fit(){
 		return temp.exportContainer();
 
 }
-    histo1D ttbarXsecFitter::getEps(bool fittedvalues, size_t datasetidx, size_t mttbin)const{
+histo1D ttbarXsecFitter::getEps(bool fittedvalues, size_t datasetidx)const{
 	if(datasetidx>=datasets_.size())
 		throw std::out_of_range("ttbarXsecFitter::getEps: dataset index out of range");
 
-        if (mttfit_ && mttbin==9999)
-            throw std::logic_error("ttbarXsecFitter::getEps: choose a proper mtt bin");
-
 	//{if(eighttev) return container_eps_b_.at(0); else return container_eps_b_.at(1);}
-	variateHisto1D temp;
-        if (!mttfit_) temp=datasets_.at(datasetidx).container_eps_b();
-        else temp=datasets_.at(datasetidx).container_eps_b(mttbin);
+	variateHisto1D temp=datasets_.at(datasetidx).container_eps_b();
 
 	if(fittedvalues)
 		return temp.exportContainer(fittedparas_);
@@ -1083,17 +941,12 @@ int ttbarXsecFitter::fit(){
 		return temp.exportContainer();
 
 }
-    float ttbarXsecFitter::getEps_emu(bool fittedvalues,size_t datasetidx, size_t mttbin)const{
+float ttbarXsecFitter::getEps_emu(bool fittedvalues,size_t datasetidx)const{
 	if(datasetidx>=datasets_.size())
 		throw std::out_of_range("ttbarXsecFitter::getEps: dataset index out of range");
 
-        if (mttfit_ && mttbin==9999)
-            throw std::logic_error("ttbarXsecFitter::getEps_emu: choose a proper mtt bin");
-
 	//{if(eighttev) return container_eps_b_.at(0); else return container_eps_b_.at(1);}
-	const extendedVariable* temp;
-        if (!mttfit_) temp=&datasets_.at(datasetidx).eps_emu();
-        else temp=&datasets_.at(datasetidx).eps_emu(mttbin);
+	const extendedVariable* temp=&datasets_.at(datasetidx).eps_emu();
 
 	if(fittedvalues)
 		return temp->getValue(fittedparas_);
@@ -1116,6 +969,7 @@ double ttbarXsecFitter::getXsec(size_t datasetidx)const{
 	if(!fitsucc_)
 		throw std::out_of_range("ttbarXsecFitter::getXsec: first perform successful fit");
 	double fitted= fitter_.getParameters()->at(datasets_.at(datasetidx).xsecIdx())+datasets_.at(datasetidx).xsecOffset();
+
 	double acceptancecorr=datasets_.at(datasetidx).acceptance().getValue(fittedparas_)/
 			datasets_.at(datasetidx).acceptance_extr().getValue(fittedparas_);
 	return fitted*acceptancecorr;
@@ -1130,32 +984,6 @@ double ttbarXsecFitter::getVisXsec(size_t datasetidx)const{
 	double acceptance=datasets_.at(datasetidx).acceptance().getValue(fittedparas_);
 	return fitted*acceptance;
 }
-
-
-
-double ttbarXsecFitter::getXsec(size_t datasetidx, size_t mttbin)const{
-	if(datasetidx>=datasets_.size())
-		throw std::out_of_range("ttbarXsecFitter::getXsec: dataset index out of range");
-	if(mttbin>=datasets_.at(datasetidx).xsecIdxs().size())
-		throw std::out_of_range("ttbarXsecFitter::getXsec: mttbin index out of range");
-	if(!fitsucc_)
-		throw std::out_of_range("ttbarXsecFitter::getXsec: first perform successful fit");
-	double fitted= fitter_.getParameters()->at(datasets_.at(datasetidx).xsecIdxs().at(mttbin))+datasets_.at(datasetidx).xsecOffset(mttbin);
-	double acceptancecorr=datasets_.at(datasetidx).acceptance(mttbin).getValue(fittedparas_)/
-			datasets_.at(datasetidx).acceptance_extr(mttbin).getValue(fittedparas_);
-	return fitted*acceptancecorr;
-
-}
-double ttbarXsecFitter::getVisXsec(size_t datasetidx, size_t mttbin)const{
-	if(datasetidx>=datasets_.size())
-		throw std::out_of_range("ttbarXsecFitter::getXsec: dataset index out of range");
-	if(!fitsucc_)
-		throw std::out_of_range("ttbarXsecFitter::getXsec: first perform successful fit");
-	double fitted= fitter_.getParameters()->at(datasets_.at(datasetidx).xsecIdxs().at(mttbin))+datasets_.at(datasetidx).xsecOffset(mttbin);
-	double acceptance=datasets_.at(datasetidx).acceptance(mttbin).getValue(fittedparas_);
-	return fitted*acceptance;
-}
-
 void ttbarXsecFitter::cutAndCountSelfCheck(size_t datasetidx)const{
 	if(datasetidx>=datasets_.size())
 		throw std::out_of_range("ttbarXsecFitter::cutAndCountSelfCheck: dataset index out of range");
@@ -1324,10 +1152,10 @@ void ttbarXsecFitter::dataset::cutAndCountSelfCheck(const std::vector<std::pair<
 	 */
 }
 
-double ttbarXsecFitter::getXsecOffset(size_t datasetidx, size_t mttbin)const{
+double ttbarXsecFitter::getXsecOffset(size_t datasetidx)const{
 	if(datasetidx>=datasets_.size())
 		throw std::out_of_range("ttbarXsecFitter::getXsecOffset: dataset index out of range");
-	return datasets_.at(datasetidx).xsecOffset(mttbin);
+	return datasets_.at(datasetidx).xsecOffset();
 }
 
 
@@ -1483,8 +1311,6 @@ histoStack ttbarXsecFitter::applyParametersToStack(const histoStack& stack, size
 	cpdts.createContinuousDependencies();
 
 	histo1D data,signal,background;
-        std::vector<histo1D> signal_v;
-
 	std::vector<double> fittedparas;
 	std::vector<double> constr;
 	std::vector<TString> names;//=*fitter_.getParameterNames();
@@ -1512,130 +1338,39 @@ histoStack ttbarXsecFitter::applyParametersToStack(const histoStack& stack, size
 	background=cpdts.background(bjetcat).exportContainer( fittedparas,constr,names );
 
 	//shape
-	variateHisto1D tmpvar;
-        std::vector<variateHisto1D> tmpvar_v;
-        size_t n_signal = datasets_.at(datasetidx).numberOfSignals();
+	variateHisto1D tmpvar=cpdts.signalshape(bjetcat);
 
-        if (!mttfit_) tmpvar=cpdts.signalshape(bjetcat);
-        else {
-            tmpvar_v.resize(n_signal);
-            for (size_t s=0; s<n_signal; ++s){
-                tmpvar_v.at(s)=cpdts.signalshape(s,bjetcat);
-            }
-        }
-        
-	extendedVariable integral;
-        std::vector<extendedVariable> integral_v;
-        
-        if (!mttfit_){
-            integral=datasets_.at(datasetidx).signalshape(bjetcat).getIntegral();
-            tmpvar/=integral;
-        }
-        else{
-            integral_v.resize(n_signal);
-            for (size_t s=0; s<n_signal; ++s){
-                integral_v.at(s)=datasets_.at(datasetidx).signalshape(s,bjetcat).getIntegral();
-                tmpvar_v.at(s) /= integral_v.at(s);
-            }
-        }
+	extendedVariable integral=datasets_.at(datasetidx).signalshape(bjetcat).getIntegral();
+	tmpvar/=integral;
 
 	if(debug)
 		std::cout << "ttbarXsecFitter::applyParametersToStack: normalization" << std::endl;
 
 	double multi = 1;
-        std::vector<double> multi_v;
-
-	if(fitted){
-            if (!mttfit_) multi = cpdts.lumi() * getXsec(datasetidx);
-            else{
-                multi_v.resize(n_signal);
-                for (size_t s=0; s<n_signal; ++s){
-                    multi_v.at(s)=cpdts.lumi() * getXsec(datasetidx,s);
-                }
-            }
-        }
-	else{
-            if (!mttfit_) multi = cpdts.lumi() * datasets_.at(datasetidx).xsecOffset();
-            else{
-                multi_v.resize(n_signal);
-                for (size_t s=0; s<n_signal; ++s){
-                    multi_v.at(s)=cpdts.lumi() * datasets_.at(datasetidx).xsecOffset(s);
-                }
-            }
-        }
+	if(fitted)
+		multi = cpdts.lumi() * getXsec(datasetidx);
+	else
+		multi = cpdts.lumi() * datasets_.at(datasetidx).xsecOffset();
 	//adapt for indicies consistency!
 
-        if (!mttfit_){
-            tmpvar *= multi ; //add xsec and lumi
-            tmpvar *= datasets_.at(datasetidx).acceptance() ; //in case this wasnt a unfold histo
-            tmpvar *= datasets_.at(datasetidx).eps_emu() ;//to get right reco
-            if (mlbCrossCheck_) tmpvar *= integral;
-            else tmpvar *= datasets_.at(datasetidx).omega_b(bjetcat); //add bjet norm
-        }
-        else{
-            for (size_t s=0; s<n_signal; ++s){
-                tmpvar_v.at(s) *= multi_v.at(s) ; //add xsec and lumi
-                tmpvar_v.at(s) *= datasets_.at(datasetidx).acceptance(s) ; //in case this wasnt a unfold histo
-                tmpvar_v.at(s) *= datasets_.at(datasetidx).eps_emu(s) ;//to get right reco
-                tmpvar_v.at(s) *= datasets_.at(datasetidx).omega_b(s,bjetcat); //add bjet norm
-            }
-        }
+	tmpvar *= multi ; //add xsec and lumi
+	tmpvar *= datasets_.at(datasetidx).acceptance() ; //in case this wasnt a unfold histo
+	tmpvar *= datasets_.at(datasetidx).eps_emu() ;//to get right reco
+        if (mlbCrossCheck_) tmpvar *= integral;
+        else tmpvar *= datasets_.at(datasetidx).omega_b(bjetcat); //add bjet norm
 
 	//get part of b-jet norm
 	extendedVariable subpart;
-        std::vector<extendedVariable> subpart_v;
-        
-	histo1D sigintstack, sigcontint;
-        std::vector<histo1D> sigintstack_v, sigcontint_v;
+	histo1D sigintstack=cpdts.getSignalCont()->at(bjetcat).getIntegralBin(true);
+	histo1D sigcontint=datasets_.at(datasetidx).getSignalCont()->at(bjetcat).getIntegralBin(true);
 
-        if (!mttfit_){
-            sigintstack=cpdts.getSignalCont()->at(bjetcat).getIntegralBin(true);
-            sigcontint=datasets_.at(datasetidx).getSignalCont()->at(bjetcat).getIntegralBin(true);
-        }
-        else{
-            subpart_v.resize(n_signal);
-            sigintstack_v.resize(n_signal);
-            sigcontint_v.resize(n_signal);
-            for (size_t s=0; s<n_signal; ++s){
-                sigintstack_v.at(s)=cpdts.getSignalCont(s)->at(bjetcat).getIntegralBin(true);
-                sigcontint_v.at(s)=datasets_.at(datasetidx).getSignalCont(s)->at(bjetcat).getIntegralBin(true);                
-            }
-        }
-
-	histo1D subparth;
-        std::vector<histo1D> subparth_v;
-
-        if (!mttfit_){
-            subparth=sigintstack/sigcontint;
-            subparth.removeStatFromAll(true);
-        }
-        else{
-            subparth_v.resize(n_signal);
-            for (size_t s=0; s<n_signal; ++s){
-                subparth_v.at(s)=sigintstack_v.at(s)/sigcontint_v.at(s);
-                subparth_v.at(s).removeStatFromAll(true);
-            }
-        }
-
-	variateHisto1D tmptmp;
-        std::vector<variateHisto1D> tmptmp_v;
-
-        if (!mttfit_){
-            tmptmp.import(subparth);
-            subpart=*tmptmp.getBin(1);
-            tmpvar *= subpart;// stack.getSignalContainer().integral(true) /  datasets_.at(datasetidx).signalIntegral(bjetcat);
-        }
-        else{
-            tmptmp_v.resize(n_signal);
-            for (size_t s=0; s<n_signal; ++s){
-                tmptmp_v.at(s).import(subparth_v.at(s));
-                subpart_v.at(s)=*tmptmp_v.at(s).getBin(1);
-                tmpvar_v.at(s) *= subpart_v.at(s);// stack.getSignalContainer().integral(true) /  datasets_.at(datasetidx).signalIntegral(bjetcat);
-            }
-        }
+	histo1D subparth=sigintstack/sigcontint;
+	subparth.removeStatFromAll(true);
+	variateHisto1D tmptmp;tmptmp.import(subparth);
+	subpart=*tmptmp.getBin(1);
+	tmpvar *= subpart;// stack.getSignalContainer().integral(true) /  datasets_.at(datasetidx).signalIntegral(bjetcat);
 
 	if(debug){
-            if (!mttfit_){
 		float contr=subparth.getBinContent(1);
 		std::cout << "ttbarXsecFitter::applyParametersToStack: <"<< stack.getName()<<"> contr in b-jet cat "<<bjetcat <<": "<<
 				sigintstack.getBinContent(1) <<"/" << sigcontint.getBinContent(1) <<"="<<contr<<std::endl;
@@ -1643,80 +1378,27 @@ histoStack ttbarXsecFitter::applyParametersToStack(const histoStack& stack, size
 		std::cout << cpdts.getSignalCont()->at(bjetcat).integral(true) <<std::endl;
 		std::cout << stack.getSignalContainer().integral(true) <<std::endl;
 		std::cout << stack.getSignalContainer().getIntegralBin(true).integral(true) <<std::endl;
-            }
-            else{
-                for (size_t s=0; s<n_signal; ++s){
-                    float contr=subparth_v.at(s).getBinContent(1);
-                    std::cout << "ttbarXsecFitter::applyParametersToStack: <"<< stack.getName()<<"> contr in b-jet cat "<<bjetcat<< " (mttbin n."<<s<<"): "<<
-                        sigintstack_v.at(s).getBinContent(1) <<"/" << sigcontint_v.at(s).getBinContent(1) <<"="<<contr<<std::endl;
-                    std::cout << sigintstack_v.at(s).integral(true) <<std::endl;
-                    std::cout << cpdts.getSignalCont(s)->at(bjetcat).integral(true) <<std::endl;
-                    std::cout << stack.getSignalContainer(s).integral(true) <<std::endl;
-                    std::cout << stack.getSignalContainer(s).getIntegralBin(true).integral(true) <<std::endl;               
-                }
-            }
 	}
 
-	if(fullmc){
-            if (!mttfit_) *fullmc=cpdts.background(bjetcat) + tmpvar;
-            else{
-                *fullmc=cpdts.background(bjetcat);
-                for (size_t s=0; s<n_signal; ++s){
-                    *fullmc += tmpvar_v.at(s);
-                }
-            }
-        }
+	if(fullmc)
+		*fullmc=cpdts.background(bjetcat) + tmpvar;
 
-
-        if (!mttfit_){
-            signal=tmpvar.exportContainer(fittedparas,constr,names );
-            signal.setYAxisName(stack.getSignalContainer().getYAxisName());
-            signal.setXAxisName(stack.getSignalContainer().getXAxisName());
-        }
-        else{
-            signal_v.resize(n_signal);
-            for (size_t s=0; s<n_signal; ++s){
-                signal_v.at(s)=tmpvar_v.at(s).exportContainer(fittedparas,constr,names );
-                signal_v.at(s).setYAxisName(stack.getSignalContainer(s).getYAxisName());
-                signal_v.at(s).setXAxisName(stack.getSignalContainer(s).getXAxisName());
-            }            
-        }
+	signal=tmpvar.exportContainer(fittedparas,constr,names );
+	signal.setYAxisName(stack.getSignalContainer().getYAxisName());
+	signal.setXAxisName(stack.getSignalContainer().getXAxisName());
 	data.setYAxisName(stack.getSignalContainer().getYAxisName());
 	data.setXAxisName(stack.getSignalContainer().getXAxisName());
 	background.setYAxisName(stack.getSignalContainer().getYAxisName());
 	background.setXAxisName(stack.getSignalContainer().getXAxisName());
-        
-        //fromhere
+
 	out=histoStack();
 	out.setDataLegend("Data");
 	out.push_back(data,"Data",1,1,99);
-
-        if (mttfit_){
-            out.push_back(background,"Background",kGreen-9,1,50);
-            if(topontop_){
-                for (size_t s=0; s<n_signal; ++s){
-                    if (s==3) out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",921,1,signal_v.size()-s+50);
-                    else if (s==2) out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",637,1,signal_v.size()-s+50);
-                    else if (s==1) out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",634,1,signal_v.size()-s+50);
-                    else out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",628,1,signal_v.size()-s+50);
-                }
-            }
-            else{
-                for (size_t s=0; s<n_signal; ++s){
-                    if (s==3) out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",921,1,1+s);
-                    else if (s==2) out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",637,1,1+s);
-                    else if (s==1) out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",634,1,1+s);
-                    else out.push_back(signal_v.at(s),"Signal (#mu_{"+toString(s+1)+"})",628,1,1+s);
-                }
-            }
-        }
-        else{
-            out.push_back(background,"Background",kGreen-9,1,2);
-            if(topontop_)
+	out.push_back(background,"Background",kGreen-9,1,2);
+	if(topontop_)
 		out.push_back(signal,"Signal",628,1,3);
-            else
+	else
 		out.push_back(signal,"Signal",628,1,1);
-        }
 
 	out.setName(stack.getName() + "_" + datasets_.at(datasetidx).getName());
 
@@ -1772,11 +1454,7 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
 	for(size_t i=0;i<nbjets.size();i++){
 		if(plotnames.at(i).size()<1)continue;
 		plotterControlPlot pl;
-                TString tmp_name = (TString) plotnames.at(i).at(0);
-                if (!tmp_name.BeginsWith("m_tt kin reco coarse all b-jets step 8"))
-                    pl.readStyleFromFileInCMSSW("src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_standard.txt");
-                else
-                    pl.readStyleFromFileInCMSSW("src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_noratio.txt");
+                pl.readStyleFromFileInCMSSW("src/TtZAnalysis/Analysis/configs/fitTtBarXsec/controlPlots_standard.txt");
                 pl.addStyleFromFile(stylefiles.at(i),"[controlplot - "+ plotnames.at(i).at(0)+ "]","[end - controlplot]");                 
 		if( inputfile.find("8TeV")!=std::string::npos)
 			pl.readTextBoxesInCMSSW("/src/TtZAnalysis/Analysis/configs/general/noCMS_boxes.txt","CMSSplit03Left");
@@ -1825,42 +1503,13 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
                 else if (stack.getName() == "second jet pt 0,2 b-jets step 8") stack = stack.rebinXToBinning({30,50,120,200}); 
                 else if (stack.getName() == "third jet pt 0,3 b-jets step 8") stack = stack.rebinXToBinning({30,60,200});
                 else if (stack.getName() == "m_lb min step 8") stack = stack.rebinXToBinning({20,50,75,105,130,160});
-                else if (stack.getName() == "last jet pt 2 b-jets step 8") stack = stack.rebinXToBinning({30,40,50,60,70,80,90,100,120,140,200});                
-                else if (stack.getName() == "last jet pt 2 b-jets mtt1 step 8") stack = stack.rebinXToBinning({30,40,60,200});
-                else if (stack.getName() == "last jet pt 2 b-jets mtt2 step 8") stack = stack.rebinXToBinning({30,50,80,200});
-                else if (stack.getName() == "last jet pt 2 b-jets mtt3 step 8") stack = stack.rebinXToBinning({30,50,80,200});
-                else if (stack.getName() == "last jet pt 1 b-jets mtt1 step 8") stack = stack.rebinXToBinning({30,35,50,70,200});
-                else if (stack.getName() == "last jet pt 1 b-jets mtt2 step 8") stack = stack.rebinXToBinning({30,50,70,100,200});
-                else if (stack.getName() == "last jet pt 1 b-jets mtt3 step 8") stack = stack.rebinXToBinning({30,50,70,120,200});
-                else if (stack.getName() == "top pt 2 b-jets mtt1 step 8") stack = stack.rebinXToBinning({0,50,100,200});
-                else if (stack.getName() == "top pt 2 b-jets mtt2 step 8") stack = stack.rebinXToBinning({0,100,200,400});
-                else if (stack.getName() == "top pt 2 b-jets mtt3 step 8") stack = stack.rebinXToBinning({0,180,300,500});
-
-                if (stack.getName().BeginsWith("m_tt kin reco")) stack=stack.cutRight(2000.);
-                else if (stack.getName().Contains("pt kin reco")) stack=stack.cutRight(700.);
-
-
+                
                 if (poststack.getName() == "m_lb min 1,1 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({20,48,76,104,132,160});
                 else if (poststack.getName() == "m_lb min 1,2 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({20,48,76,104,132,160});
                 else if (poststack.getName() == "lead jet pt 0,1 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,50,100,200});
                 else if (poststack.getName() == "second jet pt 0,2 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,50,120,200});
                 else if (poststack.getName() == "third jet pt 0,3 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,60,200});
                 else if (poststack.getName() == "m_lb min step 8_postfit") poststack = poststack.rebinXToBinning({20,50,75,105,130,160});
-                else if (poststack.getName() == "last jet pt 2 b-jets step 8_postfit") poststack = poststack.rebinXToBinning({30,40,50,60,70,80,90,100,120,140,200});
-                else if (poststack.getName() == "last jet pt 2 b-jets mtt1 step 8_postfit") poststack = poststack.rebinXToBinning({30,40,60,200});
-                else if (poststack.getName() == "last jet pt 2 b-jets mtt2 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,80,200});
-                else if (poststack.getName() == "last jet pt 2 b-jets mtt3 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,80,200});
-                else if (poststack.getName() == "last jet pt 1 b-jets mtt1 step 8_postfit") poststack = poststack.rebinXToBinning({30,35,50,70,200});
-                else if (poststack.getName() == "last jet pt 1 b-jets mtt2 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,70,100,200});
-                else if (poststack.getName() == "last jet pt 1 b-jets mtt3 step 8_postfit") poststack = poststack.rebinXToBinning({30,50,70,120,200});
-                else if (poststack.getName() == "top pt 2 b-jets mtt1 step 8_postfit") poststack = poststack.rebinXToBinning({0,50,100,200});
-                else if (poststack.getName() == "top pt 2 b-jets mtt2 step 8_postfit") poststack = poststack.rebinXToBinning({0,100,200,400});
-                else if (poststack.getName() == "top pt 2 b-jets mtt3 step 8_postfit") poststack = poststack.rebinXToBinning({0,180,300,500});
-
-
-                if (poststack.getName().BeginsWith("m_tt kin reco")) poststack=poststack.cutRight(2000.);
-                else if (poststack.getName().Contains("pt kin reco")) poststack=poststack.cutRight(700.);
-
 
 		TString name=stack.getName();
 		name.ReplaceAll(" ","_");
@@ -1877,7 +1526,6 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
 			pl.setStack(&poststack);
 			pl.associateCorrelationMatrix(correlations);
 			pl.printToPdf(prependToOutput+textFormatter::makeCompatibleFileName(poststack.getName().Data()));
-			pl.printToPng(prependToOutput+textFormatter::makeCompatibleFileName(poststack.getName().Data()));
 			pl.draw();
 			cv.Write();
 		}
@@ -1887,34 +1535,26 @@ void ttbarXsecFitter::printAdditionalControlplots(const std::string& inputfile, 
 
 
 
-void ttbarXsecFitter::printXsecScan(size_t datasetidx, const std::string & outname, const size_t mttbin){//const{
+void ttbarXsecFitter::printXsecScan(size_t datasetidx, const std::string & outname){//const{
 	if(datasetidx>=datasets_.size())
-		throw std::out_of_range("ttbarXsecFitter::printXsecScan: dataset index out of range");
+		throw std::out_of_range("ttbarXsecFitter::createSystematicsBreakdown: dataset index out of range");
 
 	//simpleFitter newfitter(fitter_);
-	size_t xscidx=9999;
-        if (!mttfit_) xscidx=datasets_.at(datasetidx).xsecIdx();
-        else xscidx=datasets_.at(datasetidx).xsecIdxs().at(mttbin);
-
+	size_t xscidx=datasets_.at(datasetidx).xsecIdx();
 	double xsecerrdo=fitter_.getParameterErrDown()->at(xscidx);
 	double xsecerrup=fitter_.getParameterErrUp()->at(xscidx);
 	//double xsec=getXsec(datasetidx);
-	double priorxsec=0;
-        if (!mttfit_) priorxsec=datasets_.at(datasetidx).xsecOffset();
-        else priorxsec=datasets_.at(datasetidx).xsecOffset(mttbin);
-
+	double priorxsec=datasets_.at(datasetidx).xsecOffset();
 	double xsecparashift=fitter_.getParameter(xscidx);
 	graph g=fitter_.scan( xscidx, xsecparashift + 3* xsecerrdo, xsecparashift+ 3*xsecerrup ,12);
 	g.shiftAllXCoordinates(priorxsec);
 
 	g.setXAxisName("#sigma_{t#bar{t}} ("+datasets_.at(datasetidx).getName()+") [pb]");
-        if (mttfit_) g.setXAxisName("#sigma_{t#bar{t}} mtt"+toString(mttbin+1)+" ("+datasets_.at(datasetidx).getName()+") [pb]");
 	g.setYAxisName("-2 ln(L)");
 
 	std::string outfile=outname;
 	outfile+="_LHScan_";
 	outfile+=datasets_.at(datasetidx).getName().Data();
-        if (mttfit_) outfile+="_mtt"+toString(mttbin+1);
 
 	TFile f((TString)outfile.data()+".root","RECREATE");
 	TCanvas cv;
@@ -1929,65 +1569,18 @@ void ttbarXsecFitter::printXsecScan(size_t datasetidx, const std::string & outna
 
 }
 
-void ttbarXsecFitter::printScan(size_t datasetidx, const std::string & outname, const TString par){
-	if(datasetidx>=datasets_.size())
-		throw std::out_of_range("ttbarXsecFitter::printXsecScan: dataset index out of range");
 
-	size_t xscidx=std::find(parameternames_.begin(),parameternames_.end(),par)-parameternames_.begin();
-        if (xscidx==parameternames_.size()){
-            std::cout<<"ttbarXsecFitter::printScan: parameter "<<par<<" not found. Returning..."<<std::endl;
-            return;
-        }
-
-	double xsecerrdo=fitter_.getParameterErrDown()->at(xscidx);
-	double xsecerrup=fitter_.getParameterErrUp()->at(xscidx);
-
-	double xsecparashift=fitter_.getParameter(xscidx);
-	graph g=fitter_.scan( xscidx, xsecparashift + 2* xsecerrdo, xsecparashift+ 2*xsecerrup ,40);
-
-
-	g.setXAxisName(par);
-	g.setYAxisName("-2 ln(L)");
-
-	std::string outfile=outname;
-	outfile+="_LHScan_";
-	outfile+=datasets_.at(datasetidx).getName().Data();
-        if (mttfit_) outfile+=par;
-
-	TFile f((TString)outfile.data()+".root","RECREATE");
-	TCanvas cv;
-	plotterMultiplePlots pl;
-	pl.usePad(&cv);
-	pl.addPlot(&g);
-	pl.setLastNoLegend();
-	pl.draw();
-	cv.Write();
-
-        TGraph * tg = g.getTGraph();
-        tg->SetName("scan_"+par);
-        tg->Write();
-
-	pl.printToPdf(outfile);
-
-}
-
-
-void ttbarXsecFitter::createSystematicsBreakdowns(const TString& paraname, const size_t mttbin){
-        if (mttfit_ && mttbin==9999) 
-            throw std::logic_error("ttbarXsecFitter::createSystematicsBreakdowns: please select valid mtt bin");
+void ttbarXsecFitter::createSystematicsBreakdowns(const TString& paraname){
 	for(size_t i=0;i<datasets_.size();i++)
-            createSystematicsBreakdown(i,paraname, mttbin);
+		createSystematicsBreakdown(i,paraname);
 }
 
-void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TString& paraname, const size_t mttbin){
-        if (mttfit_ && mttbin==9999 && paraname.Length()==0) 
-            throw std::logic_error("ttbarXsecFitter::createSystematicsBreakdowns: please select valid mtt bin");
+void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TString& paraname){
 	if(datasetidx>=datasets_.size())
 		throw std::out_of_range("ttbarXsecFitter::createSystematicsBreakdown: dataset index out of range");
 	//size_t xsecidx=datasets_.at(datasetidx).xsecIdx();
-	std::cout << "creating systematics breakdowns for " << datasets_.at(datasetidx).getName();
-        if (mttbin!=9999) std::cout << " (mttbin n. " << mttbin+1<<")";
-        std::cout<<std::endl;
+	std::cout << "creating systematics breakdowns for " << datasets_.at(datasetidx).getName() <<std::endl;
+
 
 	formatter fmt;
 	TString cmsswbase=getenv("CMSSW_BASE");
@@ -1995,30 +1588,26 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 
 	//bool completetable=false; //make configureable later
 
-	size_t paraindex;
+	size_t paraindex=datasets_.at(datasetidx).xsecIdx();
 	if(paraname.Length()>0){
 		paraindex = std::find(fitter_.getParameterNames()->begin(),fitter_.getParameterNames()->end(),paraname) -fitter_.getParameterNames()->begin();
 		if(paraindex==fitter_.getParameterNames()->size())
 			throw std::runtime_error(((std::string)"ttbarXsecFitter::createSystematicsBreakdown: for para "+paraname.Data()+" failed. parameter not found."  ));
 	}
-        else if (!mttfit_) paraindex=datasets_.at(datasetidx).xsecIdx();
-        else paraindex=datasets_.at(datasetidx).xsecIdxs().at(mttbin);
+
 
 	datasets_.at(datasetidx).postFitSystematicsFull().clear();
 	datasets_.at(datasetidx).postFitSystematicsFullSimple().clear();
 
-	float xsec;
-	if(paraname.Length()>0) xsec=fitter_.getParameter(paraindex);
-        else if (!mttfit_) xsec=getXsec(datasetidx);
-        else xsec=getXsec(datasetidx, mttbin);
-
+	float xsec=getXsec(datasetidx);
+	if(paraname.Length()>0)
+		xsec=fitter_.getParameter(paraindex);
 	float parfullvarmulti=1;
 	if(paraname=="TOPMASS"){
                 xsec*=3;
 		xsec+=172.5;
 		parfullvarmulti=3;
 	}
-
 	//read in merge stuff
 	fileReader fr;
 	fr.setDelimiter("=");
@@ -2029,6 +1618,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 
 	std::vector<std::pair< TString , std::vector<size_t> > > mergeasso;
 	//std::vector<size_t> allcrosscorr;
+
 
 	//first merge dataset dependend contributions
 	std::vector< std::pair <TString , std::vector<TString> > > plannedmerges;
@@ -2066,6 +1656,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		}
 	}
 
+
 	//create index equivalents
 	std::vector< std::pair <TString , std::vector<size_t> > > plannedmergesindx;
 	for(size_t i=0;i<plannedmerges.size();i++){
@@ -2100,6 +1691,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		plannedmergesindx.push_back(std::pair<TString , std::vector<size_t> > (mergedname, indicies ));
 	}
 
+
 	//for consistency, add remaining ones
 	plannedmergesindx<<datasetdepmerges;
 	std::vector<size_t> alltobemerged;
@@ -2124,6 +1716,8 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		}
 	}
 	std::cout << "creating simplified breakdown table for " << datasets_.at(datasetidx).getName()<<" "<< paraname<<std::endl;
+
+
 
 	for(size_t i=0;i<plannedmergesindx.size();i++){
 		if(!debug)
@@ -2154,6 +1748,8 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		datasets_.at(datasetidx).postFitSystematicsFullSimple().push_back(tmpunc);
 	}
 
+
+
 	//make fast individual contributions table
 
 	for(size_t i=0;i<getNParameters();i++){
@@ -2173,6 +1769,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		tmpunc.pull= fittedparas_.at(i);//fitter_.getParameters()->at(i);
 		datasets_.at(datasetidx).postFitSystematicsFull().push_back(tmpunc);
 	}
+
 
 	dataset::systematic_unc tmpunc;
 
@@ -2211,6 +1808,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 	datasets_.at(datasetidx).postFitSystematicsFull().push_back(tmpunc);
 	datasets_.at(datasetidx).postFitSystematicsFullSimple().push_back(tmpunc);
 
+
 	std::vector<double> fulladdtoerrup2,fulladdtoerrdown2;
 
 
@@ -2228,14 +1826,9 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 				float min=addfullerrors_.at(i).restmin.at(j);
 				float max=addfullerrors_.at(i).restmax.at(j);
 
-				if (!mttfit_){
-                                    exup=getExtrapolationError(datasetidx,idx,true,min,max);
-                                    exdown=getExtrapolationError(datasetidx,idx,false,min,max);
-                                }
-                                else{
-                                    exup=getExtrapolationError(datasetidx,idx,true,min,max,mttbin);
-                                    exdown=getExtrapolationError(datasetidx,idx,false,min,max,mttbin);
-                                }
+				exup=getExtrapolationError(datasetidx,idx,true,min,max);
+				exdown=getExtrapolationError(datasetidx,idx,false,min,max);
+
 				bool corranti;
 				double tmp=getMaxVar(true,exup,exdown,corranti);
 				fulladdtoerrup2.push_back(tmp*tmp);
@@ -2264,6 +1857,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 
 	}
 
+
 	for(size_t i=0;i<fulladdtoerrup2.size();i++)
 		fullrelxsecerrup=sqrt(fullrelxsecerrup*fullrelxsecerrup+fulladdtoerrup2.at(i));
 	for(size_t i=0;i<fulladdtoerrdown2.size();i++)
@@ -2278,7 +1872,7 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 
 }
 
-    texTabler ttbarXsecFitter::makeSystBreakDownTable(size_t datasetidx,bool detailed,const TString& paraname, const size_t mttbin){
+texTabler ttbarXsecFitter::makeSystBreakDownTable(size_t datasetidx,bool detailed,const TString& paraname){
 
 	/*
 	 * Split this function in a part where the systematic contributions are
@@ -2290,27 +1884,21 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 		throw std::out_of_range("ttbarXsecFitter::makeSystBreakdown: dataset index out of range");
 
 
-        if (!mttfit_ || paraname.Length()>0) {
-            if((datasets_.at(datasetidx).postFitSystematicsFull().size()<1) ) createSystematicsBreakdown(datasetidx,paraname);                
-        }
-        else createSystematicsBreakdown(datasetidx,paraname,mttbin);
+	if((datasets_.at(datasetidx).postFitSystematicsFull().size()<1) )
+		createSystematicsBreakdown(datasetidx,paraname);
 
 
-
-	size_t paraindex;
+	size_t paraindex=datasets_.at(datasetidx).xsecIdx();
 	if(paraname.Length()>0){
 		paraindex = std::find(fitter_.getParameterNames()->begin(),fitter_.getParameterNames()->end(),paraname) -fitter_.getParameterNames()->begin();
 		if(paraindex==fitter_.getParameterNames()->size())
 			throw std::runtime_error(((std::string)"ttbarXsecFitter::createSystematicsBreakdown: for para "+paraname.Data()+" failed. parameter not found."  ));
 	}
-        else if (!mttfit_) paraindex=datasets_.at(datasetidx).xsecIdx();
-        else paraindex=datasets_.at(datasetidx).xsecIdxs().at(mttbin);
 
 
-	float xsec;
-	if(paraname.Length()>0) xsec=fitter_.getParameter(paraindex);
-        else if (!mttfit_) xsec=getXsec(datasetidx);
-        else xsec=getXsec(datasetidx,mttbin);
+	float xsec=getXsec(datasetidx);
+	if(paraname.Length()>0)
+		xsec=fitter_.getParameter(paraindex);
 	float tableprecision=0.1;
         float norm = 1./xsec;
 	if(paraname=="TOPMASS"){
@@ -2349,21 +1937,13 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 	else
 		tableprecision=0.001;
 
-        size_t xsecidx;
-        if (!mttfit_) xsecidx=datasets_.at(datasetidx).xsecIdx();
-        else if (mttbin!=9999) xsecidx=datasets_.at(datasetidx).xsecIdxs().at(mttbin);
-        else xsecidx=0;
-        double visxsec;
-	if (!mttfit_) visxsec=getVisXsec(datasetidx);
-        else if (mttbin!=9999) visxsec=getVisXsec(datasetidx,mttbin);
-        else visxsec=0;
 
-        for(size_t i=0;i<unc->size();i++){
+	for(size_t i=0;i<unc->size();i++){
 		dataset::systematic_unc * sys=&unc->at(i);
 
 		if(symmetrize && !(sys->name == "Total" || sys->name == "Total fitted")
 				&& !(sys->name.Contains("(extr)")))
-			sys->symmetrize(paraname=="TOPMASS");
+			sys->symmetrize();
 
 		bool anticorr=false;
 		getMaxVar(true,sys->errup,sys->errdown,anticorr);
@@ -2390,16 +1970,16 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
                         else table << sys->name<<  errstr;
 		if(sys->name == "Total vis"){
 			table <<texLine(1);
-			if (detailed) table <<fmt.translateName( getParaName(xsecidx) ) +" vis"                                                                                                                                     << " " << " "<< fmt.toTString(fmt.round(visxsec,tableprecision/10))+" pb";
-                        else table <<fmt.translateName( getParaName(xsecidx) ) +" vis"
-                                        << fmt.toTString(fmt.round(visxsec,tableprecision/10))+" pb";
+			if (detailed) table <<fmt.translateName( getParaName(datasets_.at(datasetidx).xsecIdx()) ) +" vis"                                                                                                                                     << " " << " "<< fmt.toTString(fmt.round(getVisXsec(datasetidx),tableprecision/10))+" pb";
+                        else table <<fmt.translateName( getParaName(datasets_.at(datasetidx).xsecIdx()) ) +" vis"
+                                        << fmt.toTString(fmt.round(getVisXsec(datasetidx),tableprecision/10))+" pb";
 			table <<texLine(1);
 		}
 	}
 	table <<texLine(1);
 	//float fullxsec=getXsec(datasetidx);
 	/*if(!visibleps_){
-		table <<fmt.translateName( getParaName(xsecidx) )<<
+		table <<fmt.translateName( getParaName(datasets_.at(datasetidx).xsecIdx()) )<<
 				" " << " "
 				<< fmt.toTString(fmt.round(fullxsec,0.1))+" pb";
 	}
@@ -2413,10 +1993,10 @@ void ttbarXsecFitter::createSystematicsBreakdown(size_t datasetidx, const TStrin
 
 	}
 	else{
-		if(detailed)table <<fmt.translateName( getParaName(xsecidx) )<<
+		if(detailed)table <<fmt.translateName( getParaName(datasets_.at(datasetidx).xsecIdx()) )<<
 				" " << " "
 				<< fmt.toTString(fmt.round(xsec,tableprecision*10))+" pb";
-                else table <<fmt.translateName( getParaName(xsecidx) )
+                else table <<fmt.translateName( getParaName(datasets_.at(datasetidx).xsecIdx()) )
                                 << fmt.toTString(fmt.round(xsec,tableprecision*10))+" pb";
 
 		//}
@@ -2554,66 +2134,25 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
 			}
 			//make sure its normalized
 			//the influence usually is <0.001%, but still more correct that way
-			double shapeintegral=0;
-                        double omega_b=0; 
-                        double acceptance=0; 
-                        double eps_emu=0;
+			double shapeintegral=set->signalshape(nbjet).getIntegral(variations);  //includes UFOF
+			double omega_b= set->omega_b(nbjet).getValue(variations);
+			double acceptance= set->acceptance().getValue(variations);
+			double eps_emu=set->eps_emu().getValue(variations);
 
-                        std::vector<double> shapeintegral_v, omega_b_v, acceptance_v, eps_emu_v;
-                        if (!mttfit_){
-                            shapeintegral = set->signalshape(nbjet).getIntegral(variations);  //includes UFOF
-                            omega_b = set->omega_b(nbjet).getValue(variations);
-                            acceptance= set->acceptance().getValue(variations);
-                            eps_emu=set->eps_emu().getValue(variations);
-                        }
-                        else{
-                            for (size_t s=0; s<n_signals_; ++s){ 
-                                shapeintegral_v.push_back(set->signalshape(s,nbjet).getIntegral(variations));
-                                omega_b_v.push_back(set->omega_b(s,nbjet).getValue(variations));
-                                acceptance_v.push_back(set->acceptance(s).getValue(variations));
-                                eps_emu_v.push_back(set->eps_emu(s).getValue(variations));
-                            }
-                        }
-
-                        size_t nbins;
-                        if (!mttfit_) nbins = set->signalshape(nbjet).getNBins();
-                        else nbins = set->signalshape(0,nbjet).getNBins();
-
-			for(size_t bin=0;bin<nbins;bin++){
+			for(size_t bin=0;bin<set->signalshape(nbjet).getNBins();bin++){
 				//std::cout << bin << "/"<< signalshape_nbjet_.at(nbjet).getNBins()<<" " << nbjet << " " << std::endl;
-				
-                                double signal = 0;
+				double lumi_xsec    = set->lumi() * (variations[set->xsecIdx()] +set->xsecOffset()) ;
+				double signal=lumi_xsec* acceptance * eps_emu* omega_b * set->signalshape(nbjet).getBin(bin)->getValue(variations) / shapeintegral;
                                 
-                                if (!mttfit_){
-                                    double lumi_xsec    = set->lumi() * (variations[set->xsecIdx()] +set->xsecOffset()) ;
-                                    signal=lumi_xsec* acceptance * eps_emu* omega_b * set->signalshape(nbjet).getBin(bin)->getValue(variations) / shapeintegral;
-                                    if (mlbCrossCheck_){
-                                        signal=lumi_xsec* acceptance * eps_emu* set->signalshape(nbjet).getBin(bin)->getValue(variations);
-                                    }
+                                if (mlbCrossCheck_){
+                                    signal=lumi_xsec* acceptance * eps_emu* set->signalshape(nbjet).getBin(bin)->getValue(variations);
                                 }
-                                else{
-                                    for (size_t s=0; s<shapeintegral_v.size(); ++s){
-                                        double lumi_xsec = set->lumi() * (variations[set->xsecIdxs().at(s)] +set->xsecOffset(s));
-                                        signal+=lumi_xsec* acceptance_v.at(s) * eps_emu_v.at(s)* omega_b_v.at(s) * set->signalshape(s,nbjet).getBin(bin)->getValue(variations) / shapeintegral_v.at(s);
-                                    }
-                                }
-                                
 
 				double nbackground = set->background(nbjet).getBin(bin)->getValue(variations);
 
 				double backgroundstat=set->background(nbjet).getBinErr(bin);
 
-				double signalstat2 = 0;
-                                if (!mttfit_){
-                                    signalstat2 = set->signalshape(nbjet).getBinErr(bin);
-                                    signalstat2 *= signalstat2;
-                                }
-                                else{
-                                    for (size_t s=0; s<shapeintegral_v.size(); ++s){
-                                        double tempstat = set->signalshape(s,nbjet).getBinErr(bin);
-                                        signalstat2 += tempstat*tempstat;
-                                    }
-                                }
+				double signalstat=set->signalshape(nbjet).getBinErr(bin);
 
 				double data = set->data(nbjet).getBin(bin)->getValue(variations);
 
@@ -2643,7 +2182,7 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
 				}
 				else if(lhmode_ ==lhm_chi2datafullmcstat)	{
 					if((datastat*datastat + backgroundstat*backgroundstat)<=0) continue;
-					out+= (data-predicted)*(data-predicted) / (datastat*datastat + backgroundstat*backgroundstat + signalstat2); //chi2 approach with bg errors
+					out+= (data-predicted)*(data-predicted) / (datastat*datastat + backgroundstat*backgroundstat + signalstat*signalstat); //chi2 approach with bg errors
 				}
 
 				if(out != out){
@@ -2671,20 +2210,11 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
 	//constraints
 	for(size_t sys=0;sys<ndependencies_;sys++){
 		bool isxsec=false;
-		for(size_t i=0;i<datasets_.size();i++){
-                    if (!mttfit_){
-                        if(sys == datasets_.at(i).xsecIdx()){
-                            isxsec=true;
-                            break;
-                        }
-                    }
-                    else{
-                        if( std::find(datasets_.at(i).xsecIdxs().begin(), datasets_.at(i).xsecIdxs().end(), sys) != datasets_.at(i).xsecIdxs().end()){
-                            isxsec=true;
-                            break;
-                        }
-                    }
-                }
+		for(size_t i=0;i<datasets_.size();i++)
+			if(sys == datasets_.at(i).xsecIdx()){
+				isxsec=true;
+				break;
+			}
 		if(isxsec) continue;
 
 
@@ -2735,19 +2265,6 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
 	}
 	return out;
 }
-
-bool ttbarXsecFitter::dataset::readyForFit()const{
-    if (!parent_->mttfit_) return signalshape_nbjet_.size()>0;
-    else{
-        for (size_t s=0; s<signalshape_nbjet_v_.size(); ++s){
-            if (signalshape_nbjet_v_.at(s).size()<1){
-                return false;
-            }
-        }
-        return true;
-    }
-}
-
 void ttbarXsecFitter::checkSizes()const{
 	if(debug)
 		std::cout << "ttbarXsecFitter::checkSizes" <<std::endl;
@@ -2756,25 +2273,16 @@ void ttbarXsecFitter::checkSizes()const{
 		datasets_.at(i).checkSizes();
 		//sizes ok, check for parameter consistency
 		for(size_t b=0;b<dataset::nBjetCat();b++){
-                    size_t s_max = n_signals_; 
-                    if (!mttfit_) s_max=1;
-                    for (size_t s=0;s<s_max;s++){
 			if(chkv.size()>0){
-                            std::vector<TString> tocompare;
-                            if (!mttfit_) tocompare = datasets_.at(i).signalshape(b).getSystNames();
-                            else tocompare = datasets_.at(i).signalshape(s,b).getSystNames();
-                            if(chkv == tocompare)
-                                continue;
-                            else{
-                                throw std::runtime_error("ttbarXsecFitter::checkSizes: parameters inconsistent");
-                            }
+				if(chkv == datasets_.at(i).signalshape(b).getSystNames())
+					continue;
+				else{
+					throw std::runtime_error("ttbarXsecFitter::checkSizes: parameters inconsistent");
+				}
 			}
-			else{
-                            if (!mttfit_) chkv= datasets_.at(i).signalshape(b).getSystNames();
-                            else chkv= datasets_.at(i).signalshape(s,b).getSystNames();
-                        }
-                    }
-                }
+			else
+				chkv= datasets_.at(i).signalshape(b).getSystNames();
+		}
 	}
 	if(debug)
 		std::cout << "ttbarXsecFitter::checkSizes: done" <<std::endl;
@@ -2785,56 +2293,27 @@ void ttbarXsecFitter::dataset::checkSizes()const{
 
 	if(debug)
 		std::cout << "ttbarXsecFitter::dataset::checkSizes: "<<name_ <<std::endl;
-        if (!parent_->mttfit_){
-            if(signalshape_nbjet_.size() < 1){
+	if(signalshape_nbjet_.size() < 1){
 		throw std::logic_error("ttbarXsecFitter::checkSizes: no input");
-            }
-            if(signalshape_nbjet_.size() != background_nbjet_.size())
+	}
+	if(signalshape_nbjet_.size() != background_nbjet_.size())
 		throw std::logic_error("ttbarXsecFitter::checkSizes: leptonacceptance_nbjet_.size() != background_nbjet_.size()");
-            if(signalshape_nbjet_.size() != data_nbjet_.size())
+	if(signalshape_nbjet_.size() != data_nbjet_.size())
 		throw std::logic_error("ttbarXsecFitter::checkSizes: leptonacceptance_nbjet_.size() != data_nbjet.size()");
 
-            for(size_t i=0;i<signalshape_nbjet_.size() ;i++){
+
+	for(size_t i=0;i<signalshape_nbjet_.size() ;i++){
 		if(signalshape_nbjet_.at(i).getBins() != background_nbjet_.at(i).getBins())
-                    throw std::logic_error("leptonacceptance_nbjet_.at(i).getBins() != background_nbjet_.at(i).getBins()");
+			throw std::logic_error("leptonacceptance_nbjet_.at(i).getBins() != background_nbjet_.at(i).getBins()");
 		if(signalshape_nbjet_.at(i).getBins() != data_nbjet_.at(i).getBins())
-                    throw std::logic_error("leptonacceptance_nbjet_.at(i).getBins() != data_nbjet.at(i).getBins()");
-            }
-            if(signalshape_nbjet_.at(0).getNDependencies() != background_nbjet_.at(0).getNDependencies())
+			throw std::logic_error("leptonacceptance_nbjet_.at(i).getBins() != data_nbjet.at(i).getBins()");
+	}
+	if(signalshape_nbjet_.at(0).getNDependencies() != background_nbjet_.at(0).getNDependencies())
 		throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
-            if(signalshape_nbjet_.at(0).getNDependencies() != data_nbjet_.at(0).getNDependencies())
+	if(signalshape_nbjet_.at(0).getNDependencies() != data_nbjet_.at(0).getNDependencies())
 		throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
-            if(signalshape_nbjet_.at(0).getNDependencies() != omega_nbjet_.at(0).getNDependencies())
+	if(signalshape_nbjet_.at(0).getNDependencies() != omega_nbjet_.at(0).getNDependencies())
 		throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
-
-        }
-        else{
-            if(signalshape_nbjet_v_.size() < 1){
-                throw std::logic_error("ttbarXsecFitter::checkSizes: no input");
-            }
-            for (size_t s=0; s<signalshape_nbjet_v_.size(); ++s){
-                if(signalshape_nbjet_v_.at(s).size() < 1){
-                    throw std::logic_error("ttbarXsecFitter::checkSizes: no input");
-                }
-                if(signalshape_nbjet_v_.at(s).size() != background_nbjet_.size())
-                    throw std::logic_error("ttbarXsecFitter::checkSizes: leptonacceptance_nbjet_.size() != background_nbjet_.size()");
-                if(signalshape_nbjet_v_.at(s).size() != data_nbjet_.size())
-                    throw std::logic_error("ttbarXsecFitter::checkSizes: leptonacceptance_nbjet_.size() != data_nbjet.size()");
-                for(size_t i=0;i<signalshape_nbjet_v_.at(s).size() ;i++){
-                    if(signalshape_nbjet_v_.at(s).at(i).getBins() != background_nbjet_.at(i).getBins())
-		        throw std::logic_error("leptonacceptance_nbjet_.at(i).getBins() != background_nbjet_.at(i).getBins()");
-                    if(signalshape_nbjet_v_.at(s).at(i).getBins() != data_nbjet_.at(i).getBins())
-		        throw std::logic_error("leptonacceptance_nbjet_.at(i).getBins() != data_nbjet.at(i).getBins()");
-                }
-                if(signalshape_nbjet_v_.at(s).at(0).getNDependencies() != background_nbjet_.at(0).getNDependencies())
-                    throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
-                if(signalshape_nbjet_v_.at(s).at(0).getNDependencies() != data_nbjet_.at(0).getNDependencies())
-                    throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
-                if(signalshape_nbjet_v_.at(s).at(0).getNDependencies() != omega_nbjet_v_.at(s).at(0).getNDependencies())
-                    throw  std::logic_error("ttbarXsecFitter::checkSizes: ndep broken");
-            }
-        }
-
 
 	if(debug)
 		std::cout << "ttbarXsecFitter::dataset::checkSizes: "<<name_ << " done" <<std::endl;
@@ -2842,7 +2321,7 @@ void ttbarXsecFitter::dataset::checkSizes()const{
 }//ttbarXsecFitter::checkSizes()
 
 
-double ttbarXsecFitter::getExtrapolationError( size_t datasetidx, size_t paraidx, bool up, const float& min,const float& max, const size_t mttbin){
+double ttbarXsecFitter::getExtrapolationError( size_t datasetidx, size_t paraidx, bool up, const float& min,const float& max){
 	/*std::vector<double> paracopy=fittedparas_;
 		float nom=var->getValue(paracopy);
 		if(i==0)
@@ -2859,18 +2338,14 @@ double ttbarXsecFitter::getExtrapolationError( size_t datasetidx, size_t paraidx
 		throw std::out_of_range("ttbarXsecFitter::getExtrapolationError: dataset index.");
 	}
 
-        if (mttfit_ && mttbin==9999){
-            throw std::logic_error("ttbarXsecFitter::getExtrapolationError: please select a suitable mttbin");
-        }
+
 
 
 	//new (17.3.)
 
 	//in the new implementation everything that matters is the effect on acceptance_extr.
 
-	extendedVariable extracp;
-        if (!mttfit_) extracp=datasets_.at(datasetidx).acceptance_extr();
-        else extracp=datasets_.at(datasetidx).acceptance_extr(mttbin);
+	extendedVariable extracp=datasets_.at(datasetidx).acceptance_extr();
 
 	double optpara=fitter_.getParameter(paraidx);
 	std::vector<double> paras=fittedparas_;
@@ -2897,7 +2372,7 @@ double ttbarXsecFitter::getExtrapolationError( size_t datasetidx, size_t paraidx
 variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::vector<histo1D>& signals,
 		const std::vector<histo1D>& signalpsmig,
 		const std::vector<histo1D>& signalvisPSgen,
-                size_t bjetcategory, size_t mttbin)
+		size_t bjetcategory)
 {
 	// this one can use histo1D operators!
 	if(debug)
@@ -2906,16 +2381,13 @@ variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::ve
 	if(signals.size()<1)
 		throw std::logic_error("ttbarXsecFitter::createLeptonJetAcceptance  stack vector empty.");
 
-        if (parent_->mttfit_ && mttbin==9999)
-            throw std::logic_error("ttbarXsecFitter::createLeptonJetAcceptance: choose a proper mtt bin");
-
 	size_t bjetbin=bjetcategory;
 	size_t minbjetbin=0;
 	size_t maxbjetbin=3;
 
 
 
-	float gennorm = 1/(lumi_*xsecOffset(mttbin));
+	float gennorm = 1/(lumi_*xsecoff_);
 
 	//unused	size_t bjet0bin=minbjetbin;
 	size_t bjet1bin=minbjetbin+1;
@@ -2935,14 +2407,9 @@ variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::ve
 	}
 
 
-        if (!parent_->mttfit_){
-            signalintegral_.resize(nBjetCat(),0);
-            signalintegral_.at(bjetbin)=signals.at(bjetbin).integral(true);
-        }
-        else {
-            signalintegrals_.at(mttbin).resize(nBjetCat(),0);
-            signalintegrals_.at(mttbin).at(bjetbin)=signals.at(bjetbin).integral(true);
-        }
+
+	signalintegral_.resize(nBjetCat(),0);
+	signalintegral_.at(bjetbin)=signals.at(bjetbin).integral(true);
 
 	histo1D psmigint;
 	for(size_t i=minbjetbin;i<maxbjetbin;i++){
@@ -2981,22 +2448,20 @@ variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::ve
 		leptonreco=signalintegral.createOne();
 		acceptance=signalintegral*gennorm;
 	}
+
 	variateHisto1D tmp;
 	tmp.import(acceptance);
-	if (!parent_->mttfit_) acceptance_extr_=*tmp.getBin(1);
-        else acceptance_extr_v_.at(mttbin)=*tmp.getBin(1);
+	acceptance_extr_=*tmp.getBin(1);
 	for(size_t i=0;i<parent_->addfullerrors_.size();i++){
 		for(size_t j=0;j<parent_->addfullerrors_.at(i).indices.size();j++)
 			acceptance.setErrorZeroContaining(acceptance.getSystErrorName( parent_->addfullerrors_.at(i).indices.at(j)));
 	}
 	tmp.import(acceptance);
-	if (!parent_->mttfit_) acceptance_=*tmp.getBin(1);
-        else acceptance_v_.at(mttbin)=*tmp.getBin(1);
+	acceptance_=*tmp.getBin(1);
 	tmp.import(leptonreco);
-	if (!parent_->mttfit_) eps_emu_=*tmp.getBin(1);
-        else eps_emu_v_.at(mttbin)=*tmp.getBin(1);
+	eps_emu_=*tmp.getBin(1);
 
-        
+
 	histo1D onebjetsignal = signals.at(bjet1bin);
 	onebjetsignal=onebjetsignal.getIntegralBin(includeUFOF);
 	histo1D twobjetsignal = signals.at(bjet2bin);
@@ -3007,15 +2472,13 @@ variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::ve
 
 	correction_b.removeStatFromAll();
 
-	if (!parent_->mttfit_) container_c_b_.import(correction_b);
-        else container_c_b_v_.at(mttbin).import(correction_b);
+	container_c_b_.import(correction_b);
 
 	histo1D eps_b = twobjetsignal / (correction_b * signalintegral);
 	eps_b.sqrt();
 	eps_b.removeStatFromAll();
 
-	if (!parent_->mttfit_) container_eps_b_.import(eps_b);
-        else container_eps_b_v_.at(mttbin).import(eps_b);
+	container_eps_b_.import(eps_b);
 
 	histo1D omega_1=    (eps_b * 2.  - (correction_b * (eps_b * eps_b)) * 2.);
 	omega_1.removeStatFromAll();
@@ -3035,16 +2498,10 @@ variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::ve
 		tmpvarc.import(omega_2);
 	}
 
-        if (!parent_->mttfit_){
-            if(omega_nbjet_.size() <= bjetbin)
+	if(omega_nbjet_.size() <= bjetbin)
 		omega_nbjet_.resize(bjetbin+1);
-            omega_nbjet_.at(bjetbin) = *tmpvarc.getBin(1);
-        }
-        else{
-            if(omega_nbjet_v_.at(mttbin).size() <= bjetbin)
-		omega_nbjet_v_.at(mttbin).resize(bjetbin+1);
-            omega_nbjet_v_.at(mttbin).at(bjetbin) = *tmpvarc.getBin(1);
-        }
+	omega_nbjet_.at(bjetbin) = *tmpvarc.getBin(1);
+
 
 	histoContent::multiplyStatCorrelated=tmpmultiplyStatCorrelated;
 	histoContent::addStatCorrelated=tmpaddStatCorrelated;
@@ -3061,17 +2518,12 @@ variateHisto1D ttbarXsecFitter::dataset::createLeptonJetAcceptance(const std::ve
 	return out;
 }
 
+
 const size_t & ttbarXsecFitter::dataset::xsecIdx()const{
 	if(xsecidx_==9999){
 		throw std::logic_error("ttbarXsecFitter::datasets::xsecIdx: first create index");
 	}
 	return xsecidx_;
-}
-const std::vector<size_t> & ttbarXsecFitter::dataset::xsecIdxs()const{
-        if(xsecidxs_.size()<1){
-		throw std::logic_error("ttbarXsecFitter::datasets::xsecIdxs: first create indices");
-	}
-	return xsecidxs_;
 }
 const size_t & ttbarXsecFitter::dataset::massIdx()const{
 	if(massidx_==9999){
@@ -3090,45 +2542,12 @@ void ttbarXsecFitter::dataset::createXsecIdx(){
 		throw std::logic_error("ttbarXsecFitter::datasets::createXsecIdx: index not found");
 	xsecidx_=idx;
 }
-void ttbarXsecFitter::dataset::createXsecIdxs(){
-	//search for it
-	if(signalconts_nbjets_v_.size()<1){
-		throw std::logic_error("ttbarXsecFitter::datasets::createXsecIdx: first read-in stacks");
-	}
-        for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s){
-            if(signalconts_nbjets_v_.at(s).size()<1){
-		throw std::logic_error("ttbarXsecFitter::datasets::createXsecIdx: first read-in stacks");
-            }
-        }
-	std::vector<TString> sysnames=signalconts_nbjets_v_.at(0).at(0).getSystNameList();
-
-        std::vector<size_t> idxs;
-        for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s){
-            size_t idx=std::find(sysnames.begin(),sysnames.end(),"Xsec_"+name_+toString(s+1))-sysnames.begin();
-            if(idx == sysnames.size())
-                throw std::logic_error("ttbarXsecFitter::datasets::createXsecIdx: index not found");
-            idxs.push_back(idx);
-        }
-
-	xsecidxs_=idxs;
-}
 void ttbarXsecFitter::dataset::createMassIdx(){
 	//search for it
-        if (!parent_->mttfit_){
-            if(signalconts_nbjets_.size()<1)
-                throw std::logic_error("ttbarXsecFitter::datasets::createMassIdx: first read-in stacks");
-        }
-        else{
-            for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s){
-                if(signalconts_nbjets_v_.at(s).size()<1)
-                    throw std::logic_error("ttbarXsecFitter::datasets::createMassIdx: first read-in stacks");
-            }
-        }
-	std::vector<TString> sysnames;
-        if (!parent_->mttfit_) sysnames=signalconts_nbjets_.at(0).getSystNameList();
-        else sysnames=signalconts_nbjets_v_.at(0).at(0).getSystNameList();
-        
-
+	if(signalconts_nbjets_.size()<1){
+		throw std::logic_error("ttbarXsecFitter::datasets::createMassIdx: first read-in stacks");
+	}
+	std::vector<TString> sysnames=signalconts_nbjets_.at(0).getSystNameList();
 	size_t idx=std::find(sysnames.begin(),sysnames.end(),"TOPMASS")-sysnames.begin();
 	if(idx == sysnames.size())
 		throw std::logic_error("ttbarXsecFitter::datasets::createMassIdx: index not found");
@@ -3215,18 +2634,8 @@ void  ttbarXsecFitter::dataset::readStacks(const std::string configfilename,cons
                         // else if (plotname == "second jet pt 2,2 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,45,100,300}); 
                         else if (plotname == "m_lb min step 8") tmpstack = tmpstack.rebinXToBinning({20,50,75,105,130,160});
                         else if (plotname == "m_lb min test step 8") tmpstack = tmpstack.rebinXToBinning({20,50,75,105,130,160});
-                        else if (plotname == "last jet pt 2 b-jets step 8") tmpstack = tmpstack.rebinXToBinning({30,40,50,60,70,80,90,100,120,140,200});
-                        else if (plotname == "last jet pt 2 b-jets mtt1 step 8") tmpstack = tmpstack.rebinXToBinning({30,40,60,200});
-                        else if (plotname == "last jet pt 2 b-jets mtt2 step 8") tmpstack = tmpstack.rebinXToBinning({30,50,80,200});
-                        else if (plotname == "last jet pt 2 b-jets mtt3 step 8") tmpstack = tmpstack.rebinXToBinning({30,50,80,200});
-                        else if (plotname == "last jet pt 1 b-jets mtt1 step 8") tmpstack = tmpstack.rebinXToBinning({30,35,50,70,200});
-                        else if (plotname == "last jet pt 1 b-jets mtt2 step 8") tmpstack = tmpstack.rebinXToBinning({30,50,70,100,200});
-                        else if (plotname == "last jet pt 1 b-jets mtt3 step 8") tmpstack = tmpstack.rebinXToBinning({30,50,70,120,200});
 
-                        else if (plotname == "top pt 2 b-jets mtt1 step 8") tmpstack = tmpstack.rebinXToBinning({0,50,100,200});
-                        else if (plotname == "top pt 2 b-jets mtt2 step 8") tmpstack = tmpstack.rebinXToBinning({0,100,200,400});
-                        else if (plotname == "top pt 2 b-jets mtt3 step 8") tmpstack = tmpstack.rebinXToBinning({0,180,300,500});
-
+                        
                         inputstacks_.at(bjetcount).push_back(tmpstack); //BEFORE ADDIND UNC!
                         
 			addUncertainties(&tmpstack,bjetcount,removesyst,priorcorr);
@@ -3266,29 +2675,17 @@ void ttbarXsecFitter::dataset::readStack(const histoStack& stack, size_t nbjet){
 	vec.push_back(stack);
 	readStackVec(vec,nbjet);
 }
-void ttbarXsecFitter::dataset::readStackVec(std::vector<histoStack> & in,size_t nbjet){
+void ttbarXsecFitter::dataset::readStackVec(const std::vector<histoStack> & in,size_t nbjet){
 	if(nbjet > 2){
 		throw std::out_of_range("ttbarXsecFitter::dataset::readStackVec: nbjet out of range");
 	}
 	if(debug)
 		std::cout << "ttbarXsecFitter::dataset::readStackVec: " << nbjet <<std::endl;
-        
+
 	size_t maxnbjetcat=dataset::nBjetCat();
-        if (!parent_->mttfit_){
-            signalconts_nbjets_.resize(maxnbjetcat);
-            signalvisgenconts_nbjets_.resize(maxnbjetcat);
-            signalpsmigconts_nbjets_.resize(maxnbjetcat);
-        }
-        else{
-            signalconts_nbjets_v_.resize(parent_->n_signals_); 
-            signalvisgenconts_nbjets_v_.resize(parent_->n_signals_); 
-            signalpsmigconts_nbjets_v_.resize(parent_->n_signals_); 
-            for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s){
-                signalconts_nbjets_v_.at(s).resize(maxnbjetcat);
-                signalvisgenconts_nbjets_v_.at(s).resize(maxnbjetcat);
-                signalpsmigconts_nbjets_v_.at(s).resize(maxnbjetcat);
-            }
-        }
+	signalconts_nbjets_.resize(maxnbjetcat);
+	signalvisgenconts_nbjets_.resize(maxnbjetcat);
+	signalpsmigconts_nbjets_.resize(maxnbjetcat);
 	backgroundconts_nbjets_.resize(maxnbjetcat);
 	dataconts_nbjets_.resize(maxnbjetcat);
 
@@ -3297,64 +2694,19 @@ void ttbarXsecFitter::dataset::readStackVec(std::vector<histoStack> & in,size_t 
         
 	histo1D sign,signvisps,signpsmig,backgr,data;
         std::vector<histo1D> bgs;
-        std::vector<histo1D> sign_v,signvisps_v,signpsmig_v;
 
 	for(size_t j=0;j<in.size();j++){
-            std::vector<TString> signals;
-            if (parent_->mttfit_){
-                for (size_t s=1; s<=parent_->n_signals_; ++s) signals.push_back((TString)"t#bar{t}mtt"+toString(s)); 
-                in.at(j).setsignals(signals);
-            }
-            // if (parent_->mttfit_) in.at(j).setsignal((TString)"t#bar{t}mtt"+toString(parent_->mttbin_));
-            
 		if(in.at(j).is1DUnfold()){
-                    if (!parent_->mttfit_){
 			sign          =sign.append(in.at(j).getSignalContainer1DUnfold().getRecoContainer());
 			signvisps     =signvisps.append(in.at(j).getSignalContainer1DUnfold().getGenContainer());
+			totalvisgencontsread_++;
 			signpsmig=signpsmig.append(in.at(j).getSignalContainer1DUnfold().getBackground());
-                    }
-
-                    else{
-                        size_t nsignals = signals.size();
-                        sign_v.resize(nsignals);
-                        signvisps_v.resize(nsignals);
-                        signpsmig_v.resize(nsignals);
-
-                        for (size_t s=0; s<nsignals; ++s){
-                            sign_v.at(s)          = sign_v.at(s).append(in.at(j).getSignalContainer1DUnfold({(TString)"t#bar{t}mtt"+toString(s+1)}).getRecoContainer());
-                            signvisps_v.at(s)     = signvisps_v.at(s).append(in.at(j).getSignalContainer1DUnfold({(TString)"t#bar{t}mtt"+toString(s+1)}).getGenContainer());
-                            signpsmig_v.at(s)     = signpsmig_v.at(s).append(in.at(j).getSignalContainer1DUnfold({(TString)"t#bar{t}mtt"+toString(s+1)}).getBackground());
-                        }
-                    }
-		
-                    totalvisgencontsread_++;
-
 		}
 		else if(in.at(j).is1D()){
-                    if (!parent_->mttfit_){
 			sign          =sign.append(in.at(j).getSignalContainer());
 			signvisps     =signvisps.append(in.at(j).getSignalContainer());
 			signvisps.setAllZero();
 			signpsmig     =sign;
-                    }
-                    else{
-                        size_t nsignals = signals.size();
-                        sign_v.resize(nsignals);
-                        signvisps_v.resize(nsignals);
-                        signpsmig_v.resize(nsignals);
-
-                        for (size_t s=0; s<nsignals; ++s){
-                            in.at(j).setsignal((TString)"t#bar{t}mtt"+toString(s+1));
-                            sign_v.at(s)          = sign_v.at(s).append(in.at(j).getSignalContainer());
-                            signvisps_v.at(s)     = signvisps_v.at(s).append(in.at(j).getSignalContainer());
-                            signvisps_v.at(s).setAllZero();
-                            signpsmig_v.at(s)     = signpsmig_v.at(s) = sign_v.at(s);
-                        }
-                        in.at(j).setsignals(signals);
-
-
-                    }
-                    
 			if(debug)
 				std::cout << "read 1D histo" <<std::endl;
 		}
@@ -3375,18 +2727,9 @@ void ttbarXsecFitter::dataset::readStackVec(std::vector<histoStack> & in,size_t 
                 }
 
 	}
-        if (!parent_->mttfit_){
-            signalconts_nbjets_.at(nbjet) = sign;
-            signalvisgenconts_nbjets_.at(nbjet)=signvisps;
-            signalpsmigconts_nbjets_.at(nbjet)=signpsmig;
-        }
-        else{
-            for (size_t s=0; s<sign_v.size(); ++s){
-                signalconts_nbjets_v_.at(s).at(nbjet) = sign_v.at(s);
-                signalvisgenconts_nbjets_v_.at(s).at(nbjet)=signvisps_v.at(s);
-                signalpsmigconts_nbjets_v_.at(s).at(nbjet)=signpsmig_v.at(s);            
-            }
-        }
+	signalconts_nbjets_.at(nbjet) = sign;
+	signalvisgenconts_nbjets_.at(nbjet)=signvisps;
+	signalpsmigconts_nbjets_.at(nbjet)=signpsmig;
 	backgroundconts_nbjets_.at(nbjet) = backgr;
 	dataconts_nbjets_.at(nbjet)=data;
 
@@ -3410,20 +2753,11 @@ void ttbarXsecFitter::dataset::equalizeIndices(dataset & rhs){
 }
 void ttbarXsecFitter::dataset::adaptIndices(const dataset & rhs){
 	for(size_t i=0;i<signalconts_nbjets_.size();i++){
-            if (!parent_->mttfit_){
 		signalconts_nbjets_.at(i).adaptSystematicsIdxs(rhs.signalconts_nbjets_.at(i));
 		signalvisgenconts_nbjets_.at(i).adaptSystematicsIdxs(rhs.signalvisgenconts_nbjets_.at(i));
 		signalpsmigconts_nbjets_.at(i).adaptSystematicsIdxs(rhs.signalpsmigconts_nbjets_.at(i));
-            }
-            else{
-                for (size_t s=0; s<signalconts_nbjets_v_.size(); ++s){
-                    signalconts_nbjets_v_.at(s).at(i).adaptSystematicsIdxs(rhs.signalconts_nbjets_v_.at(s).at(i));
-                    signalvisgenconts_nbjets_v_.at(s).at(i).adaptSystematicsIdxs(rhs.signalvisgenconts_nbjets_v_.at(s).at(i));
-                    signalpsmigconts_nbjets_v_.at(s).at(i).adaptSystematicsIdxs(rhs.signalpsmigconts_nbjets_v_.at(s).at(i));                   
-                }
-            }
-            dataconts_nbjets_.at(i).adaptSystematicsIdxs(rhs.dataconts_nbjets_.at(i));
-            backgroundconts_nbjets_.at(i).adaptSystematicsIdxs(rhs.backgroundconts_nbjets_.at(i));
+		dataconts_nbjets_.at(i).adaptSystematicsIdxs(rhs.dataconts_nbjets_.at(i));
+		backgroundconts_nbjets_.at(i).adaptSystematicsIdxs(rhs.backgroundconts_nbjets_.at(i));
 	}
 }
 size_t ttbarXsecFitter::getDatasetIndex(const TString & name)const{
@@ -3447,7 +2781,8 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 
 	std::vector<TString> excludefromglobal;
 	//excludefromglobal.push_back("t#bar{t}V");
-        if (!parent_->mttfit_) excludefromglobal.push_back("DY");
+	excludefromglobal.push_back("DY");
+        excludefromglobal.push_back("Wjets");
 
 	if(parent_->topontop_){
 		stack->setLegendOrder("t#bar{t}",90);
@@ -3473,9 +2808,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	if(debug)
 		std::cout << "ttbarXsecFitter::addUncertainties: merged variations" <<std::endl;
 
-        //more sophisticated approaches can be chosen here - like DY float etc
-        if (!parent_->mttfit_ ) stack->addRelErrorToBackgrounds(0.3,false,"BG",excludefromglobal);
-
+	stack->addRelErrorToBackgrounds(0.3,false,"BG",excludefromglobal); //more sophisticated approaches can be chosen here - like DY float etc
 
 	if(getName().Contains("7TeV"))
 		stack->addRelErrorToContribution(0.6,"t#bar{t}V","BG_",true);
@@ -3485,96 +2818,43 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	if(debug)
 		std::cout << "ttbarXsecFitter::addUncertainties: added t#bar{t}V var" <<std::endl;
 
-        // stack->addRelErrorToContribution(0.3,"Wjets","BG_");
+        stack->addRelErrorToContribution(0.3,"Wjets","BG_");
 
+	float dy0bjetserr=0,dy1bjetserr=0,dy2bjetserr=0;
+	if(nbjets==0)
+		dy0bjetserr=0.3;
+	else if(nbjets==1)
+		dy1bjetserr=0.3;
+	else if(nbjets==2)
+		dy2bjetserr=0.3;
+
+        int naddjets = -1;
         TString stackName = stack->getName();
+        if (stackName.Contains(",0 b-jets")) naddjets=0;
+        else if (stackName.Contains(",1 b-jets")) naddjets=1;
+        else if (stackName.Contains(",2 b-jets")) naddjets=2;
+        else if (stackName.Contains(",3 b-jets")) naddjets=3;
+        else std::cerr<<"WARNING: undefined number of additional jets"<<std::endl;
 
-        if (!parent_->mttfit_){
-            float dy0bjetserr=0,dy1bjetserr=0,dy2bjetserr=0;
-            if(nbjets==0) dy0bjetserr=0.3;
-            else if(nbjets==1) dy1bjetserr=0.3;
-            else if(nbjets==2) dy2bjetserr=0.3;
+	float dy0jetserr=0, dy1jetserr=0, dy2jetserr=0, dy3jetserr=0;
 
-            int naddjets = -1;
-            if (stackName.Contains(",0 b-jets")) naddjets=0;
-            else if (stackName.Contains(",1 b-jets")) naddjets=1;
-            else if (stackName.Contains(",2 b-jets")) naddjets=2;
-            else if (stackName.Contains(",3 b-jets")) naddjets=3;
-            else std::cerr<<"WARNING: undefined number of additional jets"<<std::endl;
-
-            float dy0jetserr=0, dy1jetserr=0, dy2jetserr=0, dy3jetserr=0;
-
-            if (nbjets==0){
-                if      (naddjets==0) dy0jetserr=0.05;
-                else if (naddjets==1) dy1jetserr=0.1;
-                else if (naddjets==2) dy2jetserr=0.3;
-                else if (naddjets==3) dy3jetserr=0.5;
-            }
-            else if (nbjets==1){
-                if      (naddjets==0) dy0jetserr=0.1;
-                else if (naddjets==1) dy1jetserr=0.3;
-                else if (naddjets==2) dy2jetserr=0.5;
-                else if (naddjets==3) dy3jetserr=0.5;
-            }
-            else if (nbjets==2){
-                if      (naddjets==0) dy0jetserr=0.3;
-                else if (naddjets==1) dy1jetserr=0.5;
-                else if (naddjets==2) dy2jetserr=0.5;
-                else if (naddjets==3) dy3jetserr=0.5;
-            }
-            stack->addRelErrorToContribution(dy0bjetserr,"DY","BG_0_bjets_");
-            stack->addRelErrorToContribution(dy1bjetserr,"DY","BG_1_bjets_");
-            stack->addRelErrorToContribution(dy2bjetserr,"DY","BG_2_bjets_");
-
-            if (naddjets>=0 && !parent_->mttfit_){
-                stack->addRelErrorToContribution(dy0jetserr,"DY","BG_0_addjets_");
-                stack->addRelErrorToContribution(dy1jetserr,"DY","BG_1_addjets_");
-                stack->addRelErrorToContribution(dy2jetserr,"DY","BG_2_addjets_");
-                stack->addRelErrorToContribution(dy3jetserr,"DY","BG_3_addjets_");
-            }
+        if (nbjets==0){
+            if      (naddjets==0) dy0jetserr=0.05;
+            else if (naddjets==1) dy1jetserr=0.1;
+            else if (naddjets==2) dy2jetserr=0.3;
+            else if (naddjets==3) dy3jetserr=0.5;
         }
-        else{
-            float uncert = .002;
-            float uncert_0b = .005;
-            for (unsigned int k=1; k<parent_->n_signals_+1; ++k){
-                if (!stackName.Contains("mtt0")) stack->addRelErrorToContribution(uncert,"t#bar{t}mtt"+toString(k),"KinReco_");
-                else stack->addRelErrorToContribution(0,"t#bar{t}mtt"+toString(k),"KinReco_");
-            }
-
-            float kinreco0bjetserr=0,kinreco1bjetserr=0,kinreco2bjetserr=0;
-            if (!stackName.Contains("mtt0")){
-                if(nbjets==0) kinreco0bjetserr=uncert_0b; 
-                else if(nbjets==1) kinreco1bjetserr=uncert;
-                else if(nbjets==2) kinreco2bjetserr=uncert;
-            }
-            stack->addGlobalRelSignalError("KinReco_0btags", kinreco0bjetserr);
-            stack->addGlobalRelSignalError("KinReco_1btags", kinreco1bjetserr);
-            stack->addGlobalRelSignalError("KinReco_2btags", kinreco2bjetserr);
-            
-            float bgmtt1err=0, bgmtt2err=0, bgmtt3err=0, bgmtt4err=0;
-            if(stackName.Contains("mtt1")) bgmtt1err=0.01;
-            else if(stackName.Contains("mtt2")) bgmtt2err=0.01;
-            else if(stackName.Contains("mtt3")) bgmtt3err=0.01;
-            else if(stackName.Contains("mtt4")) bgmtt4err=0.01;
-
-            stack->addGlobalRelBGError("BG_mtt1", bgmtt1err);
-            stack->addGlobalRelBGError("BG_mtt2", bgmtt2err);
-            stack->addGlobalRelBGError("BG_mtt3", bgmtt3err);
-            stack->addGlobalRelBGError("BG_mtt4", bgmtt4err);
-
-            float bg0bjetserr=0,bg1bjetserr=0,bg2bjetserr=0;
-            if(nbjets==0) bg0bjetserr=0.3;
-            else if(nbjets==1) bg1bjetserr=0.3;
-            else if(nbjets==2) bg2bjetserr=0.3;
-
-            stack->addRelErrorToContribution(bg0bjetserr,"DY","BG_0_bjets_");
-            stack->addRelErrorToContribution(bg1bjetserr,"DY","BG_1_bjets_");
-            stack->addRelErrorToContribution(bg2bjetserr,"DY","BG_2_bjets_");
-
-            excludefromglobal.push_back("DY");
-            stack->addRelErrorToBackgrounds(0.3,false,"BG_",excludefromglobal);
-
-
+        else if (nbjets==1){
+            if      (naddjets==0) dy0jetserr=0.1;
+            else if (naddjets==1) dy1jetserr=0.3;
+            else if (naddjets==2) dy2jetserr=0.5;
+            else if (naddjets==3) dy3jetserr=0.5;
+        }
+        else if (nbjets==2){
+            if      (naddjets==0) dy0jetserr=0.3;
+            else if (naddjets==1) dy1jetserr=0.5;
+            else if (naddjets==2) dy2jetserr=0.5;
+            else if (naddjets==3) dy3jetserr=0.5;
         }
 
 	//hardcoded scaling of QCD/Wjets....
@@ -3588,7 +2868,14 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 		}
 	}
 
+	stack->addRelErrorToContribution(dy0bjetserr,"DY","BG_0_bjets_");
+	stack->addRelErrorToContribution(dy1bjetserr,"DY","BG_1_bjets_");
+	stack->addRelErrorToContribution(dy2bjetserr,"DY","BG_2_bjets_");
 
+	stack->addRelErrorToContribution(dy0jetserr,"DY","BG_0_addjets_");
+	stack->addRelErrorToContribution(dy1jetserr,"DY","BG_1_addjets_");
+	stack->addRelErrorToContribution(dy2jetserr,"DY","BG_2_addjets_");
+	stack->addRelErrorToContribution(dy3jetserr,"DY","BG_3_addjets_");
 
 	if(debug)
 		std::cout << "ttbarXsecFitter::addUncertainties: added DY var" <<std::endl;
@@ -3598,7 +2885,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	float addlumiunc=0;
 	addlumiunc=unclumi_/100;
 	if(!getName().Contains("13TeV"))stack->addGlobalRelMCError("Lumi" ,addlumiunc);
-	stack->addGlobalRelMCError("Lumi" ,addlumiunc);
+	// stack->addGlobalRelMCError("Lumi" ,addlumiunc);
 	// stack->addGlobalRelBGError("Lumi_BG" ,addlumiunc);
 
 
@@ -3638,11 +2925,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 		std::cout << "ttbarXsecFitter::addUncertainties: split syst done" <<std::endl;
 
 	//fake uncertainty
-	if (!parent_->mttfit_) stack->addGlobalRelMCError("Xsec_"+name_,0);
-        else {
-            for (size_t s=1; s<=parent_->n_signals_; ++s) 
-                stack->addGlobalRelMCError("Xsec_"+name_+toString(s),0);
-        }
+	stack->addGlobalRelMCError("Xsec_"+name_,0);
 	if(debug)
 		std::cout << "ttbarXsecFitter::addUncertainties: done" <<std::endl;
 
@@ -3677,15 +2960,8 @@ TString ttbarXsecFitter::translatePartName(const formatter& fmt,const TString& n
 }
 bool ttbarXsecFitter::isXSecIdx(const size_t& idx)const{
 	for(size_t i=0;i<datasets_.size();i++){
-            if (!mttfit_){
 		if(idx == datasets_.at(i).xsecIdx())
-                    return true;
-            }
-            else{
-                std::vector<size_t> idxs = datasets_.at(i).xsecIdxs();
-                if (std::find(idxs.begin(),idxs.end(),idx) != idxs.end())
-                    return true;
-            }
+			return true;
 	}
 	return false;
 }

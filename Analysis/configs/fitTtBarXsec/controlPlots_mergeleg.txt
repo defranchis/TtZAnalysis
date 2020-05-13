@@ -18,12 +18,6 @@ $$ merged name, merged color, contrA, contrB, ...
 
    t#bar{t}, 628, t#bar{t}
 
-   t#bar{t} (#mu_{1}), 633, t#bar{t}mtt1
-   t#bar{t} (#mu_{2}), 635, t#bar{t}mtt2
-   t#bar{t} (#mu_{3}), 637, t#bar{t}mtt3
-   t#bar{t} (#mu_{4}), 920, t#bar{t}mtt4
-
-
 [end - merge legends]
 
 [end - merge for control plots]

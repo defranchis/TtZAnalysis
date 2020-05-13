@@ -100,7 +100,7 @@
 #include <cstring>
 #include "../interface/genTools.h"
 #include "TopAnalysis/ZTopUtils/interface/miscUtils.h"
-#include "TopAnalysis/ZTopUtils/interface/bFragUtils.h"
+
 
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "FWCore/Common/interface/TriggerResultsByName.h"
@@ -187,13 +187,6 @@ public:
 
     std::vector<std::string> weightnames_;
     std::vector<ztop::NTWeight> weights_;
-   
-    ztop::NTWeight weightFragUp_;
-    ztop::NTWeight weightFragDown_;
-    ztop::NTWeight weightFragCentral_;
-    ztop::NTWeight weightFragPeterson_;
-    ztop::NTWeight weightBranchUp_;
-    ztop::NTWeight weightBranchDown_;
 
     bool pfElecCands_;
     bool pfMuonCands_;
@@ -220,7 +213,6 @@ public:
     ULong64_t skim_;
     ULong64_t metFilter_;
 #endif
-  
 
     ztop::NTTrigger nttrigger;
     float genmet_f;
@@ -275,7 +267,6 @@ public:
     std::string partonShower_;
 
     enum genModes{gm_top,gm_w} genMode_;
-    ztop::BFragWeighter bFragWeighter;
 
 };
 

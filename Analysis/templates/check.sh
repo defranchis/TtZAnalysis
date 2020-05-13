@@ -41,7 +41,7 @@ allj=()
 for file in *; 
 do
 
-    if [ "$file" = *"job_HTCondor"* ]; then
+    if [ "$file" = "job_HTCondor.sh" ]; then
         continue
     fi
 
@@ -143,25 +143,28 @@ done
 #echo "for merging of systematics of successful jobs do (in output dir):"
 #echo "mergeSyst ${jdone[@]}"
 
-if [[ "${option}" == "resubmit" ]]
+if [ ${JOBSONBATCH} ]
 then
-    echo "resubmitting ${#tresubmit[@]} jobs: ${tresubmit[@]}"
-    eval `echo "${rmfiles[@]}"`
-    cd ../batch
-    for (( i=1;i<=${#tresubmit[@]};i++)); do
-	if [ "${tresubmit[${i}]}" ]
-	then
-	    
-	    condor_submit ${tresubmit[${i}]}
-	fi
-    done
-else
-    if [[ ${#tresubmit[@]} > 0 ]]
+    if [[ "${option}" == "resubmit" ]]
     then
-	echo "to resubmit aborted/died jobs run check.sh resubmit!"
+	echo "resubmitting ${#tresubmit[@]} jobs: ${tresubmit[@]}"
+	eval `echo "${rmfiles[@]}"`
+	cd ../batch
+	for (( i=1;i<=${#tresubmit[@]};i++)); do
+	    if [ "${tresubmit[${i}]}" ]
+	    then
+	
+		 qsub ${tresubmit[${i}]}
+	    fi
+	done
+    else
+	if [[ ${#tresubmit[@]} > 0 ]]
+	then
+	    echo "to resubmit aborted/died jobs run check.sh resubmit!"
 	    #echo "${tresubmit[@]}"
-    fi
+	fi
 
+    fi
 fi
 
 

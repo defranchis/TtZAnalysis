@@ -16,7 +16,7 @@ namespace ztop{
  */
 class analysisPlotsTtbarXsecFit : public analysisPlots{
 public:
-    analysisPlotsTtbarXsecFit(size_t step):analysisPlots(step),jetcategory(cat_0bjet0jet),bjetcategory(cat_0bjet),totevts_(0),vispsevts_(0),totevtsw_(0),vispsevtsw_(0),
+    analysisPlotsTtbarXsecFit(size_t step):analysisPlots(step),jetcategory(cat_0bjet0jet),bjetcategory(cat_0bjet),totevts_(0),vispsevts_(0),totevtsw_(0),vispsevtsw_(0),total_0bjets(0),
             leadFwdJetPt(0),FwdJetMulti(0)
 {
 	        leadjetpt_plots.resize(cat_bjetjetmax,0);
@@ -27,7 +27,6 @@ public:
 		jetmulti_plots.resize(cat_bjetmax,0);
                 mll_plots.resize(cat_bjetjetmax,0);
                 dxi_plots.resize(cat_bjetjetmax,0);
-                total_plots_bjetcat.resize(cat_bjetmax,0);
 
 }
 
@@ -60,8 +59,9 @@ private:
 
 
 	std::vector<histo1DUnfold*>
-            leadjetpt_plots, secondjetpt_plots, thirdjetpt_plots, total_plots, htalljets_plots,mll_plots,dxi_plots, jetmulti_plots, total_plots_bjetcat;
+	leadjetpt_plots, secondjetpt_plots, thirdjetpt_plots, total_plots, htalljets_plots,mll_plots,dxi_plots, jetmulti_plots;
 
+        histo1DUnfold *total_0bjets;
         histo1DUnfold *leadFwdJetPt;
         histo1DUnfold *FwdJetMulti;
 };

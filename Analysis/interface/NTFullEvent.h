@@ -57,7 +57,6 @@ public:
         //leadingjetbtag=0;secleadingjetbtag=0;
         simplemet=0;adjustedmet=0;
         mll=0;mlbmin=0;leplepdr=0;cosleplepangle=0;dphillj=0;dphilljj=0;detallj=0;detalljj=0;ht=0;ptllj=0;topdiscr=0;topdiscr2=0;topdiscr3=0;
-        mtt=0; m_mub=0; pt_top=0; eta_top=0; pt_antitop=0; eta_antitop=0; pt_ttbar=0; eta_ttbar=0;
 
         lhi_dphillj=0;
         lhi_cosleplepangle=0;
@@ -164,15 +163,6 @@ public:
     float * topdiscr;
     float * topdiscr2;
     float * topdiscr3;
-
-    float * mtt;
-    float * m_mub;
-    float * pt_top;
-    float * eta_top;
-    float * pt_antitop;
-    float * eta_antitop;
-    float * pt_ttbar;
-    float * eta_ttbar;
 
     //inputs for likelihood lhi_<name>
 

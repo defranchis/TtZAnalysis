@@ -2,7 +2,7 @@
 executable          = job_HTCondor.sh
 transfer_executable = True
 universe            = vanilla
-arguments           = "$(Process) #NTOYS# #CONFIG# #MASSFIT# #MTTFIT#"
+arguments           = "$(Process) #NTOYS# #CONFIG# #MASSFIT#"
 output              = outputHTCondor/toys_$(Process).out
 error               = outputHTCondor/toys_$(Process).error
 log                 = outputHTCondor/toys_$(Process).log

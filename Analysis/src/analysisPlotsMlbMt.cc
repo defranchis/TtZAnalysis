@@ -17,7 +17,6 @@ namespace ztop{
 
 void analysisPlotsMlbMt::setJetCategory(size_t nbjets,size_t njets){
 	if(nbjets < 1 || nbjets>2){
-                bjetcategory = cat_0bjet;
 		if(njets<1)
 			jetcategory=cat_0bjet0jet;
 		else if(njets<2)
@@ -28,7 +27,6 @@ void analysisPlotsMlbMt::setJetCategory(size_t nbjets,size_t njets){
 			jetcategory=cat_0bjet3jet;
 	}
 	else if(nbjets < 2){
-                bjetcategory = cat_1bjet;
 		if(njets<1)
 			jetcategory=cat_1bjet0jet;
 		else if(njets<2)
@@ -39,7 +37,6 @@ void analysisPlotsMlbMt::setJetCategory(size_t nbjets,size_t njets){
 			jetcategory=cat_1bjet3jet;
 	}
 	else if(nbjets < 3){
-                bjetcategory = cat_2bjet;
 		if(njets<1)
 			jetcategory=cat_2bjet0jet;
 		else if(njets<2)
@@ -89,13 +86,14 @@ void analysisPlotsMlbMt::bookPlots(){
 	mlbmin_test=addPlot(genmlbmin_bins,genmlbmin_bins,"m_lb min test","m_{lb}^{min} [GeV]", "Events/GeV");
 
 
-	for(size_t nbjet=0;nbjet<cat_bjetmax;nbjet++){
+	for(size_t nbjet=0;nbjet<3;nbjet++){
 
-            mlb_3_.at(nbjet)=addPlot(verycoarsebins,verycoarsebins,"m_lb min very coarse "+toTString(nbjet)+" b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
-            mlb_5_.at(nbjet)=addPlot(coarsebins,coarsebins,"m_lb min coarse "+toTString(nbjet)+" b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
-            mlb_7_.at(nbjet)=addPlot(finebins,finebins,"m_lb min fine "+toTString(nbjet)+" b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
-            mlb_10_.at(nbjet)=addPlot(semicoarsebins,semicoarsebins,"m_lb min very fine "+toTString(nbjet)+" b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
-
+            if (nbjet>0){
+                mlb_3_.at(nbjet-1)=addPlot(verycoarsebins,verycoarsebins,"m_lb min very coarse "+toTString(nbjet)+" b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
+                mlb_5_.at(nbjet-1)=addPlot(coarsebins,coarsebins,"m_lb min coarse "+toTString(nbjet)+" b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
+                mlb_7_.at(nbjet-1)=addPlot(finebins,finebins,"m_lb min fine "+toTString(nbjet)+" b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
+                mlb_10_.at(nbjet-1)=addPlot(semicoarsebins,semicoarsebins,"m_lb min very fine "+toTString(nbjet)+" b-jets","m_{lb}^{min} [GeV]", "Events/GeV");
+            }
 
 		for(size_t nadd=0;nadd<4;nadd++){
 			setJetCategory(nbjet,nadd);
@@ -259,10 +257,7 @@ void analysisPlotsMlbMt::fillPlotsGen(){
 	std::vector<NTGenParticle*> genvisleptons1=produceCollection(event()->genleptons1,20,2.4);
 
 	if(genvisleptons1.size()>1 && (genvisleptons1.at(0)->pt()>25 || genvisleptons1.at(1)->pt()>25) ){
-	                if(useKinRecoPS())
-                            if(!requireNumber(2,genvisjets)) return;
-
-                        for(size_t i=0;i<extraplots_.size();i++){
+		for(size_t i=0;i<extraplots_.size();i++){
 			if(extraplots_.at(i)){
 				extraplots_.at(i)->fillGen(20.5,puweight()); //same as for incl xsec
 				extraplots2_.at(i)->fillGen(20.5,puweight());
@@ -271,11 +266,13 @@ void analysisPlotsMlbMt::fillPlotsGen(){
 		}
 		mll0b->fillGen(20.5,puweight());
 
-		for(size_t i=0;i<cat_bjetmax;i++){
-                    mlb_3_.at(i)->fillGen(20.5,puweight());
-                    mlb_5_.at(i)->fillGen(20.5,puweight());
-                    mlb_7_.at(i)->fillGen(20.5,puweight());
-                    mlb_10_.at(i)->fillGen(20.5,puweight());
+		for(size_t i=0;i<mlb_10_.size();i++){
+			if(mlb_10_.at(i)){
+                            mlb_3_.at(i)->fillGen(20.5,puweight());
+                            mlb_5_.at(i)->fillGen(20.5,puweight());
+                            mlb_7_.at(i)->fillGen(20.5,puweight());
+                            mlb_10_.at(i)->fillGen(20.5,puweight());
+			}
 		}
 
 	}
@@ -322,15 +319,17 @@ void analysisPlotsMlbMt::fillPlotsReco(){
 			mlbmin->fillReco(fmlbmin,puweight());
 			mlbminbsrad->fillReco(fmlbmin,puweight());
 
-                        mlb_3_.at(bjetcategory)->fillReco(fmlbmin,puweight());
-                        mlb_5_.at(bjetcategory)->fillReco(fmlbmin,puweight());
-                        mlb_7_.at(bjetcategory)->fillReco(fmlbmin,puweight());
-                        mlb_10_.at(bjetcategory)->fillReco(fmlbmin,puweight());
-
-                        if (naddjets>0){
-                            mlbmin_test->fillReco(fmlbmin,puweight());
+                        if (nbjets>0){
+                            if(mlb_10_.at(nbjets-1)){
+                                mlb_3_.at(nbjets-1)->fillReco(fmlbmin,puweight());
+                                mlb_5_.at(nbjets-1)->fillReco(fmlbmin,puweight());
+                                mlb_7_.at(nbjets-1)->fillReco(fmlbmin,puweight());
+                                mlb_10_.at(nbjets-1)->fillReco(fmlbmin,puweight());
+                            }
+                            if (naddjets>0){
+                                mlbmin_test->fillReco(fmlbmin,puweight());
+                            }
                         }
-
 			mlbivansbins->fillReco(fmlb,puweight());
 			if(extraplots_.at(jetcategory)){
 				extraplots_.at(jetcategory)->fillReco(fmlbmin,puweight());

@@ -12,7 +12,6 @@
 
 #include <TtZAnalysis/Analysis/interface/top_analyzer_run2.h>
 #include "../../DataFormats/interface/NTJES.h"
-#include <TtZAnalysis/Analysis/interface/ttbarGenPlots.h>
 
 /*
  * Running on the samples is parallelized.
@@ -50,8 +49,6 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 	if(!isMC || !signal_)
 		getPdfReweighter()->switchOff(true);
-
-        if (doGenPlotsOnly_ && (doKinReco_ || doLooseKinReco_) && !legendname_.Contains("mtt1")) return;
 
 	//some mode options
 	/* implement here not to overload MainAnalyzer class with private members
@@ -337,29 +334,13 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	analysisPlotsMlbMt mlbmtplots_step8(8);
 	analysisPlotsTtbarXsecFit xsecfitplots_step8(8);
         analysisPlotsTtbarXsecFitSingleLep singlelepplots_step8(8);
-	analysisPlotsKinReco kinrecoplots_step8(8);
-	analysisPlotsLooseKinReco loosekinrecoplots_step8(8);
 
 	xsecfitplots_step8.enable();
 	mlbmtplots_step8.enable();
 	mlbmtplots_step8.bookPlots();
 	xsecfitplots_step8.enable();
 	xsecfitplots_step8.bookPlots();
-        if ((doKinReco_ || doLooseKinReco_) && !fullPS_){
-            xsecfitplots_step8.setKinRecoPS(true);
-            mlbmtplots_step8.setKinRecoPS(true);
-        }
-        if (doKinReco_){
-            kinrecoplots_step8.enable();
-            kinrecoplots_step8.bookPlots();
-            if (!fullPS_) kinrecoplots_step8.setKinRecoPS(true);
-        }
-        if (doLooseKinReco_){
-            loosekinrecoplots_step8.enable();
-            loosekinrecoplots_step8.bookPlots();
-            if (!fullPS_) loosekinrecoplots_step8.setKinRecoPS(true);
-        }
-
+ 
         singlelepplots_step8.enable();
         singlelepplots_step8.bookPlots();
 
@@ -372,12 +353,10 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	//setup everything for control plots
 
 	ttbarControlPlots plots;//for the Z part just make another class (or add a boolian)..
-        ttbarGenPlots genplots;
 	////FIX!!
 	//plots.limitToStep(8);
 	ZControlPlots zplots;
 	plots.linkEvent(evt);
-	if (doGenPlotsOnly_) genplots.linkEvent(evt);
 	zplots.linkEvent(evt);
 	ttXsecPlots xsecplots;
 	xsecplots.enable(true);
@@ -385,11 +364,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 	xsecplots.limitToStep(8);
 	xsecplots.initSteps(8);
 	plots.initSteps(8);
-	if (doGenPlotsOnly_) genplots.initSteps(0);
 	zplots.initSteps(8);
 	mlbmtplots_step8.setEvent(evt);
-	if (doKinReco_) kinrecoplots_step8.setEvent(evt);
-	if (doLooseKinReco_) loosekinrecoplots_step8.setEvent(evt);
 	xsecfitplots_step8.setEvent(evt);
         singlelepplots_step8.setEvent(evt);
 
@@ -415,15 +391,6 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 	btagefffile_+="_"+inputfile_;
 	btageffreffile_+="_"+originputfile_;
-        if (legendname_.BeginsWith("t#bar{t}mtt")){
-            TString toadd = legendname_;
-            toadd.ReplaceAll("t#bar{t}","");
-            btagefffile_.ReplaceAll(".root","");
-            btageffreffile_.ReplaceAll(".root","");
-            btagefffile_+="_"+toadd+".root";
-            btageffreffile_+="_"+toadd+".root";
-        }
-        
 	getBTagSF()->setIsMC(isMC);
 	if(!getBTagSF()->getMakeEff()){
 		getBTagSF()->readFromFile(btagefffile_.Data());
@@ -674,11 +641,33 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 		//reports current status to parent
 		reportStatus(entry,nEntries);
-
-
+                double randomNum = random->Uniform();
+		float puweight=1;
+                if (isMC) { 
+                    if(randomNum<0.548) puweight = getPUReweighterBtoF()->getPUweight(b_Event.content()->truePU());
+                    else puweight = getPUReweighterGH()->getPUweight(b_Event.content()->truePU());
+                }
+		//agrohsje
+		pusum+=puweight;
+		if(apllweightsone) puweight=1;
 		if(testmode_ && entry==0)
 			std::cout << "testmode("<< anaid << "): got first event entry" << std::endl;
 
+		evt.puweight=&puweight;
+
+		getPdfReweighter()->setNTEvent(b_Event.content());
+		getPdfReweighter()->reWeight(puweight);
+		if(apllweightsone) puweight=1;
+		//agrohsje loop over additional weightbranches 
+		for(size_t i=0;i<weightbranches.size();i++){
+			//puweight*=weightbranches.at(i)->content()->getWeight();
+			//std::cout<<"check weight for " << additionalweights_.at(i)<<":"
+			//<<weightbranches.at(i)->content()->getWeight() <<std::endl;
+			mcreweighters.at(i).setNewWeight(weightbranches.at(i)->content()->getWeight());
+			mcreweighters.at(i).reWeight(puweight);
+			if(apllweightsone) puweight=1;
+		}
+		mcwsum += weightbranches.at(0)->content()->getWeight();
 		/////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////////
 		/////////////////// Generator Information////////////////////
@@ -702,20 +691,21 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		evt.genleptons3=&genleptons3;
 		evt.genjets=&genjets;
 
-                double randomNum = random->Uniform();
-		float puweight=1;
-                evt.puweight=&puweight;
+
 
 		if(isMC){
 			if(testmode_ && entry==0)
 				std::cout << "testmode("<< anaid << "): got first MC gen entry" << std::endl;
 
-                        if(b_GenTops.content()->size()>1){ //ttbar sample
-                            gentops.push_back(&b_GenTops.content()->at(0));
-                            gentops.push_back(&b_GenTops.content()->at(1));
-                        }
-
 			//if(b_GenLeptons3.content()->size()>1){ //gen info there
+
+			///////////////TOPPT REWEIGHTING////////
+			if(b_GenTops.content()->size()>1){ //ttbar sample
+				getTopPtReweighter()->reWeight(b_GenTops.content()->at(0).pt(),b_GenTops.content()->at(1).pt() ,puweight);
+				if(apllweightsone) puweight=1;
+				gentops.push_back(&b_GenTops.content()->at(0));
+				gentops.push_back(&b_GenTops.content()->at(1));
+			}
 
 			//recreate dependencies
 			genbs=produceCollection(b_GenBs.content(), &gentops);
@@ -746,68 +736,20 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 			//}
 			if(!fakedata){
-                               //split into gen mtt bins
-                                if (signal_ && (doKinReco_ || doLooseKinReco_) && !doGenPlotsOnly_){
-                                    if (gentops.size()<2) continue;
-                                    float gen_mtt = (gentops.at(0)->p4() + gentops.at(1)->p4()).M();
-                                    setMttCategories(gen_mtt,legendname_);
-                                    if ((int)gen_mttcategory != (int)leg_mttcategory) continue;
-                                }
-                                /*reweightings*/
-                                
-                                if(randomNum<0.548) puweight = getPUReweighterBtoF()->getPUweight(b_Event.content()->truePU());
-                                else puweight = getPUReweighterGH()->getPUweight(b_Event.content()->truePU());
-
-                                if(apllweightsone) puweight=1;
-                                //agrohsje
-                                pusum+=puweight;
-
-                                getPdfReweighter()->setNTEvent(b_Event.content());
-                                getPdfReweighter()->reWeight(puweight);
-
-                                if(apllweightsone) puweight=1;
-
-                                //agrohsje loop over additional weightbranches 
-                                for(size_t i=0;i<weightbranches.size();i++){
-                                    //puweight*=weightbranches.at(i)->content()->getWeight();
-                                    //std::cout<<"check weight for " << additionalweights_.at(i)<<":"
-                                    //<<weightbranches.at(i)->content()->getWeight() <<std::endl;
-                                    mcreweighters.at(i).setNewWeight(weightbranches.at(i)->content()->getWeight());
-                                    mcreweighters.at(i).reWeight(puweight);
-                                    if(apllweightsone) puweight=1;
-                                }
-                                mcwsum += weightbranches.at(0)->content()->getWeight();
-
-                                ///////////////TOPPT REWEIGHTING////////
-
-                                if(b_GenTops.content()->size()>1){ //ttbar sample
-                                    getTopPtReweighter()->reWeight(b_GenTops.content()->at(0).pt(),b_GenTops.content()->at(1).pt() ,puweight);
-                                    if(apllweightsone) puweight=1;
-                                }
-                        
 				/*
 				 * fill gen info here
 				 */
                                 if (b_smu_)singlelepplots_step8.fillPlotsGen();
 				mlbmtplots_step8.fillPlotsGen();
 				xsecfitplots_step8.fillPlotsGen();
-                                if(doKinReco_) kinrecoplots_step8.fillPlotsGen();
-                                if(doLooseKinReco_) loosekinrecoplots_step8.fillPlotsGen();
-                                if (doGenPlotsOnly_) {
-                                    genplots.makeControlPlots(0);
-                                    continue;
-                                }
+                                
 			}
-
 		} /// isMC ends
-
 
 		//agrohsje : check if event fails preselection and should be skipped
 		//std::cout<<" agrohsje check flag " << *b_AnalyseEvent.content()<<std::endl;
 		if (b_emu_ && *b_AnalyseEvent.content()!=1) continue;
                 if ( isMC && *b_MetFilter.content() == 1) continue;
-
-
 
 		/////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////////
@@ -1032,7 +974,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
                 if(testmode_ && entry==0)
                         std::cout << "testmode("<< anaid << "): Made Dilepton pairs" << std::endl;
-                
+
+
 		pair<vector<NTElectron*>, vector<NTMuon*> > *leppair=&oppopair;
 		if(mode_samesign)
 			leppair=&sspair;
@@ -1158,9 +1101,6 @@ void  top_analyzer_run2::analyze(size_t anaid){
                 }
 
 		//channel defined
-                bool isMuonLeadingLepton = false;
-                if (b_mumu_ || b_smu_ ) isMuonLeadingLepton = true;
-
 		if(firstlep->pt() > seclep->pt() || b_smu_){
 			leadingptlep=firstlep;
 			secleadingptlep=seclep;
@@ -1168,7 +1108,6 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		else{
 			leadingptlep=seclep;
 			secleadingptlep=firstlep;
-                        if (b_emu_) isMuonLeadingLepton = true;
 		}
 		//just to avoid warnings
 		evt.leadinglep=leadingptlep;
@@ -1389,28 +1328,17 @@ void  top_analyzer_run2::analyze(size_t anaid){
 		vector<NTJet*>  selectedbjets,selectednonbjets;
 		evt.selectedbjets=&selectedbjets;
 		evt.selectednonbjets=&selectednonbjets;
-                std::vector<int> bjet_indices;
-                VLV jetVLV;
 
 		if(getBTagSF()->getMode() == NTBTagSF::randomtagging_mode) 
                     getBTagSF()->changeNTJetTags(selectedjets);
 
 		for(size_t i=0;i<hardjets.size();i++){
-
-                        TLorentzVector jetTLV; 
-                        if (doKinReco_ || doLooseKinReco_){
-                            jetTLV.SetPtEtaPhiE(selectedjets->at(i)->pt(),selectedjets->at(i)->eta(),selectedjets->at(i)->phi(),selectedjets->at(i)->e());
-                            jetVLV.push_back(common::TLVtoLV(jetTLV));
-                        }
-
 			if(selectedjets->at(i)->btag() < getBTagSF()->getWPDiscrValue()){
 				//std::cout<<"agrohsje btagging in event " << *b_EventNumber.content() <<" "<<selectedjets->at(i)->pt()<<"  "<<selectedjets->at(i)->btag() <<std::endl;
 				selectednonbjets.push_back(selectedjets->at(i));
 				continue;
 			}
 			selectedbjets.push_back(selectedjets->at(i));
-                        if (doKinReco_ || doLooseKinReco_) bjet_indices.push_back(i);
-                        
 		}
 
 		float btagscontr=1;
@@ -1567,9 +1495,6 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 		if(!zerojet && selectedjets->size() < 1) continue;
 
-                // need 2 jets for kinematic reconstruction
-                if((doKinReco_ || doLooseKinReco_) && !fullPS_ && (selectedjets->size()<2) ) continue;
-
 		if(getBTagSF()->getMode() == NTBTagSF::shapereweighting_mode){
 			throw std::runtime_error("NTBTagSF::shapereweighting_mode: not impl");
 		}
@@ -1663,117 +1588,8 @@ void  top_analyzer_run2::analyze(size_t anaid){
                         std::cout << "testmode("<< anaid << "): STEP7 " << std::endl;
 
 
-		///////////////////// btag cut STEP 8 (and kinematic reconstruction) //////////////////////////
+		///////////////////// btag cut STEP 8 //////////////////////////
 		step++;
-
-                float mtt, m_mub, pt_top, eta_top, pt_antitop, eta_antitop, pt_ttbar, eta_ttbar;
-
-                if ((doKinReco_ || doLooseKinReco_) && (selectedjets->size()>1)){
-
-                    if (leadingptlep->q()*secleadingptlep->q()>0) continue;
-                    if (signal_){
-                        if (doKinReco_) puweight *= kinRecoSF_->getSF();
-                        else if (doLooseKinReco_) puweight *= looseKinRecoSF_->getSF();
-                    }
-                    bool isAntiMuon = false;
-                    LV muon_lv;
-
-                    VLV leptonsVLV;
-                    TLorentzVector tlv_temp;
-
-                    tlv_temp.SetPtEtaPhiE(leadingptlep->pt(),leadingptlep->eta(),leadingptlep->phi(),leadingptlep->e());
-                    leptonsVLV.push_back(common::TLVtoLV(tlv_temp));
-
-                    tlv_temp.SetPtEtaPhiE(secleadingptlep->pt(),secleadingptlep->eta(),secleadingptlep->phi(),secleadingptlep->e());
-                    leptonsVLV.push_back(common::TLVtoLV(tlv_temp));
-
-                    if (isMuonLeadingLepton) muon_lv = leptonsVLV.at(0);
-                    else muon_lv = leptonsVLV.at(1);
-
-
-                    int leptonIndex = 0;
-                    int antileptonIndex = 0;
-                    if (leadingptlep->q()<0) {
-                        antileptonIndex = 1;
-                        if (!isMuonLeadingLepton) isAntiMuon = true;
-                    }
-                    else{
-                        leptonIndex = 1;
-                        if (isMuonLeadingLepton) isAntiMuon = true;
-                    }
-                    TVector2 METv2; METv2.SetMagPhi(adjustedmet.met(),adjustedmet.phi());
-                    LV METLV; METLV.SetXYZT(METv2.Px(),METv2.Py(),0,0);
-
-                    std::vector<double> dummy;
-                    std::vector<int> jet_indices;
-
-                    for (unsigned int i=0; i<selectedjets->size(); ++i) jet_indices.push_back(i);
-
-                    if (doKinReco_){
-
-                        KinematicReconstructionSolutions kinRecoSols = this->getKinRecoSolutions(leptonIndex, antileptonIndex, jet_indices,
-                                                                                                 bjet_indices, leptonsVLV, jetVLV, dummy, METLV);
-                        if (kinRecoSols.numberOfSolutions()<1) continue;
-
-                        const KinematicReconstructionSolution solution = kinRecoSols.solution();
-
-                        TLorentzVector top_sol = common::LVtoTLV(solution.top());
-                        TLorentzVector antitop_sol = common::LVtoTLV(solution.antiTop());
-                        TLorentzVector ttbar_sol = common::LVtoTLV(solution.ttbar());
-                        // int n_bTags = solution.numberOfBtags();
-
-                        mtt = ttbar_sol.M();
-                        pt_top = top_sol.Pt();
-                        eta_top = top_sol.Eta();
-                        pt_antitop = antitop_sol.Pt();
-                        eta_antitop = antitop_sol.Eta();
-                        pt_ttbar = ttbar_sol.Pt();
-                        eta_ttbar = ttbar_sol.Eta();
-
-                        int bjet_index = solution.antiBjetIndex();
-                        if (isAntiMuon) bjet_index = solution.bjetIndex();
-                        m_mub = (muon_lv+jetVLV.at(bjet_index)).M();
-
-                        evt.mtt = &mtt;
-                        evt.m_mub = &m_mub;
-                        evt.pt_top = &pt_top;
-                        evt.eta_top = &eta_top;
-                        evt.pt_antitop = &pt_antitop;
-                        evt.eta_antitop = &eta_antitop;
-                        evt.pt_ttbar = &pt_ttbar;
-                        evt.eta_ttbar = &eta_ttbar;
-
-                        // event display
-                        // if (bjet_indices.size()==2 && jet_indices.size()==2 && METv2.Mod()>50){
-                        //     std::cout<<std::endl;
-                        //     std::cout<<"event number = "<< *b_EventNumber.content() <<std::endl;
-                        //     std::cout<<"run number = "<< *b_RunNumber.content() <<std::endl;
-                        //     std::cout<<"lumi block = "<< *b_LumiBlock.content() <<std::endl;
-                        //     std::cout<<std::endl;
-                        // }
-
-
-                    }
-                    else if (doLooseKinReco_){
-
-                        LooseKinRecoSolution looseKinRecoSol(this->getLooseKinRecoSolution(leptonIndex, antileptonIndex, jet_indices,
-                                                                                           bjet_indices, leptonsVLV, jetVLV, METLV));
-
-                        if (!looseKinRecoSol.hasSolution()) continue;
-
-                        mtt = looseKinRecoSol.TTbar().M();
-                        pt_ttbar = looseKinRecoSol.TTbar().Pt();
-                        eta_ttbar = looseKinRecoSol.TTbar().Eta();
-                        evt.mtt = &mtt;
-                        evt.pt_ttbar = &pt_ttbar;
-                        evt.eta_ttbar = &eta_ttbar;
-
-                    }
-
-                }
-
-
-                if(apllweightsone) puweight=1;
 
 		if(!usetopdiscr && !nobcut && selectedbjets.size() < 1) continue;
 		// if(usetopdiscr && topdiscr3<0.9) continue;
@@ -1816,8 +1632,6 @@ void  top_analyzer_run2::analyze(size_t anaid){
 
 			mlbmtplots_step8.fillPlotsReco();
 			xsecfitplots_step8.fillPlotsReco();
-			if (doKinReco_) kinrecoplots_step8.fillPlotsReco();
-			if (doLooseKinReco_) loosekinrecoplots_step8.fillPlotsReco();
 
 		}
 		if(isZrange){
@@ -1951,22 +1765,3 @@ bool top_analyzer_run2::checkTrigger(std::vector<bool> * p_TriggerBools,ztop::NT
 
 
 
-void top_analyzer_run2::setMttCategories(float gen_mtt, TString legendname){
-    if ((int)cat_mttmax_leg != (int)cat_mttmax_gen)
-        throw std::logic_error("top_analyzer_run2:::setMttCategories: gen and legened mtt bins must be the same");
-    
-    if (gen_mtt < bin_1_) gen_mttcategory = cat_mtt1_gen;
-    else if (gen_mtt < bin_2_) gen_mttcategory = cat_mtt2_gen;
-    else if (gen_mtt < bin_3_) gen_mttcategory = cat_mtt3_gen;
-    else gen_mttcategory = cat_mttmax_gen;
-
-    legendname.ReplaceAll(" ","");
-    
-    if (legendname.EndsWith("mtt1")) leg_mttcategory = cat_mtt1_leg;
-    else if (legendname.EndsWith("mtt2")) leg_mttcategory = cat_mtt2_leg;
-    else if (legendname.EndsWith("mtt3")) leg_mttcategory = cat_mtt3_leg;
-    else if (legendname.EndsWith("mtt4")) leg_mttcategory = cat_mttmax_leg;
-    else 
-        throw std::runtime_error((std::string)"top_analyzer_run2:::setMttCategories: category for legend "+legendname+" not found");
-
-}

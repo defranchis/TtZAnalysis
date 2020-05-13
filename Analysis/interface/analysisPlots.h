@@ -25,7 +25,7 @@ public:
 	analysisPlots():eventp_(0),use_(false),step_(0){
 		throw std::logic_error("analysisPlots must be initialized with a defined step");
 	}
-        analysisPlots(size_t step):eventp_(0),use_(false),step_(step), kinRecoPS_(false){}
+	analysisPlots(size_t step):eventp_(0),use_(false),step_(step){}
 	virtual ~analysisPlots(){
 		for(size_t i=0;i<conts_.size();i++){
 			if(conts_.at(i)){
@@ -51,7 +51,6 @@ public:
 
 	void enable(bool doit=true){use_=doit;}
 	void disable(){use_=false;}
-	void setKinRecoPS(bool kinRecoPS=true){kinRecoPS_=kinRecoPS;}
 
 protected:
 
@@ -67,7 +66,6 @@ protected:
 		throw std::runtime_error("analysisPlots: no puweight associated");
 	}
 	const bool & use()const{return use_;}
-	const bool & useKinRecoPS()const{return kinRecoPS_;}
 	histo1DUnfold* addPlot(const std::vector<float>& genbins, const std::vector<float>& recobins, const TString& name, const TString &xname, const TString &yname);
 	histo1D* addPlot1D(const std::vector<float>& bins, const TString& name, const TString &xname, const TString &yname);
 
@@ -81,7 +79,6 @@ private:
 	std::vector<histo1DUnfold* > conts_;
 	std::vector<histo1D* > conts1D_;
 	size_t step_;
-        bool kinRecoPS_;
 };
 
 }

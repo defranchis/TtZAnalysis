@@ -9,12 +9,6 @@
 #include "TtZAnalysis/Tools/interface/applicationMainMacro.h"
 
 #include "TopAnalysis/ZTopUtils/interface/version.h"
-
-#include "../interface/sampleHelpers.h"
-#include "../interface/KinematicReconstruction.h"
-#include "../interface/KinematicReconstructionSolution.h"
-
-
 //#include "Analyzer.cc"
 //should be taken care of by the linker!
 
@@ -42,20 +36,13 @@ invokeApplication(){
 
 	bool tickonce  = parser->getOpt<bool>      ("TO",false,"enable tick once: breaks as soon as 1 event survived full selection (for software testing)");         //-T enables default false
 	TString mode   = parser->getOpt<TString>   ("m","xsec","additional mode options");        //-m (xsec,....) default xsec changes legends? to some extend
-	TString maninputfile= parser->getOpt<TString> ("i","","specify configuration file input manually (default is configs/analyse/<channel>_<energy>_config.txt");     //-i empty will use automatic
+	TString maninputfile= parser->getOpt<TString> ("i","","specify configuration file input manually (default is configs/analyse/<channel>_<energy>_config.txt");          //-i empty will use automatic
 	TString topmass  = parser->getOpt<TString> ("mt","172.5","top mass value to be used, default: 172.5");          //-i empty will use automatic
 	std::string discrfile=parser->getOpt<std::string>  ("lh","" , "specify discriminator input file. If not specified, likelihoods are created");          //-i empty will use automatic
 
 	const bool interactive = parser->getOpt<bool>      ("I",false,"enable interactive mode: no fork limit");
 
 	float fakedatastartentries = parser->getOpt<float>    ("-startdiv",0.9,"point to start fake data entries wrt to to evts");
-
-	const bool doKinReco = parser->getOpt<bool>      ("-kinReco",false,"perform kinematic reconstruction");        
-	const bool doLooseKinReco = parser->getOpt<bool>      ("-looseKinReco",false,"perform loose kinematic reconstruction");        
-	const bool doGenPlotsOnly = parser->getOpt<bool>      ("-genplots",false,"do gen plots for kinematic reconstruction");        
-	const bool fullPS = parser->getOpt<bool> ("-fullPS",false,"do not reqire jets in visible PS (option for kin reco)");        
-
-	const unsigned int nCores = parser->getOpt<int>("-nCores",6,"number of cores");
 
 	bool createLH=false;
 	if(discrfile.length()<1)
@@ -69,8 +56,7 @@ invokeApplication(){
 	TString scram_arch=getenv("SCRAM_ARCH");
 	TString batchbase = getenv("ANALYSE_BATCH_BASE");
 
-        if (doKinReco && doLooseKinReco)
-            throw std::logic_error("logic error: options --kinReco and --looseKinReco cannot be used at the same time");
+
 
 
 	TString database="data/analyse/";
@@ -99,7 +85,6 @@ invokeApplication(){
 	// TString
 	if(maninputfile!="")
 		inputfile=maninputfile;
-        if (doKinReco || doLooseKinReco) inputfile.ReplaceAll(".txt","_mtt.txt");
 	//do not prepend absolute path (batch submission)
 	inputfile=configbase+inputfile;
 
@@ -190,7 +175,7 @@ invokeApplication(){
 	///some checks
 
 
-	ana->setMaxChilds(nCores);
+	ana->setMaxChilds(6);
 	if(testmode)
 		ana->setMaxChilds(1);
 	if(interactive || tickonce)
@@ -237,28 +222,6 @@ invokeApplication(){
 	ana->getTriggerSF()->setInput(trigsffile,trigsfhisto);
         ana->getTriggerBGSF()->setInput(trigsffile,trigsfhisto);
         ana->getJERAdjuster()->setSystematics("def_2016");
-
-        ana->setDoKinReco(doKinReco);
-        ana->setDoLooseKinReco(doLooseKinReco);
-        ana->setFullPS(fullPS);
-        if (doKinReco){
-            std::vector<TString> channels {channel};
-            double topMass = 172.5;
-            if (Syst=="TOPMASS_up") topMass += 3; // HARDCODED
-            else if (Syst=="TOPMASS_down") topMass -= 3; //HARDCODED
-            KinematicReconstruction * kinReco = new KinematicReconstruction(Era::run2_13tev_2016_25ns, 0, true, false, topMass); // era, min b-tags, prefer b-tags, massloop, topmass
-            KinematicReconstructionScaleFactors * kinRecoSF = new KinematicReconstructionScaleFactors(Era::run2_13tev_2016_25ns,Channel::convert(channels),Systematic::Systematic(Syst));
-            kinRecoSF->prepareChannel(Channel::convert(channel));
-            ana->setKinReco(kinReco, kinRecoSF);
-        }
-        else if (doLooseKinReco){
-            std::vector<TString> channels {channel};
-            LooseKinReco * looseKinReco = new LooseKinReco(Era::run2_13tev_2016);
-            LooseKinRecoScaleFactors * looseKinRecoSF = new LooseKinRecoScaleFactors(Era::run2_13tev_2016,Channel::convert(channels),Systematic::Systematic(Syst));
-            looseKinRecoSF->prepareChannel(Channel::convert(channel));
-            ana->setLooseKinReco(looseKinReco, looseKinRecoSF);
-        }
-        ana->setDoGenPlotsOnly(doGenPlotsOnly);
 
 	if(elecEnsffile.EndsWith("DEFFILEWILDCARDDONTREMOVE")){
 		if(energy == "7TeV" || energy == "8TeV")

@@ -119,7 +119,6 @@ private:
     float yspacemulti_;
     bool mcsysstatleg_;
     bool nolegend_;
-    bool noratio_;
     TString systlabel_;
 };
 

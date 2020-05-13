@@ -15,8 +15,8 @@
 namespace ztop{
 
 plotterControlPlot::plotterControlPlot(): plotterBase(), divideat_(0),
-                                          stackp_(0),/*tempdataentry_(0),*/invertplots_(false),psmigthresh_(0),yspacemulti_(1.3),mcsysstatleg_(true),nolegend_(false),noratio_(false),
-                                          systlabel_("Syst"){
+		stackp_(0),/*tempdataentry_(0),*/invertplots_(false),psmigthresh_(0),yspacemulti_(1.3),mcsysstatleg_(true),nolegend_(false),
+		systlabel_("Syst"){
 
 	readStyleFromFileInCMSSW("/src/TtZAnalysis/Tools/styles/controlPlots_standard.txt");
 	gStyle->SetOptStat(0);
@@ -77,7 +77,6 @@ void plotterControlPlot::readStylePriv(const std::string& infile,bool requireall
 	//never required
 	yspacemulti_= fr.getValue<float>("ySpaceMulti",yspacemulti_);
 	nolegend_= fr.getValue<bool>("nolegend",nolegend_);
-	noratio_= fr.getValue<bool>("noratio",noratio_);
 	symmetric_styleadd_=fr.getValue<std::string>("symmetricStyleAdd",symmetric_styleadd_);
 	//merges are never required
 	fr.clear();
@@ -206,28 +205,19 @@ void plotterControlPlot::preparePad(){
 	cleanMem();
 	TVirtualPad * c = getPad();
 	c->Clear();
-        if (!noratio_){
-            c->Divide(1,2);
-            c->cd(1)->SetPad(0,divideat_,1,1);
-            c->cd(2)->SetPad(0,0,1,divideat_);
-            ratiostyle_.applyPadStyle(c->cd(2));
-        }
-        else{
-            c->Divide(1,1);
-            c->cd(1)->SetPad(0,0,1,1);
-        }
+	c->Divide(1,2);
+	c->cd(1)->SetPad(0,divideat_,1,1);
+	c->cd(2)->SetPad(0,0,1,divideat_);
 	upperstyle_.applyPadStyle(c->cd(1));
-
+	ratiostyle_.applyPadStyle(c->cd(2));
 }
 
 void plotterControlPlot::refreshPad(){
 	TVirtualPad * c = getPad();
 	upperstyle_.applyPadStyle(c->cd(1));
+	ratiostyle_.applyPadStyle(c->cd(2));
 	c->cd(1)->RedrawAxis();
-	if (!noratio_){
-            ratiostyle_.applyPadStyle(c->cd(2));
-            c->cd(2)->RedrawAxis();
-        }
+	c->cd(2)->RedrawAxis();
 }
 
 
@@ -235,10 +225,9 @@ void plotterControlPlot::drawPlots(){
 	TVirtualPad * c = getPad();
 	c->cd(1);
 	drawControlPlot();
-	if (!noratio_){
-            c->cd(2);
-            drawRatioPlot();
-        }
+	c->cd(2);
+	drawRatioPlot();
+
 }
 // void drawTextBoxes(); // by base class
 void plotterControlPlot::drawLegends(){
@@ -444,10 +433,8 @@ void plotterControlPlot::drawControlPlot(){
 		for(size_t i=stackedhistos.size()-1; true;i--){
 
 			if(stackedhistos.at(i)){ //not data
-                                if(!noratio_){
-                                    stackedhistos.at(i)->GetXaxis()->SetTickLength(0);
-                                    stackedhistos.at(i)->GetXaxis()->SetLabelSize(0);
-                                }
+				stackedhistos.at(i)->GetXaxis()->SetTickLength(0);
+				stackedhistos.at(i)->GetXaxis()->SetLabelSize(0);
 				stackedhistos.at(i)->Draw(mcstyleupper_.rootDrawOpt+"same");
 				if(legendentries.at(i)!="" && mcstyleupper_.legendDrawStyle != "none"){
 					tmplegp_->AddEntry(stackedhistos.at(i),legendentries.at(i),mcstyleupper_.legendDrawStyle);
@@ -469,9 +456,10 @@ void plotterControlPlot::drawControlPlot(){
                 mcstyleratio_.applyContainerStyle(mcerr_dummy,false);
                 mcerr_dummy->SetLineWidth(1);
                 mcerr_dummy->SetLineColor(1);
-		if (!noratio_) mcerr->GetXaxis()->SetTickLength(0);
-		if(mcsysstatleg_) tmplegp_->AddEntry(mcerr,systlabel_,"f");
-                if (!noratio_) tmplegp_->AddEntry(mcerr_dummy,"MC stat",mcstyleupper_.legendDrawStyle);
+		mcerr->GetXaxis()->SetTickLength(0);
+		if(mcsysstatleg_)
+			tmplegp_->AddEntry(mcerr,systlabel_,"f");
+                        tmplegp_->AddEntry(mcerr_dummy,"MC stat",mcstyleupper_.legendDrawStyle);
 		/*if(usestack->is1DUnfold() && foundPSmig){ //
 			TH1D * dummy=addObject(new TH1D());
 			mcstylepsmig_.applyContainerStyle(dummy,false);

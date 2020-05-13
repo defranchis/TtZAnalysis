@@ -37,7 +37,7 @@ invokeApplication(){
 	}
 	const bool exclude0bjetbin  = parser->getOpt<bool>("-exclude0bjet",false,"Excludes 0,3+ bjet bin from the fit");
 	const int npseudoexp = parser->getOpt<int>("p",0,"number of pseudo experiments");
-	const unsigned int nToys = parser->getOpt<int>("-nToys",0,"number of toys");
+	const int nToys = parser->getOpt<int>("-nToys",0,"number of toys");
 	const unsigned int seed = parser->getOpt<int>("-seed",0,"RNG seed for toys");
 	const bool debug = parser->getOpt<bool>("d",false,"switches on debug output");
 	const TString pseudoOpts = parser->getOpt<TString>("-pdopts","",
@@ -59,11 +59,7 @@ invokeApplication(){
 	const bool topontop =  parser->getOpt<bool>("-topontop",false,"plots ttbar signal on top");
 	const bool likelihoodscan =  parser->getOpt<bool>("-scan",false,"Maps the likelihood around the minimum as a function of the cross section(s). Needs a lot of CPU time!");
 
-	const TString scanParameter =  parser->getOpt<TString>("-scanParameter","","scans specified parameter");
-
 	const bool mlbCrossCheck = parser->getOpt<bool>("-mlbCrossCheck",false,"cross check with only one mlb distribution");
-	const bool mttfit = parser->getOpt<bool>("-mttfit",false,"differential mtt analysis");
-	const unsigned int n_mttbins = parser->getOpt<int>("-mttbins",4,"number of mtt bins");
 
 	TString outfile;
 
@@ -91,9 +87,6 @@ invokeApplication(){
 	mainfitter.setTopOnTop(topontop);
 	mainfitter.setDummyFit(dummyrun);
         mainfitter.setMassFit(tmpcheck);
-        mainfitter.setDoMttFit(mttfit, n_mttbins); 
-
-        if (mttfit) std::cout<<"number of mtt bins (signals) = "<<n_mttbins<<std::endl;
 
 	if(lhmode=="chi2datamc")
 		mainfitter.setLikelihoodMode(ttbarXsecFitter::lhm_chi2datamcstat);
@@ -133,7 +126,7 @@ invokeApplication(){
             mainfitter.setDoToys(true);
         }
 
-        if (nToys) std::cout<<nToys<<" toys with seed "<<seed<<std::endl;
+        std::cout<<nToys<<" toys with seed "<<seed<<std::endl;
 	//simpleFitter::printlevel=1;
 
 	mainfitter.readInput((fullcfgpath+inputconfig).Data());
@@ -183,8 +176,8 @@ invokeApplication(){
 		}
 
 		std::string specialplotsfile=cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_controlplots.txt";
-                if (mttfit) specialplotsfile=cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/selected_controlplots_mtt.txt";
-                
+
+
 		//get files
 
 		for(size_t file=0;file<filestoprocess.size();file++){
@@ -238,10 +231,6 @@ invokeApplication(){
                                 else if (stack.getName() == "second jet pt 0,2 b-jets step 8") stack = stack.rebinXToBinning({30,50,120,200});
                                 else if (stack.getName() == "third jet pt 0,3 b-jets step 8") stack = stack.rebinXToBinning({30,60,200});
                                 else if (stack.getName() == "m_lb min step 8") stack = stack.rebinXToBinning({20,50,75,105,130,160});
-                                else if (stack.getName() == "last jet pt 2 b-jets step 8") stack = stack.rebinXToBinning({30,40,50,60,70,80,90,100,120,140,200});
-                                else if (stack.getName() == "last jet pt 2 b-jets mtt1 step 8") stack = stack.rebinXToBinning({30,40,60,200});
-                                else if (stack.getName() == "last jet pt 2 b-jets mtt2 step 8") stack = stack.rebinXToBinning({30,50,70,100,200});
-                                else if (stack.getName() == "last jet pt 2 b-jets mtt3 step 8") stack = stack.rebinXToBinning({30,50,70,120,200});
 
                                 else if (stack.getName() == "lead lepton pt step 8") stack = stack.cutLeft(20-0.1);
                                 else if (stack.getName() == "seclead lepton pt step 8") stack = stack.cutLeft(20-0.1);
@@ -491,16 +480,9 @@ invokeApplication(){
 		if(debug)
 			std::cout << "printing pre/postfit fit-distributions" << std::endl;
 		for(size_t ndts=0;ndts<mainfitter.nDatasets();ndts++){
-                    if(likelihoodscan){
-                        if (!mttfit) mainfitter.printXsecScan(ndts,outfile.Data());
-                        else {
-                            for (size_t mttbin=0; mttbin<n_mttbins; ++mttbin) //hardcoded
-                                mainfitter.printXsecScan(ndts,outfile.Data(),mttbin);
-                        }
-                    }
-                    if (scanParameter!=""){
-                        mainfitter.printScan(ndts,outfile.Data(),scanParameter);
-                    }
+			if(likelihoodscan)
+				mainfitter.printXsecScan(ndts,outfile.Data());
+
 			TString dir=outfile+"_vars/";
 			system( ("mkdir -p "+dir).Data());
 			for(size_t nbjet=0;nbjet<3;nbjet++){
@@ -540,35 +522,22 @@ invokeApplication(){
 		TString dtsname=mainfitter.datasetName(ndts);
 		texTabler tab;
 
-                if (!mttfit){
-                    tab=mainfitter.makeSystBreakDownTable(ndts);
-                    tab.writeToFile(outfile+"_tab" +dtsname + ".tex");
-                    tab.writeToPdfFile(outfile+"_tab" +dtsname + ".pdf");
-                    std::cout << tab.getTable() <<std::endl;
-                    tab=mainfitter.makeSystBreakDownTable(ndts,false); //vis PS
-                    tab.writeToFile(outfile+"_tab_simple" +dtsname + ".tex");
-                    tab.writeToPdfFile(outfile+"_tab_simple" +dtsname + ".pdf");
-                    std::cout << tab.getTable() <<std::endl;
-                }
-                else{
-                    for (size_t s=0; s<n_mttbins; ++s){ //hardcoded
-                        tab=mainfitter.makeSystBreakDownTable(ndts,true,"",s);
-                        tab.writeToFile(outfile+"_tab" +dtsname +"_mtt"+toString(s+1)+ ".tex");
-                        tab.writeToPdfFile(outfile+"_tab" +dtsname+"_mtt"+toString(s+1) + ".pdf");
-                        std::cout << tab.getTable() <<std::endl;
-                        tab=mainfitter.makeSystBreakDownTable(ndts,false,"",s); //vis PS
-                        tab.writeToFile(outfile+"_tab_simple" +dtsname+"_mtt"+toString(s+1) + ".tex");
-                        tab.writeToPdfFile(outfile+"_tab_simple" +dtsname+"_mtt"+toString(s+1) + ".pdf");
-                        std::cout << tab.getTable() <<std::endl;
-                    }
-                }
-                
+		tab=mainfitter.makeSystBreakDownTable(ndts);
+		tab.writeToFile(outfile+"_tab" +dtsname + ".tex");
+		tab.writeToPdfFile(outfile+"_tab" +dtsname + ".pdf");
+		std::cout << tab.getTable() <<std::endl;
+		tab=mainfitter.makeSystBreakDownTable(ndts,false); //vis PS
+		tab.writeToFile(outfile+"_tab_simple" +dtsname + ".tex");
+		tab.writeToPdfFile(outfile+"_tab_simple" +dtsname + ".pdf");
+		std::cout << tab.getTable() <<std::endl;
+
+
+
 		//graph out
-                if (!mttfit){
-                    graph resultsgraph=mainfitter.getResultsGraph(ndts,topmass);
-                    if(fitsucc)
+		graph resultsgraph=mainfitter.getResultsGraph(ndts,topmass);
+		if(fitsucc)
 			resultsgraph.writeToFile((outfile+"_graph" +dtsname + ".ztop").Data());
-                }
+
 
 	}
 	if(mainfitter.nDatasets()>1 && fitsucc){
@@ -623,8 +592,7 @@ invokeApplication(){
 			dir+=mainfitter.datasetName(ndts).Data();
 			system(("mkdir -p "+dir).data());
 			dir+="/";
-                        if (mttfit) mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots_mtt.txt",dir);
-                        else if (!mlbCrossCheck) mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots.txt",dir);
+                        if (!mlbCrossCheck) mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots.txt",dir);
                         else mainfitter.printAdditionalControlplots(infile,cmsswbase+"/src/TtZAnalysis/Analysis/configs/fitTtBarXsec/prefit_postfit_plots_mlb.txt",dir);
 		}
                 if (!onlyemu){

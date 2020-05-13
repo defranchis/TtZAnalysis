@@ -71,14 +71,8 @@ topAnalyzer::topAnalyzer():basicAnalyzer(){
 	///set defaults for SF
 	pdfweighter_.switchOff(true); //switch off as default
 	fakedata_startentries_=0.9;
-        doKinReco_ = false;
-        doLooseKinReco_ = false;
-        doGenPlotsOnly_ = false;
-        fullPS_ = false;
-        kinReco_ = 0;
-        kinRecoSF_ = 0;
-        looseKinReco_ = 0;
-        looseKinRecoSF_ = 0;
+
+
 }
 /**
  * takes care of not already deleted containers etc
@@ -238,34 +232,6 @@ float topAnalyzer::createNormalizationInfo(TFile *f, bool isMC,size_t anaid,bool
 }
 
 
-void topAnalyzer::setKinReco(KinematicReconstruction * kinReco, KinematicReconstructionScaleFactors * kinRecoSF){
-    kinReco_ = kinReco;
-    kinRecoSF_ = kinRecoSF;
-}
-void topAnalyzer::setLooseKinReco(LooseKinReco * looseKinReco, LooseKinRecoScaleFactors * looseKinRecoSF){
-    looseKinReco_ = looseKinReco;
-    looseKinRecoSF_ = looseKinRecoSF;
-}
-
-KinematicReconstructionSolutions topAnalyzer::getKinRecoSolutions(const int leptonIndex, const int antiLeptonIndex,
-                                                                  const std::vector<int>& jetIndices, const std::vector<int>& bjetIndices,
-                                                                  const VLV& allLeptons, const VLV& jets,
-                                                                  const std::vector<double>& jetBtags, const LV& met)const
-{
-    if(!kinReco_) return KinematicReconstructionSolutions();    
-    return kinReco_->solutions({leptonIndex}, {antiLeptonIndex}, jetIndices, bjetIndices,
-                                                   allLeptons, jets, jetBtags, met);
-}
-
-
-LooseKinRecoSolution topAnalyzer::getLooseKinRecoSolution(const int leptonIndex, const int antiLeptonIndex,
-                                                           const std::vector<int>& jetIndices, const std::vector<int>& bjetIndices,
-                                                           const VLV& allLeptons, const VLV& jets, const LV& met)const
-{
-    if(!looseKinReco_) return LooseKinRecoSolution();   
-    return looseKinReco_->solution({leptonIndex}, {antiLeptonIndex}, jetIndices, bjetIndices,
-                                   allLeptons, jets, met);
-}
 
 
 
