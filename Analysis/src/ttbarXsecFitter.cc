@@ -125,7 +125,7 @@ void ttbarXsecFitter::readInput(const std::string & configfilename){
 	for(size_t i=0;i<datasets_.size();i++){
             if (!mttfit_) datasets_.at(i).createXsecIdx();
             else datasets_.at(i).createXsecIdxs();
-            datasets_.at(i).createMassIdx();
+            if (massFit_) datasets_.at(i).createMassIdx();
 
 	}
 	createContinuousDependencies();
@@ -142,7 +142,7 @@ void ttbarXsecFitter::readInput(const std::string & configfilename){
 			continue;
 		TString sysname= fr.getData<TString>(i,0);
 		TString priorstr=fr.getData<TString>(i,1);
-		if(!nopriors_ || sysname=="TOPMASS"){
+		if(!nopriors_ || (sysname=="TOPMASS" && massFit_)){
 			if(priorstr=="box")
 				setPrior(sysname, prior_box);
                         else if(priorstr=="fsrbox")
@@ -169,11 +169,14 @@ void ttbarXsecFitter::readInput(const std::string & configfilename){
 				std::string errstr=("Did not recognize prior " +priorstr + " for "+ sysname).Data();
 				throw std::runtime_error(errstr);
 			}
+                                            
 		}
                             
 	}
 
+        // if (massFit_) setPrior("TOPMASS", prior_float); //HARDCODED
 
+          
 	if(!removesyst_){
 		fr.setStartMarker("[ full extrapolation ]");
 		fr.setEndMarker("[ end - full extrapolation ]");
@@ -464,8 +467,9 @@ void ttbarXsecFitter::dataset::createContinuousDependencies(){
         size_t isize;
         if (!parent_->mttfit_) isize = size;
         else isize = signalconts_nbjets_v_.at(0).size();
-            
+
 	for(size_t it=0;it<isize;it++){
+
                 if (!parent_->mttfit_)
                     signalshape_nbjet_.push_back(createLeptonJetAcceptance(signalconts_nbjets_,signalpsmigconts_nbjets_,signalvisgenconts_nbjets_, bjetcount));
                 else{
@@ -927,7 +931,7 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
                             fitter_.setAsMinosParameter(datasets_.at(i).xsecIdxs().at(s));
                     }
                 }
-                if(masspos < parameternames_.size() && priors_.at(masspos)!=prior_parameterfixed ){
+                if(masspos < parameternames_.size() && priors_.at(masspos)!=prior_parameterfixed && massFit_ ){
                     fitter_.setAsMinosParameter(masspos);
                 }
 		else{
@@ -3605,7 +3609,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	float addlumiunc=0;
 	addlumiunc=unclumi_/100;
 	if(!getName().Contains("13TeV"))stack->addGlobalRelMCError("Lumi" ,addlumiunc);
-        if (parent_->mttfit_) stack->addGlobalRelMCError("Lumi" ,addlumiunc);
+        if (parent_->mttfit_ || parent_->BRIL_studies_) stack->addGlobalRelMCError("Lumi" ,addlumiunc);
 	// stack->addGlobalRelBGError("Lumi_BG" ,addlumiunc);
 
 
@@ -3613,7 +3617,7 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 		std::cout << "ttbarXsecFitter::addUncertainties: added lumi var" <<std::endl;
 
 	if(removesyst){
-               if(std::find(allsys.begin(),allsys.end(),"TOPMASS")!=allsys.end())
+               if(std::find(allsys.begin(),allsys.end(),"TOPMASS")!=allsys.end() && parent_->massFit_)
 			stack->removeAllSystematics("TOPMASS");
 
 		else
