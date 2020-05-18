@@ -63,6 +63,7 @@ invokeApplication(){
 
 	const bool mlbCrossCheck = parser->getOpt<bool>("-mlbCrossCheck",false,"cross check with only one mlb distribution");
 	const bool mttfit = parser->getOpt<bool>("-mttfit",false,"differential mtt analysis");
+	const bool BRIL_studies = parser->getOpt<bool>("-BRIL",false,"studies for BRIL TDR");
 	const unsigned int n_mttbins = parser->getOpt<int>("-mttbins",4,"number of mtt bins");
 
 	TString outfile;
@@ -72,7 +73,6 @@ invokeApplication(){
 
 	parser->doneParsing();
 	std::string cmsswbase=getenv("CMSSW_BASE");
-
 
 	const std::string fullcfgpath=
 			inputconfig.BeginsWith("/") || inputconfig.BeginsWith("./") ? "" :
@@ -91,7 +91,8 @@ invokeApplication(){
 	mainfitter.setTopOnTop(topontop);
 	mainfitter.setDummyFit(dummyrun);
         mainfitter.setMassFit(tmpcheck);
-        mainfitter.setDoMttFit(mttfit, n_mttbins); 
+        mainfitter.setDoMttFit(mttfit, n_mttbins);
+        mainfitter.setBRILStudies(BRIL_studies);
 
         if (mttfit) std::cout<<"number of mtt bins (signals) = "<<n_mttbins<<std::endl;
 
@@ -108,7 +109,7 @@ invokeApplication(){
 		mainfitter.setReplaceTopMass(topmass);
 
 	mainfitter.setExcludeZeroBjetBin(exclude0bjetbin);
-	mainfitter.setUseMCOnly(onlyMC);
+	mainfitter.setUseMCOnly(onlyMC||BRIL_studies);
 	mainfitter.setEmuOnly(onlyemu);
         mainfitter.setFitToVariation(fitToVariation);
         mainfitter.setNoMinos(nominos);
