@@ -1,0 +1,15 @@
+
+executable          = ##WORKDIR##/jobscripts/job_HTCondor_BRIL.sh
+transfer_executable = True
+universe            = vanilla
+arguments           = "#CHANNEL# #SYST# #ENERGY# #TOPMASS# #ADDPARAMS#"
+log                 = ##WORKDIR##/logs/#CHANNEL#_#ENERGY#_#TOPMASS#_#SYST#.log
+
+Requirements = OpSysAndVer == "SL6"
+RequestMemory = 3700M
+RequestCpus = 3
++RequestRuntime = 54000
+
+JobBatchName = #BATCHNAME#
+
+queue
