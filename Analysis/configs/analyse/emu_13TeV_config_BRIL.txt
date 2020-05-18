@@ -1,0 +1,122 @@
+$ comments begin with "$"
+$ This file incorporates inputfiles in [inputfiles-begin] until [inputfiles-end]
+$  some steering parameters and inputs linke energy JECfile etc in 
+$  [parameters-begin] until [parameters-end]
+
+
+[inputfiles-begin]
+
+
+$ inputfile,                       legend entry,        color,   xsection,   legendNumber (for sorting,- allows for gaps),  (opt) isSignal
+
+   $ tree_13Tev_data_MuonEG_RunB.root,              data,                1,        1,              99
+   $ tree_13Tev_data_MuonEG_RunC.root,              data,                1,        1,              99
+   $ tree_13Tev_data_MuonEG_RunD.root,              data,                1,        1,              99
+   $ tree_13Tev_data_MuonEG_RunE.root,              data,                1,        1,              99
+   $ tree_13Tev_data_MuonEG_RunF_v1.root,              data,                1,        1,              99
+   $ tree_13Tev_data_MuonEG_RunF_v2.root,              data,                1,        1,              99
+   $ tree_13Tev_data_MuonEG_RunG.root,              data,                1,        1,              99
+   $ tree_13Tev_data_MuonEG_RunH_v1.root,              data,                1,        1,              99
+   $ tree_13Tev_data_MuonEG_RunH_v2.root,              data,                1,        1,              99
+
+
+   $ tree_13Tev_data_SingleMuon_RunB.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleMuon_RunC.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleMuon_RunD.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleMuon_RunE.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleMuon_RunF_v1.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleMuon_RunF_v2.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleMuon_RunG.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleMuon_RunH_v1.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleMuon_RunH_v2.root,                 data,                1,        1,              99
+
+   $ tree_13Tev_data_SingleElectron_RunB.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleElectron_RunC.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleElectron_RunD.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleElectron_RunE.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleElectron_RunF_v1.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleElectron_RunF_v2.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleElectron_RunG.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleElectron_RunH_v1.root,                 data,                1,        1,              99
+   $ tree_13Tev_data_SingleElectron_RunH_v2.root,                 data,                1,        1,              99
+
+$Sync_MuonEG_RunG.root,                 data,                1,        1,              99
+
+$Sync_emuttbar_en.root,          t#bar{t},                633,      831.76,         0,      true
+
+$ add tag "_mgbr" if W->lnu BR is 11.104% and not 10.620% 
+$tree_13TeV_emuttbar_amc_mgbr.root,     t#bar{t},		633,	  831.76,	  0,      true   
+$tree_13TeV_emuttbarbg_amc_mgbr.root,   t#bar{t}bg,		634,	  831.76,	  1,         
+$tree_13TeV_emuttbar_her.root,          t#bar{t},		633,      831.76,	  0,      true   
+$tree_13TeV_emuttbarbg_her.root,        t#bar{t}bg,	   	634,	  831.76,	  1
+   tree_13TeV_emuttbar.root,          t#bar{t},		633,      831.76,	  0,      true   
+   tree_13TeV_emuttbarbg.root,        t#bar{t}bg,	   	634,	  831.76,	  1
+
+
+
+$Sync.root,           t#bar{t},           633,      831.76,         0,      true
+
+
+   tree_13TeV_tW_ext.root,                tW/#bar{t}W,	   	616,	  35.85,	          4
+   tree_13TeV_tbarW_ext.root,	           tW/#bar{t}W,	   	616,	  35.85,	          4
+
+   tree_13TeV_dy1050.root,                   DY,                  852,      22635.1,        5  
+   tree_13TeV_dy50inf_ee_pow.root,           DY,                  852,      1921.8,         5 
+   tree_13TeV_dy50inf_tt_pow.root,           DY,                  852,      1921.8,         5 
+   tree_13TeV_dy50inf_pow.root,              DY,                  852,      1921.8,         5 
+
+   $ tree_13TeV_dy50inf.root,           DY,                  852,      5765.4,         5 
+
+   tree_13TeV_wjets.root,		   Wjets,		413,	  61526,	  2
+
+   tree_13TeV_ww.root,		   VV,			390,      118.7,   	  3
+   tree_13TeV_wz.root,		   VV,			390,	  47.1,   	  3
+   tree_13TeV_zz.root,		   VV,			390,	  16.5,	          3  
+
+[inputfiles-end]
+
+
+
+[parameters-begin] 
+$ inputFilesDir   = /nfs/dust/cms/user/tarndt/NTuples/Prod_8026/
+inputFilesDir   = /nfs/dust/cms/group/topcmsdesy/ntuple13tev/ttZ_framework/v2/
+
+$Lumi            = 35922
+Lumi            = 3000000
+
+JECFile         = /src/TtZAnalysis/Analysis/data/analyse/Summer16_23Sep2016BCDV3_DATA_UncertaintySources_AK4PFchs.txt
+
+MuonSFFile      = /src/TtZAnalysis/Analysis/data/analyse/MuonIdIsoTracking_average_Moriond17_Prel.root
+MuonSFFileBtoF      = /src/TtZAnalysis/Analysis/data/analyse/MuonIdIsoTracking_BtoF.root
+MuonSFFileGH      = /src/TtZAnalysis/Analysis/data/analyse/MuonIdIsoTracking_GH.root
+MuonSFHisto     = MuonIdIsoSF  $SF_statErr
+TrackingSFFile  = /src/TtZAnalysis/Analysis/data/analyse/Tracking_EfficienciesAndSF_BCDEFGH.root
+TrackingSFHisto = ratio_eff_eta3_dr030e030_corr
+
+ElecSFFile      = /src/TtZAnalysis/Analysis/data/analyse/ElectronIsoIdSF_Moriond2017.root
+ElecSFHisto     = ElectronIdIsoSF  $GlobalSF
+ElecTrackingSFFile = /src/TtZAnalysis/Analysis/data/analyse/elec_tracking_sf2D_2016.root
+ElecTrackingSFHisto = EGamma_SF2D
+
+TriggerSFFile   = /src/TtZAnalysis/Analysis/data/analyse/triggerSummary_emu.root
+
+$without .root
+$PUFile         = /src/TtZAnalysis/Analysis/data/analyse/Legacy2012.json_PU
+PUFileBtoF      = /src/TtZAnalysis/Analysis/data/analyse/PU_RunBtoF
+PUFileGH        = /src/TtZAnalysis/Analysis/data/analyse/PU_RunGH
+$PUFile         = /src/TtZAnalysis/Analysis/data/analyse/nvtx_data_2015
+$PUFile         = /src/TtZAnalysis/Analysis/data/analyse/ngoodvtx_data_2015
+
+$ flat uncertainties of 5/10 % for b/c jets
+$btagSFFile     = /src/TtZAnalysis/Analysis/data/analyse/CSV_8TeV_5unc.csv
+$ prel. 13 TeV btag SFs
+$ btagSFFile      = /src/TtZAnalysis/Analysis/data/analyse/CSVv2_Moriond17_B_H.csv
+btagSFFile      = /src/TtZAnalysis/Analysis/data/analyse/CSVv2_Run2016_mujets_SystematicBreakdown.csv
+btagFile        = btags_74
+
+$modeOptions = GsfelectronsNotoppt
+$modeOptions = GsfelectronsNotopptNoweights
+$modeOptions = GsfelectronsNotopptNoweights
+modeOptions = GsfelectronsZerojetNobcutNotopptNozcutNometcut
+$modeOptions = GsfelectronsZerojetNobcutNotopptNozcutNometcutJetpt25
+[parameters-end]
