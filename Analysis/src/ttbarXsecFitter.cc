@@ -506,7 +506,7 @@ void ttbarXsecFitter::dataset::createContinuousDependencies(){
 
 		variateHisto1D tmpvarc;
 		tmpvarc.import(temp);
-		data_nbjet_.push_back(tmpvarc);
+                data_nbjet_.push_back(tmpvarc);
 
 		tmpvarc.import(backgroundconts_nbjets_.at(it));
 		background_nbjet_.push_back(tmpvarc);
@@ -912,11 +912,15 @@ int ttbarXsecFitter::fit(std::vector<float>& xsecs, std::vector<float>& errup ,s
 	if(!silent_)
 		std::cout << "First rough fit done" <<std::endl;
 	if(!onlychecks){
-		if (!mttfit_){
+		if (mttfit_){
                     fitter_.setStrategy(2);
                     fitter_.setTolerance(0.1);
                 }
-                else { //to be adjusted
+                else if (BRIL_studies_){
+                    fitter_.setStrategy(2);
+                    fitter_.setTolerance(0.1);
+                }
+                else {
                     fitter_.setStrategy(2);
                     fitter_.setTolerance(0.1);
                 }
@@ -3618,7 +3622,8 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 
 	if(removesyst){
                if(std::find(allsys.begin(),allsys.end(),"TOPMASS")!=allsys.end() && parent_->massFit_)
-			stack->removeAllSystematics("TOPMASS");
+                   stack->removeAllSystematics("TOPMASS");
+
 
 		else
 			stack->removeAllSystematics();
