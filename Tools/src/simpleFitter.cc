@@ -761,6 +761,12 @@ double simpleFitter::nuisanceGausBroad(const double & in){
 double simpleFitter::nuisanceGausMass(const double & in){
         return in*in * 9.;
 }
+double simpleFitter::nuisanceGausHalf(const double & in){
+	return in*in *4.;
+}
+double simpleFitter::nuisanceGausBroadHalf(const double & in){
+        return in*in * 1.35 * 4.;
+}
 
 
 double simpleFitter::nuisanceBox(const double & in){

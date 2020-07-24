@@ -159,6 +159,10 @@ void ttbarXsecFitter::readInput(const std::string & configfilename){
                                 setPrior(sysname, prior_gaussbroad);
                         else if(priorstr=="gaussmass")
                                 setPrior(sysname, prior_gaussmass);
+			else if(priorstr=="gauss_half")
+				setPrior(sysname, prior_gauss_half);
+                        else if(priorstr=="gaussbroad_half")
+                                setPrior(sysname, prior_gaussbroad_half);
 			else if(priorstr=="fixed")
 				setPrior(sysname, prior_parameterfixed);
 			else if(priorstr=="fixed_up")
@@ -435,7 +439,8 @@ void ttbarXsecFitter::createContinuousDependencies(){
 		std::cout << "ttbarXsecFitter::createContinuousDependencies: created dep: "
 		<< ndependencies_<<std::endl;
 	fittedparas_.resize(ndependencies_,0);
-	priors_.resize(ndependencies_,prior_gauss);
+	if (!BRIL_studies_) priors_.resize(ndependencies_,prior_gauss);
+        else priors_.resize(ndependencies_,prior_gauss_half);
 	if (!mttfit_) parameternames_=datasets_.at(0).signalshape(0).getSystNames();
         else parameternames_=datasets_.at(0).signalshape(0,0).getSystNames();
 
@@ -2707,6 +2712,10 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
                         out+= simpleFitter::nuisanceGausBroad(variations[sys]);}
                 else if(priors_[sys] == prior_gaussmass){
                         out+= simpleFitter::nuisanceGausMass(variations[sys]);}
+                else if(priors_[sys] == prior_gauss_half){
+                        out+= simpleFitter::nuisanceGausHalf(variations[sys]);}
+                else if(priors_[sys] == prior_gaussbroad_half){
+                        out+= simpleFitter::nuisanceGausBroadHalf(variations[sys]);}
 
 		//else if(priors_[sys] == prior_box){
 		//	out+= simpleFitter::nuisanceBox(variations[sys]);
