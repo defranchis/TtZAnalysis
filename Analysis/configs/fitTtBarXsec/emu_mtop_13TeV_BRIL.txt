@@ -23,67 +23,49 @@ $  the files are assumed to be located where the executable is called
 
 $everything will be gaussian except the ones specified here
 
-$    TT_ISRSCALE   = box
-$    TT_FSRSCALE   = fsrbox
 
-$    TT_MESCALE   =  box
-$   TT_TTTUNE   = box
-$   TT_MATCH = box
-$    ST_MESCALE = box
+    TOPMASS = float
+    Lumi = gauss
 
-$    TT_CRERD = boxright
-$    TT_CRGLUON = boxright
-$    TT_CRQCD = boxright
-$    TT_FRAG_PETERSON = boxright
-$    TT_GENMCATNLO =  boxright 
-
-$   DYSCALE = box
-$   TOPPT = boxright
-
-$    JES_RelativeBal = fixed
-$    ELECES = fixed
-
-   TOPMASS = float
-$   TOPMASS = gaussmass
-   PDF1 = gaussbroad
-   PDF2 = gaussbroad
-   PDF3 = gaussbroad
-   PDF4 = gaussbroad
-   PDF5 = gaussbroad
-   PDF6 = gaussbroad
-   PDF7 = gaussbroad
-   PDF8 = gaussbroad
-   PDF9 = gaussbroad
-   PDF10 = gaussbroad
-   PDF11 = gaussbroad
-   PDF12 = gaussbroad
-   PDF13 = gaussbroad
-   PDF14 = gaussbroad
-   PDF15 = gaussbroad
-   PDF16 = gaussbroad
-   PDF17 = gaussbroad
-   PDF18 = gaussbroad
-   PDF19 = gaussbroad
-   PDF20 = gaussbroad
-   PDF21 = gaussbroad
-   PDF22 = gaussbroad
-   PDF23 = gaussbroad
-   PDF24 = gaussbroad
-   PDF25 = gaussbroad
-   PDF26 = gaussbroad
-   PDF27 = gaussbroad
-   PDF28 = gaussbroad
+   PDF1 = gaussbroad_half
+   PDF2 = gaussbroad_half
+   PDF3 = gaussbroad_half
+   PDF4 = gaussbroad_half
+   PDF5 = gaussbroad_half
+   PDF6 = gaussbroad_half
+   PDF7 = gaussbroad_half
+   PDF8 = gaussbroad_half
+   PDF9 = gaussbroad_half
+   PDF10 = gaussbroad_half
+   PDF11 = gaussbroad_half
+   PDF12 = gaussbroad_half
+   PDF13 = gaussbroad_half
+   PDF14 = gaussbroad_half
+   PDF15 = gaussbroad_half
+   PDF16 = gaussbroad_half
+   PDF17 = gaussbroad_half
+   PDF18 = gaussbroad_half
+   PDF19 = gaussbroad_half
+   PDF20 = gaussbroad_half
+   PDF21 = gaussbroad_half
+   PDF22 = gaussbroad_half
+   PDF23 = gaussbroad_half
+   PDF24 = gaussbroad_half
+   PDF25 = gaussbroad_half
+   PDF26 = gaussbroad_half
+   PDF27 = gaussbroad_half
+   PDF28 = gaussbroad_half
   
 [ end - priors ]
 
 [ full extrapolation ]
 
-    TT_ISRSCALE
-    TT_FSRSCALE,-0.7071,0.7071
-    TT_MESCALE
-    TT_TTTUNE
-    PDF*,-0.741,0.741
-    TOPPT,0,1
+    TT_ISRSCALE, -0.5, 0.5
+    TT_FSRSCALE,-0.3536,0.3536
+    TT_MESCALE, -0.5, 0.5
+    TT_TTTUNE, -0.5, 0.5
+    PDF*,-0.371,0.371
+    TOPPT,0,0.5
     TOPMASS,-0.333,0.333
 
 [ end - full extrapolation ]
