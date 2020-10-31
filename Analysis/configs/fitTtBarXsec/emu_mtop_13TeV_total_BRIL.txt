@@ -1,0 +1,143 @@
+
+
+$$$ comments with $
+$$ format for each energy:
+$ 
+$   <this is the line for 0 add jet>  filename | plotname (, filename, plotname, .....) $all plots here will be taken into account (stat uncorr)
+$   <this is the line for 1 add jet>  filename | plotname ...
+$   ...
+$ bjet++
+$ < 1 b-jet > ....
+$
+$
+$
+$  the files are assumed to be located where the executable is called
+
+[ general ]
+
+    mergeSystFile = combine_syst_13TeV_preapp.txt
+
+[ end - general ]
+
+[ priors ]
+
+$everything will be gaussian except the ones specified here
+
+$    TT_ISRSCALE   = box
+$    TT_FSRSCALE   = fsrbox
+
+$    TT_MESCALE   =  box
+$   TT_TTTUNE   = box
+$   TT_MATCH = box
+$    ST_MESCALE = box
+
+
+$    TT_CRERD = boxright
+$    TT_CRGLUON = boxright
+$    TT_CRQCD = boxright
+$    TT_FRAG_PETERSON = boxright
+
+    TT_CRERD = fixed
+    TT_CRGLUON = fixed
+    TT_CRQCD = fixed
+
+    TT_GENMCATNLO =  fixed 
+
+    Lumi = fixed
+
+$   DYSCALE = box
+$   TOPPT = boxright
+
+$    JES_RelativeBal = fixed
+$    ELECES = fixed
+
+
+
+
+
+$   TOPMASS = float
+    TOPMASS = fixed
+$   TOPMASS = gaussmass
+   PDF1 = gaussbroad
+   PDF2 = gaussbroad
+   PDF3 = gaussbroad
+   PDF4 = gaussbroad
+   PDF5 = gaussbroad
+   PDF6 = gaussbroad
+   PDF7 = gaussbroad
+   PDF8 = gaussbroad
+   PDF9 = gaussbroad
+   PDF10 = gaussbroad
+   PDF11 = gaussbroad
+   PDF12 = gaussbroad
+   PDF13 = gaussbroad
+   PDF14 = gaussbroad
+   PDF15 = gaussbroad
+   PDF16 = gaussbroad
+   PDF17 = gaussbroad
+   PDF18 = gaussbroad
+   PDF19 = gaussbroad
+   PDF20 = gaussbroad
+   PDF21 = gaussbroad
+   PDF22 = gaussbroad
+   PDF23 = gaussbroad
+   PDF24 = gaussbroad
+   PDF25 = gaussbroad
+   PDF26 = gaussbroad
+   PDF27 = gaussbroad
+   PDF28 = gaussbroad
+
+
+  
+[ end - priors ]
+
+[ full extrapolation ]
+
+    TT_ISRSCALE
+    TT_FSRSCALE,-0.7071,0.7071
+    TT_MESCALE
+    TT_TTTUNE
+    PDF*,-0.741,0.741
+    TOPPT,0,1
+    TOPMASS,-0.333,0.333
+
+[ end - full extrapolation ]
+
+[ datasets ]
+
+	[ dataset - 13TeV ]
+	  lumi  =   3000000
+	  lumiunc = 1.0
+	  energy = 13      $for dynamic xsec
+	  topmass = 172.5  $for dynamic xsec
+	[ end dataset - 13TeV ]
+
+[ end datasets ]
+
+$plots for datasets
+
+[ 13TeV ]
+
+   emu_13TeV_172.5_nominal_syst.ztop | total 0,0 b-jets step 8 
+   emu_13TeV_172.5_nominal_syst.ztop | total 0,1 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | total 0,2 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | total 0,3 b-jets step 8
+
+bjet++
+
+   emu_13TeV_172.5_nominal_syst.ztop | total 1,0 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | total 1,1 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | total 1,2 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | total 1,3 b-jets step 8
+
+bjet++
+
+   emu_13TeV_172.5_nominal_syst.ztop | total 2,0 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | total 2,1 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | total 2,2 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | total 2,3 b-jets step 8
+
+[ end - 13TeV ]
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+ LocalWords:  TOPPT
