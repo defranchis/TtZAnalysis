@@ -1,0 +1,119 @@
+
+[ general ]
+
+    mergeSystFile = combine_syst_13TeV_preapp.txt
+
+[ end - general ]
+
+[ priors ]
+
+$everything will be gaussian except the ones specified here
+
+
+    TOPMASS , float
+    TOPPT, gauss_custom, 3.
+
+    MUONSF , gauss_custom, 2.5
+    ELECSF , gauss_custom, 3.6
+
+    $ JES_AbsoluteScale , gauss_custom, 5
+    $ JES_AbsoluteMPFBias , gauss_custom, 5
+    $ JES_AbsoluteStat , gauss_custom, 5
+    $ JES_SinglePionECAL , gauss_custom, 5
+    $ JES_SinglePionHCAL , gauss_custom, 5
+    $ JES_Fragmentation , gauss_custom, 5
+
+    $ JES_RelativeFSR , gauss
+    $ JES_RelativeStatFSR , gauss
+    $ JES_RelativeJEREC1 , gauss
+    $ JES_RelativePtBB , gauss
+    $ JES_RelativePtEC1 , gauss
+    $ JES_RelativeStatEC , gauss
+
+    $ JES_RelativeBal , fixed
+    $ JES_TimePtEta , fixed
+
+
+
+   PDF1 , gaussbroad_half
+   PDF2 , gaussbroad_half
+   PDF3 , gaussbroad_half
+   PDF4 , gaussbroad_half
+   PDF5 , gaussbroad_half
+   PDF6 , gaussbroad_half
+   PDF7 , gaussbroad_half
+   PDF8 , gaussbroad_half
+   PDF9 , gaussbroad_half
+   PDF10 , gaussbroad_half
+   PDF11 , gaussbroad_half
+   PDF12 , gaussbroad_half
+   PDF13 , gaussbroad_half
+   PDF14 , gaussbroad_half
+   PDF15 , gaussbroad_half
+   PDF16 , gaussbroad_half
+   PDF17 , gaussbroad_half
+   PDF18 , gaussbroad_half
+   PDF19 , gaussbroad_half
+   PDF20 , gaussbroad_half
+   PDF21 , gaussbroad_half
+   PDF22 , gaussbroad_half
+   PDF23 , gaussbroad_half
+   PDF24 , gaussbroad_half
+   PDF25 , gaussbroad_half
+   PDF26 , gaussbroad_half
+   PDF27 , gaussbroad_half
+   PDF28 , gaussbroad_half
+
+  
+[ end - priors ]
+
+[ full extrapolation ]
+
+    TT_ISRSCALE, -0.5, 0.5
+    TT_FSRSCALE,-0.3536,0.3536
+    TT_MESCALE, -0.5, 0.5
+    TT_TTTUNE, -0.5, 0.5
+    PDF*,-0.371,0.371
+    TOPPT,0,0.333
+    TOPMASS,-0.333,0.333
+
+[ end - full extrapolation ]
+
+[ datasets ]
+
+	[ dataset - 13TeV ]
+	  lumi  =   3000000
+	  lumiunc = 1.0
+	  energy = 13      $for dynamic xsec
+	  topmass = 172.5  $for dynamic xsec
+	[ end dataset - 13TeV ]
+
+[ end datasets ]
+
+$plots for datasets
+
+[ 13TeV ]
+
+   emu_13TeV_172.5_nominal_syst.ztop | total 0,0 b-jets step 8 
+   emu_13TeV_172.5_nominal_syst.ztop | lead jet pt 0,1 b-jets step 8 $total 0,1 b-jets step 8  $lead jet pt 0,1 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | second jet pt 0,2 b-jets step 8 $total 0,2 b-jets step 8  $second jet pt 0,2 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | third jet pt 0,3 b-jets step 8 $total 0,3 b-jets step 8  $third jet pt 0,3 b-jets step 8
+
+bjet++
+
+   emu_13TeV_172.5_nominal_syst.ztop | total 1,0 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | m_lb min 1,1 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | m_lb min coarse 1,2 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | m_lb min coarse 1,3 b-jets step 8  $total 1,3 b-jets step 8   $third jet pt 1,3 b-jets step 8 
+
+bjet++
+
+   emu_13TeV_172.5_nominal_syst.ztop | total 2,0 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | m_lb min coarse 2,1 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | m_lb min coarse 2,2 b-jets step 8
+   emu_13TeV_172.5_nominal_syst.ztop | total 2,3 b-jets step 8
+
+[ end - 13TeV ]
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+ LocalWords:  TOPPT
