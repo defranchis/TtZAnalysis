@@ -203,6 +203,7 @@ public:
 	static double nuisanceBox(const double & in);
 	static double nuisanceGausHalf(const double & in);
         static double nuisanceGausBroadHalf(const double & in);
+	static double nuisanceGausCustom(const double & in, const float nsigma = 1.);
 	//for sure not ok!
 	static double nuisanceLogNormal(const double & in);
 

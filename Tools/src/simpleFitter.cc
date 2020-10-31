@@ -767,6 +767,9 @@ double simpleFitter::nuisanceGausHalf(const double & in){
 double simpleFitter::nuisanceGausBroadHalf(const double & in){
         return in*in * 1.35 * 4.;
 }
+double simpleFitter::nuisanceGausCustom(const double & in, const float nsigma){
+	return in*in * nsigma*nsigma;
+}
 
 
 double simpleFitter::nuisanceBox(const double & in){
