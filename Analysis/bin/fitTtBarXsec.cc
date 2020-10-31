@@ -64,6 +64,7 @@ invokeApplication(){
 	const bool mlbCrossCheck = parser->getOpt<bool>("-mlbCrossCheck",false,"cross check with only one mlb distribution");
 	const bool mttfit = parser->getOpt<bool>("-mttfit",false,"differential mtt analysis");
 	const bool BRIL_studies = parser->getOpt<bool>("-BRIL",false,"studies for BRIL TDR");
+	const bool YR2018_scenario = parser->getOpt<bool>("-YR2018",false,"YR2018 scenario (reduced uncertainties)");
 	const unsigned int n_mttbins = parser->getOpt<int>("-mttbins",4,"number of mtt bins");
 
 	TString outfile;
@@ -92,7 +93,8 @@ invokeApplication(){
 	mainfitter.setDummyFit(dummyrun);
         mainfitter.setMassFit(tmpcheck);
         mainfitter.setDoMttFit(mttfit, n_mttbins);
-        mainfitter.setBRILStudies(BRIL_studies);
+        mainfitter.setBRILStudies(BRIL_studies, YR2018_scenario);
+
 
         if (mttfit) std::cout<<"number of mtt bins (signals) = "<<n_mttbins<<std::endl;
 

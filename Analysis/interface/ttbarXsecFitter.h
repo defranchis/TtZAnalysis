@@ -27,8 +27,9 @@ public:
 	enum likelihoodmodes{lhm_chi2datastat,lhm_chi2datamcstat,lhm_poissondatastat,lhm_chi2datafullmcstat};
 
 	enum priors{prior_gauss,prior_box,prior_float,prior_narrowboxleft,prior_narrowboxright,
-                    prior_parameterfixed,prior_gaussbroad,prior_gaussmass,prior_narrowboxfsr,prior_parameterfixed_up,prior_parameterfixed_down,
-                    prior_gauss_half,prior_gaussbroad_half};
+                    prior_parameterfixed,prior_gaussbroad,prior_gaussmass,prior_narrowboxfsr,
+                    prior_parameterfixed_up,prior_parameterfixed_down,
+                    prior_gauss_half,prior_gaussbroad_half, prior_gauss_custom};
 
 	/**
 	 * Lumi uncertainties in %, lumi in pb
@@ -41,7 +42,7 @@ public:
 		useMConly_(false),removesyst_(false),nominos_(false),
                 variationToFit_(""),emuOnly_(false),seed_(0),
                 parameterwriteback_(true),
-                    nosystbd_(false),silent_(false),nopriors_(false),doToys_(false),massFit_(false),topmassrepl_(-100),mlbCrossCheck_(false),BRIL_studies_(false),pseudodatarun_(false),
+                    nosystbd_(false),silent_(false),nopriors_(false),doToys_(false),massFit_(false),topmassrepl_(-100),mlbCrossCheck_(false),BRIL_studies_(false),isYR2018scenario_(false),pseudodatarun_(false),
 		wjetsrescalefactor_(1),
                 topontop_(false),
                 mttfit_(false),
@@ -107,7 +108,10 @@ public:
 
 	void setMlbCrossCheck(float xcheck){mlbCrossCheck_=xcheck;}
 
-	void setBRILStudies(float BRIL){BRIL_studies_=BRIL;}
+	void setBRILStudies(bool BRIL, bool YR2018){
+            BRIL_studies_=BRIL;
+            isYR2018scenario_=YR2018;
+        }
 	/**
 	 * Reads in the input from file
 	 * leave some hardcoded parts here for now
@@ -227,7 +231,7 @@ private:
 	/**
 	 * defines a prior for a given syst variation
 	 */
-	void setPrior(const TString& sysname, priors prior);
+	void setPrior(const TString& sysname, priors prior, float sigma = 1.);
 
 	class dataset{
 	public:
@@ -471,6 +475,7 @@ private:
 	std::vector<TString> parameternames_;
 	likelihoodmodes lhmode_;
 	std::vector<priors> priors_;
+	std::vector<float> sigma_priors_;
 
 	class extrapolationError{
 	public:
@@ -530,6 +535,7 @@ private:
 	float topmassrepl_;
         bool mlbCrossCheck_;
         bool BRIL_studies_;
+        bool isYR2018scenario_;
 
 	bool pseudodatarun_;
 

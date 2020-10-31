@@ -135,13 +135,18 @@ void ttbarXsecFitter::readInput(const std::string & configfilename){
 
 	fr.setStartMarker("[ priors ]");
 	fr.setEndMarker("[ end - priors ]");
-	fr.setDelimiter("=");
+	if(!BRIL_studies_) fr.setDelimiter("=");
+	else fr.setDelimiter(",");
 	fr.readFile(configfilename);
 	for(size_t i=0;i<fr.nLines();i++){
 		if(fr.nEntries(i)<2)
 			continue;
 		TString sysname= fr.getData<TString>(i,0);
 		TString priorstr=fr.getData<TString>(i,1);
+                float n_sigmas = 1;
+                if (priorstr == "gauss_custom")
+                    n_sigmas = fr.getData<float>(i,2);
+
 		if(!nopriors_ || (sysname=="TOPMASS" && massFit_)){
 			if(priorstr=="box")
 				setPrior(sysname, prior_box);
@@ -163,6 +168,8 @@ void ttbarXsecFitter::readInput(const std::string & configfilename){
 				setPrior(sysname, prior_gauss_half);
                         else if(priorstr=="gaussbroad_half")
                                 setPrior(sysname, prior_gaussbroad_half);
+			else if(priorstr=="gauss_custom")
+                                setPrior(sysname, prior_gauss_custom, n_sigmas);
 			else if(priorstr=="fixed")
 				setPrior(sysname, prior_parameterfixed);
 			else if(priorstr=="fixed_up")
@@ -439,8 +446,9 @@ void ttbarXsecFitter::createContinuousDependencies(){
 		std::cout << "ttbarXsecFitter::createContinuousDependencies: created dep: "
 		<< ndependencies_<<std::endl;
 	fittedparas_.resize(ndependencies_,0);
-	if (!BRIL_studies_) priors_.resize(ndependencies_,prior_gauss);
-        else priors_.resize(ndependencies_,prior_gauss_half);
+	if (BRIL_studies_ && isYR2018scenario_) priors_.resize(ndependencies_,prior_gauss_half);
+        else priors_.resize(ndependencies_,prior_gauss);
+        sigma_priors_.resize(ndependencies_, 1.);
 	if (!mttfit_) parameternames_=datasets_.at(0).signalshape(0).getSystNames();
         else parameternames_=datasets_.at(0).signalshape(0,0).getSystNames();
 
@@ -528,7 +536,7 @@ const TString& ttbarXsecFitter::datasetName(size_t datasetidx)const{
 		throw std::out_of_range("ttbarXsecFitter::datasetName: index out of range");
 	return datasets_.at(datasetidx).getName();
 }
-void ttbarXsecFitter::setPrior(const TString& sysname, priors prior){
+void ttbarXsecFitter::setPrior(const TString& sysname, priors prior, float sigma){
 	if(debug)
 		std::cout << "ttbarXsecFitter::setPrior" <<std::endl;
 
@@ -542,6 +550,7 @@ void ttbarXsecFitter::setPrior(const TString& sysname, priors prior){
 		throw std::out_of_range(errstr);
 	}
 	priors_.at(idx) = prior;
+        sigma_priors_.at(idx) = sigma;
 }
 
 void ttbarXsecFitter::addUncertainties(histoStack * stack,size_t datasetidx,size_t nbjets)const{
@@ -2716,6 +2725,8 @@ double ttbarXsecFitter::toBeMinimized(const double * variations){
                         out+= simpleFitter::nuisanceGausHalf(variations[sys]);}
                 else if(priors_[sys] == prior_gaussbroad_half){
                         out+= simpleFitter::nuisanceGausBroadHalf(variations[sys]);}
+                else if(priors_[sys] == prior_gauss_custom){
+                        out+= simpleFitter::nuisanceGausCustom(variations[sys],sigma_priors_[sys]);}
 
 		//else if(priors_[sys] == prior_box){
 		//	out+= simpleFitter::nuisanceBox(variations[sys]);
@@ -3622,7 +3633,8 @@ void ttbarXsecFitter::dataset::addUncertainties(histoStack * stack,size_t nbjets
 	float addlumiunc=0;
 	addlumiunc=unclumi_/100;
 	if(!getName().Contains("13TeV"))stack->addGlobalRelMCError("Lumi" ,addlumiunc);
-        if (parent_->mttfit_ || parent_->BRIL_studies_) stack->addGlobalRelMCError("Lumi" ,addlumiunc);
+        if (parent_->mttfit_) stack->addGlobalRelMCError("Lumi" ,addlumiunc);
+        // if (parent_->mttfit_ || parent_->BRIL_studies_) stack->addGlobalRelMCError("Lumi" ,addlumiunc);
 	// stack->addGlobalRelBGError("Lumi_BG" ,addlumiunc);
 
 
